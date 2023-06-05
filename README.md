@@ -43,7 +43,7 @@ For example, given the text: `Petiole 1-2 cm.`:
     - `cm` is a unit notation
 - Then I group tokens. For instance:
     - `1-2 cm` is a range with units which becomes a size trait.
-- Finally, I associate the size with the plant part `Petiole` by using a tree base parser. Spacy will build a labeled sentence dependency tree. We look for patterns in the tree to link traits with plant parts.
+- Finally, I associate the size with the plant part `Petiole` by using another pattern matching parser. Spacy will build a labeled sentence dependency tree. We look for patterns in the tree to link traits with plant parts.
 
 There are, of course, complications and subtleties not outlined above, but you should get the gist of what is going on here.
 
