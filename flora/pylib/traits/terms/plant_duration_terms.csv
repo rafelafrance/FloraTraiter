@@ -1,0 +1,7 @@
+label,pattern,replace
+plant_duration,annual,annual
+plant_duration,biennial,biennial
+plant_duration,monocarp,monocarp
+plant_duration,monocarpic,monocarpic
+plant_duration,perennial,perennial
+plant_duration,semelparous,semelparous

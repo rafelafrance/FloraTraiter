@@ -1,0 +1,7 @@
+label,pattern,replace
+flower_location,epigynous,inferior
+flower_location,half-inferior,inferior
+flower_location,hypogynous,superior
+flower_location,inferior,inferior
+flower_location,perigynous,perigynous
+flower_location,superior,superior
