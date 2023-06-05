@@ -2,8 +2,8 @@ from pathlib import Path
 
 from traiter.pylib import term_util
 
-from plants.pylib.traits import terms
-from plants.pylib.traits.part import PART_LABELS
+from ..traits import terms
+from ..traits.part import PART_LABELS
 
 LOCATION_CSV = Path(terms.__file__).parent / "part_location_terms.csv"
 LOCATION_ENTS = term_util.get_labels(LOCATION_CSV)

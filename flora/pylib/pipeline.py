@@ -1,23 +1,27 @@
 import spacy
 from traiter.pylib.pipes import extensions
-from traiter.pylib.pipes import sentence
 from traiter.pylib.pipes import tokenizer
+from traiter.pylib.traits import color
+from traiter.pylib.traits import date_
+from traiter.pylib.traits import elevation
+from traiter.pylib.traits import geocoordinates
+from traiter.pylib.traits import habitat
 
-from plants.pylib.traits import delete_missing
-from plants.pylib.traits import habit
-from plants.pylib.traits import link_location
-from plants.pylib.traits import link_part
-from plants.pylib.traits import link_sex
-from plants.pylib.traits import link_taxon_like
-from plants.pylib.traits import margin
-from plants.pylib.traits import misc
-from plants.pylib.traits import numeric
-from plants.pylib.traits import part
-from plants.pylib.traits import part_location
-from plants.pylib.traits import shape
-from plants.pylib.traits import surface
-from plants.pylib.traits import taxon
-from plants.pylib.traits import taxon_like
+from .traits import delete_missing
+from .traits import habit
+from .traits import link_location
+from .traits import link_part
+from .traits import link_sex
+from .traits import link_taxon_like
+from .traits import margin
+from .traits import misc
+from .traits import numeric
+from .traits import part
+from .traits import part_location
+from .traits import shape
+from .traits import surface
+from .traits import taxon
+from .traits import taxon_like
 
 
 def build(model_path=None):
@@ -27,18 +31,20 @@ def build(model_path=None):
 
     tokenizer.setup_tokenizer(nlp)
 
-    nlp.add_pipe(sentence.SENTENCES)
-
-    taxon.build(nlp, extend=2, overwrite=["color"])
-
+    taxon.build(nlp, extend=2)
     misc.build(nlp)
     part.build(nlp)
-
     numeric.build(nlp)
 
+    color.build(nlp)
+    date_.build(nlp)
+    elevation.build(nlp)
+    habitat.build(nlp)
+    geocoordinates.build(nlp)
+
     habit.build(nlp)
-    shape.build(nlp)
     margin.build(nlp)
+    shape.build(nlp)
     surface.build(nlp)
 
     part_location.build(nlp)

@@ -1,8 +1,8 @@
 from collections import defaultdict
 from collections import namedtuple
 
-from mimosa.pylib import pipeline
-from mimosa.pylib import sentence_pipeline
+from .. import pipeline
+from .. import sentence_pipeline
 
 TraitsInText = namedtuple("TraitsInText", "text traits")
 TraitsByTaxon = namedtuple("TraitsByTaxon", "taxon traits")
@@ -40,7 +40,7 @@ class TraitsByTaxonList:
 class BaseReader:
     def __init__(self, args):
         self.lines = self.read_lines(args.in_text, args.limit)
-        self.nlp = pipeline.pipeline()
+        self.nlp = pipeline.build()
         self.sent_nlp = sentence_pipeline.pipeline()
         self.text_traits = []
         self.taxon_traits = defaultdict(list)

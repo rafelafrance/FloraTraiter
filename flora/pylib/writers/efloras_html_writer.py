@@ -1,26 +1,28 @@
 from dataclasses import dataclass
 
-from plants.pylib.writers.html_writer import HtmlWriter as BaseWriter
-from plants.pylib.writers.html_writer import HtmlWriterRow as BaseHtmlWriterRow
+from .html_writer import HtmlWriter as BaseWriter
+from .html_writer import HtmlWriterRow as BaseHtmlWriterRow
 from tqdm import tqdm
 
-from efloras.pylib import const
+from .. import const
 
 
-@dataclass(kw_only=True)
+# @dataclass(kw_only=True)
+@dataclass
 class HtmlWriterRow(BaseHtmlWriterRow):
-    family: str
-    flora_id: int
-    taxon: str
-    taxon_id: int
-    link: str
-    path: str
+    family: str = ""
+    flora_id: int = ""
+    taxon: str = ""
+    taxon_id: int = -1
+    link: str = ""
+    path: str = ""
 
 
 class HtmlWriter(BaseWriter):
     def __init__(self, out_html):
         super().__init__(
-            template_dir=f"{const.ROOT_DIR}/efloras/pylib/writers/templates",
+            template_dir=f"{const.ROOT_DIR}/pylib/writers/templates",
+            template="efloras_html_writer.html",
             out_html=out_html,
         )
 

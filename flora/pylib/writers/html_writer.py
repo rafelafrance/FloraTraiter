@@ -19,7 +19,8 @@ SortableTrait = collections.namedtuple("SortableTrait", "label start trait title
 FormattedTrait = collections.namedtuple("FormattedTrait", "text traits raw")
 
 
-@dataclass(kw_only=True)
+# @dataclass(kw_only=True)
+@dataclass
 class HtmlWriterRow:
     formatted_text: str
     formatted_traits: list[TraitRow] = field(default_factory=list)
@@ -36,8 +37,9 @@ class CssClasses:
 
 
 class HtmlWriter:
-    def __init__(self, template_dir, out_html):
+    def __init__(self, template_dir, template, out_html):
         self.template_dir = template_dir
+        self.template = template
         self.out_html = out_html
         self.css_classes = CssClasses()
         self.formatted = []
@@ -117,7 +119,7 @@ class HtmlWriter:
             autoescape=True,
         )
 
-        template = env.get_template("html_writer.html").render(
+        template = env.get_template(self.template).render(
             now=datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M"),
             file_name=in_file_name,
             rows=self.formatted,

@@ -8,7 +8,7 @@ import ftfy
 import regex as re
 import rich
 from traiter.pylib import log
-from traiter.pylib.pipes import sentence
+from pylib import sentence_pipeline
 
 MOJIBAKE = {
     "{": "(",
@@ -71,7 +71,7 @@ def clean(args):
 
     # Break into sentences
     logging.info("Breaking text into sentences")
-    nlp = sentence.pipeline()
+    nlp = sentence_pipeline.pipeline()
     nlp.max_length = args.nlp_max_length
     doc = nlp(text)
 

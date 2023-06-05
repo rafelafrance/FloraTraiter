@@ -15,12 +15,9 @@ import pandas as pd
 import regex
 from bs4 import BeautifulSoup
 from lxml import html
-from pylib import const
 
-import efloras.pylib.readers.efloras_reader
-from efloras.pylib.readers.efloras_reader import get_taxon_id
-from efloras.pylib.readers.efloras_reader import treatment_dir
-from efloras.pylib.readers.efloras_reader import tree_dir
+from pylib import const
+from pylib.readers import efloras_reader as reader
 
 # Don't hit the site too hard
 SLEEP_MID = 15
@@ -60,10 +57,10 @@ def main(args, families, efloras_ids):
         family_name = FAMILIES[key]["family"]
         taxon_id = FAMILIES[key]["taxon_id"]
 
-        dir_ = tree_dir(args.flora_id, family_name)
+        dir_ = reader.tree_dir(args.flora_id, family_name)
         os.makedirs(dir_, exist_ok=True)
 
-        dir_ = treatment_dir(args.flora_id, family_name)
+        dir_ = reader.treatment_dir(args.flora_id, family_name)
         os.makedirs(dir_, exist_ok=True)
 
         download(family_name, args.flora_id, taxon_id)
@@ -91,8 +88,8 @@ def update_families():
             families.append(
                 {
                     "flora_id": flora_id,
-                    "taxon_id": get_taxon_id(href),
-                    "link": f"{const.SITE}/{href}",
+                    "taxon_id": reader.get_taxon_id(href),
+                    "link": f"{const.EFLORAS_SITE}/{href}",
                     "family": link.text,
                     "flora_name": floras[flora_id],
                 }
@@ -105,7 +102,7 @@ def update_families():
 
 def download_families(flora_id):
     """Get the families for the flora."""
-    base_url = f"{const.SITE}/browse.aspx?flora_id={flora_id}"
+    base_url = f"{const.EFLORAS_SITE}/browse.aspx?flora_id={flora_id}"
     path = FAMILY_DIR / f"flora_id={flora_id}_page=1.html"
     urllib.request.urlretrieve(base_url, path)
 
@@ -130,7 +127,7 @@ def download_families(flora_id):
 
 def download_floras():
     """Get the floras from the main page."""
-    url = const.SITE
+    url = const.EFLORAS_SITE
     path = FAMILY_DIR / "home_page.html"
     urllib.request.urlretrieve(url, path)
 
@@ -153,7 +150,7 @@ def download(family_name, flora_id, taxon_id):
     """Download the family tree and then treatments."""
     family_tree(family_name, flora_id, taxon_id, set())
 
-    tree_dir_ = tree_dir(flora_id, family_name)
+    tree_dir_ = reader.tree_dir(flora_id, family_name)
     for path in tree_dir_.glob("*.html"):
         with open(path) as in_file:
             page = html.fromstring(in_file.read())
@@ -178,7 +175,9 @@ def get_treatment(flora_id, family_name, taxon_id):
     """Get one treatment file in the tree."""
     path = treatment_file(flora_id, family_name, taxon_id)
     url = (
-        f"{const.SITE}/florataxon.aspx" f"?flora_id={flora_id}" f"&taxon_id={taxon_id}"
+        f"{const.EFLORAS_SITE}/florataxon.aspx"
+        f"?flora_id={flora_id}"
+        f"&taxon_id={taxon_id}"
     )
 
     print(f"Treatment: {url}")
@@ -222,7 +221,7 @@ def tree_page(family_name, flora_id, taxon_id, parents, page_no=1):
     path = tree_file(flora_id, family_name, taxon_id, page_no)
 
     url = (
-        f"{const.SITE}/browse.aspx"
+        f"{const.EFLORAS_SITE}/browse.aspx"
         f"?flora_id={flora_id}"
         f"&start_taxon_id={taxon_id}"
     )
@@ -314,13 +313,13 @@ def get_flora_id(href):
 
 def treatment_file(flora_id, family_name, taxon_id, page_no=1):
     """Build the treatment directory name."""
-    root = treatment_dir(flora_id, family_name)
+    root = reader.treatment_dir(flora_id, family_name)
     return root / taxon_file(taxon_id, page_no)
 
 
 def tree_file(flora_id, family_name, taxon_id, page_no=1):
     """Build the family tree directory name."""
-    root = tree_dir(flora_id, family_name)
+    root = reader.tree_dir(flora_id, family_name)
     return root / taxon_file(taxon_id, page_no)
 
 
@@ -387,7 +386,7 @@ def parse_args(flora_ids):
 
 
 if __name__ == "__main__":
-    FAMILIES = efloras.pylib.readers.efloras_reader.get_families()
-    FLORA_IDS = efloras.pylib.readers.efloras_reader.get_flora_ids()
+    FAMILIES = reader.get_families()
+    FLORA_IDS = reader.get_flora_ids()
     ARGS = parse_args(FLORA_IDS)
     main(ARGS, FAMILIES, FLORA_IDS)
