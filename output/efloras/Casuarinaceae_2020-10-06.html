@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8" />
+<title>Traiter</title>
+<style>
+body, table {
+  margin: 40px;
+}
+
+h1 > span {
+  font-size: 20px;
+  float: right;
+  margin-right: 12px;
+}
+
+h2 {
+  margin-left: 40px;
+}
+
+@keyframes fadein {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeout {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+button.toggle {
+  padding: 0 4px;
+}
+
+button.toggle:before {
+  content: '\2013';
+}
+
+button.toggle.closed:before {
+  content: '+';
+}
+
+tr {
+  animation: fadein 1s;
+}
+
+tr.closed {
+  animation: fadeout 1s;
+  display: none;
+}
+
+
+table {
+  border-collapse: collapse;
+  border: 1px solid black;
+}
+
+th {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: #f0f0f0;
+}
+
+td, th {
+  border: 1px solid #f0f0f0;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.sub-header {
+  background-color: #eeeeee;
+  font-weight: 500;
+}
+
+.bold { font-weight: bold; }
+.bold-italic { font-weight: bold; font-style: italic; }
+
+.cc0 { background: #a6cee388; }
+.cc1 { background: #1f78b488; }
+.cc2 { background: #b2df8a88; }
+.cc3 { background: #33a02c88; }
+.cc4 { background: #fb9a9988; }
+.cc5 { background: #e31a1c88; }
+.cc6 { background: #fdbf6f88; }
+.cc7 { background: #ff7f0088; }
+.cc8 { background: #cab2d688; }
+.cc9 { background: #6a3d9a88; }
+.cc10 { background: #ffff9988; }
+.cc11 { background: #b1592888; }
+.cc12 { background: #dddddd88; }
+.cc13 { background: #b3b3b388; }
+
+.bb0 { background: #a6cee388; }
+.bb1 { background: #1f78b488; }
+.bb2 { background: #b2df8a88; }
+.bb3 { background: #33a02c88; }
+.bb4 { background: #fb9a9988; }
+.bb5 { background: #e31a1c88; }
+.bb6 { background: #fdbf6f88; }
+.bb7 { background: #ff7f0088; }
+.bb8 { background: #cab2d688; }
+.bb9 { background: #6a3d9a88; }
+.bb10 { background: #ffff9988; }
+.bb11 { background: #b1592888; }
+.bb12 { background: #dddddd88; }
+.bb13 { background: #b3b3b388; }</style>
+</head>
+<body>
+<h1>Traiter <span>2020-10-06 16:04</span></h1>
+<div>
+  <h4>How to colorize the traits</h4>
+  <input type="radio" id="by-part" name="colorize" value="by-part" checked>
+  <label for="by-part">By plant part</label>
+  <input type="radio" id="by-trait" name="colorize" value="by-trait">
+  <label for="by-trait">By trait class</label>
+</div>
+<table>
+  <thead>
+    <tr>
+      <th>
+        <button class="toggle closed" title="Show or hide all extractions">
+        </button>
+      </th>
+      <th>Family</th>
+      <th>Taxon</th>
+      <th>Text</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <tr>
+      <td>
+        <button class="toggle closed" title="Show or hide the extractions"
+            data-taxon-id="105837">
+        </button>
+      </td>
+      <td>
+        Casuarinaceae<hr/>
+        <span class="smaller">(Flora of North America)</span>
+      </td>
+      <td>
+        <a href="http://www.efloras.org/florataxon.aspx?flora_id=1&amp;taxon_id=105837"
+            target="_blank" rel="noopener noreferrer">
+          Casuarina
+        </a>
+      </td>
+      <td class="text">Young <span class="c0 b0 cc0" title="plant duration: duration = persistent">persistent</span> <span class="bold" title="branch">branchlets</span> distinguished from <span class="c1 b0 cc1" title="branch duration: duration = deciduous">deciduous</span> <span class="bold" title="branch">branchlets</span> by shorter segments and differences in shape or size of leaves; furrows deep and closed, concealing stomates. <span class="bold" title="infructescences">Infructescences</span> pedunculate, pubescent at least when immature; <span class="bold" title="bract">bracts</span> thin in exposed portion, not vertically expanded; <span class="bold" title="bract">bracteoles</span> ± protruding from <span class="bold-italic" title="bract surface">surface</span> of infructescence, never greatly thickened, always lacking <span class="c2 b1 cc2" title="bract surface location: location = dorsal">dorsal</span> protuberance. Samaras pale <span class="c0 b2 cc0" title="plant color: color = yellow-brown">yellow-brown</span> or <span class="c0 b2 cc0" title="plant color: color = gray">grayish</span>, dull, glabrous. <span class="bold" title="x">x =</span> <span class="c3 b3 cc3" title="x count: low = 9">9</span>.</td>
+    <tr class="term closed" data-taxon-id="105837">
+      <td></td>
+      <td></td>
+      <td class="sub-header">Trait Label</td>
+      <td class="sub-header">Trait Data</td>
+    </tr>
+
+      <tr class="term closed" data-taxon-id="105837">
+        <td colspan="2"></td>
+        <td><span class="c2 b1 cc2">bract surface location</span></td>
+        <td><span title="dorsal">location:&nbsp;dorsal</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="105837">
+        <td colspan="2"></td>
+        <td><span class="c1 b0 cc1">branch duration</span></td>
+        <td><span title="deciduous">duration:&nbsp;deciduous</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="105837">
+        <td colspan="2"></td>
+        <td><span class="c0 b2 cc0">plant color</span></td>
+        <td><span title="yellow-brown">color:&nbsp;yellow-brown</span><br/><span title="grayish">color:&nbsp;gray</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="105837">
+        <td colspan="2"></td>
+        <td><span class="c0 b0 cc0">plant duration</span></td>
+        <td><span title="persistent">duration:&nbsp;persistent</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="105837">
+        <td colspan="2"></td>
+        <td><span class="c3 b3 cc3">x count</span></td>
+        <td><span title="9">low:&nbsp;9</span></td>
+      </tr>
+
+
+    <tr>
+      <td>
+        <button class="toggle closed" title="Show or hide the extractions"
+            data-taxon-id="200005532">
+        </button>
+      </td>
+      <td>
+        Casuarinaceae<hr/>
+        <span class="smaller">(Flora of North America)</span>
+      </td>
+      <td>
+        <a href="http://www.efloras.org/florataxon.aspx?flora_id=1&amp;taxon_id=200005532"
+            target="_blank" rel="noopener noreferrer">
+          Casuarina cunninghamiana
+        </a>
+      </td>
+      <td class="text"></td>
+    <tr class="term closed" data-taxon-id="200005532">
+      <td></td>
+      <td></td>
+      <td class="sub-header">Trait Label</td>
+      <td class="sub-header">Trait Data</td>
+    </tr>
+
+
+    <tr>
+      <td>
+        <button class="toggle closed" title="Show or hide the extractions"
+            data-taxon-id="233500328">
+        </button>
+      </td>
+      <td>
+        Casuarinaceae<hr/>
+        <span class="smaller">(Flora of North America)</span>
+      </td>
+      <td>
+        <a href="http://www.efloras.org/florataxon.aspx?flora_id=1&amp;taxon_id=233500328"
+            target="_blank" rel="noopener noreferrer">
+          Casuarina cunninghamiana subsp. cunninghamiana
+        </a>
+      </td>
+      <td class="text"><span class="c0 b4 cc0" title="plant habit: habit = tree">Trees</span> , <span class="c0 b5 cc0" title="plant size: length_low = 15, length_high = 35, length_units = m">15-35 m</span>, usually not suckering. <span class="bold" title="bark">Bark</span> <span class="c4 b2 cc4" title="bark color: color = gray-brown">gray-brown</span>, finely fissured and scaly. <span class="bold" title="branch">Branchlets</span> drooping in vigorous specimens, erect in depauperate specimens; segments <span class="c1 b5 cc1" title="branch size: length_low = 6, length_high = 9, width_low = 0.4, width_high = 0.6, width_units = mm">6-9 × 0.4-0.6 mm</span>, sparsely and minutely pubescent in furrows, not waxy, edges of furrows often marked (when dry) by slight ridge; longitudinal ridges <span class="c1 b6 cc1" title="branch shape: shape = angular">angular</span> with median rib; <span class="bold-italic" title="branch tooth">teeth</span> <span class="c1 b0 cc1" title="branch tooth duration: duration = marcescent">marcescent</span>, <span class="c1 b3 cc1" title="branch tooth count: min = 6, low = 8, high = 10">[6-]8-10</span>, erect, <span class="c1 b5 cc1" title="branch tooth size: length_low = 0.3, length_high = 0.5, length_units = mm">0.3-0.5 mm</span>. Young permanent shoots with erect to spreading teeth. <span class="bold" title="flower">Flowers</span> <span class="c0 b7 cc0" title="plant reproduction: reproduction = unisexual">unisexual</span>, staminate and pistillate on different <span class="bold" title="plant">plants</span>. <span class="bold" title="inflorescence: sex = male">Staminate spikes</span> <span class="c5 b5 cc5" title="inflorescence size: sex = male, length_low = 0.4, length_high = 4.0, length_units = cm">0.4-4 cm</span>, <span class="c5 b3 cc5" title="inflorescence count: sex = male, low = 11, high = 13">11-13</span> whorls per cm; <span class="bold" title="anther">anthers</span> <span class="c6 b5 cc6" title="anther size: length_low = 0.4, length_high = 0.7, length_units = mm">0.4-0.7 mm</span>. <span class="bold" title="infructescences">Infructescences</span> sparsely pubescent; <span class="bold" title="peduncle">peduncles</span> <span class="c7 b5 cc7" title="peduncle size: length_low = 2, length_high = 9, length_units = mm">2-9 mm</span>; <span class="bold" title="infructescence">infructescence</span> body <span class="c8 b5 cc8" title="infructescence size: length_low = 7, length_high = 14, width_low = 4, width_high = 6, width_units = mm">7-14 × 4-6 mm</span>; <span class="bold" title="bract">bracteoles</span> <span class="c2 b6 cc2" title="bract shape: shape = acute">broadly acute</span> [to <span class="c2 b6 cc2" title="bract shape: shape = acute">acute</span>]. Samaras <span class="c2 b5 cc2" title="bract size: length_low = 3, length_high = 4, length_units = mm">3-4 mm</span>.</td>
+    <tr class="term closed" data-taxon-id="233500328">
+      <td></td>
+      <td></td>
+      <td class="sub-header">Trait Label</td>
+      <td class="sub-header">Trait Data</td>
+    </tr>
+
+      <tr class="term closed" data-taxon-id="233500328">
+        <td colspan="2"></td>
+        <td><span class="c6 b5 cc6">anther size</span></td>
+        <td><span title="0.4-0.7 mm">length_low:&nbsp;0.4</span>, <span title="0.4-0.7 mm">length_high:&nbsp;0.7</span>, <span title="0.4-0.7 mm">length_units:&nbsp;mm</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="233500328">
+        <td colspan="2"></td>
+        <td><span class="c4 b2 cc4">bark color</span></td>
+        <td><span title="gray-brown">color:&nbsp;gray-brown</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="233500328">
+        <td colspan="2"></td>
+        <td><span class="c2 b6 cc2">bract shape</span></td>
+        <td><span title="broadly acute">shape:&nbsp;acute</span><br/><span title="acute">shape:&nbsp;acute</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="233500328">
+        <td colspan="2"></td>
+        <td><span class="c2 b5 cc2">bract size</span></td>
+        <td><span title="3-4 mm">length_low:&nbsp;3</span>, <span title="3-4 mm">length_high:&nbsp;4</span>, <span title="3-4 mm">length_units:&nbsp;mm</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="233500328">
+        <td colspan="2"></td>
+        <td><span class="c1 b6 cc1">branch shape</span></td>
+        <td><span title="angular">shape:&nbsp;angular</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="233500328">
+        <td colspan="2"></td>
+        <td><span class="c1 b5 cc1">branch size</span></td>
+        <td><span title="6-9 × 0.4-0.6 mm">length_low:&nbsp;6</span>, <span title="6-9 × 0.4-0.6 mm">length_high:&nbsp;9</span>, <span title="6-9 × 0.4-0.6 mm">width_low:&nbsp;0.4</span>, <span title="6-9 × 0.4-0.6 mm">width_high:&nbsp;0.6</span>, <span title="6-9 × 0.4-0.6 mm">width_units:&nbsp;mm</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="233500328">
+        <td colspan="2"></td>
+        <td><span class="c1 b3 cc1">branch tooth count</span></td>
+        <td><span title="[6-]8-10">min:&nbsp;6</span>, <span title="[6-]8-10">low:&nbsp;8</span>, <span title="[6-]8-10">high:&nbsp;10</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="233500328">
+        <td colspan="2"></td>
+        <td><span class="c1 b0 cc1">branch tooth duration</span></td>
+        <td><span title="marcescent">duration:&nbsp;marcescent</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="233500328">
+        <td colspan="2"></td>
+        <td><span class="c1 b5 cc1">branch tooth size</span></td>
+        <td><span title="0.3-0.5 mm">length_low:&nbsp;0.3</span>, <span title="0.3-0.5 mm">length_high:&nbsp;0.5</span>, <span title="0.3-0.5 mm">length_units:&nbsp;mm</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="233500328">
+        <td colspan="2"></td>
+        <td><span class="c5 b3 cc5">inflorescence count</span></td>
+        <td><span title="11-13">sex:&nbsp;male</span>, <span title="11-13">low:&nbsp;11</span>, <span title="11-13">high:&nbsp;13</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="233500328">
+        <td colspan="2"></td>
+        <td><span class="c5 b5 cc5">inflorescence size</span></td>
+        <td><span title="0.4-4 cm">sex:&nbsp;male</span>, <span title="0.4-4 cm">length_low:&nbsp;0.4</span>, <span title="0.4-4 cm">length_high:&nbsp;4.0</span>, <span title="0.4-4 cm">length_units:&nbsp;cm</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="233500328">
+        <td colspan="2"></td>
+        <td><span class="c8 b5 cc8">infructescence size</span></td>
+        <td><span title="7-14 × 4-6 mm">length_low:&nbsp;7</span>, <span title="7-14 × 4-6 mm">length_high:&nbsp;14</span>, <span title="7-14 × 4-6 mm">width_low:&nbsp;4</span>, <span title="7-14 × 4-6 mm">width_high:&nbsp;6</span>, <span title="7-14 × 4-6 mm">width_units:&nbsp;mm</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="233500328">
+        <td colspan="2"></td>
+        <td><span class="c7 b5 cc7">peduncle size</span></td>
+        <td><span title="2-9 mm">length_low:&nbsp;2</span>, <span title="2-9 mm">length_high:&nbsp;9</span>, <span title="2-9 mm">length_units:&nbsp;mm</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="233500328">
+        <td colspan="2"></td>
+        <td><span class="c0 b4 cc0">plant habit</span></td>
+        <td><span title="Trees">habit:&nbsp;tree</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="233500328">
+        <td colspan="2"></td>
+        <td><span class="c0 b7 cc0">plant reproduction</span></td>
+        <td><span title="unisexual">reproduction:&nbsp;unisexual</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="233500328">
+        <td colspan="2"></td>
+        <td><span class="c0 b5 cc0">plant size</span></td>
+        <td><span title="15-35 m">length_low:&nbsp;15</span>, <span title="15-35 m">length_high:&nbsp;35</span>, <span title="15-35 m">length_units:&nbsp;m</span></td>
+      </tr>
+
+
+    <tr>
+      <td>
+        <button class="toggle closed" title="Show or hide the extractions"
+            data-taxon-id="200005533">
+        </button>
+      </td>
+      <td>
+        Casuarinaceae<hr/>
+        <span class="smaller">(Flora of North America)</span>
+      </td>
+      <td>
+        <a href="http://www.efloras.org/florataxon.aspx?flora_id=1&amp;taxon_id=200005533"
+            target="_blank" rel="noopener noreferrer">
+          Casuarina equisetifolia
+        </a>
+      </td>
+      <td class="text"></td>
+    <tr class="term closed" data-taxon-id="200005533">
+      <td></td>
+      <td></td>
+      <td class="sub-header">Trait Label</td>
+      <td class="sub-header">Trait Data</td>
+    </tr>
+
+
+    <tr>
+      <td>
+        <button class="toggle closed" title="Show or hide the extractions"
+            data-taxon-id="233500329">
+        </button>
+      </td>
+      <td>
+        Casuarinaceae<hr/>
+        <span class="smaller">(Flora of North America)</span>
+      </td>
+      <td>
+        <a href="http://www.efloras.org/florataxon.aspx?flora_id=1&amp;taxon_id=233500329"
+            target="_blank" rel="noopener noreferrer">
+          Casuarina equisetifolia subsp. equisetifolia
+        </a>
+      </td>
+      <td class="text"><span class="c0 b4 cc0" title="plant habit: habit = tree">Trees</span> , <span class="c0 b5 cc0" title="plant size: length_low = 7, length_high = 35, length_units = m">7-35 m</span>, not suckering. <span class="bold" title="bark">Bark</span> <span class="c4 b2 cc4" title="bark color: color = gray-brown">gray-brown</span> to <span class="c4 b2 cc4" title="bark color: color = black">black</span>, scaly. <span class="bold" title="branch">Branchlets</span> drooping; segments <span class="c1 b5 cc1" title="branch size: length_low = 5, length_high = 8, length_max = 13, width_low = 0.5, width_high = 0.7, width_max = 1.0, width_units = mm">5-8[-13] × 0.5-0.7[-1] mm</span>, usually densely pubescent at least in furrows, not waxy; longitudinal ridges <span class="c1 b6 cc1" title="branch shape: shape = angular">angular</span> with median rib; <span class="bold-italic" title="branch tooth">teeth</span> not <span class="c1 b0 cc1" title="branch tooth duration: duration = marcescent">marcescent</span>, <span class="c1 b3 cc1" title="branch tooth count: min = 6, low = 7, high = 8">(6-)7-8</span>, erect, <span class="c1 b5 cc1" title="branch tooth size: length_low = 0.3, length_high = 0.8, length_units = mm">0.3-0.8 mm</span>. Young permanent shoots with erect to spreading teeth. <span class="bold" title="flower">Flowers</span> <span class="c0 b7 cc0" title="plant reproduction: reproduction = unisexual">unisexual</span>, staminate and pistillate on same <span class="bold" title="plant">plant</span>. <span class="bold" title="inflorescence: sex = male">Staminate spikes</span> <span class="c5 b5 cc5" title="inflorescence size: sex = male, length_low = 0.7, length_high = 4.0, length_units = cm">0.7-4 cm</span>, 7-11.5 whorls per cm; <span class="bold" title="anther">anthers</span> <span class="c6 b5 cc6" title="anther size: length_low = 0.6, length_high = 0.8, length_units = mm">0.6-0.8 mm</span>. <span class="bold" title="infructescences">Infructescences</span> sparsely pubescent [tomentose]; <span class="bold" title="peduncle">peduncles</span> <span class="c7 b5 cc7" title="peduncle size: length_low = 3, length_high = 10, length_units = mm">3-10 mm</span>; <span class="bold" title="infructescence">infructescence</span> body <span class="c8 b5 cc8" title="infructescence size: length_low = 12, length_high = 24, width_low = 9, width_high = 11, width_units = mm">12-24 × 9-11 mm</span>; <span class="bold" title="bract">bracteoles</span> <span class="c2 b6 cc2" title="bract shape: shape = acute">acute</span>. Samaras <span class="c0 b5 cc0" title="plant size: length_low = 6, length_high = 8, length_units = mm">6-8 mm</span>.</td>
+    <tr class="term closed" data-taxon-id="233500329">
+      <td></td>
+      <td></td>
+      <td class="sub-header">Trait Label</td>
+      <td class="sub-header">Trait Data</td>
+    </tr>
+
+      <tr class="term closed" data-taxon-id="233500329">
+        <td colspan="2"></td>
+        <td><span class="c6 b5 cc6">anther size</span></td>
+        <td><span title="0.6-0.8 mm">length_low:&nbsp;0.6</span>, <span title="0.6-0.8 mm">length_high:&nbsp;0.8</span>, <span title="0.6-0.8 mm">length_units:&nbsp;mm</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="233500329">
+        <td colspan="2"></td>
+        <td><span class="c4 b2 cc4">bark color</span></td>
+        <td><span title="gray-brown">color:&nbsp;gray-brown</span><br/><span title="black">color:&nbsp;black</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="233500329">
+        <td colspan="2"></td>
+        <td><span class="c2 b6 cc2">bract shape</span></td>
+        <td><span title="acute">shape:&nbsp;acute</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="233500329">
+        <td colspan="2"></td>
+        <td><span class="c1 b6 cc1">branch shape</span></td>
+        <td><span title="angular">shape:&nbsp;angular</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="233500329">
+        <td colspan="2"></td>
+        <td><span class="c1 b5 cc1">branch size</span></td>
+        <td><span title="5-8[-13] × 0.5-0.7[-1] mm">length_low:&nbsp;5</span>, <span title="5-8[-13] × 0.5-0.7[-1] mm">length_high:&nbsp;8</span>, <span title="5-8[-13] × 0.5-0.7[-1] mm">length_max:&nbsp;13</span>, <span title="5-8[-13] × 0.5-0.7[-1] mm">width_low:&nbsp;0.5</span>, <span title="5-8[-13] × 0.5-0.7[-1] mm">width_high:&nbsp;0.7</span>, <span title="5-8[-13] × 0.5-0.7[-1] mm">width_max:&nbsp;1.0</span>, <span title="5-8[-13] × 0.5-0.7[-1] mm">width_units:&nbsp;mm</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="233500329">
+        <td colspan="2"></td>
+        <td><span class="c1 b3 cc1">branch tooth count</span></td>
+        <td><span title="(6-)7-8">min:&nbsp;6</span>, <span title="(6-)7-8">low:&nbsp;7</span>, <span title="(6-)7-8">high:&nbsp;8</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="233500329">
+        <td colspan="2"></td>
+        <td><span class="c1 b0 cc1">branch tooth duration</span></td>
+        <td><span title="marcescent">duration:&nbsp;marcescent</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="233500329">
+        <td colspan="2"></td>
+        <td><span class="c1 b5 cc1">branch tooth size</span></td>
+        <td><span title="0.3-0.8 mm">length_low:&nbsp;0.3</span>, <span title="0.3-0.8 mm">length_high:&nbsp;0.8</span>, <span title="0.3-0.8 mm">length_units:&nbsp;mm</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="233500329">
+        <td colspan="2"></td>
+        <td><span class="c5 b5 cc5">inflorescence size</span></td>
+        <td><span title="0.7-4 cm">sex:&nbsp;male</span>, <span title="0.7-4 cm">length_low:&nbsp;0.7</span>, <span title="0.7-4 cm">length_high:&nbsp;4.0</span>, <span title="0.7-4 cm">length_units:&nbsp;cm</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="233500329">
+        <td colspan="2"></td>
+        <td><span class="c8 b5 cc8">infructescence size</span></td>
+        <td><span title="12-24 × 9-11 mm">length_low:&nbsp;12</span>, <span title="12-24 × 9-11 mm">length_high:&nbsp;24</span>, <span title="12-24 × 9-11 mm">width_low:&nbsp;9</span>, <span title="12-24 × 9-11 mm">width_high:&nbsp;11</span>, <span title="12-24 × 9-11 mm">width_units:&nbsp;mm</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="233500329">
+        <td colspan="2"></td>
+        <td><span class="c7 b5 cc7">peduncle size</span></td>
+        <td><span title="3-10 mm">length_low:&nbsp;3</span>, <span title="3-10 mm">length_high:&nbsp;10</span>, <span title="3-10 mm">length_units:&nbsp;mm</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="233500329">
+        <td colspan="2"></td>
+        <td><span class="c0 b4 cc0">plant habit</span></td>
+        <td><span title="Trees">habit:&nbsp;tree</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="233500329">
+        <td colspan="2"></td>
+        <td><span class="c0 b7 cc0">plant reproduction</span></td>
+        <td><span title="unisexual">reproduction:&nbsp;unisexual</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="233500329">
+        <td colspan="2"></td>
+        <td><span class="c0 b5 cc0">plant size</span></td>
+        <td><span title="7-35 m">length_low:&nbsp;7</span>, <span title="7-35 m">length_high:&nbsp;35</span>, <span title="7-35 m">length_units:&nbsp;m</span><br/><span title="6-8 mm">length_low:&nbsp;6</span>, <span title="6-8 mm">length_high:&nbsp;8</span>, <span title="6-8 mm">length_units:&nbsp;mm</span></td>
+      </tr>
+
+
+    <tr>
+      <td>
+        <button class="toggle closed" title="Show or hide the extractions"
+            data-taxon-id="200005534">
+        </button>
+      </td>
+      <td>
+        Casuarinaceae<hr/>
+        <span class="smaller">(Flora of North America)</span>
+      </td>
+      <td>
+        <a href="http://www.efloras.org/florataxon.aspx?flora_id=1&amp;taxon_id=200005534"
+            target="_blank" rel="noopener noreferrer">
+          Casuarina glauca
+        </a>
+      </td>
+      <td class="text"><span class="c0 b4 cc0" title="plant habit: habit = tree">Trees</span> , <span class="c0 b5 cc0" title="plant size: length_low = 8, length_high = 20, length_units = m">8-20 m</span>, frequently producing root suckers. <span class="bold" title="bark">Bark</span> <span class="c4 b2 cc4" title="bark color: color = gray-brown">gray-brown</span>, finely fissured and scaly. <span class="bold" title="branch">Branchlets</span> drooping; segments <span class="c1 b5 cc1" title="branch size: length_low = 8, length_high = 20, width_low = 0.9, width_high = 1.2, width_units = mm">8-20 × 0.9-1.2 mm</span>, glabrous, occasionally waxy; longitudinal ridges flat to slightly <span class="c1 b6 cc1" title="branch shape: shape = orbicular-convex">rounded-convex</span>; <span class="bold-italic" title="branch tooth">teeth</span> usually <span class="c1 b0 cc1" title="branch tooth duration: duration = marcescent">marcescent</span>, <span class="c1 b3 cc1" title="branch tooth count: low = 12, high = 17">12-17</span>, erect, <span class="c1 b5 cc1" title="branch tooth size: length_low = 0.6, length_high = 0.9, length_units = mm">0.6-0.9 mm</span>. Young permanent shoots with long-recurved <span class="bold-italic" title="plant tooth">teeth</span>. <span class="bold" title="flower">Flowers</span> <span class="c0 b7 cc0" title="plant reproduction: reproduction = unisexual">unisexual</span>, staminate and pistillate on different <span class="bold" title="plant">plants</span>. <span class="bold" title="inflorescence: sex = male">Staminate spikes</span> <span class="c5 b5 cc5" title="inflorescence size: sex = male, length_low = 1.2, length_high = 4.0, length_units = cm">1.2-4 cm</span>, <span class="c5 b3 cc5" title="inflorescence count: sex = male, low = 7, high = 10">7-10</span> whorls per cm; <span class="bold" title="anther">anthers</span> <span class="c6 b5 cc6" title="anther size: length_low = 0.8, length_units = mm">ca. 0.8 mm</span>. <span class="bold" title="infructescences">Infructescences</span> rust-colored to <span class="c9 b2 cc9" title="infructescences color: color = white">white-</span>pubescent, becoming glabrous; <span class="bold" title="peduncle">peduncles</span> <span class="c7 b5 cc7" title="peduncle size: length_low = 3, length_high = 12, length_units = mm">3-12 mm</span>; <span class="bold" title="infructescence">infructescence</span> body <span class="c8 b5 cc8" title="infructescence size: length_low = 9, length_high = 18, width_low = 7, width_high = 9, width_units = mm">9-18 × 7-9 mm</span>; <span class="bold" title="bract">bracteoles</span> <span class="c2 b6 cc2" title="bract shape: shape = acute">broadly acute</span>. Samaras <span class="c0 b5 cc0" title="plant size: length_low = 3.5, length_high = 5.0, length_units = mm">3.5-5 mm</span>.</td>
+    <tr class="term closed" data-taxon-id="200005534">
+      <td></td>
+      <td></td>
+      <td class="sub-header">Trait Label</td>
+      <td class="sub-header">Trait Data</td>
+    </tr>
+
+      <tr class="term closed" data-taxon-id="200005534">
+        <td colspan="2"></td>
+        <td><span class="c6 b5 cc6">anther size</span></td>
+        <td><span title="ca. 0.8 mm">length_low:&nbsp;0.8</span>, <span title="ca. 0.8 mm">length_units:&nbsp;mm</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005534">
+        <td colspan="2"></td>
+        <td><span class="c4 b2 cc4">bark color</span></td>
+        <td><span title="gray-brown">color:&nbsp;gray-brown</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005534">
+        <td colspan="2"></td>
+        <td><span class="c2 b6 cc2">bract shape</span></td>
+        <td><span title="broadly acute">shape:&nbsp;acute</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005534">
+        <td colspan="2"></td>
+        <td><span class="c1 b6 cc1">branch shape</span></td>
+        <td><span title="rounded-convex">shape:&nbsp;orbicular-convex</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005534">
+        <td colspan="2"></td>
+        <td><span class="c1 b5 cc1">branch size</span></td>
+        <td><span title="8-20 × 0.9-1.2 mm">length_low:&nbsp;8</span>, <span title="8-20 × 0.9-1.2 mm">length_high:&nbsp;20</span>, <span title="8-20 × 0.9-1.2 mm">width_low:&nbsp;0.9</span>, <span title="8-20 × 0.9-1.2 mm">width_high:&nbsp;1.2</span>, <span title="8-20 × 0.9-1.2 mm">width_units:&nbsp;mm</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005534">
+        <td colspan="2"></td>
+        <td><span class="c1 b3 cc1">branch tooth count</span></td>
+        <td><span title="12-17">low:&nbsp;12</span>, <span title="12-17">high:&nbsp;17</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005534">
+        <td colspan="2"></td>
+        <td><span class="c1 b0 cc1">branch tooth duration</span></td>
+        <td><span title="marcescent">duration:&nbsp;marcescent</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005534">
+        <td colspan="2"></td>
+        <td><span class="c1 b5 cc1">branch tooth size</span></td>
+        <td><span title="0.6-0.9 mm">length_low:&nbsp;0.6</span>, <span title="0.6-0.9 mm">length_high:&nbsp;0.9</span>, <span title="0.6-0.9 mm">length_units:&nbsp;mm</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005534">
+        <td colspan="2"></td>
+        <td><span class="c5 b3 cc5">inflorescence count</span></td>
+        <td><span title="7-10">sex:&nbsp;male</span>, <span title="7-10">low:&nbsp;7</span>, <span title="7-10">high:&nbsp;10</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005534">
+        <td colspan="2"></td>
+        <td><span class="c5 b5 cc5">inflorescence size</span></td>
+        <td><span title="1.2-4 cm">sex:&nbsp;male</span>, <span title="1.2-4 cm">length_low:&nbsp;1.2</span>, <span title="1.2-4 cm">length_high:&nbsp;4.0</span>, <span title="1.2-4 cm">length_units:&nbsp;cm</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005534">
+        <td colspan="2"></td>
+        <td><span class="c8 b5 cc8">infructescence size</span></td>
+        <td><span title="9-18 × 7-9 mm">length_low:&nbsp;9</span>, <span title="9-18 × 7-9 mm">length_high:&nbsp;18</span>, <span title="9-18 × 7-9 mm">width_low:&nbsp;7</span>, <span title="9-18 × 7-9 mm">width_high:&nbsp;9</span>, <span title="9-18 × 7-9 mm">width_units:&nbsp;mm</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005534">
+        <td colspan="2"></td>
+        <td><span class="c9 b2 cc9">infructescences color</span></td>
+        <td><span title="white-">color:&nbsp;white</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005534">
+        <td colspan="2"></td>
+        <td><span class="c7 b5 cc7">peduncle size</span></td>
+        <td><span title="3-12 mm">length_low:&nbsp;3</span>, <span title="3-12 mm">length_high:&nbsp;12</span>, <span title="3-12 mm">length_units:&nbsp;mm</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005534">
+        <td colspan="2"></td>
+        <td><span class="c0 b4 cc0">plant habit</span></td>
+        <td><span title="Trees">habit:&nbsp;tree</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005534">
+        <td colspan="2"></td>
+        <td><span class="c0 b7 cc0">plant reproduction</span></td>
+        <td><span title="unisexual">reproduction:&nbsp;unisexual</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005534">
+        <td colspan="2"></td>
+        <td><span class="c0 b5 cc0">plant size</span></td>
+        <td><span title="8-20 m">length_low:&nbsp;8</span>, <span title="8-20 m">length_high:&nbsp;20</span>, <span title="8-20 m">length_units:&nbsp;m</span><br/><span title="3.5-5 mm">length_low:&nbsp;3.5</span>, <span title="3.5-5 mm">length_high:&nbsp;5.0</span>, <span title="3.5-5 mm">length_units:&nbsp;mm</span></td>
+      </tr>
+
+
+    <tr>
+      <td>
+        <button class="toggle closed" title="Show or hide the extractions"
+            data-taxon-id="10167">
+        </button>
+      </td>
+      <td>
+        Casuarinaceae<hr/>
+        <span class="smaller">(Flora of North America)</span>
+      </td>
+      <td>
+        <a href="http://www.efloras.org/florataxon.aspx?flora_id=1&amp;taxon_id=10167"
+            target="_blank" rel="noopener noreferrer">
+          Casuarinaceae
+        </a>
+      </td>
+      <td class="text"><span class="c0 b4 cc0" title="plant habit: habit = tree">Trees</span> [or <span class="c0 b4 cc0" title="plant habit: habit = shrub">shrubs</span>], <span class="c0 b0 cc0" title="plant duration: duration = evergreen">evergreen</span>. Photosynthetic <span class="bold" title="branch">branchlets</span> slender, wiry, with several very short, <span class="c1 b1 cc1" title="branch location: location = basal">basal</span> segments and <span class="c1 b3 cc1" title="branch count: low = 1">1</span>-numerous <span class="c1 b6 cc1" title="branch shape: shape = elongate">elongate</span> segments; segments <span class="c1 b6 cc1" title="branch shape: shape = terete">terete</span> [quadrangular], with as many longitudinal ridges as leaves; ridges separated by furrows containing stomates. <span class="bold" title="leaf">Leaves</span> reduced to small <span class="bold-italic" title="leaf tooth">teeth</span> in whorls of <span class="c10 b3 cc10" title="leaf tooth count: min = 4, low = 6, high = 17">[4-]6-17</span> at <span class="bold-italic" title="leaf apex">apex</span> of each segment of photosynthetic <span class="bold" title="branch">branchlets</span>. <span class="bold" title="inflorescence">Inflorescences</span> of alternating whorls of flowers, each <span class="bold" title="flower">flower</span> subtended by toothlike <span class="bold" title="bract">bract</span> and <span class="c2 b3 cc2" title="bract count: low = 2">2</span> <span class="bold" title="bract">bracteoles</span>, <span class="bold" title="bract">bracteoles</span> usually <span class="c2 b0 cc2" title="bract duration: duration = persistent">persistent</span>, <span class="c2 b1 cc2" title="bract location: location = lateral">lateral</span>, scalelike; <span class="bold" title="inflorescence: sex = male">staminate inflorescences</span> catkinlike spikes, short to <span class="c5 b6 cc5" title="inflorescence shape: sex = male, shape = elongate">elongate</span>; <span class="bold" title="inflorescence: sex = female">pistillate inflorescences</span> heads, globular to <span class="c5 b6 cc5" title="inflorescence shape: sex = female, shape = ovoid">ovoid</span>. <span class="bold" title="flower">Flowers</span> <span class="c0 b7 cc0" title="plant reproduction: reproduction = unisexual">unisexual</span>, staminate and pistillate on same or different <span class="bold" title="plant">plants</span>. <span class="bold" title="flower: sex = male">Staminate flowers</span> : <span class="bold" title="sepal">sepals</span> <span class="c11 b0 cc11" title="sepal duration: duration = deciduous">deciduous</span> at anthesis, <span class="c11 b3 cc11" title="sepal count: low = 1, high = 2">1-2</span>, hooded, scalelike; <span class="bold" title="stamen">stamen</span> <span class="c12 b3 cc12" title="stamen count: low = 1">1</span>; <span class="bold" title="anther">anthers</span> basifixed, <span class="c6 b3 cc6" title="anther locular count: low = 2">2-locular</span>. <span class="bold" title="flower: sex = female">Pistillate flowers</span> : <span class="bold" title="perianth">perianth</span> <span class="c13 b3 cc13" title="perianth count: min = 0">absent</span>; <span class="bold" title="pistil">pistil</span> <span class="c0 b3 cc0" title="pistil count: low = 1">1</span>, compound, <span class="c0 b3 cc0" title="pistil carpellate count: low = 2">2-carpellate</span>, <span class="c0 b3 cc0" title="pistil count: low = 1">1</span> fertile, the other usually reduced or <span class="c0 b3 cc0" title="pistil count: min = 0">absent</span>; <span class="bold" title="ovary">ovules</span> <span class="c1 b3 cc1" title="ovary count: low = 2">2</span>, an additional <span class="c1 b3 cc1" title="ovary count: low = 2">2</span> abortive <span class="bold" title="ovary">ovules</span> in reduced carpel; <span class="bold" title="style">styles</span> <span class="c2 b3 cc2" title="style count: low = 2">2</span>-branched, <span class="c2 b2 cc2" title="style color: color = red">reddish</span>. <span class="bold" title="infructescences">Infructescences</span> ± <span class="c9 b8 cc9" title="infructescences woodiness: woodiness = woody">woody</span>, <span class="c9 b6 cc9" title="infructescences shape: shape = cylindric">cylindric</span>, conelike; floral <span class="bold" title="bract">bracteoles</span> <span class="c2 b3 cc2" title="bract count: low = 2">2</span>, enlarged as <span class="c2 b1 cc2" title="bract location: location = lateral">lateral</span> valves. <span class="bold" title="fruit">Fruits</span> compressed, winged nuts (samaras). <span class="bold" title="seed">Seeds</span> <span class="c3 b3 cc3" title="seed count: low = 1">1</span> in each samara.</td>
+    <tr class="term closed" data-taxon-id="10167">
+      <td></td>
+      <td></td>
+      <td class="sub-header">Trait Label</td>
+      <td class="sub-header">Trait Data</td>
+    </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c6 b3 cc6">anther locular count</span></td>
+        <td><span title="2-locular">low:&nbsp;2</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c2 b3 cc2">bract count</span></td>
+        <td><span title="2">low:&nbsp;2</span><br/><span title="2">low:&nbsp;2</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c2 b0 cc2">bract duration</span></td>
+        <td><span title="persistent">duration:&nbsp;persistent</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c2 b1 cc2">bract location</span></td>
+        <td><span title="lateral">location:&nbsp;lateral</span><br/><span title="lateral">location:&nbsp;lateral</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c1 b3 cc1">branch count</span></td>
+        <td><span title="1">low:&nbsp;1</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c1 b1 cc1">branch location</span></td>
+        <td><span title="basal">location:&nbsp;basal</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c1 b6 cc1">branch shape</span></td>
+        <td><span title="elongate">shape:&nbsp;elongate</span><br/><span title="terete">shape:&nbsp;terete</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c5 b6 cc5">inflorescence shape</span></td>
+        <td><span title="elongate">sex:&nbsp;male</span>, <span title="elongate">shape:&nbsp;elongate</span><br/><span title="ovoid">sex:&nbsp;female</span>, <span title="ovoid">shape:&nbsp;ovoid</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c9 b6 cc9">infructescences shape</span></td>
+        <td><span title="cylindric">shape:&nbsp;cylindric</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c9 b8 cc9">infructescences woodiness</span></td>
+        <td><span title="woody">woodiness:&nbsp;woody</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c10 b3 cc10">leaf tooth count</span></td>
+        <td><span title="[4-]6-17">min:&nbsp;4</span>, <span title="[4-]6-17">low:&nbsp;6</span>, <span title="[4-]6-17">high:&nbsp;17</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c1 b3 cc1">ovary count</span></td>
+        <td><span title="2">low:&nbsp;2</span><br/><span title="2">low:&nbsp;2</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c13 b3 cc13">perianth count</span></td>
+        <td><span title="absent">min:&nbsp;0</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c0 b3 cc0">pistil carpellate count</span></td>
+        <td><span title="2-carpellate">low:&nbsp;2</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c0 b3 cc0">pistil count</span></td>
+        <td><span title="1">low:&nbsp;1</span><br/><span title="1">low:&nbsp;1</span><br/><span title="absent">min:&nbsp;0</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c0 b0 cc0">plant duration</span></td>
+        <td><span title="evergreen">duration:&nbsp;evergreen</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c0 b4 cc0">plant habit</span></td>
+        <td><span title="Trees">habit:&nbsp;tree</span><br/><span title="shrubs">habit:&nbsp;shrub</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c0 b7 cc0">plant reproduction</span></td>
+        <td><span title="unisexual">reproduction:&nbsp;unisexual</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c3 b3 cc3">seed count</span></td>
+        <td><span title="1">low:&nbsp;1</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c11 b3 cc11">sepal count</span></td>
+        <td><span title="1-2">low:&nbsp;1</span>, <span title="1-2">high:&nbsp;2</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c11 b0 cc11">sepal duration</span></td>
+        <td><span title="deciduous">duration:&nbsp;deciduous</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c12 b3 cc12">stamen count</span></td>
+        <td><span title="1">low:&nbsp;1</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c2 b2 cc2">style color</span></td>
+        <td><span title="reddish">color:&nbsp;red</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c2 b3 cc2">style count</span></td>
+        <td><span title="2">low:&nbsp;2</span></td>
+      </tr>
+
+
+    <tr>
+      <td>
+        <button class="toggle closed" title="Show or hide the extractions"
+            data-taxon-id="105837">
+        </button>
+      </td>
+      <td>
+        Casuarinaceae<hr/>
+        <span class="smaller">(Flora of China)</span>
+      </td>
+      <td>
+        <a href="http://www.efloras.org/florataxon.aspx?flora_id=2&amp;taxon_id=105837"
+            target="_blank" rel="noopener noreferrer">
+          Casuarina
+        </a>
+      </td>
+      <td class="text"></td>
+    <tr class="term closed" data-taxon-id="105837">
+      <td></td>
+      <td></td>
+      <td class="sub-header">Trait Label</td>
+      <td class="sub-header">Trait Data</td>
+    </tr>
+
+
+    <tr>
+      <td>
+        <button class="toggle closed" title="Show or hide the extractions"
+            data-taxon-id="200005532">
+        </button>
+      </td>
+      <td>
+        Casuarinaceae<hr/>
+        <span class="smaller">(Flora of China)</span>
+      </td>
+      <td>
+        <a href="http://www.efloras.org/florataxon.aspx?flora_id=2&amp;taxon_id=200005532"
+            target="_blank" rel="noopener noreferrer">
+          Casuarina cunninghamiana
+        </a>
+      </td>
+      <td class="text"><span class="c0 b4 cc0" title="plant habit: habit = tree">Trees</span> <span class="c0 b7 cc0" title="plant reproduction: reproduction = dioecious">dioecious</span>, to <span class="c0 b5 cc0" title="plant size: height_low = 25, height_max = 35, height_units = m">25(-35) m tall</span>, often with suckers from roots. <span class="bold" title="trunk">Trunk</span> straight, <span class="c4 b5 cc4" title="trunk size: dbh_high = 40, dbh_units = cm">to ca. 40 cm d.b.h.</span>; <span class="bold-italic" title="trunk crown">crown</span> pyramidal; <span class="bold" title="bark">bark</span> finely fissured and scaly, <span class="c4 b2 cc4" title="bark color: color = gray">gray</span>, adaxially pale <span class="c4 b2 cc4" title="bark color: color = red">red</span>. Ultimate <span class="bold" title="branch">branchlets</span> spreading to slightly pendulous, dark <span class="c1 b2 cc1" title="branch color: color = green">green</span>, <span class="c1 b2 cc1" title="branch color: color = gray-green">grayish green</span>, or <span class="c1 b2 cc1" title="branch color: color = glaucous-green">glaucous-green</span> when dry, <span class="c1 b5 cc1" title="branch size: length_low = 15, length_high = 38, length_units = cm, width_low = 0.5, width_high = 0.7, width_units = mm">15-38 cm × 0.5-0.7 mm</span>; <span class="bold-italic" title="branch article">articles</span> <span class="c1 b5 cc1" title="branch article size: length_low = 4, length_high = 5, length_units = mm">4-5 mm</span>. <span class="bold" title="leaf">Leaves</span> erect, <span class="c10 b3 cc10" title="leaf count: low = 8, max = 10">8(-10)</span> per whorl, <span class="c10 b6 cc10" title="leaf shape: shape = lanceolate">narrowly lanceolate</span>. <span class="bold" title="inflorescence: sex = male">Male spikes</span> <span class="c5 b5 cc5" title="inflorescence size: sex = male, length_low = 1.2, length_high = 2.0, length_max = 4.0, length_units = cm">1.2-2(-4) cm</span>. Cones <span class="c0 b6 cc0" title="plant shape: shape = ellipsoid">ellipsoid</span> or <span class="c0 b6 cc0" title="plant shape: shape = subglobose">subglobose</span>, <span class="c0 b5 cc0" title="plant size: length_low = 7, length_high = 12, length_units = mm">7-12 mm</span>, <span class="c0 b6 cc0" title="plant shape: shape = truncate">truncate</span> at both ends; <span class="bold-italic" title="plant apex">apex</span> of bracteoles <span class="c0 b6 cc0" title="plant apex shape: shape = acute">acute</span>. Samaras <span class="c0 b5 cc0" title="plant size: length_low = 3, length_high = 5, length_units = mm">3-5 mm</span> including <span class="bold-italic" title="plant wing">wing</span>. Fl. Apr, fr. Jun-Sep. <span class="bold" title="2n">2n</span> = 18*.</td>
+    <tr class="term closed" data-taxon-id="200005532">
+      <td></td>
+      <td></td>
+      <td class="sub-header">Trait Label</td>
+      <td class="sub-header">Trait Data</td>
+    </tr>
+
+      <tr class="term closed" data-taxon-id="200005532">
+        <td colspan="2"></td>
+        <td><span class="c4 b2 cc4">bark color</span></td>
+        <td><span title="gray">color:&nbsp;gray</span><br/><span title="red">color:&nbsp;red</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005532">
+        <td colspan="2"></td>
+        <td><span class="c1 b5 cc1">branch article size</span></td>
+        <td><span title="4-5 mm">length_low:&nbsp;4</span>, <span title="4-5 mm">length_high:&nbsp;5</span>, <span title="4-5 mm">length_units:&nbsp;mm</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005532">
+        <td colspan="2"></td>
+        <td><span class="c1 b2 cc1">branch color</span></td>
+        <td><span title="green">color:&nbsp;green</span><br/><span title="grayish green">color:&nbsp;gray-green</span><br/><span title="glaucous-green">color:&nbsp;glaucous-green</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005532">
+        <td colspan="2"></td>
+        <td><span class="c1 b5 cc1">branch size</span></td>
+        <td><span title="15-38 cm × 0.5-0.7 mm">length_low:&nbsp;15</span>, <span title="15-38 cm × 0.5-0.7 mm">length_high:&nbsp;38</span>, <span title="15-38 cm × 0.5-0.7 mm">length_units:&nbsp;cm</span>, <span title="15-38 cm × 0.5-0.7 mm">width_low:&nbsp;0.5</span>, <span title="15-38 cm × 0.5-0.7 mm">width_high:&nbsp;0.7</span>, <span title="15-38 cm × 0.5-0.7 mm">width_units:&nbsp;mm</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005532">
+        <td colspan="2"></td>
+        <td><span class="c5 b5 cc5">inflorescence size</span></td>
+        <td><span title="1.2-2(-4) cm">sex:&nbsp;male</span>, <span title="1.2-2(-4) cm">length_low:&nbsp;1.2</span>, <span title="1.2-2(-4) cm">length_high:&nbsp;2.0</span>, <span title="1.2-2(-4) cm">length_max:&nbsp;4.0</span>, <span title="1.2-2(-4) cm">length_units:&nbsp;cm</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005532">
+        <td colspan="2"></td>
+        <td><span class="c10 b3 cc10">leaf count</span></td>
+        <td><span title="8(-10)">low:&nbsp;8</span>, <span title="8(-10)">max:&nbsp;10</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005532">
+        <td colspan="2"></td>
+        <td><span class="c10 b6 cc10">leaf shape</span></td>
+        <td><span title="narrowly lanceolate">shape:&nbsp;lanceolate</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005532">
+        <td colspan="2"></td>
+        <td><span class="c0 b6 cc0">plant apex shape</span></td>
+        <td><span title="acute">shape:&nbsp;acute</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005532">
+        <td colspan="2"></td>
+        <td><span class="c0 b4 cc0">plant habit</span></td>
+        <td><span title="Trees">habit:&nbsp;tree</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005532">
+        <td colspan="2"></td>
+        <td><span class="c0 b7 cc0">plant reproduction</span></td>
+        <td><span title="dioecious">reproduction:&nbsp;dioecious</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005532">
+        <td colspan="2"></td>
+        <td><span class="c0 b6 cc0">plant shape</span></td>
+        <td><span title="ellipsoid">shape:&nbsp;ellipsoid</span><br/><span title="subglobose">shape:&nbsp;subglobose</span><br/><span title="truncate">shape:&nbsp;truncate</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005532">
+        <td colspan="2"></td>
+        <td><span class="c0 b5 cc0">plant size</span></td>
+        <td><span title="25(-35) m tall">height_low:&nbsp;25</span>, <span title="25(-35) m tall">height_max:&nbsp;35</span>, <span title="25(-35) m tall">height_units:&nbsp;m</span><br/><span title="7-12 mm">length_low:&nbsp;7</span>, <span title="7-12 mm">length_high:&nbsp;12</span>, <span title="7-12 mm">length_units:&nbsp;mm</span><br/><span title="3-5 mm">length_low:&nbsp;3</span>, <span title="3-5 mm">length_high:&nbsp;5</span>, <span title="3-5 mm">length_units:&nbsp;mm</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005532">
+        <td colspan="2"></td>
+        <td><span class="c4 b5 cc4">trunk size</span></td>
+        <td><span title="to ca. 40 cm d.b.h.">dbh_high:&nbsp;40</span>, <span title="to ca. 40 cm d.b.h.">dbh_units:&nbsp;cm</span></td>
+      </tr>
+
+
+    <tr>
+      <td>
+        <button class="toggle closed" title="Show or hide the extractions"
+            data-taxon-id="200005533">
+        </button>
+      </td>
+      <td>
+        Casuarinaceae<hr/>
+        <span class="smaller">(Flora of China)</span>
+      </td>
+      <td>
+        <a href="http://www.efloras.org/florataxon.aspx?flora_id=2&amp;taxon_id=200005533"
+            target="_blank" rel="noopener noreferrer">
+          Casuarina equisetifolia
+        </a>
+      </td>
+      <td class="text">lous, <span class="c0 b2 cc0" title="plant color: color = gray-green">grayish green</span>, <span class="c0 b5 cc0" title="plant size: length_low = 10, length_high = 27, length_units = cm, width_low = 0.8, width_high = 0.9, width_units = mm">10-27 cm × 0.8-0.9 mm</span>; <span class="bold-italic" title="plant article">articles</span> <span class="c0 b5 cc0" title="plant article size: length_min = 2.5, length_low = 4.0, length_high = 9.0, length_units = mm">(2.5-)4-9 mm</span>. <span class="bold" title="leaf">Leaves</span> erect and appressed to branchlets, <span class="c10 b3 cc10" title="leaf count: min = 6, low = 7">(6 or)7</span>(or 8) per whorl, <span class="c10 b6 cc10" title="leaf shape: shape = lanceolate">lanceolate</span> or <span class="c10 b6 cc10" title="leaf shape: shape = triangular">triangular</span>, <span class="c10 b5 cc10" title="leaf size: length_low = 1, length_high = 3, length_units = mm">1-3 mm</span>. <span class="bold" title="inflorescence: sex = male">Male inflorescences</span> <span class="c5 b5 cc5" title="inflorescence size: sex = male, length_low = 1, length_high = 4, length_units = cm">1-4 cm</span>. Cones <span class="c0 b6 cc0" title="plant shape: shape = ellipsoid">ellipsoid</span>, <span class="c0 b5 cc0" title="plant size: length_low = 1.2, length_high = 2.5, length_units = cm">1.2-2.5 cm</span>, <span class="c0 b2 cc0" title="plant color: color = gray-green">grayish green</span> or <span class="c0 b2 cc0" title="plant color: color = yellow-brown">yellowish brown</span> tomentose when young, glabrous at maturity, <span class="bold-italic" title="plant base">base</span> and <span class="bold-italic" title="plant apex">apex</span> <span class="c0 b6 cc0" title="plant apex shape: shape = truncate">truncate</span> to <span class="c0 b6 cc0" title="plant apex shape: shape = obtuse">obtuse</span>; <span class="bold-italic" title="plant apex">apex</span> of bracteoles slightly <span class="c0 b6 cc0" title="plant apex shape: shape = obtuse">obtuse</span> or <span class="c0 b6 cc0" title="plant apex shape: shape = acute">acute</span>. Samaras <span class="c0 b5 cc0" title="plant size: length_low = 5, length_high = 8, length_units = mm">5-8 mm</span> including <span class="bold-italic" title="plant wing">wing</span>. Fl. Apr-May, fr. Jul-Oct. <span class="bold" title="2n">2n</span> = <span class="c5 b3 cc5" title="2n count: low = 18">18</span>, 20*.</td>
+    <tr class="term closed" data-taxon-id="200005533">
+      <td></td>
+      <td></td>
+      <td class="sub-header">Trait Label</td>
+      <td class="sub-header">Trait Data</td>
+    </tr>
+
+      <tr class="term closed" data-taxon-id="200005533">
+        <td colspan="2"></td>
+        <td><span class="c5 b3 cc5">2n count</span></td>
+        <td><span title="18">low:&nbsp;18</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005533">
+        <td colspan="2"></td>
+        <td><span class="c5 b5 cc5">inflorescence size</span></td>
+        <td><span title="1-4 cm">sex:&nbsp;male</span>, <span title="1-4 cm">length_low:&nbsp;1</span>, <span title="1-4 cm">length_high:&nbsp;4</span>, <span title="1-4 cm">length_units:&nbsp;cm</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005533">
+        <td colspan="2"></td>
+        <td><span class="c10 b3 cc10">leaf count</span></td>
+        <td><span title="(6 or)7">min:&nbsp;6</span>, <span title="(6 or)7">low:&nbsp;7</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005533">
+        <td colspan="2"></td>
+        <td><span class="c10 b6 cc10">leaf shape</span></td>
+        <td><span title="lanceolate">shape:&nbsp;lanceolate</span><br/><span title="triangular">shape:&nbsp;triangular</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005533">
+        <td colspan="2"></td>
+        <td><span class="c10 b5 cc10">leaf size</span></td>
+        <td><span title="1-3 mm">length_low:&nbsp;1</span>, <span title="1-3 mm">length_high:&nbsp;3</span>, <span title="1-3 mm">length_units:&nbsp;mm</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005533">
+        <td colspan="2"></td>
+        <td><span class="c0 b6 cc0">plant apex shape</span></td>
+        <td><span title="truncate">shape:&nbsp;truncate</span><br/><span title="obtuse">shape:&nbsp;obtuse</span><br/><span title="obtuse">shape:&nbsp;obtuse</span><br/><span title="acute">shape:&nbsp;acute</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005533">
+        <td colspan="2"></td>
+        <td><span class="c0 b5 cc0">plant article size</span></td>
+        <td><span title="(2.5-)4-9 mm">length_min:&nbsp;2.5</span>, <span title="(2.5-)4-9 mm">length_low:&nbsp;4.0</span>, <span title="(2.5-)4-9 mm">length_high:&nbsp;9.0</span>, <span title="(2.5-)4-9 mm">length_units:&nbsp;mm</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005533">
+        <td colspan="2"></td>
+        <td><span class="c0 b2 cc0">plant color</span></td>
+        <td><span title="grayish green">color:&nbsp;gray-green</span><br/><span title="grayish green">color:&nbsp;gray-green</span><br/><span title="yellowish brown">color:&nbsp;yellow-brown</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005533">
+        <td colspan="2"></td>
+        <td><span class="c0 b6 cc0">plant shape</span></td>
+        <td><span title="ellipsoid">shape:&nbsp;ellipsoid</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005533">
+        <td colspan="2"></td>
+        <td><span class="c0 b5 cc0">plant size</span></td>
+        <td><span title="10-27 cm × 0.8-0.9 mm">length_low:&nbsp;10</span>, <span title="10-27 cm × 0.8-0.9 mm">length_high:&nbsp;27</span>, <span title="10-27 cm × 0.8-0.9 mm">length_units:&nbsp;cm</span>, <span title="10-27 cm × 0.8-0.9 mm">width_low:&nbsp;0.8</span>, <span title="10-27 cm × 0.8-0.9 mm">width_high:&nbsp;0.9</span>, <span title="10-27 cm × 0.8-0.9 mm">width_units:&nbsp;mm</span><br/><span title="1.2-2.5 cm">length_low:&nbsp;1.2</span>, <span title="1.2-2.5 cm">length_high:&nbsp;2.5</span>, <span title="1.2-2.5 cm">length_units:&nbsp;cm</span><br/><span title="5-8 mm">length_low:&nbsp;5</span>, <span title="5-8 mm">length_high:&nbsp;8</span>, <span title="5-8 mm">length_units:&nbsp;mm</span></td>
+      </tr>
+
+
+    <tr>
+      <td>
+        <button class="toggle closed" title="Show or hide the extractions"
+            data-taxon-id="200005534">
+        </button>
+      </td>
+      <td>
+        Casuarinaceae<hr/>
+        <span class="smaller">(Flora of China)</span>
+      </td>
+      <td>
+        <a href="http://www.efloras.org/florataxon.aspx?flora_id=2&amp;taxon_id=200005534"
+            target="_blank" rel="noopener noreferrer">
+          Casuarina glauca
+        </a>
+      </td>
+      <td class="text"><span class="c0 b4 cc0" title="plant habit: habit = tree">Trees</span> <span class="c0 b7 cc0" title="plant reproduction: reproduction = dioecious">dioecious</span>, <span class="c0 b5 cc0" title="plant size: height_high = 20, height_units = m">to 20 m tall</span>. <span class="bold" title="trunk">Trunk</span> <span class="c4 b5 cc4" title="trunk size: dbh_high = 35, dbh_units = cm">to 35 cm d.b.h.</span>; <span class="bold" title="bark">bark</span> <span class="c4 b2 cc4" title="bark color: color = gray-brown">grayish brown</span> or <span class="c4 b2 cc4" title="bark color: color = gray-black">grayish black</span>, finely fissured and scaly, pale <span class="c4 b2 cc4" title="bark color: color = yellow">yellow</span> adaxially. Ultimate <span class="bold" title="branch">branchlets</span> ascending to pendulous, <span class="c1 b2 cc1" title="branch color: color = gray-green">grayish green</span> or <span class="c1 b2 cc1" title="branch color: color = glaucous-green">glaucous green</span>, rather long, <span class="c1 b5 cc1" title="branch size: length_high = 1, length_units = m">to 1 m</span>, <span class="c1 b5 cc1" title="branch size: diameter_low = 0.9, diameter_high = 1.4, diameter_units = mm">0.9-1.4 mm in diam</span>.; <span class="bold-italic" title="branch article">articles</span> <span class="c1 b5 cc1" title="branch article size: length_low = 1.0, length_high = 1.8, length_units = cm">1-1.8 cm</span>, slightly swollen at <span class="bold-italic" title="branch apex">apex</span>. <span class="bold" title="leaf">Leaves</span> erect but those of new shoots strongly recurved, <span class="c10 b3 cc10" title="leaf count: low = 12, high = 17">12-17</span> per whorl, <span class="c10 b6 cc10" title="leaf shape: shape = lanceolate">narrowly lanceolate</span>. <span class="bold" title="inflorescence: sex = male">Male inflorescences</span> <span class="c5 b5 cc5" title="inflorescence size: sex = male, length_low = 1, length_high = 3, length_units = cm">1-3 cm</span>. Cones <span class="c0 b6 cc0" title="plant shape: shape = ellipsoid">broadly ellipsoid</span> to <span class="c0 b6 cc0" title="plant shape: shape = subglobose">subglobose</span>, <span class="c0 b5 cc0" title="plant size: length_low = 1.2, length_high = 2.0, length_units = cm">1.2-2 cm</span>, <span class="c0 b6 cc0" title="plant shape: shape = truncate">truncate</span> at both ends; <span class="bold-italic" title="plant apex">apex</span> of bracteoles <span class="c0 b6 cc0" title="plant apex shape: shape = acute">broadly acute</span> to <span class="c0 b6 cc0" title="plant apex shape: shape = obtuse">obtuse</span>. Samaras <span class="c0 b5 cc0" title="plant size: length_low = 4, length_high = 6, length_units = mm">4-6 mm</span> including <span class="bold-italic" title="plant wing">wing</span>. Fl. Mar-Apr, fr. Jun-Sep. <span class="bold" title="2n">2n</span> = 18*.</td>
+    <tr class="term closed" data-taxon-id="200005534">
+      <td></td>
+      <td></td>
+      <td class="sub-header">Trait Label</td>
+      <td class="sub-header">Trait Data</td>
+    </tr>
+
+      <tr class="term closed" data-taxon-id="200005534">
+        <td colspan="2"></td>
+        <td><span class="c4 b2 cc4">bark color</span></td>
+        <td><span title="grayish brown">color:&nbsp;gray-brown</span><br/><span title="grayish black">color:&nbsp;gray-black</span><br/><span title="yellow">color:&nbsp;yellow</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005534">
+        <td colspan="2"></td>
+        <td><span class="c1 b5 cc1">branch article size</span></td>
+        <td><span title="1-1.8 cm">length_low:&nbsp;1.0</span>, <span title="1-1.8 cm">length_high:&nbsp;1.8</span>, <span title="1-1.8 cm">length_units:&nbsp;cm</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005534">
+        <td colspan="2"></td>
+        <td><span class="c1 b2 cc1">branch color</span></td>
+        <td><span title="grayish green">color:&nbsp;gray-green</span><br/><span title="glaucous green">color:&nbsp;glaucous-green</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005534">
+        <td colspan="2"></td>
+        <td><span class="c1 b5 cc1">branch size</span></td>
+        <td><span title="to 1 m">length_high:&nbsp;1</span>, <span title="to 1 m">length_units:&nbsp;m</span><br/><span title="0.9-1.4 mm in diam">diameter_low:&nbsp;0.9</span>, <span title="0.9-1.4 mm in diam">diameter_high:&nbsp;1.4</span>, <span title="0.9-1.4 mm in diam">diameter_units:&nbsp;mm</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005534">
+        <td colspan="2"></td>
+        <td><span class="c5 b5 cc5">inflorescence size</span></td>
+        <td><span title="1-3 cm">sex:&nbsp;male</span>, <span title="1-3 cm">length_low:&nbsp;1</span>, <span title="1-3 cm">length_high:&nbsp;3</span>, <span title="1-3 cm">length_units:&nbsp;cm</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005534">
+        <td colspan="2"></td>
+        <td><span class="c10 b3 cc10">leaf count</span></td>
+        <td><span title="12-17">low:&nbsp;12</span>, <span title="12-17">high:&nbsp;17</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005534">
+        <td colspan="2"></td>
+        <td><span class="c10 b6 cc10">leaf shape</span></td>
+        <td><span title="narrowly lanceolate">shape:&nbsp;lanceolate</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005534">
+        <td colspan="2"></td>
+        <td><span class="c0 b6 cc0">plant apex shape</span></td>
+        <td><span title="broadly acute">shape:&nbsp;acute</span><br/><span title="obtuse">shape:&nbsp;obtuse</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005534">
+        <td colspan="2"></td>
+        <td><span class="c0 b4 cc0">plant habit</span></td>
+        <td><span title="Trees">habit:&nbsp;tree</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005534">
+        <td colspan="2"></td>
+        <td><span class="c0 b7 cc0">plant reproduction</span></td>
+        <td><span title="dioecious">reproduction:&nbsp;dioecious</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005534">
+        <td colspan="2"></td>
+        <td><span class="c0 b6 cc0">plant shape</span></td>
+        <td><span title="broadly ellipsoid">shape:&nbsp;ellipsoid</span><br/><span title="subglobose">shape:&nbsp;subglobose</span><br/><span title="truncate">shape:&nbsp;truncate</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005534">
+        <td colspan="2"></td>
+        <td><span class="c0 b5 cc0">plant size</span></td>
+        <td><span title="to 20 m tall">height_high:&nbsp;20</span>, <span title="to 20 m tall">height_units:&nbsp;m</span><br/><span title="1.2-2 cm">length_low:&nbsp;1.2</span>, <span title="1.2-2 cm">length_high:&nbsp;2.0</span>, <span title="1.2-2 cm">length_units:&nbsp;cm</span><br/><span title="4-6 mm">length_low:&nbsp;4</span>, <span title="4-6 mm">length_high:&nbsp;6</span>, <span title="4-6 mm">length_units:&nbsp;mm</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="200005534">
+        <td colspan="2"></td>
+        <td><span class="c4 b5 cc4">trunk size</span></td>
+        <td><span title="to 35 cm d.b.h.">dbh_high:&nbsp;35</span>, <span title="to 35 cm d.b.h.">dbh_units:&nbsp;cm</span></td>
+      </tr>
+
+
+    <tr>
+      <td>
+        <button class="toggle closed" title="Show or hide the extractions"
+            data-taxon-id="10167">
+        </button>
+      </td>
+      <td>
+        Casuarinaceae<hr/>
+        <span class="smaller">(Flora of China)</span>
+      </td>
+      <td>
+        <a href="http://www.efloras.org/florataxon.aspx?flora_id=2&amp;taxon_id=10167"
+            target="_blank" rel="noopener noreferrer">
+          Casuarinaceae
+        </a>
+      </td>
+      <td class="text"><span class="c0 b4 cc0" title="plant habit: habit = tree">Trees</span> or <span class="c0 b4 cc0" title="plant habit: habit = shrub">shrubs</span> <span class="c0 b0 cc0" title="plant duration: duration = evergreen">evergreen</span>, <span class="c0 b7 cc0" title="plant reproduction: reproduction = monoecious">monoecious</span> or <span class="c0 b7 cc0" title="plant reproduction: reproduction = dioecious">dioecious</span>. Ultimate <span class="bold" title="branch">branchlets</span> jointed, with several short, <span class="bold-italic" title="branch article: location = basal">basal articles</span> and <span class="c1 b3 cc1" title="branch article count: low = 1">1</span>-numerous elongated <span class="bold-italic" title="branch article">articles</span>, slender, ridged, often pubescent at least when young. <span class="bold" title="leaf">Leaves</span> small, toothlike, in whorls of <span class="c10 b3 cc10" title="leaf count: low = 4">4</span> to ca. <span class="c10 b3 cc10" title="leaf count: low = 20">20</span> (equal to number of ridges on branchlets); <span class="bold" title="stipule">stipules</span> <span class="c6 b3 cc6" title="stipule count: min = 0">absent</span>. <span class="bold" title="inflorescence">Inflorescences</span> spikelike or headlike, with alternating whorls of toothlike <span class="bold" title="bract">bracts</span>; within each <span class="bold" title="bract">bract</span> a single <span class="bold" title="flower">flower</span>, with <span class="c2 b3 cc2" title="bract count: location = lateral, low = 2">2</span> <span class="bold" title="bract: location = lateral">lateral scalelike bracteoles</span>, <span class="c2 b0 cc2" title="bract duration: location = lateral, duration = persistent">persistent</span> (rarely <span class="c2 b0 cc2" title="bract duration: location = lateral, duration = deciduous">deciduous</span> in male Allocasuarina); parts sometimes pubescent when young, mostly glabrous at maturity. <span class="bold" title="flower">Flowers</span> <span class="c0 b7 cc0" title="plant reproduction: reproduction = unisexual">unisexual</span>, without pedicels. <span class="bold" title="inflorescence: sex = male">Male inflorescences</span> <span class="bold" title="inflorescence">spikes</span>, <span class="c5 b1 cc5" title="inflorescence location: location = terminal">terminal</span> or <span class="c5 b1 cc5" title="inflorescence location: location = lateral">lateral</span>, <span class="c5 b6 cc5" title="inflorescence shape: shape = terete">terete</span>, slender. <span class="bold" title="inflorescence: sex = female">Female inflorescences</span> headlike, <span class="c5 b6 cc5" title="inflorescence shape: sex = female, shape = spheric">globose</span> or <span class="c5 b6 cc5" title="inflorescence shape: sex = female, shape = ellipsoid">ellipsoid</span>, usually <span class="c5 b1 cc5" title="inflorescence location: sex = female, location = terminal">terminal</span> on short, <span class="bold" title="branch: location = lateral">lateral branches</span>. <span class="bold" title="flower: sex = male">Male flowers</span>: tepals <span class="c7 b3 cc7" title="flower count: sex = male, low = 1, high = 2">1 or 2</span>, scalelike, <span class="c7 b0 cc7" title="flower duration: sex = male, duration = deciduous">deciduous</span>, hooded; <span class="bold" title="stamen">stamen</span> <span class="c12 b3 cc12" title="stamen count: low = 1">1</span>; <span class="bold" title="anther">anthers</span> <span class="c6 b3 cc6" title="anther count: low = 2">2</span>-loculed, longitudinally dehiscent, basifixed. <span class="bold" title="flower: sex = female">Female flowers</span>: <span class="bold" title="perianth">perianth</span> none; <span class="bold" title="carpel">carpels</span> <span class="c8 b3 cc8" title="carpel count: low = 2">2</span>, fused; only anterior <span class="bold" title="carpel">carpel</span> fertile, posterior <span class="bold" title="carpel">carpel</span> usually ± reduced or obsolete; <span class="bold" title="ovary">ovules</span> <span class="c1 b3 cc1" title="ovary count: low = 2">2</span> (rarely <span class="c1 b3 cc1" title="ovary count: low = 4">4</span>), parietal, paired at <span class="bold-italic" title="ovary base">base</span> of carpel, chalazogamous; <span class="bold" title="style">style</span> short; <span class="bold" title="stigma">stigmas</span> <span class="c9 b3 cc9" title="stigma count: low = 2">2</span>, <span class="c9 b2 cc9" title="stigma color: color = red">red</span>, <span class="c9 b6 cc9" title="stigma shape: shape = linear">linear</span>. <span class="bold" title="infructescences">Infructescences</span> ± <span class="c9 b8 cc9" title="infructescences woodiness: woodiness = woody">woody</span>, conelike, with dense whorls of fruit, with <span class="c2 b3 cc2" title="bract count: low = 2">2</span> <span class="bold" title="bract">bracteoles</span> of each <span class="bold" title="flower">flower</span> enlarged as valves, <span class="c7 b0 cc7" title="flower duration: duration = persistent">persistent</span>. Samaras flat, (usually) winged at apex, initially enclosed by 2 <span class="bold" title="bract">bracteoles</span>, which separate at maturity to release samara. <span class="bold" title="seed">Seed</span> <span class="c3 b3 cc3" title="seed count: low = 1">1</span>; <span class="bold" title="cotyledon">cotyledons</span> large; endosperm <span class="c10 b3 cc10" title="cotyledon count: min = 0">absent</span>; embryo straight, often more than <span class="c10 b3 cc10" title="cotyledon count: low = 1">1</span>.</td>
+    <tr class="term closed" data-taxon-id="10167">
+      <td></td>
+      <td></td>
+      <td class="sub-header">Trait Label</td>
+      <td class="sub-header">Trait Data</td>
+    </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c6 b3 cc6">anther count</span></td>
+        <td><span title="2">low:&nbsp;2</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c2 b3 cc2">bract count</span></td>
+        <td><span title="2">location:&nbsp;lateral</span>, <span title="2">low:&nbsp;2</span><br/><span title="2">low:&nbsp;2</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c2 b0 cc2">bract duration</span></td>
+        <td><span title="persistent">location:&nbsp;lateral</span>, <span title="persistent">duration:&nbsp;persistent</span><br/><span title="deciduous">location:&nbsp;lateral</span>, <span title="deciduous">duration:&nbsp;deciduous</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c1 b3 cc1">branch article count</span></td>
+        <td><span title="1">low:&nbsp;1</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c8 b3 cc8">carpel count</span></td>
+        <td><span title="2">low:&nbsp;2</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c10 b3 cc10">cotyledon count</span></td>
+        <td><span title="absent">min:&nbsp;0</span><br/><span title="1">low:&nbsp;1</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c7 b3 cc7">flower count</span></td>
+        <td><span title="1 or 2">sex:&nbsp;male</span>, <span title="1 or 2">low:&nbsp;1</span>, <span title="1 or 2">high:&nbsp;2</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c7 b0 cc7">flower duration</span></td>
+        <td><span title="deciduous">sex:&nbsp;male</span>, <span title="deciduous">duration:&nbsp;deciduous</span><br/><span title="persistent">duration:&nbsp;persistent</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c5 b1 cc5">inflorescence location</span></td>
+        <td><span title="terminal">location:&nbsp;terminal</span><br/><span title="lateral">location:&nbsp;lateral</span><br/><span title="terminal">sex:&nbsp;female</span>, <span title="terminal">location:&nbsp;terminal</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c5 b6 cc5">inflorescence shape</span></td>
+        <td><span title="terete">shape:&nbsp;terete</span><br/><span title="globose">sex:&nbsp;female</span>, <span title="globose">shape:&nbsp;spheric</span><br/><span title="ellipsoid">sex:&nbsp;female</span>, <span title="ellipsoid">shape:&nbsp;ellipsoid</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c9 b8 cc9">infructescences woodiness</span></td>
+        <td><span title="woody">woodiness:&nbsp;woody</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c10 b3 cc10">leaf count</span></td>
+        <td><span title="4">low:&nbsp;4</span><br/><span title="20">low:&nbsp;20</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c1 b3 cc1">ovary count</span></td>
+        <td><span title="2">low:&nbsp;2</span><br/><span title="4">low:&nbsp;4</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c0 b0 cc0">plant duration</span></td>
+        <td><span title="evergreen">duration:&nbsp;evergreen</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c0 b4 cc0">plant habit</span></td>
+        <td><span title="Trees">habit:&nbsp;tree</span><br/><span title="shrubs">habit:&nbsp;shrub</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c0 b7 cc0">plant reproduction</span></td>
+        <td><span title="monoecious">reproduction:&nbsp;monoecious</span><br/><span title="dioecious">reproduction:&nbsp;dioecious</span><br/><span title="unisexual">reproduction:&nbsp;unisexual</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c3 b3 cc3">seed count</span></td>
+        <td><span title="1">low:&nbsp;1</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c12 b3 cc12">stamen count</span></td>
+        <td><span title="1">low:&nbsp;1</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c9 b2 cc9">stigma color</span></td>
+        <td><span title="red">color:&nbsp;red</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c9 b3 cc9">stigma count</span></td>
+        <td><span title="2">low:&nbsp;2</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c9 b6 cc9">stigma shape</span></td>
+        <td><span title="linear">shape:&nbsp;linear</span></td>
+      </tr>
+
+      <tr class="term closed" data-taxon-id="10167">
+        <td colspan="2"></td>
+        <td><span class="c6 b3 cc6">stipule count</span></td>
+        <td><span title="absent">min:&nbsp;0</span></td>
+      </tr>
+
+
+  </tbody>
+</table>
+
+<script>
+document.querySelector('thead')
+    .addEventListener('click', function(event) {
+        if (! event.target.matches('button')) { return; }
+        const cls = event.target.classList;
+        const trs = document.querySelectorAll('tr.term');
+        const buttons = document.querySelectorAll('button.toggle');
+        if (cls.contains('closed')) {
+            trs.forEach(function(tr) {  tr.classList.remove('closed'); });
+            buttons.forEach(function(b) {  b.classList.remove('closed'); });
+        } else {
+            trs.forEach(function(tr) {  tr.classList.add('closed'); });
+            buttons.forEach(function(b) {  b.classList.add('closed'); });
+        }
+ });
+
+ document.querySelector('tbody')
+    .addEventListener('click', function(event) {
+        if (! event.target.matches('button')) { return; }
+        const taxonId = event.target.dataset.taxonId;
+        const selector = `[data-taxon-id="${taxonId}"]`;
+        const elts = document.querySelectorAll(selector);
+        elts.forEach(function(tr) {  tr.classList.toggle('closed'); });
+    });
+
+
+function toggleColors() {
+    for (let i = 0; i < 14; ++i) {
+        document.querySelectorAll(`.c${i}`).forEach(function (span) {
+            span.classList.toggle(`cc${i}`);
+        });
+        document.querySelectorAll(`.b${i}`).forEach(function (span) {
+            span.classList.toggle(`bb${i}`);
+        });
+    }
+}
+
+document.querySelectorAll('input[type=radio]').forEach(function(item) {
+    item.addEventListener('change', function(event) {
+        toggleColors();
+    });
+});
+
+
+document.querySelector('#by-part').checked = true;</script>
+
+</body>
+</html>
