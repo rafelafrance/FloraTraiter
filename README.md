@@ -84,7 +84,7 @@ These scripts extract traits from PDFs containing plant treatments. The PDFs I'm
 2. [pdf_to_images.py](./flora/pdf_to_images.py)
 3. [slice.py](./flora/slice.py) - This script allows you to manually outline text on images from `pdf_to_images.py` with bounding boxes that contain treatment text. The boxes on a page must be in reading order. You need to mark which boxes are at the start of a treatment.
 4. [stitch.py](./flora/stitch.py) This script takes the boxes from `slice.py` OCRs them and puts the text into a single output file.
-5. [clean_text.py](./flora/clean_text.py) Now we take the text from step 3 and format it so that we can parse the text with spaCy rule-based parsers. This breaks the text into sentences, joins hyphenated words, fixes mojibake, removes control characters, space normalizes text, etc. Examine the output of this text to make sure things are still working as expected.
+5. [clean_text.py](./flora/clean_text.py) Now we take the text from the previous step and format it so that we can parse the text with spaCy rule-based parsers. This breaks the text into sentences, joins hyphenated words, fixes mojibake, removes control characters, space normalizes text, etc. Examine the output of this text to make sure things are still working as expected.
    1. The step for breaking the text into sentences is very slow.
 6. [extract_traits.py](./flora/mimosa_extract_traits.py) Finally, we extract traits from the text using spaCy rule-based parsers.
 
