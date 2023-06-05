@@ -6,9 +6,9 @@ from pathlib import Path
 
 from pylib import pipeline
 
-from efloras.pylib.readers import efloras_reader as reader
-from efloras.pylib.writers.csv_writer import CsvWriter
-from efloras.pylib.writers.html_writer import HtmlWriter
+from pylib.readers import efloras_reader as reader
+from pylib.writers.efloras_csv_writer import CsvWriter
+from pylib.writers.efloras_html_writer import HtmlWriter
 
 
 def main(args):

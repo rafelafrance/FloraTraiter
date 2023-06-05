@@ -1,20 +1,22 @@
 from dataclasses import dataclass
 
-from plants.pylib.writers.html_writer import HtmlWriter as BaseWriter
-from plants.pylib.writers.html_writer import HtmlWriterRow as BaseWriterRow
+from .html_writer import HtmlWriter as BaseWriter
+from .html_writer import HtmlWriterRow as BaseWriterRow
 
-from mimosa.pylib import const
+from .. import const
 
 
+# @dataclass(kw_only=True)
 @dataclass
 class HtmlWriterRow(BaseWriterRow):
-    text_id: int
+    text_id: int = -1
 
 
 class HtmlWriter(BaseWriter):
     def __init__(self, out_html):
         super().__init__(
-            template_dir=f"{const.ROOT_DIR}/mimosa/pylib/writers/templates",
+            template_dir=f"{const.ROOT_DIR}/pylib/writers/templates",
+            template="mimosa_html_writer.html",
             out_html=out_html,
         )
 

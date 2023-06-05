@@ -4,7 +4,7 @@ trait mentioned. That is, it will link a trait to the nearest taxon that precede
 in the text. There is a radius parameter that will stop linking traits and assign the
 trait to "Unknown" once the sentence count passes the threshold.
 """
-from .base_reader import BaseReader
+from .mimosa_base_reader import BaseReader
 
 
 class ProximityReader(BaseReader):

@@ -8,7 +8,7 @@ from enum import Enum
 
 import rich
 
-from .base_reader import BaseReader
+from .mimosa_base_reader import BaseReader
 
 
 class State(Enum):

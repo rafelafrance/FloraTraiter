@@ -5,10 +5,10 @@ from pathlib import Path
 
 from traiter.pylib import log
 
-from mimosa.pylib.readers.marked_reader import MarkedReader
-from mimosa.pylib.readers.proximity_reader import ProximityReader
-from mimosa.pylib.writers.csv_writer import CsvWriter
-from mimosa.pylib.writers.html_writer import HtmlWriter
+from pylib.readers.mimosa_marked_reader import MarkedReader
+from pylib.readers.mimosa_proximity_reader import ProximityReader
+from pylib.writers.mimosa_csv_writer import CsvWriter
+from pylib.writers.mimosa_html_writer import HtmlWriter
 
 
 def main():

@@ -1,6 +1,6 @@
 from traiter.pylib.util import shorten
 
-from plants.pylib import pipeline
+from . import pipeline
 
 PIPELINE = pipeline.build()
 

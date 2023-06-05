@@ -6,10 +6,10 @@ from datetime import datetime
 from itertools import product
 
 from bs4 import BeautifulSoup
-from plants.pylib.traits.part.part_action import PART_LABELS
 from tqdm import tqdm
 
-from efloras.pylib import const
+from .. import const
+from ..traits.part import PART_LABELS
 
 TAXON_TITLE = "Accepted Name"
 

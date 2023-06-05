@@ -1,4 +1,4 @@
-from plants.pylib.writers import csv_writer as base_writer
+from . import csv_writer as base_writer
 
 
 class CsvWriter(base_writer.CsvWriter):

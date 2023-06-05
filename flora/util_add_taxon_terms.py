@@ -19,7 +19,7 @@ from traiter.pylib import log
 from traiter.pylib import term_util as tu
 from traiter.pylib.traits import terms as t_terms
 
-from plants.pylib.traits import terms
+from pylib.traits import terms
 
 ITIS_SPECIES_ID = 220
 
