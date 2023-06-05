@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip setuptools wheel
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        python -m pip install .
+        python -m spacy download en_core_web_sm
+        pip install git+https://github.com/rafelafrance/traiter.git@master#egg=traiter
+    - name: Test with unittest
+      run: |
+        export MOCK_TAXA=1; python -m unittest discover
