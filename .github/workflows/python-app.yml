@@ -26,4 +26,4 @@ jobs:
         pip install git+https://github.com/rafelafrance/traiter.git@master#egg=traiter
     - name: Test with unittest
       run: |
-        export MOCK_TAXA=1; python -m unittest discover
+        export MOCK_DATA=1; python -m unittest discover
