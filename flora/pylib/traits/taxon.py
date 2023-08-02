@@ -27,14 +27,14 @@ def get_csvs():
     }
 
     try:
-        use_mock_taxa = int(os.getenv("MOCK_TAXA"))
+        use_mock_data = int(os.getenv("MOCK_DATA"))
     except (TypeError, ValueError):
-        use_mock_taxa = 0
+        use_mock_data = 0
 
     if (
         not csvs["binomial_terms"].exists()
         or not csvs["monomial_terms"].exists()
-        or use_mock_taxa
+        or use_mock_data
     ):
         csvs["binomial_terms"] = here / "mock_binomial_terms.csv"
         csvs["monomial_terms"] = here / "mock_monomial_terms.csv"
