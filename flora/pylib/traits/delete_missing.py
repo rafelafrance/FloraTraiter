@@ -10,8 +10,8 @@ from .part import PART_LABELS
 
 def build(nlp: Language):
     config = {
-        "check": ["count", "size", "location"],
-        "missing": PART_LABELS + ["subpart"],
+        "check": """color count shape size surface location margin""".split(),
+        "missing": PART_LABELS + ["subpart", "multiple_parts"],
     }
     add.custom_pipe(nlp, "delete_missing", config=config)
 
@@ -29,8 +29,8 @@ class DeleteMissing:
         self.nlp = nlp
         self.name = name
         self.check = check if check else []  # List of traits to check
-        self.missing = missing if missing else []  # Delete if missing these
-        self.missing_set = set(self.missing)
+        self.if_missing = missing if missing else []  # Delete if missing these
+        self.missing_set = set(self.if_missing)
 
     def __call__(self, doc: Doc) -> Doc:
         entities = []
@@ -42,8 +42,8 @@ class DeleteMissing:
 
             if ent.label_ in self.check:
                 data = ent._.data
-                has_part = set(data.keys()) & self.missing_set
-                if not has_part:
+                is_missing = set(data.keys()) & self.missing_set
+                if not is_missing:
                     self.clear_tokens(ent)
                     continue
 
@@ -68,7 +68,7 @@ class DeleteMissing:
             data = json.load(data_file)
             for key in data.keys():
                 self.__dict__[key] = data[key]
-        self.missing_set = set(self.missing)
+        self.missing_set = set(self.if_missing)
 
     @staticmethod
     def clear_tokens(ent):

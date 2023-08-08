@@ -855,7 +855,7 @@ class TestSize(unittest.TestCase):
     def test_size_38(self):
         self.assertEqual(
             test("coastal plain to 1500 m,"),
-            [{"shape": "plain", "trait": "shape", "start": 8, "end": 13}],
+            [],
         )
 
     def test_size_39(self):
