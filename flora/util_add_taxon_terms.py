@@ -103,7 +103,9 @@ class Taxa:
 
         rows = tu.read_terms(all_csvs)
 
-        problem_taxa = set("end erica flora floral harms lake may phoenix side".split())
+        problem_taxa = set(
+            """end erica flora floral harms lake major may minor phoenix side""".split()
+        )
         problem_taxa |= {t["pattern"].lower() for t in rows}
 
         taxa = sorted(self.taxon.items())
@@ -303,7 +305,7 @@ def parse_args():
         "--wcvp-file",
         type=Path,
         metavar="PATH",
-        help="""Get terms from this WCVP file. It is '|' a separated CSV.""",
+        help="""Get terms from this WCVP file. It is a '|' separated CSV.""",
     )
 
     arg_parser.add_argument(
