@@ -76,7 +76,6 @@ def update_families():
     families = []
 
     for path in FAMILY_DIR.glob(pattern):
-
         with open(path) as in_file:
             page = in_file.read()
 

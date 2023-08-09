@@ -379,7 +379,6 @@ def size_patterns():
 def range_match(ent):
     nums = []
     for token in ent:
-
         if token._.term == "per_count":
             raise reject_match.RejectMatch
 
@@ -399,7 +398,6 @@ def count_match(ent):
     data = {}
 
     for token in ent:
-
         if token._.flag == "range_data":
             for key, value in token._.data.items():
                 value = t_util.to_positive_int(value)
@@ -485,7 +483,6 @@ def scan_tokens(ent):
     dimensions = [Dimension(range={}, units="", dim="", about=False, sex="")]
 
     for token in ent:
-
         if token._.flag == "range_data":
             dimensions[-1].range = token._.data
 

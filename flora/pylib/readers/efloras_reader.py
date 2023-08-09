@@ -135,9 +135,7 @@ def get_families():
     families = {}
 
     with open(const.EFLORAS_FAMILIES) as in_file:
-
         for family in csv.DictReader(in_file):
-
             times = {"created": "", "modified": "", "count": 0}
 
             path = (
