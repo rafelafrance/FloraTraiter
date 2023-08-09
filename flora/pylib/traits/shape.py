@@ -50,7 +50,6 @@ def shape_patterns():
 
 @registry.misc("shape_match")
 def shape_match(ent):
-
     # Handle 3-angular etc.
     if re.match(r"^\d", ent.text):
         shape = "polygonal"

@@ -4,7 +4,6 @@ from tests.setup import test
 
 
 class TestSize(unittest.TestCase):
-
     # def test_size_00(self):
     #     test('Leaf (12-)23-34 × 45-56 cm wide')
 

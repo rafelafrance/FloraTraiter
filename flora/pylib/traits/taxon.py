@@ -606,7 +606,6 @@ def taxon_auth_match(ent):
     data = {}
 
     for token in ent:
-
         if token._.flag == "taxon_data":
             data = token._.data
             prev_auth = token._.data.get("authority")
@@ -634,7 +633,6 @@ def taxon_auth_match(ent):
 @registry.misc("taxon_linnaeus_match")
 def taxon_linnaeus_match(ent):
     for token in ent:
-
         if token._.flag == "taxon_data":
             ent._.data = token._.data
 
@@ -648,7 +646,6 @@ def taxon_linnaeus_match(ent):
 def taxon_not_linnaeus_match(ent):
     auth = []
     for token in ent:
-
         if token._.flag == "taxon_data":
             ent._.data = token._.data
 
@@ -717,7 +714,6 @@ def rename_taxon_match(ent):
     rank = ""
 
     for token in ent:
-
         if token._.flag == "taxon_data":
             ent._.data = token._.data
 

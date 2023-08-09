@@ -474,3 +474,17 @@ class TestTaxon(unittest.TestCase):
                 },
             ],
         )
+
+    def test_taxon_29(self):
+        self.assertEqual(
+            test("""Neptunia gracilis & Mimosa sensitiva"""),
+            [
+                {
+                    "rank": "species",
+                    "taxon": ["Neptunia gracilis", "Mimosa sensitiva"],
+                    "trait": "multi_taxon",
+                    "start": 0,
+                    "end": 36,
+                }
+            ],
+        )
