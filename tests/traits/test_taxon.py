@@ -488,3 +488,18 @@ class TestTaxon(unittest.TestCase):
                 }
             ],
         )
+
+    def test_taxon_30(self):
+        self.assertEqual(
+            test("""Neptunia gracilis (Roxb.) T. Anderson"""),
+            [
+                {
+                    "authority": "Roxb T. Anderson",
+                    "rank": "species",
+                    "taxon": "Neptunia gracilis",
+                    "trait": "taxon",
+                    "start": 0,
+                    "end": 37,
+                }
+            ],
+        )
