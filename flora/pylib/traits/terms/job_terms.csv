@@ -12,8 +12,10 @@ col_label,collector,collector
 col_label,collector:,collector
 col_label,collectors,collector
 col_label,collectors:,collector
-det_label,det by,determiner
+det_label,confirmed,determiner
+det_label,confirmed by,determiner
 det_label,det,determiner
+det_label,det by,determiner
 det_label,det. by,determiner
 det_label,determined by,determiner
 det_label,determined,determiner
