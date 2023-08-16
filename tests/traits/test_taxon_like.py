@@ -55,11 +55,11 @@ class TestTaxonLike(unittest.TestCase):
             [
                 {
                     "rank": "species",
-                    "authority": "Harms",
+                    "authority": "Harms and Glaziou",
                     "taxon_like": "Mimosa sensitiva",
                     "trait": "taxon_like",
                     "start": 0,
-                    "end": 36,
+                    "end": 47,
                     "relation": "sympatric",
                 }
             ],

@@ -14,7 +14,7 @@ class TestTaxonLikeLinker(unittest.TestCase):
                     "taxon": "Mimosa sensitiva",
                     "trait": "taxon",
                     "start": 0,
-                    "end": 23,
+                    "end": 24,
                     "taxon_like": "Acacia pachyphloia",
                 },
                 {
