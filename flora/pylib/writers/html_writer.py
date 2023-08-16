@@ -1,16 +1,14 @@
 import collections
 import html
 import itertools
-from dataclasses import dataclass
-from dataclasses import field
+from dataclasses import dataclass, field
 from datetime import datetime
 
 import jinja2
 
 from . import writer_utils as w_utils
 
-
-COLOR_COUNT = 15
+COLOR_COUNT = 14
 BACKGROUNDS = itertools.cycle([f"cc{i}" for i in range(COLOR_COUNT)])
 BORDERS = itertools.cycle([f"bb{i}" for i in range(COLOR_COUNT)])
 
@@ -27,21 +25,24 @@ class HtmlWriterRow:
 
 
 class CssClasses:
-    def __init__(self):
+    def __init__(self, spotlight=""):
         self.classes = {}
+        self.spotlight = spotlight
 
     def __getitem__(self, label):
+        if self.spotlight and label.find(self.spotlight) > -1:
+            return "ccx"
         if label not in self.classes:
             self.classes[label] = next(BACKGROUNDS)
         return self.classes[label]
 
 
 class HtmlWriter:
-    def __init__(self, template_dir, template, out_html):
+    def __init__(self, template_dir, template, out_html, spotlight=""):
         self.template_dir = template_dir
         self.template = template
         self.out_html = out_html
-        self.css_classes = CssClasses()
+        self.css_classes = CssClasses(spotlight)
         self.formatted = []
 
     def write(self, rows, args=None):

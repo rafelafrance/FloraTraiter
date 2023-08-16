@@ -2,16 +2,12 @@ import os
 import re
 from pathlib import Path
 
-from spacy import Language
-from spacy import registry
+from spacy import Language, registry
 from traiter.pylib import const as t_const
-from traiter.pylib import taxon_util
-from traiter.pylib import term_util
+from traiter.pylib import taxon_util, term_util
+from traiter.pylib.pattern_compiler import ACCUMULATOR, Compiler
+from traiter.pylib.pipes import add, reject_match
 from traiter.pylib.traits import terms as t_terms
-from traiter.pylib.pattern_compiler import ACCUMULATOR
-from traiter.pylib.pattern_compiler import Compiler
-from traiter.pylib.pipes import add
-from traiter.pylib.pipes import reject_match
 
 from .. import const
 
@@ -47,7 +43,7 @@ ALL_CSVS = get_csvs()
 RANK_TERMS = term_util.read_terms(ALL_CSVS["rank_terms"])
 
 ABBREV_RE = r"^[A-Z][.,_]$"
-AND = ["&", "and", "et"]
+AND = ["&", "and", "et", "ex"]
 ANY_RANK = sorted({r["label"] for r in RANK_TERMS})
 AUTH3 = [s for s in t_const.NAME_SHAPES if len(s) > 2 and s[-1] != "."]
 AUTH3_UPPER = [s for s in t_const.NAME_AND_UPPER if len(s) > 2 and s[-1] != "."]
@@ -82,6 +78,7 @@ def build(
         default_labels=default_labels,
     )
 
+    # add.debug_tokens(nlp)  # ###############################
     add.trait_pipe(
         nlp,
         name="taxon_patterns",
@@ -394,17 +391,17 @@ def taxon_auth_patterns():
             keep="taxon",
             decoder=decoder,
             patterns=[
-                "taxon ( auth+             _? )",
-                "taxon ( ambig+            _? )",
-                "taxon ( auth+ and   auth+ _? )",
-                "taxon ( auth+             _? ) A.+  auth3",
-                "taxon ( auth+             _? )      auth3",
-                "taxon ( ambig+            _? )      auth3",
-                "taxon ( auth+ and   auth+ _? ) auth auth3",
-                "taxon ( auth+ and   auth+ _? ) A.+  auth3",
-                "taxon   auth3",
-                "taxon   auth        auth3",
-                "taxon   auth+ and   auth3",
+                "taxon ( auth+  _?               )",
+                "taxon ( ambig+ _?               )",
+                "taxon ( auth+  _? and  auth+ _? )",
+                "taxon ( auth+  _?               ) A.+  auth3 _?",
+                "taxon ( auth+  _?               )      auth3 _?",
+                "taxon ( ambig+ _?               )      auth3 _?",
+                "taxon ( auth+ _? and  auth+ _?  ) auth auth3 _?",
+                "taxon ( auth+ _? and  auth+ _?  ) A.+  auth3 _?",
+                "taxon   auth3 _?",
+                "taxon   auth  _?      auth3 _?",
+                "taxon   auth+ _? and  auth3 _?",
             ],
         ),
         Compiler(
@@ -462,6 +459,9 @@ def taxon_extend_patterns():
             decoder={
                 "(": {"TEXT": {"IN": t_const.OPEN}},
                 ")": {"TEXT": {"IN": t_const.CLOSE}},
+                "_": {"TEXT": {"IN": list(":._;,")}},
+                "A.": {"TEXT": {"REGEX": ABBREV_RE}},
+                "ambig": {"ENT_TYPE": {"IN": AMBIGUOUS}},
                 "and": {"LOWER": {"IN": AND}},
                 "auth": {"SHAPE": {"IN": t_const.NAME_SHAPES}},
                 "auth3": {"SHAPE": {"IN": AUTH3}},
@@ -471,12 +471,16 @@ def taxon_extend_patterns():
             },
             patterns=[
                 "taxon lower_rank+ singleton",
-                "taxon lower_rank+ singleton ( auth+           )",
-                "taxon lower_rank+ singleton ( auth+ and auth+ )",
-                "taxon lower_rank+ singleton ( auth+ and auth+ )",
-                "taxon lower_rank+ singleton   auth3            ",
-                "taxon lower_rank+ singleton   auth+ auth3      ",
-                "taxon lower_rank+ singleton   auth+ and auth3  ",
+                "taxon lower_rank+ singleton ( auth+ _?              )",
+                "taxon lower_rank+ singleton ( auth+ _? and auth+ _? )",
+                "taxon lower_rank+ singleton   auth3 _?               ",
+                "taxon lower_rank+ singleton   auth+ _?     auth3 _?  ",
+                "taxon lower_rank+ singleton   auth+ _? and auth3 _?  ",
+                "taxon lower_rank+ singleton ( auth+  _?               ) A.+  auth3 _?",
+                "taxon lower_rank+ singleton ( auth+  _?               )      auth3 _?",
+                "taxon lower_rank+ singleton ( ambig+ _?               )      auth3 _?",
+                "taxon lower_rank+ singleton ( auth+ _? and  auth+ _?  ) auth auth3 _?",
+                "taxon lower_rank+ singleton ( auth+ _? and  auth+ _?  ) A.+  auth3 _?",
             ],
         ),
     ]

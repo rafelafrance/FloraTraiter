@@ -149,7 +149,7 @@ class TestTaxon(unittest.TestCase):
                     "taxon": "Mimosa sensitiva",
                     "trait": "taxon",
                     "start": 0,
-                    "end": 30,
+                    "end": 31,
                 }
             ],
         )
@@ -175,7 +175,7 @@ class TestTaxon(unittest.TestCase):
                     "authority": "Benth",
                     "trait": "taxon",
                     "start": 30,
-                    "end": 68,
+                    "end": 69,
                 },
             ],
         )
@@ -202,7 +202,7 @@ class TestTaxon(unittest.TestCase):
                     "authority": "Benth",
                     "trait": "taxon",
                     "start": 12,
-                    "end": 50,
+                    "end": 51,
                 },
             ],
         )
@@ -244,7 +244,7 @@ class TestTaxon(unittest.TestCase):
                     "taxon": "Cornus obliqua",
                     "trait": "taxon",
                     "start": 10,
-                    "end": 28,
+                    "end": 29,
                 },
             ],
         )
@@ -323,7 +323,7 @@ class TestTaxon(unittest.TestCase):
                     "authority": "Willd",
                     "trait": "taxon",
                     "start": 0,
-                    "end": 20,
+                    "end": 21,
                 }
             ],
         )
@@ -395,7 +395,7 @@ class TestTaxon(unittest.TestCase):
                     "taxon": "Mimosa sensitiva subsp. varia",
                     "trait": "taxon",
                     "start": 0,
-                    "end": 38,
+                    "end": 39,
                 }
             ],
         )
@@ -410,7 +410,7 @@ class TestTaxon(unittest.TestCase):
                     "taxon": "Mimosa sensitiva subsp. varia",
                     "trait": "taxon",
                     "start": 0,
-                    "end": 45,
+                    "end": 46,
                 }
             ],
         )
@@ -425,7 +425,7 @@ class TestTaxon(unittest.TestCase):
                     "taxon": "Mimosa sensitiva subsp. varia",
                     "trait": "taxon",
                     "start": 0,
-                    "end": 45,
+                    "end": 46,
                 }
             ],
         )
@@ -500,6 +500,49 @@ class TestTaxon(unittest.TestCase):
                     "trait": "taxon",
                     "start": 0,
                     "end": 37,
+                }
+            ],
+        )
+
+    def test_taxon_31(self):
+        self.assertEqual(
+            test("""Quercus/Cytisus/Agrostis"""),
+            [
+                {
+                    "taxon": "Quercus",
+                    "rank": "genus",
+                    "trait": "taxon",
+                    "start": 0,
+                    "end": 7,
+                },
+                {
+                    "taxon": "Cytisus",
+                    "rank": "genus",
+                    "trait": "taxon",
+                    "start": 8,
+                    "end": 15,
+                },
+                {
+                    "taxon": "Agrostis",
+                    "rank": "genus",
+                    "trait": "taxon",
+                    "start": 16,
+                    "end": 24,
+                },
+            ],
+        )
+
+    def test_taxon_32(self):
+        self.assertEqual(
+            test("""Neptunia gracilis Muhl. ex Willd. var. varia (Nutt.) Brewer"""),
+            [
+                {
+                    "taxon": "Neptunia gracilis var. varia",
+                    "rank": "variety",
+                    "trait": "taxon",
+                    "start": 0,
+                    "end": 59,
+                    "authority": ["Muhl and Willd", "Nutt", "Brewer"],
                 }
             ],
         )

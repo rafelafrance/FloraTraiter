@@ -1,8 +1,10 @@
 pattern,ranks
+agrostis,genus species
 asteraceae,family
 brevipinnula,subspecies species
 brevivexillus,variety subspecies
 cornaceae,family
+cytisus,genus
 fabaceae,family
 floridana,variety subspecies form subvariety species
 gracilis,variety subspecies form subvariety subform species
@@ -11,6 +13,7 @@ nuttallii,variety subspecies form species
 pachyphloia,subspecies species
 palma,genus species
 polycarpa,genus variety subspecies form subvariety species
+quercus,genus species
 rhombifolia,variety subspecies form species
 sensitiva,genus variety subspecies species
 spegazzinii,variety subspecies form species
