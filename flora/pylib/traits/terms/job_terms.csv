@@ -31,6 +31,8 @@ job_label,auth,author
 job_label,author,author
 job_label,authors,author
 job_label,cartographer,cartographer
+job_label,confirmed,expert
+job_label,confirmed by,expert
 job_label,conservator,conservator
 job_label,contributor,contributor
 job_label,curatated by,curator

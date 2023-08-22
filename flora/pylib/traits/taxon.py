@@ -422,6 +422,9 @@ def taxon_linnaeus_patterns():
         "(": {"TEXT": {"IN": t_const.OPEN}},
         ")": {"TEXT": {"IN": t_const.CLOSE}},
         ".": {"TEXT": {"IN": t_const.DOT}},
+        "_": {"TEXT": {"IN": list(":._;,")}},
+        "A.": {"TEXT": {"REGEX": ABBREV_RE}},
+        "auth": {"SHAPE": {"IN": t_const.NAME_SHAPES}},
         "auth3": {"SHAPE": {"IN": AUTH3}},
         "L.": {"TEXT": {"REGEX": r"^L[.,_]$"}},
         "linnaeus": {"LOWER": {"IN": LINNAEUS}},
@@ -436,6 +439,9 @@ def taxon_linnaeus_patterns():
             patterns=[
                 "taxon ( linnaeus )",
                 "taxon   linnaeus ",
+                "taxon ( linnaeus ) A.+  auth3 _?",
+                "taxon ( linnaeus )      auth3 _?",
+                "taxon ( linnaeus ) auth auth3 _?",
             ],
         ),
         Compiler(
@@ -639,11 +645,22 @@ def taxon_auth_match(ent):
 
 @registry.misc("taxon_linnaeus_match")
 def taxon_linnaeus_match(ent):
+    auth = []
     for token in ent:
         if token._.flag == "taxon_data":
             ent._.data = token._.data
+        elif token.lower_ in LINNAEUS:
+            pass
+        elif token.shape_ in t_const.NAME_SHAPES:
+            if len(token) == 1:
+                auth.append(token.text + ".")
+            else:
+                auth.append(token.text)
 
-    ent._.data["authority"] = "Linnaeus"
+    if auth:
+        ent._.data["authority"] = ["Linnaeus", " ".join(auth)]
+    else:
+        ent._.data["authority"] = "Linnaeus"
 
     ent[0]._.data = ent._.data
     ent[0]._.flag = "taxon_data"
