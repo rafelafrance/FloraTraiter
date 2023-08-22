@@ -348,12 +348,12 @@ class TestTaxon(unittest.TestCase):
             test("""Mimosa sensitiva (L.) Fox, Trans."""),
             [
                 {
-                    "authority": "Linnaeus",
+                    "authority": ["Linnaeus", "Fox"],
                     "rank": "species",
                     "taxon": "Mimosa sensitiva",
                     "trait": "taxon",
                     "start": 0,
-                    "end": 21,
+                    "end": 26,
                 }
             ],
         )
@@ -543,6 +543,21 @@ class TestTaxon(unittest.TestCase):
                     "start": 0,
                     "end": 59,
                     "authority": ["Muhl and Willd", "Nutt", "Brewer"],
+                }
+            ],
+        )
+
+    def test_taxon_33(self):
+        self.assertEqual(
+            test("""Neptunia gracilis (L.) Pers."""),
+            [
+                {
+                    "taxon": "Neptunia gracilis",
+                    "rank": "species",
+                    "trait": "taxon",
+                    "start": 0,
+                    "end": 28,
+                    "authority": ["Linnaeus", "Pers"],
                 }
             ],
         )
