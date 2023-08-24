@@ -2,9 +2,10 @@
 .ONESHELL:
 
 VENV=.venv
-PYTHON=./$(VENV)/bin/python3.9
+BASE=python3.11
+PYTHON=./$(VENV)/bin/$(BASE)
 PIP_INSTALL=$(PYTHON) -m pip install
-SPACY_MODEL=$(PYTHON) -m spacy download en_core_web_sm
+SPACY_MODEL=$(PYTHON) -m spacy download en_core_web_md
 
 test:
 	$(PYTHON) -m unittest discover
@@ -25,7 +26,7 @@ dev: venv
 	pre-commit install
 
 venv:
-	test -d $(VENV) || python3.9 -m venv $(VENV)
+	test -d $(VENV) || $(BASE) -m venv $(VENV)
 
 clean:
 	rm -r $(VENV)

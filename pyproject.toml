@@ -4,11 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "FloraTraiter"
-version = "1.0.0"
+version = "1.1.0"
 description = ""
 license = {file = "LICENSE"}
 authors = [{name="Raphael LaFrance", email="raphael.lafrance@gmail.com"}]
-requires-python = ">=3.9"
+requires-python = ">=3.11"
 dependencies = [
     "Jinja2",
     "beautifulsoup4",
@@ -40,9 +40,13 @@ optional-dependencies.dev = [
     "pylint",
     "pyright",
     "python-lsp-server[all]",
-    "ruff",
     "yapf",
 ]
+
+[tool.isort]
+py_version=311
+line_length = 88
+force_single_line = true
 
 [tool.setuptools]
 py-modules = []
@@ -53,7 +57,7 @@ max-line-length = 88
 
 [tool.black]
 line-length = 88
-target_version = ["py310"]
+target_version = ["py311"]
 include = '\.pyi?$'
 exclude = '''(
       \.git
@@ -110,9 +114,6 @@ disable = [
     "too-few-public-methods",           # "R0903"
     "too-many-arguments",               # "R0913"
 ]
-
-[tool.ruff]
-line-length = 88
 
 [tool.pyright]
 reportGeneralTypeIssues = "none"
