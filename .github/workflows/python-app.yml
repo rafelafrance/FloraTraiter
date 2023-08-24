@@ -16,13 +16,13 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.9'
+        python-version: '3.11'
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip setuptools wheel
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         python -m pip install .
-        python -m spacy download en_core_web_sm
+        python -m spacy download en_core_web_md
         pip install git+https://github.com/rafelafrance/traiter.git@master#egg=traiter
     - name: Test with unittest
       run: |

@@ -1,15 +1,25 @@
 from traiter.pylib.util import shorten
 
-from . import pipeline
+from flora.pylib import pipeline as full_pipeline
 
-PIPELINE = pipeline.build()
+from . import small_pipeline
 
-# from plants.pylib import const
-# PIPELINE = pipeline.build(const.MODEL_PATH)
-# PIPELINE = pipeline.load(const.MODEL_PATH)
+SMALL_PIPELINE = small_pipeline.build()
+PIPELINE = full_pipeline.build()
 
 
 def test(text: str) -> list[dict]:
+    text = shorten(text)
+    doc = SMALL_PIPELINE(text)
+    traits = [e._.data for e in doc.ents]
+
+    # from pprint import pp
+    # pp(traits, compact=True)
+
+    return traits
+
+
+def test2(text: str) -> list[dict]:
     text = shorten(text)
     doc = PIPELINE(text)
     traits = [e._.data for e in doc.ents]
