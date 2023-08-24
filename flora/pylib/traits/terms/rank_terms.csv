@@ -46,6 +46,8 @@ subspecies_rank,ssp.,lower,subspecies,230,subsp.,lower
 subspecies_rank,subsp,lower,subspecies,230,subsp.,lower
 subspecies_rank,subsp.,lower,subspecies,230,subsp.,lower
 subspecies_rank,subspecies,lower,subspecies,230,subsp.,lower
+variety_rank,v,text,variety,240,var.,lower
+variety_rank,v.,text,variety,240,var.,lower
 variety_rank,var,lower,variety,240,var.,lower
 variety_rank,var.,lower,variety,240,var.,lower
 variety_rank,variant,lower,variety,240,var.,lower

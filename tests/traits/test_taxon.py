@@ -561,3 +561,33 @@ class TestTaxon(unittest.TestCase):
                 }
             ],
         )
+
+    def test_taxon_34(self):
+        self.assertEqual(
+            test("""Neptunia gracilis v.Varia by G. McPherson, confirmed Vink"""),
+            [
+                {
+                    "taxon": "Neptunia gracilis var. varia",
+                    "rank": "variety",
+                    "trait": "taxon",
+                    "start": 0,
+                    "end": 42,
+                    "authority": "G. McPherson",
+                },
+            ],
+        )
+
+    def test_taxon_35(self):
+        self.assertEqual(
+            test("Neptunia gracilis (Torr. & A. Gray ex A. Gray) W.A. Weber & A. Love"),
+            [
+                {
+                    "taxon": "Neptunia gracilis",
+                    "rank": "species",
+                    "trait": "taxon",
+                    "start": 0,
+                    "end": 67,
+                    "authority": "Torr and A. Gray and A. Gray W. A. Weber and A. Love",
+                },
+            ],
+        )
