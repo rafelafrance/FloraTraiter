@@ -1,7 +1,7 @@
-from . import csv_writer as base_writer
+from .base_csv_writer import BaseCsvWriter
 
 
-class CsvWriter(base_writer.CsvWriter):
+class CsvWriter(BaseCsvWriter):
     first = """ family flora_id flora_name taxon taxon_id link path """.split()
 
     def format_row(self, row):

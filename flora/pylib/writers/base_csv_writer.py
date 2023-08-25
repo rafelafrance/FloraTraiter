@@ -2,13 +2,13 @@ from collections import defaultdict
 
 import pandas as pd
 
-from . import writer_utils as w_utils
 from ..traits.part import PART_LABELS
+from . import writer_utils as w_utils
 
 PARTS_SET = set(PART_LABELS + ["multiple_parts"])
 
 
-class CsvWriter:
+class BaseCsvWriter:
     first = []
 
     def __init__(self, out_csv, csv_min=0):

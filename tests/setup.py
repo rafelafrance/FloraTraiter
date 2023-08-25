@@ -1,8 +1,7 @@
 from traiter.pylib.util import shorten
 
-from flora.pylib import pipeline as full_pipeline
-
-from . import small_pipeline
+from flora.pylib.pipelines import full_pipeline
+from flora.pylib.pipelines import small_pipeline
 
 SMALL_PIPELINE = small_pipeline.build()
 PIPELINE = full_pipeline.build()

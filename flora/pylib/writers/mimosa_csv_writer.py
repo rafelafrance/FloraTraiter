@@ -1,7 +1,7 @@
-from . import csv_writer as base_writer
+from .base_csv_writer import BaseCsvWriter
 
 
-class CsvWriter(base_writer.CsvWriter):
+class CsvWriter(BaseCsvWriter):
     first = """ taxon """.split()
 
     def format_row(self, row):

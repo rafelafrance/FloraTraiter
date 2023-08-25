@@ -1,7 +1,8 @@
 import collections
 import html
 import itertools
-from dataclasses import dataclass, field
+from dataclasses import dataclass
+from dataclasses import field
 from datetime import datetime
 
 import jinja2
@@ -17,9 +18,8 @@ SortableTrait = collections.namedtuple("SortableTrait", "label start trait title
 FormattedTrait = collections.namedtuple("FormattedTrait", "text traits raw")
 
 
-# @dataclass(kw_only=True)
-@dataclass
-class HtmlWriterRow:
+@dataclass(kw_only=True)
+class BaseHtmlWriterRow:
     formatted_text: str
     formatted_traits: list[TraitRow] = field(default_factory=list)
 
@@ -37,7 +37,7 @@ class CssClasses:
         return self.classes[label]
 
 
-class HtmlWriter:
+class BaseHtmlWriter:
     def __init__(self, template_dir, template, out_html, spotlight=""):
         self.template_dir = template_dir
         self.template = template

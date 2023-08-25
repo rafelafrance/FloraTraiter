@@ -3,8 +3,6 @@ from collections import namedtuple
 
 from traiter.pylib.util import shorten
 
-from ..db import db
-
 START = -1
 
 TraitsInText = namedtuple("TraitsInText", "label_id text traits data")
@@ -15,7 +13,7 @@ class LabelReader:
         self.labels = self.read_traits(args.database, args.trait_set)
 
     @staticmethod
-    def read_traits(database, trait_set):
+    def read_traits(traits):
         labels = []
         prev_label_id = START
         record = TraitsInText(label_id=START, text="", traits=[], data={})

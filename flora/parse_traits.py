@@ -3,10 +3,9 @@ import argparse
 import textwrap
 from pathlib import Path
 
-from pylib import validate_args
-from pylib.traits import ner
-from pylib.traits.label_reader import LabelReader
-from pylib.traits.writers.html_writer import HtmlWriter
+from pylib import parser
+from pylib.readers.label_reader import LabelReader
+from pylib.writers.label_html_writer import HtmlWriter
 from traiter.pylib import log
 
 
@@ -14,7 +13,10 @@ def main():
     log.started()
     args = parse_args()
 
-    ner.ner(args)
+    labels = parser.parse(args)
+
+    if args.jsonl_dir:
+        ...
 
     if args.out_html:
         reader = LabelReader(args)
@@ -25,32 +27,43 @@ def main():
 
 
 def parse_args() -> argparse.Namespace:
-    description = """Extract information from the labels."""
-
     arg_parser = argparse.ArgumentParser(
-        description=textwrap.dedent(description), fromfile_prefix_chars="@"
+        fromfile_prefix_chars="@",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        description=textwrap.dedent(
+            """
+            Extract floral trait information from text files.
+
+            Label images are not required but when you use them
+            the text and label image file stems must match.
+
+            A file stem is a file name without the directories and
+            without the file suffix:
+            /my_dir/stuff/my_label.txt -> my_label
+            """
+        ),
     )
 
     arg_parser.add_argument(
-        "--database",
+        "--text-dir",
         metavar="PATH",
         type=Path,
         required=True,
-        help="""Path to a digi-leap database.""",
+        help="""Directory containing the input text files.""",
     )
 
     arg_parser.add_argument(
-        "--trait-set",
-        required=True,
-        metavar="NAME",
-        help="""Name the trait set.""",
+        "--label-dir",
+        metavar="PATH",
+        type=Path,
+        help="""Directory containing the images of labels.""",
     )
 
     arg_parser.add_argument(
-        "--ocr-set",
-        required=True,
-        metavar="NAME",
-        help="""Extract traits from this OCR set.""",
+        "--jsonl-dir",
+        metavar="PATH",
+        type=Path,
+        help="""Output JSONL trait files to this directory.""",
     )
 
     arg_parser.add_argument(
@@ -92,27 +105,12 @@ def parse_args() -> argparse.Namespace:
     )
 
     arg_parser.add_argument(
-        "--label-id",
-        type=int,
-        metavar="ID",
-        help="""Select only this label ID. Used for testing.""",
-    )
-
-    arg_parser.add_argument(
         "--spotlight",
         metavar="TRAIT",
         help="""This trait will get its own color for HTML output.""",
     )
 
-    arg_parser.add_argument(
-        "--notes",
-        default="",
-        metavar="TEXT",
-        help="""Notes about this run. Enclose them in quotes.""",
-    )
-
     args = arg_parser.parse_args()
-    validate_args.validate_ocr_set(args.database, args.ocr_set)
     return args
 
 

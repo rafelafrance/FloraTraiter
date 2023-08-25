@@ -1,27 +1,17 @@
 #!/usr/bin/env python3
-# import tomllib
+import tomllib
 from distutils.core import setup
+
 from setuptools import find_packages
 
 
-# def read_pyproject():
-#     with open("pyproject.toml", "rb") as in_file:
-#         settings = tomllib.load(in_file)
-#     return settings
+def read_pyproject():
+    with open("pyproject.toml", "rb") as in_file:
+        settings = tomllib.load(in_file)
+    return settings
 
 
-# SETTINGS = read_pyproject()
-SETTINGS = {
-    "project": {
-        "name": "FloraTraiter",
-        "version": "1.0.0",
-        "description": "",
-        "dependencies": [
-            "pandas",
-            "spacy",
-        ],
-    },
-}
+SETTINGS = read_pyproject()
 
 
 def readme():
