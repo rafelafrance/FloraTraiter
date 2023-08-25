@@ -1,8 +1,8 @@
 from collections import defaultdict
 from collections import namedtuple
 
-from .. import pipeline
-from .. import sentence_pipeline
+from ..pipelines import sentence_pipeline
+from ..pipelines import small_pipeline
 
 TraitsInText = namedtuple("TraitsInText", "text traits")
 TraitsByTaxon = namedtuple("TraitsByTaxon", "taxon traits")
@@ -40,7 +40,7 @@ class TraitsByTaxonList:
 class BaseReader:
     def __init__(self, args):
         self.lines = self.read_lines(args.in_text, args.limit)
-        self.nlp = pipeline.build()
+        self.nlp = small_pipeline.build()
         self.sent_nlp = sentence_pipeline.pipeline()
         self.text_traits = []
         self.taxon_traits = defaultdict(list)

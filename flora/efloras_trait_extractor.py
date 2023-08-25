@@ -4,8 +4,6 @@ import sys
 import textwrap
 from pathlib import Path
 
-from pylib import pipeline
-
 from pylib.readers import efloras_reader as reader
 from pylib.writers.efloras_csv_writer import CsvWriter
 from pylib.writers.efloras_html_writer import HtmlWriter

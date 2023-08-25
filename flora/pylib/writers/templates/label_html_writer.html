@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8" />
+<title>Traiter</title>
+<style>
+{% include 'plant_templates/html_writer.css' -%}
+</style>
+</head>
+<body>
+<h1>{{ file_name }}: {{ now }}</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        <button class="toggle closed" title="Show or hide all extractions">
+        </button>
+      </th>
+      <th>Label ID</th>
+      <th>Label Text</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for row in rows %}
+    <tr>
+      <td>
+        <button class="toggle closed" title="Show or hide the extractions"
+            data-text-id="{{ row.label_id }}">
+        </button>
+      </td>
+      <td>{{ row.label_id }}</td>
+      <td class="text">{{ row.formatted_text | safe }}</td>
+    </tr>
+    <tr class="term closed" data-text-id="{{ row.label_id }}">
+      <td></td>
+      <td colspan="2"><img src="data:image/jpeg;base64,{{ row.label_image }}" /></td>
+    </tr>
+    <tr class="term closed" data-text-id="{{ row.label_id }}">
+      <td></td>
+      <td>Score</td>
+      <td>{{ row.ratio }} = {{ row.spell_count }} / {{ row.word_count }}</td>
+    </tr>
+    <tr class="term closed" data-text-id="{{ row.label_id }}">
+      <td></td>
+      <td class="sub-header">Trait Label</td>
+      <td class="sub-header">Trait Data</td>
+    </tr>
+    {% for trait in row.formatted_traits %}
+    <tr class="term closed" data-text-id="{{ row.label_id }}">
+      <td></td>
+      <td>{{ trait.label | safe }}</td>
+      <td>{{ trait.data | safe }}</td>
+    </tr>
+    {% endfor %}
+  {% endfor %}
+  </tbody>
+</table>
+
+<script>
+{% include 'plant_templates/html_writer.js' -%}
+</script>
+
+<script>
+{% include 'html_writer.js' -%}
+</script>
+
+</body>
+</html>

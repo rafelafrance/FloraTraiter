@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 
-from .html_writer import HtmlWriter as BaseWriter
-from .html_writer import HtmlWriterRow as BaseHtmlWriterRow
 from tqdm import tqdm
 
 from .. import const
+from .base_html_writer import BaseHtmlWriter
+from .base_html_writer import BaseHtmlWriterRow
 
 
 # @dataclass(kw_only=True)
@@ -18,7 +18,7 @@ class HtmlWriterRow(BaseHtmlWriterRow):
     path: str = ""
 
 
-class HtmlWriter(BaseWriter):
+class HtmlWriter(BaseHtmlWriter):
     def __init__(self, out_html):
         super().__init__(
             template_dir=f"{const.ROOT_DIR}/pylib/writers/templates",
