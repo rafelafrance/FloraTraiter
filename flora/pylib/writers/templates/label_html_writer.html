@@ -5,11 +5,15 @@
 <meta charset="utf-8" />
 <title>Traiter</title>
 <style>
-{% include 'plant_templates/html_writer.css' -%}
+{% include 'html_writer.css' -%}
 </style>
 </head>
 <body>
 <h1>{{ file_name }}: {{ now }}</h1>
+
+{% for row in summary %}
+  <div>{{ row }}</div>
+{% endfor %}
 
 <table>
   <thead>
@@ -35,12 +39,13 @@
     </tr>
     <tr class="term closed" data-text-id="{{ row.label_id }}">
       <td></td>
-      <td colspan="2"><img src="data:image/jpeg;base64,{{ row.label_image }}" /></td>
+      <td></td>
+      <td><img src="data:image/jpeg;base64,{{ row.label_image }}"/></td>
     </tr>
     <tr class="term closed" data-text-id="{{ row.label_id }}">
       <td></td>
       <td>Score</td>
-      <td>{{ row.ratio }} = {{ row.spell_count }} / {{ row.word_count }}</td>
+      <td>{{ row.score }} = {{ row.valid_words }} / {{ row.word_count }}</td>
     </tr>
     <tr class="term closed" data-text-id="{{ row.label_id }}">
       <td></td>
@@ -59,11 +64,11 @@
 </table>
 
 <script>
-{% include 'plant_templates/html_writer.js' -%}
+{% include 'html_writer.js' -%}
 </script>
 
 <script>
-{% include 'html_writer.js' -%}
+{% include 'label_html_writer.js' -%}
 </script>
 
 </body>

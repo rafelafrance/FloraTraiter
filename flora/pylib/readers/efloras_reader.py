@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from dataclasses import field
 from datetime import datetime
 from itertools import product
+from pathlib import Path
 
 from bs4 import BeautifulSoup
 from tqdm import tqdm
@@ -14,6 +15,20 @@ from ..traits.part import PART_LABELS
 TAXON_TITLE = "Accepted Name"
 
 PARTS_SET = set(PART_LABELS)
+
+
+@dataclass()
+class LabelTreatment:
+    path: str | Path
+    text: str = ""
+    traits: list[dict] = field(default_factory=list)
+    id: str = ""
+    family: str = ""
+    flora_id: str = ""
+    flora_name: str = ""
+    taxon: str = ""
+    taxon_id: str = ""
+    link: str = ""
 
 
 @dataclass
