@@ -162,3 +162,28 @@ class TestLocality(unittest.TestCase):
                 },
             ],
         )
+
+    def test_locality_10(self):
+        self.assertEqual(
+            test2(
+                """
+                LOCATION Along Rte. 39, 9.1 mi SEof Santiago Papasquiaro.
+                HABITAT Pine-juniper-oak-acacia zone.
+                """
+            ),
+            [
+                {
+                    "locality": "Along Rte. 39, 9.1 mi SEof Santiago Papasquiaro.",
+                    "labeled": True,
+                    "trait": "locality",
+                    "start": 0,
+                    "end": 57,
+                },
+                {
+                    "habitat": "Pine-juniper-oak-acacia zone.",
+                    "trait": "habitat",
+                    "start": 58,
+                    "end": 95,
+                },
+            ],
+        )

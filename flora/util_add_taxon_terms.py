@@ -1,5 +1,12 @@
 #!/usr/bin/env python3
-"""Mostly use binomials names for species and monomials for higher and lower taxa."""
+""" This builds taxon terms from downloaded data.
+
+1. [ITIS sqlite database](https://www.itis.gov/downloads/index.html)
+2. [The WFO Plant List](https://wfoplantlist.org/plant-list/classifications)
+3. [Plant of the World Online](http://sftp.kew.org/pub/data-repositories/WCVP/)
+4. [Some miscellaneous taxa not found in the other sources.]
+   (./flora/pylib/traits/terms/other_taxa.csv)
+"""
 import argparse
 import csv
 import logging
@@ -14,12 +21,11 @@ from zipfile import ZipFile
 
 import regex
 from pylib import const
+from pylib.traits import terms
 from tqdm import tqdm
 from traiter.pylib import log
 from traiter.pylib import term_util as tu
 from traiter.pylib.traits import terms as t_terms
-
-from pylib.traits import terms
 
 ITIS_SPECIES_ID = 220
 

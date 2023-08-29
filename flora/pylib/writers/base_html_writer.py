@@ -114,7 +114,8 @@ class BaseHtmlWriter:
 
         return traits
 
-    def write_template(self, in_file_name=""):
+    def write_template(self, in_file_name="", summary=None):
+        summary = summary if summary else []
         env = jinja2.Environment(
             loader=jinja2.FileSystemLoader(self.template_dir),
             autoescape=True,
@@ -124,6 +125,7 @@ class BaseHtmlWriter:
             now=datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M"),
             file_name=in_file_name,
             rows=self.formatted,
+            summary=summary,
         )
 
         with open(self.out_html, "w") as html_file:

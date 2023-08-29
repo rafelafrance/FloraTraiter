@@ -5,6 +5,7 @@ This repository merges three older repositories:
 - `traiter_plants`
 - `traiter_efloras`
 - `traiter_mimosa`
+- Parts of `digi_leap`
 
 More merging for other Traiter repositories for plant traits may occur.
 
