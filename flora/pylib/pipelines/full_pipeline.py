@@ -28,6 +28,8 @@ from flora.pylib.traits import surface
 from flora.pylib.traits import taxon
 from flora.pylib.traits import taxon_like
 
+# from traiter.pylib.pipes import debug
+
 
 def build(model_path=None):
     extensions.add_extensions()
@@ -45,14 +47,15 @@ def build(model_path=None):
 
     elevation.build(nlp)
     geocoordinates.build(nlp)
+    # debug.ents(nlp)  # ################################################
 
     color.build(nlp)
     habitat.build(nlp)
 
     misc.build(nlp)
 
+    person.build(nlp, overwrite=["subpart", "color", "admin_unit"])
     numeric.build(nlp)
-    person.build(nlp, overwrite=["subpart", "color", "count", "admin_unit"])
 
     habit.build(nlp)
     margin.build(nlp)
@@ -75,6 +78,7 @@ def build(model_path=None):
     associated_taxon.build(nlp)
 
     locality.build(nlp)
+    # debug.ents(nlp)  # ################################################
 
     if model_path:
         nlp.to_disk(model_path)

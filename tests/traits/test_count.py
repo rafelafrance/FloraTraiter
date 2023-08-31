@@ -1,5 +1,6 @@
 import unittest
 
+from tests.setup import full_test
 from tests.setup import test
 
 
@@ -844,4 +845,38 @@ class TestCount(unittest.TestCase):
         self.assertEqual(
             test("""7.5’ shrubs."""),
             [{"end": 11, "plant_part": "shrub", "start": 5, "trait": "plant_part"}],
+        )
+
+    def test_count_53(self):
+        self.assertEqual(
+            full_test("""24 heads on 3-4 flowering stems;"""),
+            [
+                {
+                    "low": 24,
+                    "trait": "count",
+                    "start": 0,
+                    "end": 2,
+                    "inflorescence": "head",
+                },
+                {
+                    "trait": "inflorescence",
+                    "inflorescence": "head",
+                    "start": 3,
+                    "end": 8,
+                },
+                {
+                    "low": 3,
+                    "high": 4,
+                    "trait": "count",
+                    "start": 12,
+                    "end": 15,
+                    "flower_part": "flowering stem",
+                },
+                {
+                    "trait": "flower_part",
+                    "flower_part": "flowering stem",
+                    "start": 16,
+                    "end": 31,
+                },
+            ],
         )

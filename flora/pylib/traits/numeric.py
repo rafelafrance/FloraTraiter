@@ -59,6 +59,7 @@ def build(nlp: Language):
         name="range_patterns",
         compiler=range_patterns(),
     )
+    # add.debug_tokens(nlp)  # #########################################
     add.trait_pipe(
         nlp,
         name="numeric_patterns",

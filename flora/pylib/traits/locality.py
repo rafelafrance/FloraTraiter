@@ -85,8 +85,9 @@ def locality_patterns():
         ",": {"TEXT": {"IN": PUNCT}},
         "'s": {"POS": "PART"},
         "9": {"LIKE_NUM": True},
-        "and": {"POS": {"IN": "ADP AUX CCONJ DET NUM SCONJ".split()}},
+        "and": {"POS": {"IN": "ADP AUX CCONJ DET NUM SCONJ SPACE".split()}},
         "loc": {"ENT_TYPE": "loc"},
+        "sp": {"IS_SPACE": True},
         "trait": {"ENT_TYPE": {"IN": ALL_TRAITS}},
     }
     return [
@@ -117,7 +118,7 @@ def extend_locality():
             decoder={
                 ",": {"TEXT": {"IN": PUNCT}},
                 "9": {"LIKE_NUM": True},
-                "and": {"POS": {"IN": "ADP AUX CCONJ DET NUM SCONJ".split()}},
+                "and": {"POS": {"IN": "ADP AUX CCONJ DET NUM SCONJ SPACE".split()}},
                 "loc": {"ENT_TYPE": "loc"},
                 "locality": {"ENT_TYPE": "locality"},
                 "rt": {"LOWER": {"REGEX": r"^\w[\w.]{,2}$"}},
@@ -147,6 +148,7 @@ def end_locality():
         "locality": {"ENT_TYPE": "locality"},
         "in_sent": {"IS_SENT_START": False},
         "sent_start": {"IS_SENT_START": True},
+        "sp": {"IS_SPACE": True},
         "trait": {"ENT_TYPE": {"IN": OUTER_TRAITS}},
         "word": {"IS_ALPHA": True},
     }
@@ -157,9 +159,9 @@ def end_locality():
             decoder=decoder,
             keep="locality",
             patterns=[
-                "locality+ ,? word? trait+ .",
-                "locality+ ,? word? 9+ .",
-                "locality+ ,? word+ .",
+                "locality+ ,? sp? word? sp? trait+ .",
+                "locality+ ,? sp? word? sp? 9+ .",
+                "locality+ ,? sp? word+ sp? .",
             ],
         ),
         Compiler(
@@ -177,7 +179,9 @@ def end_locality():
 
 @registry.misc("locality_match")
 def locality_match(ent):
-    ent._.data = {"locality": ent.text.lstrip("(")}
+    loc = ent.text.lstrip("(")
+    loc = " ".join(loc.split())
+    ent._.data = {"locality": loc}
 
 
 @registry.misc("labeled_locality_match")

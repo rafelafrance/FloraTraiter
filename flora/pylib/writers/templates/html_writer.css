@@ -66,6 +66,30 @@ td, th {
   font-weight: 500;
 }
 
+.small {
+  font-size: small;
+}
+
+header div {
+  font-size: 16px;
+  width: 280px;
+  margin-bottom: 4px;
+}
+
+header div label, section div label {
+  text-align: right;
+  display: inline-block;
+  width: 200px;
+}
+
+header div span {
+  float: right;
+}
+
+section div span {
+  margin-left: 2em;
+}
+
 .bold { font-weight: bold; }
 .bold-italic { font-weight: bold; font-style: italic; }
 

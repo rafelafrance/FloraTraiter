@@ -54,6 +54,8 @@ job_label,georeferencer,georeferencer
 job_label,grower,grower
 job_label,grown by,grower
 job_label,horticulturalist,horticulturalist
+job_label,identifier,identifier
+job_label,identified by,identifier
 job_label,illustrated by,illustrator
 job_label,illustrator,illustrator
 job_label,managed by,manager

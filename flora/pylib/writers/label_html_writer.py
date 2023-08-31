@@ -50,14 +50,14 @@ class HtmlWriter(BaseHtmlWriter):
             )
 
         total = len(labels.labels)
-        summary = [
-            (
-                f"Total labels = {total}"
-                f"kept = {total - length_cutoff - score_cutoff}"
-            ),
-            f"total removed = {length_cutoff + score_cutoff}",
-            f"too short = {length_cutoff} (threshold {args.length_cutoff})",
-            f"score too low = {score_cutoff} (threshold {args.score_cutoff})",
-        ]
+        summary = {
+            "Total labels:": total,
+            "Kept:": total - length_cutoff - score_cutoff,
+            "Total removed:": length_cutoff + score_cutoff,
+            "Too short:": length_cutoff,
+            "Score too low:": score_cutoff,
+            "Length cutoff:": args.length_cutoff,
+            "Score cutoff:": args.score_cutoff,
+        }
 
-        self.write_template(args.text_dir, summary=summary)
+        self.write_template(args.text_dir, args.image_dir, summary=summary)

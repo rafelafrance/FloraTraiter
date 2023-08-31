@@ -1,13 +1,13 @@
 import unittest
 
-from tests.setup import test2
+from tests.setup import full_test
 
 
 class TestLabels(unittest.TestCase):
     def test_label_01(self):
         self.maxDiff = None
         self.assertEqual(
-            test2(
+            full_test(
                 """
                 Tarleton State University Herbarium (TAC) Cornus obliqua (Benth)
                 Texas, Mason County: Mason: 5 miles North of Mason off Hwy 386. Mason
@@ -63,7 +63,7 @@ class TestLabels(unittest.TestCase):
 
     def test_label_02(self):
         self.assertEqual(
-            test2(
+            full_test(
                 """
                 Fraijanes, Alaeloa Costa Rica
                 Cornaceae

@@ -1,13 +1,13 @@
 import unittest
 
-from tests.setup import test2
+from tests.setup import full_test
 
 
 class TestOtherJob(unittest.TestCase):
     def test_other_job_01(self):
         """It gets a job notation."""
         self.assertEqual(
-            test2("""Verified by: John Kinsman:"""),
+            full_test("""Verified by: John Kinsman:"""),
             [
                 {
                     "worker": "John Kinsman",
