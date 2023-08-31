@@ -11,9 +11,14 @@
 <body>
 <h1>{{ file_name }}: {{ now }}</h1>
 
-{% for row in summary %}
-  <div>{{ row }}</div>
+<header>
+{% for label, value in summary.items() %}
+  <div><label>{{ label }}</label><span>{{ value }}</span></div>
 {% endfor %}
+</header>
+<section>
+    <div><label>Label image dir:</label><span>{{ image_dir }}</span></div>
+</section>
 
 <table>
   <thead>
@@ -34,7 +39,7 @@
             data-text-id="{{ row.label_id }}">
         </button>
       </td>
-      <td>{{ row.label_id }}</td>
+      <td><span class="small">{{ row.label_id | safe }}</span></td>
       <td class="text">{{ row.formatted_text | safe }}</td>
     </tr>
     <tr class="term closed" data-text-id="{{ row.label_id }}">

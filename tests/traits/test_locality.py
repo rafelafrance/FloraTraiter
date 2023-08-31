@@ -1,12 +1,12 @@
 import unittest
 
-from tests.setup import test2
+from tests.setup import full_test
 
 
 class TestLocality(unittest.TestCase):
     def test_locality_01(self):
         self.assertEqual(
-            test2("""5 miles North of Mason off Hwy 386."""),
+            full_test("""5 miles North of Mason off Hwy 386."""),
             [
                 {
                     "locality": "5 miles North of Mason off Hwy 386.",
@@ -19,7 +19,7 @@ class TestLocality(unittest.TestCase):
 
     def test_locality_02(self):
         self.assertEqual(
-            test2(
+            full_test(
                 """
                 Tunkhannock Twp. Pocono Pines Quadrangle. Mud Run, Stonecrest Park,.16
                 miles SSW of Long Pond, PA. Headwaters wetland of Indiana Mountains
@@ -57,13 +57,13 @@ class TestLocality(unittest.TestCase):
 
     def test_locality_03(self):
         self.assertEqual(
-            test2("""; files. purple."""),
+            full_test("""; files. purple."""),
             [],
         )
 
     def test_locality_04(self):
         self.assertEqual(
-            test2("""(Florida's Turnpike)"""),
+            full_test("""(Florida's Turnpike)"""),
             [
                 {
                     "locality": "Florida's Turnpike",
@@ -76,7 +76,7 @@ class TestLocality(unittest.TestCase):
 
     def test_locality_05(self):
         self.assertEqual(
-            test2(
+            full_test(
                 """
                 Wallowa-Whitman National Forest, Forest Service Road 7312.
                 """
@@ -94,7 +94,9 @@ class TestLocality(unittest.TestCase):
 
     def test_locality_06(self):
         self.assertEqual(
-            test2("""Sonoran Desert scrub, disturbed trail side. Occasional annual."""),
+            full_test(
+                """Sonoran Desert scrub, disturbed trail side. Occasional annual."""
+            ),
             [
                 {
                     "habitat": "sonoran desert scrub",
@@ -119,7 +121,7 @@ class TestLocality(unittest.TestCase):
 
     def test_locality_07(self):
         self.assertEqual(
-            test2(
+            full_test(
                 """
                 Arizona Uppland Sonoran Desert desert scrub, flats.
                 Sandy soil Local erecta annual,
@@ -127,10 +129,10 @@ class TestLocality(unittest.TestCase):
             ),
             [
                 {
-                    "locality": "Arizona Uppland Sonoran Desert desert scrub, flats.",
-                    "trait": "locality",
-                    "start": 0,
-                    "end": 51,
+                    "habitat": "uppland sonoran desert desert scrub flats",
+                    "trait": "habitat",
+                    "start": 8,
+                    "end": 50,
                 },
                 {"habitat": "sandy soil", "trait": "habitat", "start": 52, "end": 62},
                 {
@@ -144,13 +146,13 @@ class TestLocality(unittest.TestCase):
 
     def test_locality_08(self):
         self.assertEqual(
-            test2("""Scattered on edge of forest;"""),
+            full_test("""Scattered on edge of forest;"""),
             [{"end": 27, "habitat": "edge of forest", "start": 13, "trait": "habitat"}],
         )
 
     def test_locality_09(self):
         self.assertEqual(
-            test2("""lobes turned out or black."""),
+            full_test("""lobes turned out or black."""),
             [
                 {"trait": "subpart", "subpart": "lobe", "start": 0, "end": 5},
                 {
@@ -165,7 +167,7 @@ class TestLocality(unittest.TestCase):
 
     def test_locality_10(self):
         self.assertEqual(
-            test2(
+            full_test(
                 """
                 LOCATION Along Rte. 39, 9.1 mi SEof Santiago Papasquiaro.
                 HABITAT Pine-juniper-oak-acacia zone.

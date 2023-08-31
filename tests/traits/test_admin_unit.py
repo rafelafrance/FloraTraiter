@@ -1,13 +1,13 @@
 import unittest
 
-from tests.setup import test2
+from tests.setup import full_test
 
 
 class TestAdminUnit(unittest.TestCase):
     def test_admin_unit_01(self):
         """It gets a county notation."""
         self.assertEqual(
-            test2("""Hempstead County"""),
+            full_test("""Hempstead County"""),
             [
                 {
                     "us_county": "Hempstead",
@@ -21,14 +21,14 @@ class TestAdminUnit(unittest.TestCase):
     def test_admin_unit_02(self):
         """A label is required."""
         self.assertEqual(
-            test2("""Watauga"""),
+            full_test("""Watauga"""),
             [],
         )
 
     def test_admin_unit_03(self):
         """It handles a confusing county notation."""
         self.assertEqual(
-            test2("""Flora of ARKANSAS County: MISSISSIPPI"""),
+            full_test("""Flora of ARKANSAS County: MISSISSIPPI"""),
             [
                 {
                     "us_county": "Mississippi",
@@ -43,14 +43,14 @@ class TestAdminUnit(unittest.TestCase):
     def test_admin_unit_04(self):
         """It handles a county label before the county name."""
         self.assertEqual(
-            test2("""COUNTY: Lee"""),
+            full_test("""COUNTY: Lee"""),
             [{"us_county": "Lee", "trait": "admin_unit", "start": 0, "end": 11}],
         )
 
     def test_admin_unit_05(self):
         """It handles a trailing county abbreviation."""
         self.assertEqual(
-            test2("""Alleghany Co,"""),
+            full_test("""Alleghany Co,"""),
             [
                 {
                     "us_county": "Alleghany",
@@ -64,7 +64,7 @@ class TestAdminUnit(unittest.TestCase):
     def test_admin_unit_06(self):
         """It handles a state abbreviation."""
         self.assertEqual(
-            test2("""Desha Co., Ark."""),
+            full_test("""Desha Co., Ark."""),
             [
                 {
                     "us_state": "Arkansas",
@@ -79,7 +79,7 @@ class TestAdminUnit(unittest.TestCase):
     def test_admin_unit_07(self):
         """It gets a state notation."""
         self.assertEqual(
-            test2("""PLANTS OF ARKANSAS"""),
+            full_test("""PLANTS OF ARKANSAS"""),
             [
                 {
                     "us_state": "Arkansas",
@@ -93,7 +93,7 @@ class TestAdminUnit(unittest.TestCase):
     def test_admin_unit_08(self):
         """It gets a multi-word state notation."""
         self.assertEqual(
-            test2("""PLANTS OF NORTH CAROLINA"""),
+            full_test("""PLANTS OF NORTH CAROLINA"""),
             [
                 {
                     "us_state": "North Carolina",
@@ -107,7 +107,7 @@ class TestAdminUnit(unittest.TestCase):
     def test_admin_unit_09(self):
         """It gets a state notation separated from the county."""
         self.assertEqual(
-            test2(
+            full_test(
                 """
                 APPALACHIAN STATE UNIVERSITY HERBARIUM
                 PLANTS OF NORTH CAROLINA
@@ -134,7 +134,7 @@ class TestAdminUnit(unittest.TestCase):
     def test_admin_unit_10(self):
         """It parses multi-word counties and states."""
         self.assertEqual(
-            test2("""Cape May, New Jersey"""),
+            full_test("""Cape May, New Jersey"""),
             [
                 {
                     "us_county": "Cape May",
@@ -149,7 +149,7 @@ class TestAdminUnit(unittest.TestCase):
     def test_admin_unit_11(self):
         """County vs colorado (CO)."""
         self.assertEqual(
-            test2("""ARCHULETA CO"""),
+            full_test("""ARCHULETA CO"""),
             [
                 {
                     "us_county": "Archuleta",
@@ -163,7 +163,7 @@ class TestAdminUnit(unittest.TestCase):
     def test_admin_unit_12(self):
         """County vs colorado (CO)."""
         self.assertEqual(
-            test2("""Archuleta CO"""),
+            full_test("""Archuleta CO"""),
             [
                 {
                     "us_state": "Colorado",
@@ -178,20 +178,20 @@ class TestAdminUnit(unittest.TestCase):
     def test_admin_unit_13(self):
         """It does not pick up label headers and footers."""
         self.assertEqual(
-            test2("""The University of Georgia Athens, GA, U.S.A."""),
+            full_test("""The University of Georgia Athens, GA, U.S.A."""),
             [{"country": "USA", "end": 44, "start": 38, "trait": "admin_unit"}],
         )
 
     def test_admin_unit_14(self):
         """It does not pick up label headers and footers."""
         self.assertEqual(
-            test2("""Tree The New York Botanical Garden Herbarium"""),
+            full_test("""Tree The New York Botanical Garden Herbarium"""),
             [{"end": 4, "plant_part": "tree", "start": 0, "trait": "plant_part"}],
         )
 
     def test_admin_unit_15(self):
         self.assertEqual(
-            test2("""St. Lucie Co.: Fort Pierce."""),
+            full_test("""St. Lucie Co.: Fort Pierce."""),
             [
                 {
                     "us_county": "St. Lucie",

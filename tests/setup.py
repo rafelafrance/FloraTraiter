@@ -1,3 +1,4 @@
+from traiter.pylib.util import compress
 from traiter.pylib.util import shorten
 
 from flora.pylib.pipelines import full_pipeline
@@ -18,8 +19,8 @@ def test(text: str) -> list[dict]:
     return traits
 
 
-def test2(text: str) -> list[dict]:
-    text = shorten(text)
+def full_test(text: str) -> list[dict]:
+    text = compress(text)
     doc = PIPELINE(text)
     traits = [e._.data for e in doc.ents]
 

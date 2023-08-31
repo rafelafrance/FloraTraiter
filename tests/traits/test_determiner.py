@@ -1,13 +1,13 @@
 import unittest
 
-from tests.setup import test2
+from tests.setup import full_test
 
 
 class TestDeterminer(unittest.TestCase):
     def test_determiner_01(self):
         """It gets a multiple name notations."""
         self.assertEqual(
-            test2("""Det;; N. H Russell 195"""),
+            full_test("""Det;; N. H Russell 195"""),
             [
                 {
                     "determiner_no": "195",

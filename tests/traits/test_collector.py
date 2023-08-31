@@ -1,13 +1,13 @@
 import unittest
 
-from tests.setup import test2
+from tests.setup import full_test
 
 
 class TestCollector(unittest.TestCase):
     def test_collector_01(self):
         """It gets a multiple name notations."""
         self.assertEqual(
-            test2("""Sarah Nunn and S. Jacobs and R. Mc Elderry 9480"""),
+            full_test("""Sarah Nunn and S. Jacobs and R. Mc Elderry 9480"""),
             [
                 {
                     "collector_no": "9480",
@@ -22,7 +22,7 @@ class TestCollector(unittest.TestCase):
     def test_collector_02(self):
         """It does not include the determiner."""
         self.assertEqual(
-            test2(
+            full_test(
                 """
                 Det, Edwin B. Smith
                 Coll. Marie P. Locke No. 5595
@@ -48,7 +48,7 @@ class TestCollector(unittest.TestCase):
     def test_collector_03(self):
         """It handles a bad name."""
         self.assertEqual(
-            test2("""Collected by _Wayne.. Hutchins."""),
+            full_test("""Collected by _Wayne.. Hutchins."""),
             [
                 {
                     "collector": "Wayne Hutchins",
@@ -62,7 +62,7 @@ class TestCollector(unittest.TestCase):
     def test_collector_04(self):
         """It handles random words matching names."""
         self.assertEqual(
-            test2("""Collected by _Wayne.. Hutchins."""),
+            full_test("""Collected by _Wayne.. Hutchins."""),
             [
                 {
                     "collector": "Wayne Hutchins",
@@ -76,7 +76,7 @@ class TestCollector(unittest.TestCase):
     def test_collector_05(self):
         """It parses name suffixes."""
         self.assertEqual(
-            test2("Coll. E. E. Dale, Jr. No. 6061"),
+            full_test("Coll. E. E. Dale, Jr. No. 6061"),
             [
                 {
                     "collector_no": "6061",
@@ -91,7 +91,7 @@ class TestCollector(unittest.TestCase):
     def test_collector_06(self):
         """It parses collectors separated by 'with'."""
         self.assertEqual(
-            test2("Sarah Nunn with Angela Brown 7529 20 October 2002 of"),
+            full_test("Sarah Nunn with Angela Brown 7529 20 October 2002 of"),
             [
                 {
                     "collector_no": "7529",
@@ -112,7 +112,7 @@ class TestCollector(unittest.TestCase):
     def test_collector_07(self):
         """It parses collectors separated by '&'."""
         self.assertEqual(
-            test2("""Collector: Christopher Reid & Sarah Nunn 2018"""),
+            full_test("""Collector: Christopher Reid & Sarah Nunn 2018"""),
             [
                 {
                     "collector_no": "2018",
@@ -127,7 +127,7 @@ class TestCollector(unittest.TestCase):
     def test_collector_08(self):
         """It handles a number sign."""
         self.assertEqual(
-            test2("""George P. Johnson #5689"""),
+            full_test("""George P. Johnson #5689"""),
             [
                 {
                     "collector_no": "5689",
@@ -142,7 +142,7 @@ class TestCollector(unittest.TestCase):
     def test_collector_09(self):
         """It handles a name with a prefix."""
         self.assertEqual(
-            test2("""Col Mrs. Jim Miller No. 736"""),
+            full_test("""Col Mrs. Jim Miller No. 736"""),
             [
                 {
                     "collector_no": "736",
@@ -156,7 +156,7 @@ class TestCollector(unittest.TestCase):
 
     def test_collector_10(self):
         self.assertEqual(
-            test2("""collected by Merle Dortmond"""),
+            full_test("""collected by Merle Dortmond"""),
             [
                 {
                     "collector": "Merle Dortmond",
@@ -169,13 +169,13 @@ class TestCollector(unittest.TestCase):
 
     def test_collector_11(self):
         self.assertEqual(
-            test2(""" Grassland, GPS 30°"""),
+            full_test(""" Grassland, GPS 30°"""),
             [{"habitat": "grassland", "trait": "habitat", "start": 0, "end": 9}],
         )
 
     def test_collector_12(self):
         self.assertEqual(
-            test2("""3807708N Elev: 1689m."""),
+            full_test("""3807708N Elev: 1689m."""),
             [
                 {
                     "elevation": 1689.0,
@@ -189,13 +189,13 @@ class TestCollector(unittest.TestCase):
 
     def test_collector_13(self):
         self.assertEqual(
-            test2("""TIMON, R16W,"""),
+            full_test("""TIMON, R16W,"""),
             [],
         )
 
     def test_collector_14(self):
         self.assertEqual(
-            test2(
+            full_test(
                 """
                 Distribuido List: CRUZ, EBC, MINE
                 Collector(s): Timothy J. S. Whitfield
@@ -215,7 +215,7 @@ class TestCollector(unittest.TestCase):
 
     def test_collector_15(self):
         self.assertEqual(
-            test2(
+            full_test(
                 """
                 With: Dawn Goldman, Army Prince, Steven Emrick, Janet Smith,
                 Diane Hicks, Beechnut
@@ -240,7 +240,7 @@ class TestCollector(unittest.TestCase):
 
     def test_collector_16(self):
         self.assertEqual(
-            test2("""Williams (Rocky) Gleason #F15GLEN55-B"""),
+            full_test("""Williams (Rocky) Gleason #F15GLEN55-B"""),
             [
                 {
                     "collector_no": "F15GLEN55-B",
@@ -254,7 +254,7 @@ class TestCollector(unittest.TestCase):
 
     def test_collector_17(self):
         self.assertEqual(
-            test2(
+            full_test(
                 """
                 With: Dixie Damrel, Sarah Hunkins, Steven and Johan LaMoure
                 """
@@ -275,7 +275,7 @@ class TestCollector(unittest.TestCase):
 
     def test_collector_18(self):
         self.assertEqual(
-            test2("""Frederick H. Utech 91-1178"""),
+            full_test("""Frederick H. Utech 91-1178"""),
             [
                 {
                     "collector_no": "91-1178",
@@ -289,7 +289,7 @@ class TestCollector(unittest.TestCase):
 
     def test_collector_19(self):
         self.assertEqual(
-            test2("""A A.C. Saunders 39141"""),
+            full_test("""A A.C. Saunders 39141"""),
             [
                 {
                     "collector_no": "39141",
@@ -303,7 +303,7 @@ class TestCollector(unittest.TestCase):
 
     def test_collector_20(self):
         self.assertEqual(
-            test2("""purple. A A.C. Saunders 39141 14 Apr 2011"""),
+            full_test("""purple. A A.C. Saunders 39141 14 Apr 2011"""),
             [
                 {
                     "collector_no": "39141",
@@ -319,7 +319,7 @@ class TestCollector(unittest.TestCase):
     def test_collector_21(self):
         """It handles names with mixed case letters."""
         self.assertEqual(
-            test2("""Wendy McClure 2018-2"""),
+            full_test("""Wendy McClure 2018-2"""),
             [
                 {
                     "collector_no": "2018-2",
@@ -334,7 +334,7 @@ class TestCollector(unittest.TestCase):
     def test_collector_22(self):
         """It handles a taxon next to a name."""
         self.assertEqual(
-            test2("""Associated species: Neptunia gracilis G. Rink 7075"""),
+            full_test("""Associated species: Neptunia gracilis G. Rink 7075"""),
             [
                 {
                     "assoc_taxon_label": "associated species",
@@ -362,7 +362,7 @@ class TestCollector(unittest.TestCase):
     def test_collector_23(self):
         """It handles a taxon next to a name."""
         self.assertEqual(
-            test2("""collected by Merle Dortmond The University"""),
+            full_test("""collected by Merle Dortmond The University"""),
             [
                 {
                     "collector": "Merle Dortmond",
@@ -376,7 +376,7 @@ class TestCollector(unittest.TestCase):
     def test_collector_24(self):
         """It handles a person after a taxon."""
         self.assertEqual(
-            test2(
+            full_test(
                 """Associated Species: Cephalanthus occidentalis Cass Blodgett 829"""
             ),
             [
@@ -406,14 +406,14 @@ class TestCollector(unittest.TestCase):
     def test_collector_25(self):
         """It handles a person after a taxon."""
         self.assertEqual(
-            test2("""NCI Code 0GDK0132-Z"""),
+            full_test("""NCI Code 0GDK0132-Z"""),
             [],
         )
 
     def test_collector_26(self):
         """It handles a person after a taxon."""
         self.assertEqual(
-            test2(
+            full_test(
                 """NCI Code 0GDK0132-Z
                 Collected by W. Hess, K. Allen, K. Weise, S. Peterson
                 """
@@ -431,7 +431,7 @@ class TestCollector(unittest.TestCase):
     def test_collector_27(self):
         """It handles a collector separated from their collector number."""
         self.assertEqual(
-            test2(
+            full_test(
                 """Little Belt Mountains J.B. Scammons Elevation: 5800 ft.
                 No, 105 July 6, 1956"""
             ),
@@ -464,7 +464,7 @@ class TestCollector(unittest.TestCase):
     def test_collector_28(self):
         """It handles a collector with number and a other collectors."""
         self.assertEqual(
-            test2("""Joshua R. Campbell 327 w/ S. Dickman"""),
+            full_test("""Joshua R. Campbell 327 w/ S. Dickman"""),
             [
                 {
                     "collector": "Joshua R. Campbell",
@@ -485,7 +485,7 @@ class TestCollector(unittest.TestCase):
     def test_collector_29(self):
         """It handles a collector with number and a other collectors."""
         self.assertEqual(
-            test2("""with Bob Simmons, Dana Griffin & Tom Morris"""),
+            full_test("""with Bob Simmons, Dana Griffin & Tom Morris"""),
             [
                 {
                     "other_collector": ["Bob Simmons", "Dana Griffin", "Tom Morris"],
@@ -498,7 +498,7 @@ class TestCollector(unittest.TestCase):
 
     def test_collector_30(self):
         self.assertEqual(
-            test2("""With: Cindy Smith, Scott Rowan Sponsored by"""),
+            full_test("""With: Cindy Smith, Scott Rowan Sponsored by"""),
             [
                 {
                     "other_collector": ["Cindy Smith", "Scott Rowan"],
@@ -511,7 +511,7 @@ class TestCollector(unittest.TestCase):
 
     def test_collector_31(self):
         self.assertEqual(
-            test2("""Joni Ward 866-a"""),
+            full_test("""Joni Ward 866-a"""),
             [
                 {
                     "collector": "Joni Ward",
@@ -525,7 +525,7 @@ class TestCollector(unittest.TestCase):
 
     def test_collector_32(self):
         self.assertEqual(
-            test2("""Cole Larsson-Whittaker 866-a"""),
+            full_test("""Cole Larsson-Whittaker 866-a"""),
             [
                 {
                     "collector": "Cole Larsson-Whittaker",
@@ -539,7 +539,7 @@ class TestCollector(unittest.TestCase):
 
     def test_collector_33(self):
         self.assertEqual(
-            test2("""Collectors: Avena Nelson, Elias Nelson."""),
+            full_test("""Collectors: Avena Nelson, Elias Nelson."""),
             [
                 {
                     "collector": ["Avena Nelson", "Elias Nelson"],
@@ -552,13 +552,13 @@ class TestCollector(unittest.TestCase):
 
     def test_collector_34(self):
         self.assertEqual(
-            test2("""of Ua C. Riverside (UCR)y Canis"""),
+            full_test("""of Ua C. Riverside (UCR)y Canis"""),
             [],
         )
 
     def test_collector_35(self):
         self.assertEqual(
-            test2(
+            full_test(
                 """Voucher Project Cactaceae Carnegiea gigantea
                 accession number 0075
                 """
@@ -568,7 +568,7 @@ class TestCollector(unittest.TestCase):
 
     def test_collector_36(self):
         self.assertEqual(
-            test2("""Mimosa sensitiva Collected by: E. Mohr"""),
+            full_test("""Mimosa sensitiva Collected by: E. Mohr"""),
             [
                 {
                     "taxon": "Mimosa sensitiva",
@@ -583,7 +583,7 @@ class TestCollector(unittest.TestCase):
 
     def test_collector_37(self):
         self.assertEqual(
-            test2(
+            full_test(
                 """
                 with Juan Kaplan, Helena Walker Herbarium of a Botanical Garden"""
             ),
@@ -599,7 +599,7 @@ class TestCollector(unittest.TestCase):
 
     def test_collector_38(self):
         self.assertEqual(
-            test2("""4 September 2008 J. Johnson with M. King Herbarium"""),
+            full_test("""4 September 2008 J. Johnson with M. King Herbarium"""),
             [
                 {
                     "date": "2008-09-04",

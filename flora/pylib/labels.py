@@ -27,7 +27,7 @@ class Labels:
         labels = [Label(p) for p in sorted(args.text_dir.glob(args.text_glob))]
 
         if args.limit:
-            labels = args.labels[args.offset : args.limit + args.offset]
+            labels = labels[args.offset : args.limit + args.offset]
         return labels
 
     @staticmethod
