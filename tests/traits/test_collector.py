@@ -621,3 +621,36 @@ class TestCollector(unittest.TestCase):
                 },
             ],
         )
+
+    def test_collector_39(self):
+        self.assertEqual(
+            full_test(
+                """
+                HR1998-01
+                H. Richey
+                """
+            ),
+            [
+                {
+                    "collector": "H. Richey",
+                    "trait": "collector",
+                    "collector_no": "HR1998-01",
+                    "start": 0,
+                    "end": 19,
+                },
+            ],
+        )
+
+    def test_collector_40(self):
+        self.assertEqual(
+            full_test("""AC Saunders 34380 OS"""),
+            [
+                {
+                    "collector": "AC Saunders",
+                    "trait": "collector",
+                    "collector_no": "34380",
+                    "start": 0,
+                    "end": 17,
+                },
+            ],
+        )

@@ -12,7 +12,8 @@ from traiter.pylib.traits import terms as t_terms
 
 ADMIN_UNIT_CSV = Path(__file__).parent / "terms" / "admin_unit_terms.csv"
 US_LOCATIONS_CSV = Path(t_terms.__file__).parent / "us_location_terms.csv"
-ALL_CSVS = [US_LOCATIONS_CSV, ADMIN_UNIT_CSV]
+OTHER_LOCATIONS_CSV = Path(t_terms.__file__).parent / "other_location_terms.csv"
+ALL_CSVS = [US_LOCATIONS_CSV, ADMIN_UNIT_CSV, OTHER_LOCATIONS_CSV]
 
 REPLACE = term_util.term_data(ALL_CSVS, "replace")
 COUNTY_IN = term_util.term_data(ALL_CSVS, "inside")
@@ -54,9 +55,11 @@ def admin_unit_patterns():
         "co_word": {"LOWER": {"IN": ["county"]}},
         "country": {"ENT_TYPE": "country"},
         "of": {"LOWER": {"IN": ["of"]}},
+        "prov": {"ENT_TYPE": "province_label"},
         "st_label": {"ENT_TYPE": "state_label"},
         "us_county": {"ENT_TYPE": {"IN": COUNTY_ENTS}},
         "us_state": {"ENT_TYPE": {"IN": STATE_ENTS}},
+        "word": {"IS_ALPHA": True},
     }
     return [
         Compiler(
@@ -121,6 +124,17 @@ def admin_unit_patterns():
                 "st_label+ of? ,? us_state+",
             ],
         ),
+        Compiler(
+            label="province",
+            id="admin_unit",
+            on_match="province_match",
+            keep="admin_unit",
+            decoder=decoder,
+            patterns=[
+                "prov+ word",
+                "prov+ country",
+            ],
+        ),
     ]
 
 
@@ -146,6 +160,16 @@ def not_admin_unit():
             ],
         ),
     ]
+
+
+@registry.misc("province_match")
+def province_match(ent):
+    prov = []
+    for token in ent:
+        if token.ent_type_ != "province_label":
+            prov.append(token.lower_)
+
+    ent._.data = {"province": " ".join(prov)}
 
 
 @registry.misc("country_match")

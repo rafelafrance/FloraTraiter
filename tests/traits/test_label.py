@@ -78,6 +78,12 @@ class TestLabels(unittest.TestCase):
             ),
             [
                 {
+                    "country": "Costa Rica",
+                    "trait": "admin_unit",
+                    "start": 19,
+                    "end": 29,
+                },
+                {
                     "rank": "family",
                     "trait": "associated_taxon",
                     "start": 30,
