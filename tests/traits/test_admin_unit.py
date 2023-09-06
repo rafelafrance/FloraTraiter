@@ -207,3 +207,10 @@ class TestAdminUnit(unittest.TestCase):
                 },
             ],
         )
+
+    def test_admin_unit_16(self):
+        """It gets a province."""
+        self.assertEqual(
+            full_test("""Province of Panama"""),
+            [{"end": 18, "province": "panama", "start": 0, "trait": "admin_unit"}],
+        )
