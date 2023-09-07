@@ -18,3 +18,17 @@ class TestDeterminer(unittest.TestCase):
                 }
             ],
         )
+
+    def test_determiner_02(self):
+        """It gets a multiple name notations."""
+        self.assertEqual(
+            full_test("""Det. Carter Rosston & Allan Nelson"""),
+            [
+                {
+                    "determiner": "Carter Rosston & Allan Nelson",
+                    "trait": "determiner",
+                    "start": 0,
+                    "end": 34,
+                }
+            ],
+        )
