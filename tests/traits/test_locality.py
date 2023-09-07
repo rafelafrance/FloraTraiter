@@ -189,3 +189,44 @@ class TestLocality(unittest.TestCase):
                 },
             ],
         )
+
+    def test_locality_11(self):
+        self.assertEqual(
+            full_test(
+                """
+                Fruit is a
+                grape and is dark purple in color.
+                """
+            ),
+            [
+                {"fruit_part": "fruit", "trait": "fruit_part", "start": 0, "end": 5},
+                {
+                    "color": "purple-in-color",
+                    "trait": "color",
+                    "start": 24,
+                    "end": 44,
+                    "fruit_part": "fruit",
+                },
+            ],
+        )
+
+    def test_locality_12(self):
+        self.assertEqual(
+            full_test("""Monteverde. Elev. 1400- 1500 m. Lower montane rainforest"""),
+            [
+                {
+                    "trait": "elevation",
+                    "elevation": 1400.0,
+                    "elevation_high": 1500.0,
+                    "units": "m",
+                    "start": 12,
+                    "end": 31,
+                },
+                {
+                    "end": 56,
+                    "habitat": "montane rain forest",
+                    "start": 38,
+                    "trait": "habitat",
+                },
+            ],
+        )

@@ -21,6 +21,7 @@ ALL_CSVS = [PERSON_CSV, NAME_CSV, JOB_CSV]
 
 PUNCT = "[.:;,_-]"
 SEP = ["and", "with", "et", *list("&._,;")]
+AND = ["CCONJ", "ADP"]
 
 NAME4 = [s for s in t_const.NAME_SHAPES if len(s) >= 4 and s[-1].isalpha()]
 
@@ -184,6 +185,7 @@ def name_patterns():
 def job_patterns():
     decoder = {
         ":": {"LOWER": {"REGEX": rf"^(by|{PUNCT}+)$"}},
+        "and": {"POS": {"IN": AND}},
         "bad": {"ENT_TYPE": {"IN": ["month"]}},
         "by": {"LOWER": {"IN": ["by"]}},
         "col_label": {"ENT_TYPE": "col_label"},
@@ -249,6 +251,7 @@ def job_patterns():
             patterns=[
                 "det_label+ by? :* maybe? name+",
                 "det_label+ by? :* name+ id_no+",
+                "det_label+ by? :* maybe? name+ and maybe? name+",
             ],
         ),
         Compiler(
@@ -266,7 +269,7 @@ def job_patterns():
 
 def other_collector_patterns():
     decoder = {
-        "and": {"POS": {"IN": ["CCONJ", "ADP"]}},
+        "and": {"POS": {"IN": AND}},
         "maybe": {"POS": "PROPN"},
         "name": {"ENT_TYPE": "name"},
         "other_col": {"ENT_TYPE": "other_collector"},
@@ -431,6 +434,9 @@ def determiner_match(ent):
 
         if token._.flag == "name_data":
             people.append(token._.data["name"])
+
+        elif token.pos_ in AND:
+            people.append(token.lower_)
 
         elif token._.flag == "id_no":
             ent._.data["determiner_no"] = token._.data["id_no"]

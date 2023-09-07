@@ -378,7 +378,9 @@ plant_part,underbark,underbark
 part_and,&,
 part_and,and,
 part_and,et,
+part_leader,alternate,
 part_leader,primary,
+part_leader,palmately,
 part_leader,secondary,
 subpart,aculei,aculei
 subpart,aculeoli,aculeolus

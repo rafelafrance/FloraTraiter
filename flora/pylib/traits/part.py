@@ -10,7 +10,6 @@ from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
 from traiter.pylib.pipes.reject_match import REJECT_MATCH
 
-
 PART_CSV = Path(__file__).parent / "terms" / "part_terms.csv"
 MISSING_CSV = Path(__file__).parent / "terms" / "missing_terms.csv"
 ALL_CSVS = [PART_CSV, MISSING_CSV]
@@ -92,6 +91,7 @@ def part_patterns():
 
 def subpart_patterns():
     decoder = {
+        ",": {"TEXT": {"IN": t_const.COMMA}},
         "-": {"TEXT": {"IN": t_const.DASH}, "OP": "+"},
         "leader": {"ENT_TYPE": "part_leader"},
         "missing": {"ENT_TYPE": "missing"},
@@ -106,9 +106,9 @@ def subpart_patterns():
             keep="subpart",
             decoder=decoder,
             patterns=[
-                "leader? subpart+",
-                "leader? subpart+ - subpart+",
-                "leader? part+ -?   subpart+",
+                "leader* ,? leader* subpart+",
+                "leader* ,? leader* subpart+ - subpart+",
+                "leader* ,? leader* part+ -?   subpart+",
                 "- subpart",
             ],
         ),
