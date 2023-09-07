@@ -1,4 +1,5 @@
 label,pattern
+loc,monteverde
 loc_label,localities
 loc_label,localities:
 loc_label,locality
@@ -9,9 +10,9 @@ loc_label,locations
 loc_label,locations:
 not_loc,accession number
 not_loc,and densely
+not_loc,coarsely wrinkled
 not_loc,common name
 not_loc,couple of times
-not_loc,coarsely wrinkled
 not_loc,elev :
 not_loc,erecta
 not_loc,estimate
@@ -25,12 +26,15 @@ not_loc,gps
 not_loc,granitic substrates
 not_loc,higher
 not_loc,infrequent overall
+not_loc,infrequent roadside
 not_loc,introgression
 not_loc,local erecta
 not_loc,locally abundant
 not_loc,locally common
 not_loc,locally frequent
+not_loc,no odor
 not_loc,not blooming
+not_loc,not yet in
 not_loc,only seen
 not_loc,originally received
 not_loc,perhaps some
@@ -50,8 +54,7 @@ not_loc,university of
 not_loc,very abundant
 not_loc,very common
 not_loc,very frequent
-not_loc,with :
 not_loc,whorls
 not_loc,whorls of
-not_loc,not yet in
-not_loc,no odor
+not_loc,with :
+not_loc,with pale
