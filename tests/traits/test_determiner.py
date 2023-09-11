@@ -32,3 +32,17 @@ class TestDeterminer(unittest.TestCase):
                 }
             ],
         )
+
+    def test_determiner_03(self):
+        """It gets lower case name parts."""
+        self.assertEqual(
+            full_test("""det. H. van der Werff & G. McPherson"""),
+            [
+                {
+                    "determiner": "H. van der Werff & G. McPherson",
+                    "trait": "determiner",
+                    "start": 0,
+                    "end": 36,
+                }
+            ],
+        )
