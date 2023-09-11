@@ -214,3 +214,24 @@ class TestAdminUnit(unittest.TestCase):
             full_test("""Province of Panama"""),
             [{"end": 18, "province": "panama", "start": 0, "trait": "admin_unit"}],
         )
+
+    def test_admin_unit_17(self):
+        """It gets state county notation on two lines."""
+        self.assertEqual(
+            full_test(
+                """
+                Herbarium of the University of North Carolina
+                SOUTH CAROLINA
+                Dillon County
+                """
+            ),
+            [
+                {
+                    "us_state": "South Carolina",
+                    "us_county": "Dillon",
+                    "trait": "admin_unit",
+                    "start": 46,
+                    "end": 74,
+                }
+            ],
+        )

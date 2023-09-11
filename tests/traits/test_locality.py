@@ -182,10 +182,10 @@ class TestLocality(unittest.TestCase):
                     "end": 57,
                 },
                 {
-                    "habitat": "Pine-juniper-oak-acacia zone.",
+                    "habitat": "Pine-juniper-oak-acacia zone",
                     "trait": "habitat",
                     "start": 58,
-                    "end": 95,
+                    "end": 94,
                 },
             ],
         )
@@ -227,6 +227,32 @@ class TestLocality(unittest.TestCase):
                     "habitat": "montane rain forest",
                     "start": 38,
                     "trait": "habitat",
+                },
+            ],
+        )
+
+    def test_locality_13(self):
+        self.assertEqual(
+            full_test("""Point Sublime Road about 1 miles east of Milk Creek."""),
+            [
+                {
+                    "locality": "Point Sublime Road about 1 miles east of Milk Creek.",
+                    "trait": "locality",
+                    "start": 0,
+                    "end": 52,
+                },
+            ],
+        )
+
+    def test_locality_14(self):
+        self.assertEqual(
+            full_test("""north of the Illinois Central Railroad,"""),
+            [
+                {
+                    "locality": "north of the Illinois Central Railroad",
+                    "trait": "locality",
+                    "start": 0,
+                    "end": 38,
                 },
             ],
         )

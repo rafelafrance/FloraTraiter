@@ -121,6 +121,7 @@ def name_patterns():
         "name4": {"SHAPE": {"IN": NAME4}},
         "no_label": {"ENT_TYPE": "no_label"},
         "no_space": {"SPACY": False},
+        "pre": {"ENT_TYPE": "last_prefix"},
     }
 
     return [
@@ -129,16 +130,16 @@ def name_patterns():
             on_match="person_name_match",
             decoder=decoder,
             patterns=[
-                "       name  -? name? -?    name4",
-                "       name  -? name? -?    name4   _? jr+",
+                "       name  -? name? -? pre? pre?   name4",
+                "       name  -? name? -? pre? pre?   name4   _? jr+",
                 "       name  -? name? -?   ambig",
                 "       name  -? name? -?   ambig   _? jr+",
-                "       ambig -? name? -?   name4 ",
-                "       ambig -? name? -?   name4   _? jr+",
-                "       A A? A?        name4",
-                "       A A? A?        name4   _? jr+",
-                "       name A A? A?   name4",
-                "       name A A? A?   name4   _? jr+",
+                "       ambig -? name? -? pre? pre?  name4 ",
+                "       ambig -? name? -? pre? pre?  name4   _? jr+",
+                "       A A? A?      pre? pre? name4",
+                "       A A? A?      pre? pre? name4   _? jr+",
+                "       name A A? A? pre? pre? name4",
+                "       name A A? A? pre? pre? name4   _? jr+",
                 "       name ..        name4",
                 "       name ..        name4   _? jr+",
                 "       name ( name )  name4",
@@ -304,6 +305,9 @@ def person_name_match(ent):
 
     for token in ent:
         token._.flag = "name"
+
+        if token.ent_type_ == "last_prefix":
+            continue
 
         # Only accept proper nouns or nouns
         if len(token.text) > 1 and token.pos_ not in ("PROPN", "NOUN", "PUNCT", "AUX"):

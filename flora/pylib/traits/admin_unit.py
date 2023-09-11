@@ -56,6 +56,7 @@ def admin_unit_patterns():
         "country": {"ENT_TYPE": "country"},
         "of": {"LOWER": {"IN": ["of"]}},
         "prov": {"ENT_TYPE": "province_label"},
+        "sp": {"IS_SPACE": True},
         "st_label": {"ENT_TYPE": "state_label"},
         "us_county": {"ENT_TYPE": {"IN": COUNTY_ENTS}},
         "us_state": {"ENT_TYPE": {"IN": STATE_ENTS}},
@@ -79,7 +80,7 @@ def admin_unit_patterns():
             keep="admin_unit",
             decoder=decoder,
             patterns=[
-                "us_county+ co_label+ ,? us_state+",
+                "us_county+ co_label+ ,? sp? us_state+",
             ],
         ),
         Compiler(
@@ -89,7 +90,7 @@ def admin_unit_patterns():
             keep="admin_unit",
             decoder=decoder,
             patterns=[
-                "us_county+ ,? us_state+",
+                "us_county+ ,? sp? us_state+",
             ],
         ),
         Compiler(
@@ -110,8 +111,8 @@ def admin_unit_patterns():
             keep="admin_unit",
             decoder=decoder,
             patterns=[
-                "              us_state+ co_label* ,? us_county+ co_label*",
-                "st_label+ of? us_state+ co_label+ ,? us_county+ co_label*",
+                "              us_state+ co_label* ,? sp? us_county+ co_label*",
+                "st_label+ of? us_state+ co_label+ ,? sp? us_county+ co_label*",
             ],
         ),
         Compiler(
@@ -148,7 +149,6 @@ def not_admin_unit():
     return [
         Compiler(
             label="not_admin_unit",
-            on_match=reject_match.REJECT_MATCH,
             decoder=decoder,
             patterns=[
                 "bad_prefix+ us_county+",
@@ -170,6 +170,12 @@ def province_match(ent):
             prov.append(token.lower_)
 
     ent._.data = {"province": " ".join(prov)}
+
+
+@registry.misc("state_only_match")
+def state_only_match(ent):
+    state = format_state(ent, ent_index=0)
+    ent._.data = {"us_state": state}
 
 
 @registry.misc("country_match")
@@ -225,11 +231,6 @@ def state_county_match(ent):
         "us_state": format_state(ent, ent_index=0),
         "us_county": format_county(ent, ent_index=1),
     }
-
-
-@registry.misc("state_only_match")
-def state_only_match(ent):
-    ent._.data = {"us_state": format_state(ent, ent_index=0)}
 
 
 def format_state(ent, *, ent_index: int):

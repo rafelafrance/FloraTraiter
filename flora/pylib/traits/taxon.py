@@ -2,11 +2,15 @@ import os
 import re
 from pathlib import Path
 
-from spacy import Language, registry
+from spacy import Language
+from spacy import registry
 from traiter.pylib import const as t_const
-from traiter.pylib import taxon_util, term_util
-from traiter.pylib.pattern_compiler import ACCUMULATOR, Compiler
-from traiter.pylib.pipes import add, reject_match
+from traiter.pylib import taxon_util
+from traiter.pylib import term_util
+from traiter.pylib.pattern_compiler import ACCUMULATOR
+from traiter.pylib.pattern_compiler import Compiler
+from traiter.pylib.pipes import add
+from traiter.pylib.pipes import reject_match
 from traiter.pylib.traits import terms as t_terms
 
 from .. import const
@@ -117,6 +121,7 @@ def build(
             merge=["taxon"],
             overwrite=["taxon", "linnaeus", "not_linnaeus", "singleton"],
         )
+    # add.debug_tokens(nlp)  # ###############################
 
     add.trait_pipe(
         nlp,
@@ -396,6 +401,7 @@ def taxon_auth_patterns():
                 "taxon ( A.* auth+ _?                   )",
                 "taxon ( A.* auth+ _? and  A.* auth+ _? )",
                 "taxon ( auth+  _?               ) A.* auth* auth3 _?",
+                "taxon ( auth+  _?               ) A.* auth* auth3 _? and A.* auth* auth3",
                 "taxon ( auth+ _? and  auth+ _?  ) A.* auth* auth3 _?",
                 "taxon by? A.* auth3 _?",
                 "taxon by? A.* auth  _?         auth3 _?",
@@ -480,21 +486,25 @@ def taxon_extend_patterns():
                 "auth3": {"SHAPE": {"IN": AUTH3}},
                 "by": {"LOWER": {"IN": ["by"]}},
                 "singleton": {"ENT_TYPE": "singleton"},
+                "sp": {"IS_SPACE": True},
                 "taxon": {"ENT_TYPE": {"IN": ["taxon", "linnaeus", "not_linnaeus"]}},
                 "lower_rank": {"ENT_TYPE": {"IN": LOWER_RANK}},
             },
             patterns=[
-                "taxon lower_rank+ singleton",
-                "taxon lower_rank+ singleton ( auth+ _?              ) ",
-                "taxon lower_rank+ singleton ( auth+ _? and auth+ _? ) ",
-                "taxon lower_rank+ singleton by? A.* auth3 _?          ",
-                "taxon lower_rank+ singleton by? A.* auth+ _? auth3 _? ",
-                "taxon lower_rank+ singleton by? A.* auth+ _? and A.* auth3 _? ",
-                "taxon lower_rank+ singleton ( auth+  _?              ) A.+  auth3 _?",
-                "taxon lower_rank+ singleton ( auth+  _?              )      auth3 _?",
-                "taxon lower_rank+ singleton ( ambig+ _?              )      auth3 _?",
-                "taxon lower_rank+ singleton ( auth+ _? and  auth+ _? ) auth auth3 _?",
-                "taxon lower_rank+ singleton ( auth+ _? and  auth+ _? ) A.+  auth3 _?",
+                "taxon sp? lower_rank+ singleton",
+                "taxon sp? lower_rank+ singleton ( auth+ _?              ) ",
+                "taxon sp? lower_rank+ singleton ( auth+ _? and auth+ _? ) ",
+                "taxon sp? lower_rank+ singleton by? auth* auth3 _?        ",
+                "taxon sp? lower_rank+ singleton by? auth+ auth3 _? and auth* auth3 _? ",
+                "taxon sp? lower_rank+ singleton by? A.* auth3 _?          ",
+                "taxon sp? lower_rank+ singleton by? A.* auth+ _? auth3 _? ",
+                "taxon sp? lower_rank+ singleton by? A.* auth+ _? and A.* auth3 _? ",
+                "taxon sp? lower_rank+ singleton ( auth+  _?              ) A.+  auth3 _?",
+                "taxon sp? lower_rank+ singleton ( auth+  _?              )      auth3 _?",
+                "taxon sp? lower_rank+ singleton ( auth+  _?              )      auth3 _? and auth* auth3 _? ",
+                "taxon sp? lower_rank+ singleton ( ambig+ _?              )      auth3 _?",
+                "taxon sp? lower_rank+ singleton ( auth+ _? and  auth+ _? ) auth auth3 _?",
+                "taxon sp? lower_rank+ singleton ( auth+ _? and  auth+ _? ) A.+  auth3 _?",
             ],
         ),
     ]
@@ -713,7 +723,7 @@ def taxon_extend_match(ent):
             pass
 
         elif auth and token.lower_ in AND:
-            auth.append("and")
+            pass
 
         elif token.shape_ in t_const.NAME_SHAPES:
             if len(token) == 1:

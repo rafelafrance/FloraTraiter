@@ -89,6 +89,7 @@ def locality_patterns():
         "loc": {"ENT_TYPE": "loc"},
         "sp": {"IS_SPACE": True},
         "trait": {"ENT_TYPE": {"IN": ALL_TRAITS}},
+        "word": {"IS_ALPHA": True},
     }
     return [
         Compiler(
@@ -104,6 +105,7 @@ def locality_patterns():
                 "9? loc+ and+ loc+ and+ loc+ and+ loc+ 9?",
                 "9? loc+ and+ loc+ and+ loc+ and+ loc+ and+ loc+ 9?",
                 "9? loc+ trait 9?",
+                "9? loc+ word loc+ 9?",
             ],
         ),
     ]
@@ -131,9 +133,9 @@ def extend_locality():
                 "locality+   rt* ,? rt* ,? rt+",
                 "            rt* ,? rt* ,? rt+      locality+",
                 "locality+   word ,? 9? ,? trait*   locality+",
-                "locality+   ,? and? trait* and? ,? locality+",
-                "locality+   ,? and? trait* and? ,? loc+",
-                "loc+        ,? and? trait* and? ,? locality+",
+                "locality+   word? ,? and? trait* and? ,? locality+",
+                "locality+   word? ,? and? trait* and? ,? loc+",
+                "loc+        word? ,? and? trait* and? ,? locality+",
             ],
         )
     ]
@@ -144,6 +146,7 @@ def end_locality():
         ",": {"TEXT": {"IN": PUNCT}},
         ".": {"TEXT": {"IN": t_const.DOT + t_const.SEMICOLON}},
         "9": {"LIKE_NUM": True},
+        "not_eol": {"LOWER": {"REGEX": r"^[^\n\r;.]+$"}},
         "label": {"ENT_TYPE": "loc_label"},
         "locality": {"ENT_TYPE": "locality"},
         "in_sent": {"IS_SENT_START": False},

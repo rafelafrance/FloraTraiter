@@ -1,5 +1,6 @@
 import unittest
 
+from tests.setup import full_test
 from tests.setup import test
 
 
@@ -589,5 +590,30 @@ class TestTaxon(unittest.TestCase):
                     "end": 67,
                     "authority": "Torr and A. Gray and A. Gray W. A. Weber and A. Love",
                 },
+            ],
+        )
+
+    def test_taxon_36(self):
+        self.assertEqual(
+            full_test(
+                """
+                Neptunia gracilis (Heller) Chuang & Heckard
+                ssp. varia (Heller) Chuang & Heckard
+                """
+            ),
+            [
+                {
+                    "taxon": "Neptunia gracilis subsp. varia",
+                    "rank": "subspecies",
+                    "trait": "taxon",
+                    "start": 0,
+                    "end": 80,
+                    "authority": [
+                        "Heller Chuang and Heckard",
+                        "Heller",
+                        "Chuang",
+                        "Heckard",
+                    ],
+                }
             ],
         )
