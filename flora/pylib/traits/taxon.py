@@ -87,7 +87,7 @@ def build(
         nlp,
         name="taxon_patterns",
         compiler=taxon_patterns(),
-        merge=["taxon", "singleton"],
+        merge=["taxon", "single"],
         overwrite=["taxon"],
     )
     # add.debug_tokens(nlp)  # ###############################
@@ -101,7 +101,7 @@ def build(
     )
     # add.debug_tokens(nlp)  # ###############################
 
-    auth_keep = auth_keep + ACCUMULATOR.keep + ["singleton", "not_name"]
+    auth_keep = auth_keep + ACCUMULATOR.keep + ["single", "not_name"]
     add.trait_pipe(
         nlp,
         name="taxon_auth_patterns",
@@ -119,7 +119,7 @@ def build(
             name=name,
             compiler=taxon_extend_patterns(),
             merge=["taxon"],
-            overwrite=["taxon", "linnaeus", "not_linnaeus", "singleton"],
+            overwrite=["taxon", "linnaeus", "not_linnaeus", "single"],
         )
     # add.debug_tokens(nlp)  # ###############################
 
@@ -127,7 +127,7 @@ def build(
         nlp,
         name="taxon_rename",
         compiler=taxon_rename_patterns(),
-        overwrite=["taxon", "linnaeus", "not_linnaeus", "singleton"],
+        overwrite=["taxon", "linnaeus", "not_linnaeus", "single"],
     )
 
     add.cleanup_pipe(nlp, name="taxon_cleanup")
@@ -153,7 +153,7 @@ def taxon_patterns():
 
     return [
         Compiler(
-            label="singleton",
+            label="single",
             on_match="single_taxon_match",
             decoder=decoder,
             patterns=[
@@ -397,11 +397,11 @@ def taxon_auth_patterns():
             keep="taxon",
             decoder=decoder,
             patterns=[
-                "taxon ( ambig+ _?                      )",
-                "taxon ( A.* auth+ _?                   )",
+                "taxon ( ambig+ _? )",
+                "taxon ( A.* auth+ _? )",
                 "taxon ( A.* auth+ _? and  A.* auth+ _? )",
-                "taxon ( auth+  _?               ) A.* auth* auth3 _?",
-                "taxon ( auth+  _?               ) A.* auth* auth3 _? and A.* auth* auth3",
+                "taxon ( auth+  _? ) A.* auth* auth3 _?",
+                "taxon ( auth+  _? ) A.* auth* auth3 _? and A.* auth* auth3",
                 "taxon ( auth+ _? and  auth+ _?  ) A.* auth* auth3 _?",
                 "taxon by? A.* auth3 _?",
                 "taxon by? A.* auth  _?         auth3 _?",
@@ -485,26 +485,26 @@ def taxon_extend_patterns():
                 "auth": {"SHAPE": {"IN": t_const.NAME_SHAPES}},
                 "auth3": {"SHAPE": {"IN": AUTH3}},
                 "by": {"LOWER": {"IN": ["by"]}},
-                "singleton": {"ENT_TYPE": "singleton"},
+                "single": {"ENT_TYPE": "single"},
                 "sp": {"IS_SPACE": True},
                 "taxon": {"ENT_TYPE": {"IN": ["taxon", "linnaeus", "not_linnaeus"]}},
-                "lower_rank": {"ENT_TYPE": {"IN": LOWER_RANK}},
+                "l_rank": {"ENT_TYPE": {"IN": LOWER_RANK}},
             },
             patterns=[
-                "taxon sp? lower_rank+ singleton",
-                "taxon sp? lower_rank+ singleton ( auth+ _?              ) ",
-                "taxon sp? lower_rank+ singleton ( auth+ _? and auth+ _? ) ",
-                "taxon sp? lower_rank+ singleton by? auth* auth3 _?        ",
-                "taxon sp? lower_rank+ singleton by? auth+ auth3 _? and auth* auth3 _? ",
-                "taxon sp? lower_rank+ singleton by? A.* auth3 _?          ",
-                "taxon sp? lower_rank+ singleton by? A.* auth+ _? auth3 _? ",
-                "taxon sp? lower_rank+ singleton by? A.* auth+ _? and A.* auth3 _? ",
-                "taxon sp? lower_rank+ singleton ( auth+  _?              ) A.+  auth3 _?",
-                "taxon sp? lower_rank+ singleton ( auth+  _?              )      auth3 _?",
-                "taxon sp? lower_rank+ singleton ( auth+  _?              )      auth3 _? and auth* auth3 _? ",
-                "taxon sp? lower_rank+ singleton ( ambig+ _?              )      auth3 _?",
-                "taxon sp? lower_rank+ singleton ( auth+ _? and  auth+ _? ) auth auth3 _?",
-                "taxon sp? lower_rank+ singleton ( auth+ _? and  auth+ _? ) A.+  auth3 _?",
+                "taxon sp? l_rank+ single",
+                "taxon sp? l_rank+ single ( auth+ _? ) ",
+                "taxon sp? l_rank+ single ( auth+ _? and auth+ _? ) ",
+                "taxon sp? l_rank+ single by? auth* auth3 _? ",
+                "taxon sp? l_rank+ single by? auth+ auth3 _? and auth* auth3 _? ",
+                "taxon sp? l_rank+ single by? A.* auth3 _?          ",
+                "taxon sp? l_rank+ single by? A.* auth+ _? auth3 _? ",
+                "taxon sp? l_rank+ single by? A.* auth+ _? and A.* auth3 _? ",
+                "taxon sp? l_rank+ single ( auth+  _? ) A.+  auth3 _?",
+                "taxon sp? l_rank+ single ( auth+  _? )      auth3 _?",
+                "taxon sp? l_rank+ single ( auth+  _? ) auth3 _? and auth* auth3 _? ",
+                "taxon sp? l_rank+ single ( ambig+ _? ) auth3 _?",
+                "taxon sp? l_rank+ single ( auth+ _? and  auth+ _? ) auth auth3 _?",
+                "taxon sp? l_rank+ single ( auth+ _? and  auth+ _? ) A.+  auth3 _?",
             ],
         ),
     ]
@@ -516,7 +516,7 @@ def taxon_rename_patterns():
         keep="taxon",
         on_match="rename_taxon_match",
         decoder={
-            "taxon": {"ENT_TYPE": {"IN": ["singleton", "linnaeus", "not_linnaeus"]}},
+            "taxon": {"ENT_TYPE": {"IN": ["single", "linnaeus", "not_linnaeus"]}},
             "rank": {"ENT_TYPE": {"IN": ANY_RANK}},
         },
         patterns=[

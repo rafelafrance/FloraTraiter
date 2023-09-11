@@ -1,4 +1,6 @@
-# FloraTraiter ![Python application](https://github.com/rafelafrance/FloraTraiter/workflows/CI/badge.svg)
+# FloraTraiter ![Python application](https://github.com/rafelafrance/FloraTraiter/workflows/CI/badge.svg)[![DOI](https://zenodo.org/badge/649758239.svg)](https://zenodo.org/badge/latestdoi/649758239)
+
+
 Extract traits about plants from authoritative literature.
 
 This repository merges three older repositories:
