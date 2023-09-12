@@ -127,18 +127,16 @@ class TestLabels(unittest.TestCase):
     #     self.assertEqual(
     #         full_test(
     #             """
-    #             UNIVERSITY OF IDAHO STILLINGER
-    #             HERBARIUM (ID)
-    #             FLORA OF IDAHO
-    #             Eriogonum ovalifolium Nutt. var. depressum Blank.
-    #             [Polygonaceae]
-    #             U.S.A., IDAHO, LEMHI COUNTY:
-    #             W slope Beaverhead Mountains, Salmon National Forest. Peak
-    #             10125 at head of Bull Creek, ca. 11 miles SEof Leadore.
-    #             East face of peak, ca 30 ft below summit.
-    #             lowers pale yellow. Plants caespitose.
-    #             Douglass M. Henderson, 2791 22 July 1975
-    #             [ID Database #119774]
+    #             HERBARIUM OF MONTANA STATE COLLEGE
+    #             FLORA OF MONTANA
+    #             Eriogonum ovalifolium Nutt.
+    #             Missouri River Breaks
+    #             35 miNNE Roy, Fergus Co., Mount.
+    #             Ponderosa pine dominated slight NE-facing
+    #             slope.
+    #             Uncommon
+    #             R.J. Mackie
+    #             June 26, 1963
     #             """
     #         ),
     #         [],
