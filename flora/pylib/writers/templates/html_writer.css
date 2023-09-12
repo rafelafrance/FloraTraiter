@@ -69,35 +69,25 @@ td, th {
 .bold { font-weight: bold; }
 .bold-italic { font-weight: bold; font-style: italic; }
 
-.ccx { background: #e31a1c88; }
-.bbx { background: #e31a1c88; }
+.ccx { background: #772f5688; }
+.bbx { background: #772f5688; }
 
-.cc0 { background: #a6cee388; }
-.cc1 { background: #1f78b488; }
-.cc2 { background: #b2df8a88; }
-.cc3 { background: #33a02c88; }
-.cc4 { background: #fb9a9988; }
-.cc5 { background: #fdbf6f88; }
-.cc6 { background: #ff7f0088; }
-.cc7 { background: #cab2d688; }
-.cc8 { background: #6a3d9a88; }
-.cc9 { background: #ffff9988; }
-.cc10 { background: #b1592888; }
-.cc11 { background: #dddddd88; }
-.cc12 { background: #b3b3b388; }
-.cc13 { background: #b3b30088; }
+.cc0 { background: #a0c5ed88; }
+.cc1 { background: #6aa69888; }
+.cc2 { background: #3f763788; }
+.cc3 { background: #3c158688; }
+.cc4 { background: #d4cf7888; }
+.cc5 { background: #949b3988; }
+.cc6 { background: #b76e7788; }
+.cc7 { background: #99489788; }
+.cc8 { background: #dcdcdc88; }
 
-.bb0 { background: #a6cee388; }
-.bb1 { background: #1f78b488; }
-.bb2 { background: #b2df8a88; }
-.bb3 { background: #33a02c88; }
-.bb4 { background: #fb9a9988; }
-.bb5 { background: #fdbf6f88; }
-.bb6 { background: #ff7f0088; }
-.bb7 { background: #cab2d688; }
-.bb8 { background: #6a3d9a88; }
-.bb9 { background: #ffff9988; }
-.bb10 { background: #b1592888; }
-.bb11 { background: #dddddd88; }
-.bb12 { background: #b3b3b388; }
-.bb13 { background: #b3b30088; }
+.bb0 { background: #a0c5ed88; }
+.bb1 { background: #6aa69888; }
+.bb2 { background: #3f763788; }
+.bb3 { background: #3c158688; }
+.bb4 { background: #d4cf7888; }
+.bb5 { background: #949b3988; }
+.bb6 { background: #b76e7788; }
+.bb7 { background: #99489788; }
+.bb8 { background: #dcdcdc88; }
