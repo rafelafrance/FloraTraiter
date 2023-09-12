@@ -10,7 +10,7 @@ from traiter.pylib.pipes import add
 USE_MOCK_DATA = 0
 
 # Traits at ends of locality phrases
-OUTER_TRAITS = " habitat admin_unit subpart ".split()
+OUTER_TRAITS = " habitat admin_unit subpart count".split()
 
 ALL_TRAITS = [*OUTER_TRAITS, "color"]
 
