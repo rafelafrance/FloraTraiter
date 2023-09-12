@@ -160,6 +160,8 @@ def name_patterns():
                 "dr+ _? name ( name )  name4",
                 "dr+ _? name ( name )  name4   _? jr+",
                 "dr+ _? name ( name )  name4",
+                # "pre? pre? name4 , A? A? A",
+                # "pre? pre? name4 ,? name",
             ],
         ),
         Compiler(
@@ -307,19 +309,12 @@ def person_name_match(ent):
     for token in ent:
         token._.flag = "name"
 
-        if token.ent_type_ == "last_prefix":
-            continue
-
-        # Only accept proper nouns or nouns
-        if len(token.text) > 1 and token.pos_ not in ("PROPN", "NOUN", "PUNCT", "AUX"):
-            raise reject_match.RejectMatch
-
         # If there's a digit in the name reject it
         if re.search(r"\d", token.text):
             raise reject_match.RejectMatch
 
         # If it is all lower case reject it
-        if token.text.islower():
+        if token.text.islower() and token.ent_type_ != "last_prefix":
             raise reject_match.RejectMatch
 
     ent._.data = {"name": name}

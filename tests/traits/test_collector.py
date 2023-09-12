@@ -655,18 +655,34 @@ class TestCollector(unittest.TestCase):
             ],
         )
 
-    # def test_collector_41(self):
+    def test_collector_41(self):
+        self.assertEqual(
+            full_test(
+                """
+                Roadside
+                COLLECTOR Lytle McGill, Roy Brown ELEV
+                """
+            ),
+            [
+                {
+                    "collector": ["Lytle McGill", "Roy Brown"],
+                    "trait": "collector",
+                    "start": 9,
+                    "end": 42,
+                },
+            ],
+        )
+
+    # def test_collector_42(self):
     #     self.assertEqual(
-    #         full_test(
-    #             """Wendy Hodgson 8937 with Arts and Barb Phillips, Hualapai Elders"""
-    #         ),
-    #         [{'collector': 'Wendy Hodgson',
-    #           'collector_no': '8937',
-    #           'trait': 'collector',
-    #           'start': 0,
-    #           'end': 18},
-    #          {'other_collector': ['Arts and Barb Phillips', 'Hualapai Elders'],
-    #           'trait': 'other_collector',
-    #           'start': 19,
-    #           'end': 63}]
+    #         full_test("""Phillips, A.M. & Phillips, B.G. 74-230"""),
+    #         [
+    #             {
+    #                 "collector": ["Phillips, A.M.", "Phillips, B.G."],
+    #                 "collector_no": "74-230",
+    #                 "trait": "collector",
+    #                 "start": 0,
+    #                 "end": 38,
+    #             },
+    #         ],
     #     )

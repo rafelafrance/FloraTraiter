@@ -46,3 +46,22 @@ class TestDeterminer(unittest.TestCase):
                 }
             ],
         )
+
+    def test_determiner_04(self):
+        self.assertEqual(
+            full_test(
+                """
+                Reveal
+                det. James L. Reveal 1971 =
+                """
+            ),
+            [
+                {
+                    "determiner": "James L. Reveal",
+                    "determiner_no": "1971",
+                    "trait": "determiner",
+                    "start": 7,
+                    "end": 32,
+                }
+            ],
+        )
