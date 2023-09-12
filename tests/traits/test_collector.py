@@ -654,3 +654,19 @@ class TestCollector(unittest.TestCase):
                 },
             ],
         )
+
+    # def test_collector_41(self):
+    #     self.assertEqual(
+    #         full_test(
+    #             """Wendy Hodgson 8937 with Arts and Barb Phillips, Hualapai Elders"""
+    #         ),
+    #         [{'collector': 'Wendy Hodgson',
+    #           'collector_no': '8937',
+    #           'trait': 'collector',
+    #           'start': 0,
+    #           'end': 18},
+    #          {'other_collector': ['Arts and Barb Phillips', 'Hualapai Elders'],
+    #           'trait': 'other_collector',
+    #           'start': 19,
+    #           'end': 63}]
+    #     )

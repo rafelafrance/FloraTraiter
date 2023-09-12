@@ -122,3 +122,24 @@ class TestLabels(unittest.TestCase):
                 {"country": "USA", "trait": "admin_unit", "start": 273, "end": 279},
             ],
         )
+
+    # def test_label_03(self):
+    #     self.assertEqual(
+    #         full_test(
+    #             """
+    #             UNIVERSITY OF IDAHO STILLINGER
+    #             HERBARIUM (ID)
+    #             FLORA OF IDAHO
+    #             Eriogonum ovalifolium Nutt. var. depressum Blank.
+    #             [Polygonaceae]
+    #             U.S.A., IDAHO, LEMHI COUNTY:
+    #             W slope Beaverhead Mountains, Salmon National Forest. Peak
+    #             10125 at head of Bull Creek, ca. 11 miles SEof Leadore.
+    #             East face of peak, ca 30 ft below summit.
+    #             lowers pale yellow. Plants caespitose.
+    #             Douglass M. Henderson, 2791 22 July 1975
+    #             [ID Database #119774]
+    #             """
+    #         ),
+    #         [],
+    #     )
