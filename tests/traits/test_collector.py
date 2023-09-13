@@ -707,3 +707,37 @@ class TestCollector(unittest.TestCase):
                 }
             ],
         )
+
+    def test_collector_44(self):
+        self.assertEqual(
+            full_test("""Collector(s): JANET WINGATE No. 4937 Verified: H A Heber"""),
+            [
+                {
+                    "collector": "JANET WINGATE",
+                    "collector_no": "4937",
+                    "trait": "collector",
+                    "start": 0,
+                    "end": 36,
+                },
+                {
+                    "job": "verified :",
+                    "worker": "H A Heber",
+                    "trait": "other_job",
+                    "start": 37,
+                    "end": 56,
+                },
+            ],
+        )
+
+    # def test_collector_45(self):
+    #     self.assertEqual(
+    #         full_test("""with Art and Barb Phillips, Hualapai Elders"""),
+    #         [
+    #             {
+    #                 "other_collector": ["Art and Barb Phillips", "Hualapai Elders"],
+    #                 "trait": "other_collector",
+    #                 "start": 0,
+    #                 "end": 43,
+    #             }
+    #         ],
+    #     )
