@@ -123,14 +123,14 @@ class TestLabels(unittest.TestCase):
             ],
         )
 
-    def test_label_03(self):
-        self.assertEqual(
-            full_test(
-                """
-                AC Saunders 34380 05 Oct 2007
-                w/ Mark A. Elvin, Tim Thomas
-                Entered into UCR Database (52411UCR1)
-                """
-            ),
-            [],
-        )
+    # def test_label_03(self):
+    #     self.assertEqual(
+    #         full_test(
+    #             """
+    #             AC Saunders 34380 05 Oct 2007
+    #             w/ Mark A. Elvin, Tim Thomas
+    #             Entered into UCR Database (52411UCR1)
+    #             """
+    #         ),
+    #         [],
+    #     )

@@ -19,11 +19,13 @@ NAME_CSV = Path(t_terms.__file__).parent / "name_terms.csv"
 JOB_CSV = Path(p_terms.__file__).parent / "job_terms.csv"
 ALL_CSVS = [PERSON_CSV, NAME_CSV, JOB_CSV]
 
+AND = ["and", "&"]
 PUNCT = "[.:;,_-]"
 SEP = ["and", "with", "et", *list("&._,;")]
-AND = ["CCONJ", "ADP"]
+CONJ = ["CCONJ", "ADP"]
 
 NAME4 = [s for s in t_const.NAME_SHAPES if len(s) >= 4 and s[-1].isalpha()]
+UPPER4 = [s for s in t_const.UPPER_SHAPES if len(s) >= 4 and s[-1].isalpha()]
 
 NAME_RE = "".join(t_const.OPEN + t_const.CLOSE + t_const.QUOTE + list(".,'&"))
 NAME_RE = re.compile(rf"^[\sa-z{re.escape(NAME_RE)}-]+$")
@@ -50,7 +52,7 @@ def build(nlp: Language, overwrite: Optional[list[str]] = None):
             "not_name",
         ],
     )
-    add.debug_tokens(nlp)  # ##########################################
+    # add.debug_tokens(nlp)  # ##########################################
 
     job_overwrite = (
         overwrite
@@ -73,7 +75,7 @@ def build(nlp: Language, overwrite: Optional[list[str]] = None):
         keep=[*ACCUMULATOR.keep, "not_name"],
     )
 
-    add.debug_tokens(nlp)  # ##########################################
+    # add.debug_tokens(nlp)  # ##########################################
     add.custom_pipe(nlp, registered="name_only")
 
     add.cleanup_pipe(nlp, name="person_cleanup")
@@ -82,7 +84,7 @@ def build(nlp: Language, overwrite: Optional[list[str]] = None):
 def not_name_patterns():
     decoder = {
         # "name": {"POS": {"IN": ["PROPN", "NOUN"]}},
-        "name": {"SHAPE": {"IN": t_const.NAME_SHAPES}},
+        "name": {"SHAPE": {"IN": t_const.NAME_AND_UPPER}},
         "nope": {"ENT_TYPE": "not_name"},
     }
 
@@ -104,8 +106,8 @@ def name_patterns():
     decoder = {
         "(": {"TEXT": {"IN": t_const.OPEN + t_const.QUOTE}},
         ")": {"TEXT": {"IN": t_const.CLOSE + t_const.QUOTE}},
-        "-": {"TEXT": {"REGEX": r"^[._-]+$"}},
         ",": {"TEXT": {"IN": t_const.COMMA}},
+        "-": {"TEXT": {"REGEX": r"^[._-]+$"}},
         "..": {"TEXT": {"REGEX": r"^[.]+$"}},
         ":": {"LOWER": {"REGEX": rf"^(by|{PUNCT}+)$"}},
         "A": {"TEXT": {"REGEX": r"^[A-Z][A-Z]?[._,]?$"}},
@@ -120,6 +122,8 @@ def name_patterns():
         "no_label": {"ENT_TYPE": "no_label"},
         "no_space": {"SPACY": False},
         "pre": {"ENT_TYPE": "last_prefix"},
+        "upper": {"SHAPE": {"IN": t_const.UPPER_SHAPES}},
+        "upper4": {"SHAPE": {"IN": UPPER4}},
     }
 
     return [
@@ -158,6 +162,21 @@ def name_patterns():
                 "dr+ _? name ( name )  name4",
                 "dr+ _? name ( name )  name4   _? jr+",
                 "dr+ _? name ( name )  name4",
+                "       upper  -? upper? -? pre? pre?   upper4",
+                "       upper  -? upper? -? pre? pre?   upper4   _? jr+",
+                "       upper  -? upper? -?   ambig",
+                "       upper  -? upper? -?   ambig   _? jr+",
+                "       A A? A?      pre? pre? upper4",
+                "       A A? A?      pre? pre? upper4   _? jr+",
+                "       upper A A? A? pre? pre? upper4",
+                "       upper A A? A? pre? pre? upper4   _? jr+",
+                "       upper ..         upper4",
+                "       upper ..         upper4   _? jr+",
+                "       upper ( upper )  upper4",
+                "       upper ( upper )  upper4   _? jr+",
+                "       upper ( upper )  upper4",
+                # " name_shape and name+ ",
+                # " A A? A?    and name+ ",
                 # "pre? pre? name4 , A? A? A",
                 # "pre? pre? name4 ,? name",
             ],
@@ -167,8 +186,8 @@ def name_patterns():
             on_match="id_no_match",
             decoder=decoder,
             patterns=[
-                "no_space+ id1",
-                "no_space+ id2",
+                "id1+ no_space+ id1",
+                "id1+ no_space+ id2",
                 "id1",
             ],
         ),
@@ -187,7 +206,7 @@ def job_patterns():
     decoder = {
         ":": {"LOWER": {"REGEX": rf"^(by|{PUNCT}+)$"}},
         ",": {"LOWER": {"REGEX": rf"^({PUNCT}+)$"}},
-        "and": {"POS": {"IN": AND}},
+        "and": {"POS": {"IN": CONJ}},
         "bad": {"ENT_TYPE": {"IN": ["month"]}},
         "by": {"LOWER": {"IN": ["by"]}},
         "col_label": {"ENT_TYPE": "col_label"},
@@ -271,7 +290,7 @@ def job_patterns():
 
 def other_collector_patterns():
     decoder = {
-        "and": {"POS": {"IN": AND}},
+        "and": {"POS": {"IN": CONJ}},
         "maybe": {"POS": "PROPN"},
         "name": {"ENT_TYPE": "name"},
         "other_col": {"ENT_TYPE": "other_collector"},
@@ -433,7 +452,7 @@ def determiner_match(ent):
         if token._.flag == "name_data":
             people.append(token._.data["name"])
 
-        elif token.pos_ in AND:
+        elif token.pos_ in CONJ:
             people.append(token.lower_)
 
         elif token._.flag == "id_no":

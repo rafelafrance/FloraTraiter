@@ -23,7 +23,6 @@ det_label,determined,determiner
 det_label,determiner(s),determiner
 det_label,determiner(s):,determiner
 det_label,determiner,determiner
-job_label,art,artist
 job_label,artist,artist
 job_label,ass,assistant
 job_label,assist,assistant
@@ -65,6 +64,8 @@ job_label,naturalist,naturalist
 job_label,preparator,preparator
 job_label,researcher,researcher
 job_label,verified by,verifier
+job_label,verified,verifier
+job_label,verified:,verifier
 job_label,volunteer,volunteer
 job_label,volunteers,volunteer
 job_label,writer,writer
