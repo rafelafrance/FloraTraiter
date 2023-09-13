@@ -11,7 +11,6 @@ from . import writer_utils as w_utils
 
 COLOR_COUNT = 14
 BACKGROUNDS = itertools.cycle([f"cc{i}" for i in range(COLOR_COUNT)])
-BORDERS = itertools.cycle([f"bb{i}" for i in range(COLOR_COUNT)])
 
 TraitRow = collections.namedtuple("TraitRow", "label data")
 SortableTrait = collections.namedtuple("SortableTrait", "label start trait title")

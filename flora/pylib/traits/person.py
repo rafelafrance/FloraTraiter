@@ -50,13 +50,11 @@ def build(nlp: Language, overwrite: Optional[list[str]] = None):
             "not_name",
         ],
     )
-    # add.debug_tokens(nlp)  # ##########################################
+    add.debug_tokens(nlp)  # ##########################################
 
     job_overwrite = (
         overwrite
-        + """
-            name col_label det_label job_label no_label other_label id_no
-            """.split()
+        + """name col_label det_label job_label no_label other_label id_no""".split()
     )
     add.trait_pipe(
         nlp,
@@ -75,7 +73,7 @@ def build(nlp: Language, overwrite: Optional[list[str]] = None):
         keep=[*ACCUMULATOR.keep, "not_name"],
     )
 
-    # add.debug_tokens(nlp)  # ##########################################
+    add.debug_tokens(nlp)  # ##########################################
     add.custom_pipe(nlp, registered="name_only")
 
     add.cleanup_pipe(nlp, name="person_cleanup")

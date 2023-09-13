@@ -319,6 +319,7 @@ def size_patterns():
         "sex/dim": {"ENT_TYPE": {"IN": ["dim", "sex"]}},
         "not_numeric": {"ENT_TYPE": "not_numeric"},
         "sex": {"ENT_TYPE": "sex"},
+        "sp": {"IS_SPACE": True},
         "to": {"LOWER": "to"},
         "x": {"LOWER": {"IN": t_const.CROSS + t_const.COMMA}},
     }
@@ -331,8 +332,8 @@ def size_patterns():
             keep="size",
             decoder=decoder,
             patterns=[
-                "about* 99-99                    about*       cm+ in? sex/dim*",
-                "about* 99-99                    about*       cm+ in? sex/dim*",
+                "about* 99-99 sp?                about*       cm+ in? sex/dim*",
+                "about* 99-99 sp?                about*       cm+ in? sex/dim*",
                 "about* 99-99 cm* sex/dim* x to? about* 99-99 cm+ in? sex/dim*",
                 (
                     "      about* 99-99 cm* in? sex/dim* "

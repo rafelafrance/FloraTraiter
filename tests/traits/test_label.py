@@ -123,21 +123,14 @@ class TestLabels(unittest.TestCase):
             ],
         )
 
-    # def test_label_03(self):
-    #     self.assertEqual(
-    #         full_test(
-    #             """
-    #             HERBARIUM OF MONTANA STATE COLLEGE
-    #             FLORA OF MONTANA
-    #             Eriogonum ovalifolium Nutt.
-    #             Missouri River Breaks
-    #             35 miNNE Roy, Fergus Co., Mount.
-    #             Ponderosa pine dominated slight NE-facing
-    #             slope.
-    #             Uncommon
-    #             R.J. Mackie
-    #             June 26, 1963
-    #             """
-    #         ),
-    #         [],
-    #     )
+    def test_label_03(self):
+        self.assertEqual(
+            full_test(
+                """
+                AC Saunders 34380 05 Oct 2007
+                w/ Mark A. Elvin, Tim Thomas
+                Entered into UCR Database (52411UCR1)
+                """
+            ),
+            [],
+        )
