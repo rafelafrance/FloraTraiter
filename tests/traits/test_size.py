@@ -1,5 +1,6 @@
 import unittest
 
+from tests.setup import full_test
 from tests.setup import test
 
 
@@ -963,5 +964,27 @@ class TestSize(unittest.TestCase):
             test("""Tree Cc. 650 m;"""),
             [
                 {"plant_part": "tree", "trait": "plant_part", "start": 0, "end": 4},
+            ],
+        )
+
+    def test_size_44(self):
+        self.assertEqual(
+            full_test(
+                """
+                flowers: 7
+                ft tall;
+                """
+            ),
+            [
+                {"trait": "flower_part", "flower_part": "flower", "start": 0, "end": 7},
+                {
+                    "units": "cm",
+                    "dimensions": "height",
+                    "height_low": 213.36,
+                    "trait": "size",
+                    "start": 9,
+                    "end": 18,
+                    "flower_part": "flower",
+                },
             ],
         )

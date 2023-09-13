@@ -673,16 +673,37 @@ class TestCollector(unittest.TestCase):
             ],
         )
 
-    # def test_collector_42(self):
-    #     self.assertEqual(
-    #         full_test("""Phillips, A.M. & Phillips, B.G. 74-230"""),
-    #         [
-    #             {
-    #                 "collector": ["Phillips, A.M.", "Phillips, B.G."],
-    #                 "collector_no": "74-230",
-    #                 "trait": "collector",
-    #                 "start": 0,
-    #                 "end": 38,
-    #             },
-    #         ],
-    #     )
+    def test_collector_42(self):
+        self.assertEqual(
+            full_test(
+                """
+                With: Marcelline VandeWater, Steven Williams, Janet
+                Rosenthal
+                """
+            ),
+            [
+                {
+                    "other_collector": [
+                        "Marcelline VandeWater",
+                        "Steven Williams",
+                        "Janet",
+                    ],
+                    "trait": "other_collector",
+                    "start": 0,
+                    "end": 51,
+                }
+            ],
+        )
+
+    def test_collector_43(self):
+        self.assertEqual(
+            full_test("""w/ Mark A. Elvin, Tim Thomas"""),
+            [
+                {
+                    "other_collector": ["Mark A. Elvin", "Tim Thomas"],
+                    "trait": "other_collector",
+                    "start": 0,
+                    "end": 28,
+                }
+            ],
+        )
