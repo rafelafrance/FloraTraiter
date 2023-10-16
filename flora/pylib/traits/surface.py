@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from pathlib import Path
 
 from spacy import Language
@@ -6,6 +7,8 @@ from traiter.pylib import const as t_const
 from traiter.pylib import term_util
 from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
+
+from .base import Base
 
 SURFACE_CSV = Path(__file__).parent / "terms" / "surface_terms.csv"
 REPLACE = term_util.term_data(SURFACE_CSV, "replace")
@@ -36,13 +39,22 @@ def surface_patterns():
     ]
 
 
+@dataclass()
+class Surface(Base):
+    surface: str = None
+
+    @classmethod
+    def surface_match(cls, ent):
+        surface = {}  # Dicts preserve order sets do not
+        for token in ent:
+            if token._.term == "surface_term" and token.text != "-":
+                word = REPLACE.get(token.lower_, token.lower_)
+                surface[word] = 1
+        surface = " ".join(surface)
+        surface = REPLACE.get(surface, surface)
+        return cls.from_ent(ent, surface=surface)
+
+
 @registry.misc("surface_match")
 def surface_match(ent):
-    surface = {}  # Dicts preserve order sets do not
-    for token in ent:
-        if token._.term == "surface_term" and token.text != "-":
-            word = REPLACE.get(token.lower_, token.lower_)
-            surface[word] = 1
-    surface = " ".join(surface)
-    surface = REPLACE.get(surface, surface)
-    ent._.data = {"surface": surface}
+    return Surface.surface_match(ent)

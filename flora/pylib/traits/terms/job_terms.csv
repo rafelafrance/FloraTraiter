@@ -1,28 +1,28 @@
 label,pattern,replace
-col_label,col,collector
-col_label,col.,collector
-col_label,coll,collector
-col_label,coll.,collector
-col_label,collected by,collector
-col_label,collected by:,collector
-col_label,collected,collector
-col_label,collector(s),collector
-col_label,collector(s):,collector
-col_label,collector,collector
-col_label,collector:,collector
-col_label,collectors,collector
-col_label,collectors:,collector
-det_label,confirmed,determiner
-det_label,confirmed by,determiner
-det_label,det,determiner
-det_label,det.,determiner
-det_label,det by,determiner
-det_label,det. by,determiner
-det_label,determined by,determiner
-det_label,determined,determiner
-det_label,determiner(s),determiner
-det_label,determiner(s):,determiner
-det_label,determiner,determiner
+job_label,col,collector
+job_label,col.,collector
+job_label,coll,collector
+job_label,coll.,collector
+job_label,collected by,collector
+job_label,collected by:,collector
+job_label,collected,collector
+job_label,collector(s),collector
+job_label,collector(s):,collector
+job_label,collector,collector
+job_label,collector:,collector
+job_label,collectors,collector
+job_label,collectors:,collector
+job_label,confirmed,determiner
+job_label,confirmed by,determiner
+job_label,det,determiner
+job_label,det.,determiner
+job_label,det by,determiner
+job_label,det. by,determiner
+job_label,determined by,determiner
+job_label,determined,determiner
+job_label,determiner(s),determiner
+job_label,determiner(s):,determiner
+job_label,determiner,determiner
 job_label,artist,artist
 job_label,ass,assistant
 job_label,assist,assistant
@@ -69,3 +69,18 @@ job_label,verified:,verifier
 job_label,volunteer,volunteer
 job_label,volunteers,volunteer
 job_label,writer,writer
+job_label,w/,other_collector
+job_label,with,other_collector
+job_label,with:,other_collector
+no_label,#
+no_label,collector number
+no_label,collector number:
+no_label,no
+no_label,no.
+no_label,num
+no_label,num.
+no_label,number
+no_label,number:
+acc_label,accession number
+acc_label,accession no
+acc_label,accession no.

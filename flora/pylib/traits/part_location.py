@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from pathlib import Path
 
 from spacy import Language
@@ -8,8 +9,8 @@ from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
 from traiter.pylib.traits import terms as t_terms
 
+from .base import Base
 from .part import PART_LABELS
-
 
 LOCATION_ENTS = """
     location flower_location part_as_loc subpart_as_loc part_as_distance
@@ -88,10 +89,23 @@ def part_location_patterns():
     ]
 
 
+@dataclass()
+class PartLocation(Base):
+    part_as_distance: str = None
+    part_as_loc: str = None
+    subpart_as_loc: str = None
+    location: str = None
+
+    @classmethod
+    def part_location_match(cls, ent):
+        frags = []
+        for token in ent:
+            frag = REPLACE.get(token.lower_, token.lower_)
+            frags.append(frag)
+        data = {ent.label_: " ".join(frags)}
+        return cls.from_ent(ent, **data)
+
+
 @registry.misc("part_location_match")
 def part_location_match(ent):
-    frags = []
-    for token in ent:
-        frag = REPLACE.get(token.lower_, token.lower_)
-        frags.append(frag)
-    ent._.data = {ent.label_: " ".join(frags)}
+    return PartLocation.part_location_match(ent)

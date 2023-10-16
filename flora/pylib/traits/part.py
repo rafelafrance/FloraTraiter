@@ -1,4 +1,5 @@
 import re
+from dataclasses import dataclass
 from pathlib import Path
 
 from spacy import Language
@@ -10,22 +11,27 @@ from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
 from traiter.pylib.pipes.reject_match import REJECT_MATCH
 
+from .base import Base
+
 PART_CSV = Path(__file__).parent / "terms" / "part_terms.csv"
 MISSING_CSV = Path(__file__).parent / "terms" / "missing_terms.csv"
 ALL_CSVS = [PART_CSV, MISSING_CSV]
 
 REPLACE = term_util.term_data(ALL_CSVS, "replace")
+TYPE = term_util.term_data(PART_CSV, "type")
 
 NOT_PART = ["bad_part", "part_and", "part_leader", "part_missing", "subpart"]
 PART_LABELS = [lb for lb in term_util.get_labels(PART_CSV) if lb not in NOT_PART]
 
 OTHER_LABELS = "missing_part missing_subpart multiple_parts subpart".split()
-ALL_LABELS = PART_LABELS + OTHER_LABELS
+ALL_LABELS = ["part", *OTHER_LABELS]
 
 
 def build(nlp: Language):
     add.term_pipe(nlp, name="part_terms", path=ALL_CSVS)
+    add.debug_tokens(nlp)
     add.trait_pipe(nlp, name="part_patterns", compiler=part_patterns())
+    add.debug_tokens(nlp)
     overwrite = [*PART_LABELS, "subpart"]
     add.trait_pipe(
         nlp, name="subpart_patterns", compiler=subpart_patterns(), overwrite=overwrite
@@ -41,7 +47,7 @@ def part_patterns():
         "bad_part": {"ENT_TYPE": "bad_part"},
         "leader": {"ENT_TYPE": "part_leader"},
         "missing": {"ENT_TYPE": "missing"},
-        "part": {"ENT_TYPE": {"IN": PART_LABELS}},
+        "part": {"ENT_TYPE": "part"},
     }
 
     return [
@@ -95,7 +101,7 @@ def subpart_patterns():
         "-": {"TEXT": {"IN": t_const.DASH}, "OP": "+"},
         "leader": {"ENT_TYPE": "part_leader"},
         "missing": {"ENT_TYPE": "missing"},
-        "part": {"ENT_TYPE": {"IN": PART_LABELS}},
+        "part": {"ENT_TYPE": "part"},
         "subpart": {"ENT_TYPE": "subpart"},
     }
 
@@ -126,69 +132,89 @@ def subpart_patterns():
     ]
 
 
+@dataclass()
+class Part(Base):
+    part: str = None
+    type: str = None
+
+    @classmethod
+    def part_match(cls, ent):
+        frags = [[]]
+        label = ent.label_
+        relabel = ent.label_
+
+        for token in ent:
+            token._.flag = "part"
+
+            if relabel not in OTHER_LABELS and token._.term in PART_LABELS:
+                relabel = token._.term
+
+            if token._.term in ALL_LABELS:
+                part = REPLACE.get(token.lower_, token.lower_)
+
+                if part not in frags[-1]:
+                    frags[-1].append(part)
+
+                if label not in ("missing_part", "multiple_parts", "subpart"):
+                    label = token._.term
+
+            elif token._.term == "missing":
+                frags[-1].append(REPLACE.get(token.lower_, token.lower_))
+
+            elif token._.term == "part_and":
+                frags.append([])
+
+        all_parts = [" ".join(f) for f in frags]
+        all_parts = [re.sub(r" - ", "-", p) for p in all_parts]
+        all_parts = [REPLACE.get(p, p) for p in all_parts]
+
+        ent._.relabel = relabel
+        trait = cls.from_ent(
+            ent,
+            part=all_parts[0] if len(all_parts) == 1 else all_parts,
+            type=relabel,
+        )
+
+        ent[0]._.trait = trait
+        return trait
+
+
+@dataclass()
+class Subpart(Base):
+    subpart: str = None
+
+    @classmethod
+    def subpart_match(cls, ent):
+        frags = []
+
+        for token in ent:
+            token._.flag = "subpart"
+
+            if token._.term in ALL_LABELS:
+                part = REPLACE.get(token.lower_, token.lower_)
+
+                if part not in frags:
+                    frags.append(part)
+
+            elif token._.term == "missing":
+                frags.append(REPLACE.get(token.lower_, token.lower_))
+
+        subpart = " ".join(frags)
+        subpart = re.sub(r" - ", "-", subpart)
+        subpart = REPLACE.get(subpart, subpart)
+
+        trait = cls.from_ent(ent, subpart=subpart)
+
+        ent[0]._.trait = trait  # Cache so we can use this later
+
+        return trait
+
+
 @registry.misc("part_match")
 def part_match(ent):
-    frags = [[]]
-    label = ent.label_
-    relabel = ent.label_
-
-    for token in ent:
-        token._.flag = "part"
-
-        if relabel not in OTHER_LABELS and token._.term in PART_LABELS:
-            relabel = token._.term
-
-        if token._.term in ALL_LABELS:
-            part = REPLACE.get(token.lower_, token.lower_)
-
-            if part not in frags[-1]:
-                frags[-1].append(part)
-
-            if label not in ("missing_part", "multiple_parts", "subpart"):
-                label = token._.term
-
-        elif token._.term == "missing":
-            frags[-1].append(REPLACE.get(token.lower_, token.lower_))
-
-        elif token._.term == "part_and":
-            frags.append([])
-
-    all_parts = [" ".join(f) for f in frags]
-    all_parts = [re.sub(r" - ", "-", p) for p in all_parts]
-    all_parts = [REPLACE.get(p, p) for p in all_parts]
-
-    ent._.relabel = relabel
-    ent._.data = {
-        "trait": relabel,
-        relabel: all_parts[0] if len(all_parts) == 1 else all_parts,
-    }
-
-    ent[0]._.data = ent._.data  # Cache so we can use this later
+    return Part.part_match(ent)
 
 
 @registry.misc("subpart_match")
 def subpart_match(ent):
-    frags = []
-
-    for token in ent:
-        token._.flag = "subpart"
-
-        if token._.term in ALL_LABELS:
-            part = REPLACE.get(token.lower_, token.lower_)
-
-            if part not in frags:
-                frags.append(part)
-
-        elif token._.term == "missing":
-            frags.append(REPLACE.get(token.lower_, token.lower_))
-
-    subpart = " ".join(frags)
-    subpart = re.sub(r" - ", "-", subpart)
-    subpart = REPLACE.get(subpart, subpart)
-
-    ent._.data = {
-        "trait": "subpart",
-        "subpart": subpart,
-    }
-
-    ent[0]._.data = ent._.data  # Cache so we can use this later
+    return Subpart.subpart_match(ent)

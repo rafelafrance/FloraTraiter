@@ -43,7 +43,7 @@ class BaseCsvWriter:
             if not (PARTS_SET & key_set):
                 continue
 
-            base_header = w_utils.get_label(trait)
+            base_header = w_utils.html_label(trait)
 
             self.group_values_by_header(by_header, trait, base_header)
             self.number_columns(by_header, csv_row)

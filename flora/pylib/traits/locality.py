@@ -1,4 +1,5 @@
 import os
+from dataclasses import dataclass
 from pathlib import Path
 
 import traiter.pylib.const as t_const
@@ -6,6 +7,8 @@ from spacy.language import Language
 from spacy.util import registry
 from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
+
+from .base import Base
 
 USE_MOCK_DATA = 0
 
@@ -49,16 +52,11 @@ def build(nlp: Language):
         nlp, name="locality_terms", path=get_csvs(), default_labels=default_labels
     )
 
-    # add.debug_tokens(nlp)  # ##########################################
-
     add.trait_pipe(nlp, name="locality_patterns", compiler=locality_patterns())
-
-    # add.debug_tokens(nlp)  # ##########################################
 
     add.custom_pipe(nlp, registered="prune_localities")
 
     for i in range(1, 5):
-        # add.debug_tokens(nlp)  # ##########################################
         add.trait_pipe(
             nlp,
             name=f"extend_locality{i}",
@@ -66,16 +64,12 @@ def build(nlp: Language):
             overwrite=["locality", *ALL_TRAITS],
         )
 
-    # add.debug_tokens(nlp)  # ##########################################
-
     add.trait_pipe(
         nlp,
         name="end_locality",
         compiler=end_locality(),
         overwrite=["locality", *ALL_TRAITS],
     )
-
-    # add.debug_tokens(nlp)  # ##########################################
 
     add.cleanup_pipe(nlp, name="locality_cleanup")
 
@@ -180,23 +174,34 @@ def end_locality():
     ]
 
 
+@dataclass()
+class Locality(Base):
+    locality: str = None
+    labeled: bool = None
+
+    @classmethod
+    def locality_match(cls, ent):
+        loc = ent.text.lstrip("(")
+        loc = " ".join(loc.split())
+        return cls.from_ent(ent, locality=loc)
+
+    @classmethod
+    def labeled_locality_match(cls, ent):
+        i = 0
+        for i, token in enumerate(ent):
+            if token._.term != "loc_label":
+                break
+        return cls.from_ent(ent, locality=ent[i:].text, labeled=True)
+
+
 @registry.misc("locality_match")
 def locality_match(ent):
-    loc = ent.text.lstrip("(")
-    loc = " ".join(loc.split())
-    ent._.data = {"locality": loc}
+    return Locality.locality_match(ent)
 
 
 @registry.misc("labeled_locality_match")
 def labeled_locality_match(ent):
-    i = 0
-    for i, token in enumerate(ent):
-        if token._.term != "loc_label":
-            break
-    ent._.data = {
-        "locality": ent[i:].text,
-        "labeled": True,
-    }
+    return Locality.labeled_locality_match(ent)
 
 
 @Language.component("prune_localities")

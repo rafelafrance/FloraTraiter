@@ -1,12 +1,14 @@
 import unittest
 
-from tests.setup import test
+from tests.setup import small_test
 
 
 class TestLocation(unittest.TestCase):
     def test_location_01(self):
         self.assertEqual(
-            test("""setose their whole length dorsally and the flowers are smaller"""),
+            small_test(
+                """setose their whole length dorsally and the flowers are smaller"""
+            ),
             [
                 {
                     "surface": "setose",

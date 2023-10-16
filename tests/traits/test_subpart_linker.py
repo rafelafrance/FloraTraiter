@@ -1,12 +1,12 @@
 import unittest
 
-from tests.setup import test
+from tests.setup import small_test
 
 
 class TestSubpartLinker(unittest.TestCase):
     def test_subpart_linker_01(self):
         self.assertEqual(
-            test("""limbs (1-) 2-4 (-5) pairs;"""),
+            small_test("""limbs (1-) 2-4 (-5) pairs;"""),
             [
                 {"subpart": "limb", "trait": "subpart", "start": 0, "end": 5},
                 {
@@ -25,7 +25,7 @@ class TestSubpartLinker(unittest.TestCase):
 
     def test_subpart_linker_02(self):
         self.assertEqual(
-            test("""blades oblong setose-ciliolate"""),
+            small_test("""blades oblong setose-ciliolate"""),
             [
                 {"leaf_part": "leaf", "trait": "leaf_part", "start": 0, "end": 6},
                 {

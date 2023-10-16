@@ -12,6 +12,7 @@ from flora.pylib.traits import admin_unit
 from flora.pylib.traits import associated_taxon
 from flora.pylib.traits import delete_missing
 from flora.pylib.traits import habit
+from flora.pylib.traits import job
 from flora.pylib.traits import link_location
 from flora.pylib.traits import link_part
 from flora.pylib.traits import link_sex
@@ -22,7 +23,6 @@ from flora.pylib.traits import misc
 from flora.pylib.traits import numeric
 from flora.pylib.traits import part
 from flora.pylib.traits import part_location
-from flora.pylib.traits import person
 from flora.pylib.traits import shape
 from flora.pylib.traits import surface
 from flora.pylib.traits import taxon
@@ -54,7 +54,7 @@ def build(model_path=None):
 
     misc.build(nlp)
 
-    person.build(nlp, overwrite=["subpart", "color", "admin_unit"])
+    job.build(nlp, overwrite=["subpart", "color", "admin_unit"])
     numeric.build(nlp)
 
     habit.build(nlp)

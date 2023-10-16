@@ -1,12 +1,12 @@
 import unittest
 
-from tests.setup import test
+from tests.setup import small_test
 
 
 class TestPartLinker(unittest.TestCase):
     def test_part_linker_01(self):
         self.assertEqual(
-            test("""pinnules up to 31 pairs,"""),
+            small_test("""pinnules up to 31 pairs,"""),
             [
                 {"leaf_part": "pinnule", "trait": "leaf_part", "start": 0, "end": 8},
                 {
@@ -22,7 +22,7 @@ class TestPartLinker(unittest.TestCase):
 
     def test_part_linker_02(self):
         self.assertEqual(
-            test(
+            small_test(
                 """trees closely resembling another thing in habit,
                 attaining 2-4 m in height with trunk"""
             ),
@@ -44,7 +44,7 @@ class TestPartLinker(unittest.TestCase):
 
     def test_part_linker_03(self):
         self.assertEqual(
-            test(
+            small_test(
                 """Pods here are some words, and more words, we keep writing things
                  until the desired part is far away from its size 25-35 X 12-18 mm,
                  the replum 1.5-2 mm wide,"""
@@ -85,7 +85,7 @@ class TestPartLinker(unittest.TestCase):
     def test_part_linker_04(self):
         self.maxDiff = None
         self.assertEqual(
-            test(
+            small_test(
                 """Lvs (except of A. pachyphloia) bipinnate, the primary and secondary
                 axes normally pulvinate (the primary pulvinus rarely suppressed)"""
             ),
@@ -131,7 +131,7 @@ class TestPartLinker(unittest.TestCase):
 
     def test_part_linker_05(self):
         self.assertEqual(
-            test("""juvenile leaves persistent for a long period."""),
+            small_test("""juvenile leaves persistent for a long period."""),
             [
                 {"end": 15, "leaf_part": "leaf", "start": 9, "trait": "leaf_part"},
                 {
@@ -146,7 +146,9 @@ class TestPartLinker(unittest.TestCase):
 
     def test_part_linker_06(self):
         self.assertEqual(
-            test("""Most species have stipular spines, bipinnately compound leaves."""),
+            small_test(
+                """Most species have stipular spines, bipinnately compound leaves."""
+            ),
             [
                 {
                     "leaf_part": "stipular spine",

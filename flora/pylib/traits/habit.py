@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from pathlib import Path
 
 from spacy import Language
@@ -6,6 +7,8 @@ from traiter.pylib import const as t_const
 from traiter.pylib import term_util
 from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
+
+from .base import Base
 
 HABIT_CSV = Path(__file__).parent / "terms" / "habit_terms.csv"
 SHAPE_CSV = Path(__file__).parent / "terms" / "shape_terms.csv"
@@ -40,7 +43,16 @@ def habit_patterns():
     ]
 
 
+@dataclass()
+class Habit(Base):
+    habit: str = None
+
+    @classmethod
+    def habit_match(cls, ent):
+        frags = [REPLACE.get(t.lower_, t.lower_) for t in ent]
+        return cls.from_ent(ent, habit=" ".join(frags))
+
+
 @registry.misc("habit_match")
 def habit_match(ent):
-    frags = [REPLACE.get(t.lower_, t.lower_) for t in ent]
-    ent._.data = {"habit": " ".join(frags)}
+    return Habit.habit_match(ent)

@@ -1,15 +1,17 @@
 import unittest
 
-from tests.setup import test
+from tests.setup import small_test
 
 
 class TestMargin(unittest.TestCase):
     def test_margin_00(self):
-        test("""margins coarsely toothed or remotely sinuate-dentate to serrate,""")
+        small_test(
+            """margins coarsely toothed or remotely sinuate-dentate to serrate,"""
+        )
 
     def test_margin_01(self):
         self.assertEqual(
-            test("margin shallowly undulate-crenate"),
+            small_test("margin shallowly undulate-crenate"),
             [
                 {"subpart": "margin", "trait": "subpart", "start": 0, "end": 6},
                 {
@@ -24,13 +26,13 @@ class TestMargin(unittest.TestCase):
 
     def test_margin_02(self):
         self.assertEqual(
-            test("reniform, undulate-margined"),
+            small_test("reniform, undulate-margined"),
             [],
         )
 
     def test_margin_03(self):
         self.assertEqual(
-            test("margins thickened-corrugated"),
+            small_test("margins thickened-corrugated"),
             [
                 {"subpart": "margin", "trait": "subpart", "start": 0, "end": 7},
                 {
@@ -45,7 +47,9 @@ class TestMargin(unittest.TestCase):
 
     def test_margin_04(self):
         self.assertEqual(
-            test("margins coarsely toothed or remotely sinuate-dentate to serrate,"),
+            small_test(
+                "margins coarsely toothed or remotely sinuate-dentate to serrate,"
+            ),
             [
                 {"subpart": "margin", "trait": "subpart", "start": 0, "end": 7},
                 {

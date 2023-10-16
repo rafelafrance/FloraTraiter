@@ -10,9 +10,9 @@ class TestOtherJob(unittest.TestCase):
             full_test("""Verified by: John Kinsman:"""),
             [
                 {
-                    "worker": "John Kinsman",
+                    "name": "John Kinsman",
                     "job": "verified by",
-                    "trait": "other_job",
+                    "trait": "job",
                     "start": 0,
                     "end": 25,
                 }

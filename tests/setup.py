@@ -8,10 +8,10 @@ SMALL_PIPELINE = small_pipeline.build()
 PIPELINE = full_pipeline.build()
 
 
-def test(text: str) -> list[dict]:
+def small_test(text: str) -> list[dict]:
     text = shorten(text)
     doc = SMALL_PIPELINE(text)
-    traits = [e._.data for e in doc.ents]
+    traits = [e._.trait for e in doc.ents]
 
     # from pprint import pp
     # pp(traits, compact=True)
@@ -22,7 +22,7 @@ def test(text: str) -> list[dict]:
 def full_test(text: str) -> list[dict]:
     text = compress(text)
     doc = PIPELINE(text)
-    traits = [e._.data for e in doc.ents]
+    traits = [e._.trait for e in doc.ents]
 
     # from pprint import pp
     # pp(traits, compact=True)
