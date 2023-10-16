@@ -1,12 +1,12 @@
 import unittest
 
-from tests.setup import test
+from tests.setup import small_test
 
 
 class TestPhrase(unittest.TestCase):
     def test_phrase_01(self):
         self.assertEqual(
-            test("Pistillate flowers usually sessile; hypogynous"),
+            small_test("Pistillate flowers usually sessile; hypogynous"),
             [
                 {
                     "sex": "pistillate",
@@ -32,7 +32,7 @@ class TestPhrase(unittest.TestCase):
 
     def test_phrase_02(self):
         self.assertEqual(
-            test("Petals glabrous, deciduous;"),
+            small_test("Petals glabrous, deciduous;"),
             [
                 {"flower_part": "petal", "trait": "flower_part", "start": 0, "end": 6},
                 {
@@ -53,7 +53,7 @@ class TestPhrase(unittest.TestCase):
 
     def test_phrase_03(self):
         self.assertEqual(
-            test("leaf blade herbaceous."),
+            small_test("leaf blade herbaceous."),
             [
                 {"leaf_part": "leaf", "trait": "leaf_part", "start": 0, "end": 10},
                 {

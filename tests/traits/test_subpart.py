@@ -1,12 +1,12 @@
 import unittest
 
-from tests.setup import test
+from tests.setup import small_test
 
 
 class TestSubpart(unittest.TestCase):
     def test_subpart_01(self):
         self.assertEqual(
-            test("terminal lobe ovate-trullate,"),
+            small_test("terminal lobe ovate-trullate,"),
             [
                 {
                     "subpart": "lobe",

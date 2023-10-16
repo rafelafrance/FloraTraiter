@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from pathlib import Path
 
 from spacy import Language
@@ -6,6 +7,8 @@ from traiter.pylib import const as t_const
 from traiter.pylib import term_util
 from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
+
+from .base import Base
 
 MARGIN_CSV = Path(__file__).parent / "terms" / "margin_terms.csv"
 
@@ -41,13 +44,22 @@ def margin_patterns():
     ]
 
 
+@dataclass()
+class Margin(Base):
+    margin: str = None
+
+    @classmethod
+    def margin_match(cls, ent):
+        margin = {}  # Dicts preserve order sets do not
+        for token in ent:
+            if token._.term in ["margin_term", "shape"] and token.text != "-":
+                word = REPLACE.get(token.lower_, token.lower_)
+                margin[word] = 1
+        margin = "-".join(margin.keys())
+        margin = REPLACE.get(margin, margin)
+        return cls.from_ent(ent, margin=margin)
+
+
 @registry.misc("margin_match")
 def margin_match(ent):
-    margin = {}  # Dicts preserve order sets do not
-    for token in ent:
-        if token._.term in ["margin_term", "shape"] and token.text != "-":
-            word = REPLACE.get(token.lower_, token.lower_)
-            margin[word] = 1
-    margin = "-".join(margin.keys())
-    margin = REPLACE.get(margin, margin)
-    ent._.data = {"margin": margin}
+    return Margin.margin_match(ent)

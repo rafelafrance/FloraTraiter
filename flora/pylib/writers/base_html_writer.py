@@ -63,7 +63,7 @@ class BaseHtmlWriter:
             if prev < start:
                 frags.append(html.escape(row.text[prev:start]))
 
-            label = w_utils.get_label(trait)
+            label = w_utils.html_label(trait)
             cls = self.css_classes[label]
 
             title = ", ".join(
@@ -89,7 +89,7 @@ class BaseHtmlWriter:
 
         sortable = []
         for trait in row.traits:
-            label = w_utils.get_label(trait)
+            label = w_utils.html_label(trait)
             title = row.text[trait["start"] : trait["end"]]
             sortable.append(SortableTrait(label, trait["start"], trait, title))
 

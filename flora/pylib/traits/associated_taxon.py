@@ -1,9 +1,12 @@
+from dataclasses import dataclass
 from pathlib import Path
 
 from spacy.language import Language
 from spacy.util import registry
 from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
+
+from .base import Base
 
 ASSOC_CSV = Path(__file__).parent / "terms" / "associated_taxon_terms.csv"
 PRIMARY_RANKS = set(""" species subspecies variety subvariety form subform """.split())
@@ -37,9 +40,18 @@ def associated_taxon_patterns():
     ]
 
 
+@dataclass()
+class AssociatedTaxonLabel(Base):
+    label: str = None
+
+    @classmethod
+    def assoc_taxon_label_match(cls, ent):
+        return cls.from_ent(ent, label=ent.text.lower())
+
+
 @registry.misc("assoc_taxon_label_match")
 def locality_match(ent):
-    ent._.data = {"assoc_taxon_label": ent.text.lower()}
+    return AssociatedTaxonLabel.assoc_taxon_label_match(ent)
 
 
 @Language.component("label_assoc_taxon")
@@ -52,23 +64,13 @@ def label_assoc_taxon(doc):
             primary_ok = False
 
         elif ent.label_ == "taxon":
-            taxon = ent._.data["taxon"]
-            rank = ent._.data["rank"]
+            taxon = ent._.trait.taxon
+            rank = ent._.trait.rank
 
             if primary_ok and rank in PRIMARY_RANKS and len(taxon.split()) > 1:
                 primary_ok = False
 
             else:
-                relabel_entity(ent, "associated_taxon")
-                ent._.data["trait"] = "associated_taxon"
-                ent._.data["associated_taxon"] = taxon
-                del ent._.data["taxon"]
+                ent._.trait.associated = True
 
     return doc
-
-
-def relabel_entity(ent, label):
-    strings = ent.doc.vocab.strings
-    if label not in strings:
-        strings.add(label)
-    ent.label = strings[label]

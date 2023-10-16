@@ -1,5 +1,7 @@
 import os
 import re
+from dataclasses import asdict
+from dataclasses import dataclass
 from pathlib import Path
 
 from spacy import Language
@@ -14,6 +16,7 @@ from traiter.pylib.pipes import reject_match
 from traiter.pylib.traits import terms as t_terms
 
 from .. import const
+from .base import Base
 
 
 def get_csvs():
@@ -82,7 +85,6 @@ def build(
         default_labels=default_labels,
     )
 
-    # add.debug_tokens(nlp)  # ###############################
     add.trait_pipe(
         nlp,
         name="taxon_patterns",
@@ -90,7 +92,6 @@ def build(
         merge=["taxon", "single"],
         overwrite=["taxon"],
     )
-    # add.debug_tokens(nlp)  # ###############################
 
     add.trait_pipe(
         nlp,
@@ -99,7 +100,6 @@ def build(
         merge=["linnaeus", "not_linnaeus"],
         overwrite=["taxon"],
     )
-    # add.debug_tokens(nlp)  # ###############################
 
     auth_keep = auth_keep + ACCUMULATOR.keep + ["single", "not_name"]
     add.trait_pipe(
@@ -111,7 +111,6 @@ def build(
         overwrite=["taxon", *overwrite],
     )
 
-    # add.debug_tokens(nlp)  # ###############################
     for i in range(1, extend + 1):
         name = f"taxon_extend_{i}"
         add.trait_pipe(
@@ -121,7 +120,6 @@ def build(
             merge=["taxon"],
             overwrite=["taxon", "linnaeus", "not_linnaeus", "single"],
         )
-    # add.debug_tokens(nlp)  # ###############################
 
     add.trait_pipe(
         nlp,
@@ -526,246 +524,308 @@ def taxon_rename_patterns():
     )
 
 
+@dataclass
+class Taxon(Base):
+    taxon: str | list[str] = None
+    rank: str = None
+    authority: str | list[str] = None
+
+    @classmethod
+    def taxon_match(cls, ent):
+        taxon = []
+        rank_seen = False
+
+        for i, token in enumerate(ent):
+            token._.flag = "taxon"
+
+            if LEVEL.get(token.lower_) == "lower":
+                taxon.append(RANK_ABBREV.get(token.lower_, token.lower_))
+                rank_seen = True
+
+            elif token._.term == "binomial" and i == 0:
+                taxon.append(token.text.title())
+
+            elif token._.term == "binomial" and i > 0:
+                taxon.append(token.lower_)
+
+            elif token._.term == "monomial" and i != 2:
+                taxon.append(token.lower_)
+
+            elif token._.term == "monomial" and i == 2:
+                if not rank_seen:
+                    taxon.append(RANK_ABBREV["subspecies"])
+                taxon.append(token.lower_)
+
+            elif token.pos_ in ["PROPN", "NOUN"]:
+                taxon.append(token.text)
+
+            else:
+                raise reject_match.RejectMatch()
+
+        if re.match(ABBREV_RE, taxon[0]) and len(taxon) > 1:
+            taxon[0] = taxon[0] if taxon[0][-1] == "." else taxon[0] + "."
+            abbrev = " ".join(taxon[:2])
+            taxon[0] = BINOMIAL_ABBREV.get(abbrev, taxon[0])
+
+        taxon = " ".join(taxon)
+        taxon = taxon[0].upper() + taxon[1:]
+
+        trait = cls.from_ent(ent, taxon=taxon, rank=ent.label_)
+
+        ent[0]._.trait = trait
+        ent[0]._.flag = "taxon_data"
+
+        return trait
+
+    @classmethod
+    def single_taxon_match(cls, ent):
+        rank = None
+        taxon = None
+
+        for token in ent:
+            token._.flag = "taxon"
+
+            # Taxon and its rank
+            if token._.term == "monomial":
+                taxon = token.lower_
+                taxon = taxon.replace("- ", "-")
+
+                # A given rank will override the one in the DB
+                rank_ = MONOMIAL_RANKS.get(token.lower_)
+                if not rank and rank_:
+                    rank_ = rank_.split()[0]
+                    level = LEVEL[rank_]
+                    if level == "higher" and token.shape_ in t_const.NAME_AND_UPPER:
+                        rank = rank_
+                    elif (
+                        level in ("lower", "species")
+                        and token.shape_ not in t_const.TITLE_SHAPES
+                    ):
+                        rank = rank_
+
+            # A given rank overrides the one in the DB
+            elif LEVEL.get(token.lower_) in ("higher", "lower"):
+                rank = RANK_REPLACE.get(token.lower_, token.lower_)
+
+            elif token.pos_ in ("PROPN", "NOUN"):
+                taxon = token.lower_
+
+        if not rank:
+            raise reject_match.RejectMatch
+
+        taxon = taxon.title() if LEVEL[rank] == "higher" else taxon.lower()
+
+        if len(taxon) < const.MIN_TAXON_LEN:
+            raise reject_match.RejectMatch
+
+        trait = cls.from_ent(
+            ent,
+            taxon=taxon.title() if LEVEL[rank] == "higher" else taxon.lower(),
+            rank=rank,
+        )
+        ent[0]._.trait = trait
+        ent[0]._.flag = "taxon_data"
+
+        return trait
+
+    @classmethod
+    def multi_taxon_match(cls, ent):
+        taxa = []
+
+        for sub_ent in ent.ents:
+            taxa.append(sub_ent._.trait.taxon)
+            ent._.trait.rank = sub_ent._.trait.rank
+
+        return cls.from_ent(ent, taxon=taxa)
+
+    @classmethod
+    def taxon_auth_match(cls, ent):
+        auth = []
+        prev_auth = None
+        data = {}
+
+        for token in ent:
+            if token._.flag == "taxon_data":
+                data = asdict(token._.trait)
+                if token._.trait.authority:
+                    prev_auth = token._.trait.authority
+
+            elif auth and token.lower_ in AND:
+                auth.append("and")
+
+            elif token.shape_ in t_const.NAME_SHAPES:
+                if len(token) == 1:
+                    auth.append(token.text + ".")
+                else:
+                    auth.append(token.text)
+
+            token._.flag = "taxon"
+
+        auth = " ".join(auth)
+        authority = [prev_auth, auth] if prev_auth else auth
+
+        trait = cls.from_ent(ent, authority=authority, **data)
+
+        ent[0]._.trait = trait
+        ent[0]._.flag = "taxon_data"
+
+        return trait
+
+    @classmethod
+    def taxon_linnaeus_match(cls, ent):
+        auth = []
+        data = {}
+        for token in ent:
+            if token._.flag == "taxon_data":
+                data = asdict(token._.trait)
+            elif token.lower_ in LINNAEUS:
+                pass
+            elif token.shape_ in t_const.NAME_SHAPES:
+                if len(token) == 1:
+                    auth.append(token.text + ".")
+                else:
+                    auth.append(token.text)
+
+        authority = ["Linnaeus", " ".join(auth)] if auth else "Linnaeus"
+        trait = cls.from_ent(ent, authority=authority, **data)
+
+        ent[0]._.trait = trait
+        ent[0]._.flag = "taxon_data"
+
+        return trait
+
+    @classmethod
+    def taxon_not_linnaeus_match(cls, ent):
+        auth = []
+        data = {}
+        for token in ent:
+            if token._.flag == "taxon_data":
+                data = asdict(token._.trait)
+
+            elif token.shape_ in t_const.NAME_SHAPES:
+                if len(token) == 1:
+                    auth.append(token.text + ".")
+                else:
+                    auth.append(token.text)
+
+            token._.flag = "taxon"
+
+        authority = " ".join(auth)
+        trait = cls.from_ent(ent, authority=authority, **data)
+
+        ent[0]._.trait = trait
+        ent[0]._.flag = "taxon_data"
+
+        return trait
+
+    @classmethod
+    def taxon_extend_match(cls, ent):
+        auth = []
+        taxon = []
+        rank = ""
+        next_is_lower_taxon = False
+
+        for token in ent:
+            if token._.flag == "taxon_data":
+                taxon.append(ent._.trait.taxon)
+                if ent._.trait.authority:
+                    auth.append(ent._.authority)
+
+            elif token._.flag == "taxon" or token.text in "().":
+                pass
+
+            elif auth and token.lower_ in AND:
+                pass
+
+            elif token.shape_ in t_const.NAME_SHAPES:
+                if len(token) == 1:
+                    auth.append(token.text + ".")
+                else:
+                    auth.append(token.text)
+
+            elif token._.term in LOWER_RANK:
+                taxon.append(RANK_ABBREV.get(token.lower_, token.lower_))
+                rank = RANK_REPLACE.get(token.lower_, token.text)
+                next_is_lower_taxon = True
+
+            elif next_is_lower_taxon:
+                taxon.append(token.lower_)
+                next_is_lower_taxon = False
+
+            token._.flag = "taxon"
+
+        taxon = " ".join(taxon)
+        rank = rank
+        authority = auth
+        trait = cls.from_ent(ent, authority=authority, rank=rank, taxon=taxon)
+
+        ent._.relabel = "taxon"
+
+        ent[0]._.trait = trait
+        ent[0]._.flag = "taxon_data"
+
+        return trait
+
+    @classmethod
+    def rename_taxon_match(cls, ent):
+        rank = ""
+        data = {}
+
+        for token in ent:
+            if token._.flag == "taxon_data":
+                data = asdict(token._.trait)
+
+            elif token._.term in ANY_RANK:
+                rank = RANK_REPLACE.get(token.lower_, token.lower_)
+
+        trait = cls.from_ent(ent, **data)
+
+        if rank:
+            trait.rank = rank
+
+        ent._.relabel = "taxon"
+
+        ent[0]._.trait = trait
+        ent[0]._.flag = "taxon_data"
+
+        return trait
+
+
 @registry.misc("taxon_match")
 def taxon_match(ent):
-    taxon = []
-    rank_seen = False
-
-    for i, token in enumerate(ent):
-        token._.flag = "taxon"
-
-        if LEVEL.get(token.lower_) == "lower":
-            taxon.append(RANK_ABBREV.get(token.lower_, token.lower_))
-            rank_seen = True
-
-        elif token._.term == "binomial" and i == 0:
-            taxon.append(token.text.title())
-
-        elif token._.term == "binomial" and i > 0:
-            taxon.append(token.lower_)
-
-        elif token._.term == "monomial" and i != 2:
-            taxon.append(token.lower_)
-
-        elif token._.term == "monomial" and i == 2:
-            if not rank_seen:
-                taxon.append(RANK_ABBREV["subspecies"])
-            taxon.append(token.lower_)
-
-        elif token.pos_ in ["PROPN", "NOUN"]:
-            taxon.append(token.text)
-
-        else:
-            raise reject_match.RejectMatch()
-
-    if re.match(ABBREV_RE, taxon[0]) and len(taxon) > 1:
-        taxon[0] = taxon[0] if taxon[0][-1] == "." else taxon[0] + "."
-        abbrev = " ".join(taxon[:2])
-        taxon[0] = BINOMIAL_ABBREV.get(abbrev, taxon[0])
-
-    taxon = " ".join(taxon)
-    taxon = taxon[0].upper() + taxon[1:]
-
-    ent._.data = {"taxon": taxon, "rank": ent.label_}
-    ent[0]._.data = ent._.data
-    ent[0]._.flag = "taxon_data"
+    return Taxon.taxon_match(ent)
 
 
 @registry.misc("single_taxon_match")
 def single_taxon_match(ent):
-    rank = None
-    taxon = None
-
-    for token in ent:
-        token._.flag = "taxon"
-
-        # Taxon and its rank
-        if token._.term == "monomial":
-            taxon = token.lower_
-            taxon = taxon.replace("- ", "-")
-
-            # A given rank will override the one in the DB
-            rank_ = MONOMIAL_RANKS.get(token.lower_)
-            if not rank and rank_:
-                rank_ = rank_.split()[0]
-                level = LEVEL[rank_]
-                if level == "higher" and token.shape_ in t_const.NAME_AND_UPPER:
-                    rank = rank_
-                elif (
-                    level in ("lower", "species")
-                    and token.shape_ not in t_const.TITLE_SHAPES
-                ):
-                    rank = rank_
-
-        # A given rank overrides the one in the DB
-        elif LEVEL.get(token.lower_) in ("higher", "lower"):
-            rank = RANK_REPLACE.get(token.lower_, token.lower_)
-
-        elif token.pos_ in ("PROPN", "NOUN"):
-            taxon = token.lower_
-
-    if not rank:
-        raise reject_match.RejectMatch
-
-    taxon = taxon.title() if LEVEL[rank] == "higher" else taxon.lower()
-    if len(taxon) < const.MIN_TAXON_LEN:
-        raise reject_match.RejectMatch
-
-    ent._.data = {
-        "taxon": taxon.title() if LEVEL[rank] == "higher" else taxon.lower(),
-        "rank": rank,
-    }
-    ent[0]._.data = ent._.data
-    ent[0]._.flag = "taxon_data"
+    return Taxon.single_taxon_match(ent)
 
 
 @registry.misc("multi_taxon_match")
 def multi_taxon_match(ent):
-    taxa = []
-
-    for sub_ent in ent.ents:
-        taxa.append(sub_ent._.data["taxon"])
-        ent._.data["rank"] = sub_ent._.data["rank"]
-
-    ent._.data["taxon"] = taxa
+    return Taxon.multi_taxon_match(ent)
 
 
 @registry.misc("taxon_auth_match")
 def taxon_auth_match(ent):
-    auth = []
-    prev_auth = None
-    data = {}
-
-    for token in ent:
-        if token._.flag == "taxon_data":
-            data = token._.data
-            prev_auth = token._.data.get("authority")
-
-        elif auth and token.lower_ in AND:
-            auth.append("and")
-
-        elif token.shape_ in t_const.NAME_SHAPES:
-            if len(token) == 1:
-                auth.append(token.text + ".")
-            else:
-                auth.append(token.text)
-
-        token._.flag = "taxon"
-
-    ent._.data = data
-
-    auth = " ".join(auth)
-    ent._.data["authority"] = [prev_auth, auth] if prev_auth else auth
-
-    ent[0]._.data = ent._.data
-    ent[0]._.flag = "taxon_data"
+    return Taxon.taxon_auth_match(ent)
 
 
 @registry.misc("taxon_linnaeus_match")
 def taxon_linnaeus_match(ent):
-    auth = []
-    for token in ent:
-        if token._.flag == "taxon_data":
-            ent._.data = token._.data
-        elif token.lower_ in LINNAEUS:
-            pass
-        elif token.shape_ in t_const.NAME_SHAPES:
-            if len(token) == 1:
-                auth.append(token.text + ".")
-            else:
-                auth.append(token.text)
-
-    if auth:
-        ent._.data["authority"] = ["Linnaeus", " ".join(auth)]
-    else:
-        ent._.data["authority"] = "Linnaeus"
-
-    ent[0]._.data = ent._.data
-    ent[0]._.flag = "taxon_data"
+    return Taxon.taxon_linnaeus_match(ent)
 
 
 @registry.misc("taxon_not_linnaeus_match")
 def taxon_not_linnaeus_match(ent):
-    auth = []
-    for token in ent:
-        if token._.flag == "taxon_data":
-            ent._.data = token._.data
-
-        elif token.shape_ in t_const.NAME_SHAPES:
-            if len(token) == 1:
-                auth.append(token.text + ".")
-            else:
-                auth.append(token.text)
-
-        token._.flag = "taxon"
-
-    ent._.data["authority"] = " ".join(auth)
-
-    ent[0]._.data = ent._.data
-    ent[0]._.flag = "taxon_data"
+    return Taxon.taxon_not_linnaeus_match(ent)
 
 
 @registry.misc("taxon_extend_match")
 def taxon_extend_match(ent):
-    auth = []
-    taxon = []
-    rank = ""
-    next_is_lower_taxon = False
-
-    for token in ent:
-        if token._.flag == "taxon_data":
-            ent._.data = token._.data
-            taxon.append(ent._.data["taxon"])
-            if ent._.data.get("authority"):
-                auth.append(ent._.data["authority"])
-
-        elif token._.flag == "taxon" or token.text in "().":
-            pass
-
-        elif auth and token.lower_ in AND:
-            pass
-
-        elif token.shape_ in t_const.NAME_SHAPES:
-            if len(token) == 1:
-                auth.append(token.text + ".")
-            else:
-                auth.append(token.text)
-
-        elif token._.term in LOWER_RANK:
-            taxon.append(RANK_ABBREV.get(token.lower_, token.lower_))
-            rank = RANK_REPLACE.get(token.lower_, token.text)
-            next_is_lower_taxon = True
-
-        elif next_is_lower_taxon:
-            taxon.append(token.lower_)
-            next_is_lower_taxon = False
-
-        token._.flag = "taxon"
-
-    ent._.data["taxon"] = " ".join(taxon)
-    ent._.data["rank"] = rank
-    ent._.data["authority"] = auth
-    ent._.relabel = "taxon"
-
-    ent[0]._.data = ent._.data
-    ent[0]._.flag = "taxon_data"
+    return Taxon.taxon_extend_match(ent)
 
 
 @registry.misc("rename_taxon_match")
 def rename_taxon_match(ent):
-    rank = ""
-
-    for token in ent:
-        if token._.flag == "taxon_data":
-            ent._.data = token._.data
-
-        elif token._.term in ANY_RANK:
-            rank = RANK_REPLACE.get(token.lower_, token.lower_)
-
-    if rank:
-        ent._.data["rank"] = rank
-
-    ent._.relabel = "taxon"
-
-    ent[0]._.data = ent._.data
-    ent[0]._.flag = "taxon_data"
+    return Taxon.rename_taxon_match(ent)

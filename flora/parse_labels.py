@@ -72,17 +72,17 @@ def parse_args() -> argparse.Namespace:
     )
 
     arg_parser.add_argument(
-        "--out-jsonl",
+        "--json-dir",
         metavar="PATH",
         type=Path,
-        help="""Output the traits to this JSONL file (JSON lines).""",
+        help="""JSON files holding traits for each text file go into this directory.""",
     )
 
     arg_parser.add_argument(
         "--out-html",
         type=Path,
         metavar="PATH",
-        help="""Output the results to this HTML file.""",
+        help="""Output formatted results to this HTML file.""",
     )
 
     arg_parser.add_argument(

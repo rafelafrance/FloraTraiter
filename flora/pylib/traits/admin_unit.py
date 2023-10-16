@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
 
@@ -9,6 +10,8 @@ from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
 from traiter.pylib.pipes import reject_match
 from traiter.pylib.traits import terms as t_terms
+
+from .base import Base
 
 ADMIN_UNIT_CSV = Path(__file__).parent / "terms" / "admin_unit_terms.csv"
 US_LOCATIONS_CSV = Path(t_terms.__file__).parent / "us_location_terms.csv"
@@ -26,11 +29,9 @@ ADMIN_ENTS = ["us_state", "us_county", "us_state-us_county", "us_territory"]
 
 def build(nlp: Language, overwrite: Optional[list[str]] = None):
     add.term_pipe(nlp, name="admin_unit_terms", path=ALL_CSVS)
-    # add.debug_tokens(nlp)  # ##########################################
 
     add.trait_pipe(nlp, name="not_admin_unit", compiler=not_admin_unit())
 
-    # add.debug_tokens(nlp)  # ##########################################
     overwrite = overwrite if overwrite else []
     overwrite += """
         us_county us_state us_state-us_county us_territory
@@ -42,7 +43,6 @@ def build(nlp: Language, overwrite: Optional[list[str]] = None):
         compiler=admin_unit_patterns(),
         overwrite=overwrite,
     )
-    # add.debug_tokens(nlp)  # ##########################################
 
     add.cleanup_pipe(nlp, name="admin_unit_cleanup")
 
@@ -162,99 +162,143 @@ def not_admin_unit():
     ]
 
 
+@dataclass()
+class AdminUnit(Base):
+    country: str = None
+    province: str = None
+    us_state: str = None
+    us_county: str = None
+
+    @classmethod
+    def from_ent(cls, ent, **kwargs):
+        trait = super().from_ent(ent, **kwargs)
+        trait.trait = "admin_unit"
+        return trait
+
+    @classmethod
+    def province_match(cls, ent):
+        prov = []
+        for token in ent:
+            if token.ent_type_ != "province_label":
+                prov.append(token.lower_)
+
+        return cls.from_ent(ent, province=" ".join(prov))
+
+    @classmethod
+    def state_only_match(cls, ent):
+        return cls.from_ent(ent, us_state=cls.format_state(ent, ent_index=0))
+
+    @classmethod
+    def country_match(cls, ent):
+        country = REPLACE.get(ent.text.lower(), ent.text)
+        return cls.from_ent(ent, country=country)
+
+    @classmethod
+    def county_state_match(cls, ent):
+        if len(ent.ents) < 2:
+            raise reject_match.RejectMatch
+
+        return cls.from_ent(
+            ent,
+            us_state=cls.format_state(ent, ent_index=1),
+            us_county=cls.format_county(ent, ent_index=0),
+        )
+
+    @classmethod
+    def county_state_iffy_match(cls, ent):
+        sub_ents = [
+            e for e in ent.ents if e.label_ in [*ADMIN_ENTS, "county_label_iffy"]
+        ]
+
+        if len(sub_ents) < 2:
+            raise reject_match.RejectMatch
+
+        county_ent = sub_ents[0]
+        state_ent = sub_ents[1]
+
+        if cls.is_county_not_colorado(state_ent, county_ent):
+            return cls.from_ent(ent, us_county=cls.format_county(ent, ent_index=0))
+
+        elif not cls.county_in_state(state_ent, county_ent):
+            raise reject_match.RejectMatch
+
+        else:
+            return cls.from_ent(
+                ent,
+                us_state=cls.format_state(ent, ent_index=1),
+                us_county=cls.format_county(ent, ent_index=0),
+            )
+
+    @classmethod
+    def county_only_match(cls, ent):
+        return cls.from_ent(ent, us_county=cls.format_county(ent, ent_index=0))
+
+    @classmethod
+    def state_county_match(cls, ent):
+        return cls.from_ent(
+            ent,
+            us_state=cls.format_state(ent, ent_index=0),
+            us_county=cls.format_county(ent, ent_index=1),
+        )
+
+    @staticmethod
+    def format_state(ent, *, ent_index: int):
+        sub_ents = [e for e in ent.ents if e.label_ in ADMIN_ENTS]
+        state = sub_ents[ent_index].text
+        st_key = AdminUnit.get_state_key(state)
+        return REPLACE.get(st_key, state)
+
+    @staticmethod
+    def format_county(ent, *, ent_index: int):
+        sub_ents = [e.text for e in ent.ents if e.label_ in ADMIN_ENTS]
+        return sub_ents[ent_index].title()
+
+    @staticmethod
+    def is_county_not_colorado(state_ent, county_ent):
+        """Flag if Co = county label or CO = Colorado."""
+        return state_ent.text == "CO" and county_ent.text.isupper()
+
+    @staticmethod
+    def get_state_key(state):
+        return state.upper() if len(state) <= 2 else state.lower()
+
+    @staticmethod
+    def county_in_state(state_ent, county_ent):
+        st_key = AdminUnit.get_state_key(state_ent.text)
+        co_key = county_ent.text.lower()
+        return POSTAL.get(st_key, "") in COUNTY_IN[co_key]
+
+
 @registry.misc("province_match")
 def province_match(ent):
-    prov = []
-    for token in ent:
-        if token.ent_type_ != "province_label":
-            prov.append(token.lower_)
-
-    ent._.data = {"province": " ".join(prov)}
+    return AdminUnit.province_match(ent)
 
 
 @registry.misc("state_only_match")
 def state_only_match(ent):
-    state = format_state(ent, ent_index=0)
-    ent._.data = {"us_state": state}
+    return AdminUnit.state_only_match(ent)
 
 
 @registry.misc("country_match")
 def country_match(ent):
-    country = REPLACE.get(ent.text.lower(), ent.text)
-    ent._.data = {"country": country}
+    return AdminUnit.country_match(ent)
 
 
 @registry.misc("county_state_match")
 def county_state_match(ent):
-    if len(ent.ents) < 2:
-        raise reject_match.RejectMatch
-
-    ent._.data = {
-        "us_state": format_state(ent, ent_index=1),
-        "us_county": format_county(ent, ent_index=0),
-    }
+    return AdminUnit.county_state_match(ent)
 
 
 @registry.misc("county_state_iffy_match")
 def county_state_iffy_match(ent):
-    sub_ents = [e for e in ent.ents if e.label_ in [*ADMIN_ENTS, "county_label_iffy"]]
-
-    if len(sub_ents) < 2:
-        raise reject_match.RejectMatch
-
-    county_ent = sub_ents[0]
-    state_ent = sub_ents[1]
-
-    if is_county_not_colorado(state_ent, county_ent):
-        ent._.data = {
-            "us_county": format_county(ent, ent_index=0),
-        }
-
-    elif not county_in_state(state_ent, county_ent):
-        raise reject_match.RejectMatch
-
-    else:
-        ent._.data = {
-            "us_state": format_state(ent, ent_index=1),
-            "us_county": format_county(ent, ent_index=0),
-        }
+    return AdminUnit.county_state_iffy_match(ent)
 
 
 @registry.misc("county_only_match")
 def county_only_match(ent):
-    ent._.data = {"us_county": format_county(ent, ent_index=0)}
+    return AdminUnit.county_only_match(ent)
 
 
 @registry.misc("state_county_match")
 def state_county_match(ent):
-    ent._.data = {
-        "us_state": format_state(ent, ent_index=0),
-        "us_county": format_county(ent, ent_index=1),
-    }
-
-
-def format_state(ent, *, ent_index: int):
-    sub_ents = [e for e in ent.ents if e.label_ in ADMIN_ENTS]
-    state = sub_ents[ent_index].text
-    st_key = get_state_key(state)
-    return REPLACE.get(st_key, state)
-
-
-def format_county(ent, *, ent_index: int):
-    sub_ents = [e.text for e in ent.ents if e.label_ in ADMIN_ENTS]
-    return sub_ents[ent_index].title()
-
-
-def is_county_not_colorado(state_ent, county_ent):
-    """Flag if Co = county label or CO = Colorado."""
-    return state_ent.text == "CO" and county_ent.text.isupper()
-
-
-def get_state_key(state):
-    return state.upper() if len(state) <= 2 else state.lower()
-
-
-def county_in_state(state_ent, county_ent):
-    st_key = get_state_key(state_ent.text)
-    co_key = county_ent.text.lower()
-    return POSTAL.get(st_key, "") in COUNTY_IN[co_key]
+    return AdminUnit.state_county_match(ent)

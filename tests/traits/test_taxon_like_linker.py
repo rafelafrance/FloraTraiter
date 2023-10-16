@@ -1,12 +1,12 @@
 import unittest
 
-from tests.setup import test
+from tests.setup import small_test
 
 
 class TestTaxonLikeLinker(unittest.TestCase):
     def test_taxon_like_linker_01(self):
         self.assertEqual(
-            test("""Mimosa sensitiva Bameby, vicinis A. pachyphloia"""),
+            small_test("""Mimosa sensitiva Bameby, vicinis A. pachyphloia"""),
             [
                 {
                     "rank": "species",

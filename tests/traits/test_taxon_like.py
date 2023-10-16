@@ -1,12 +1,12 @@
 import unittest
 
-from tests.setup import test
+from tests.setup import small_test
 
 
 class TestTaxonLike(unittest.TestCase):
     def test_taxon_like_01(self):
         self.assertEqual(
-            test("""it seems closer to the nearly sympatric M. sensitiva."""),
+            small_test("""it seems closer to the nearly sympatric M. sensitiva."""),
             [
                 {
                     "rank": "species",
@@ -21,7 +21,7 @@ class TestTaxonLike(unittest.TestCase):
 
     def test_taxon_like_02(self):
         self.assertEqual(
-            test("""it is similar to M. sensitiva."""),
+            small_test("""it is similar to M. sensitiva."""),
             [
                 {
                     "rank": "species",
@@ -36,7 +36,7 @@ class TestTaxonLike(unittest.TestCase):
 
     def test_taxon_like_03(self):
         self.assertEqual(
-            test("""It resembles M. sensitiva in amplitude"""),
+            small_test("""It resembles M. sensitiva in amplitude"""),
             [
                 {
                     "rank": "species",
@@ -51,7 +51,7 @@ class TestTaxonLike(unittest.TestCase):
 
     def test_taxon_like_04(self):
         self.assertEqual(
-            test("""sympatric pair of M. sensitiva Harms ex Glaziou"""),
+            small_test("""sympatric pair of M. sensitiva Harms ex Glaziou"""),
             [
                 {
                     "rank": "species",
@@ -67,7 +67,7 @@ class TestTaxonLike(unittest.TestCase):
 
     def test_taxon_like_05(self):
         self.assertEqual(
-            test("""vicinis M. sensitiva et A. pachyphloia"""),
+            small_test("""vicinis M. sensitiva et A. pachyphloia"""),
             [
                 {
                     "rank": "species",
@@ -82,7 +82,7 @@ class TestTaxonLike(unittest.TestCase):
 
     def test_taxon_like_06(self):
         self.assertEqual(
-            test("""distinguished from var. pachyphloia"""),
+            small_test("""distinguished from var. pachyphloia"""),
             [
                 {
                     "rank": "variety",
@@ -97,7 +97,7 @@ class TestTaxonLike(unittest.TestCase):
 
     def test_taxon_like_07(self):
         self.assertEqual(
-            test("""The var. floridana resembles var. nuttallii in venation"""),
+            small_test("""The var. floridana resembles var. nuttallii in venation"""),
             [
                 {
                     "rank": "variety",

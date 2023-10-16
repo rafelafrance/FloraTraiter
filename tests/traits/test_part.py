@@ -1,12 +1,12 @@
 import unittest
 
-from tests.setup import test
+from tests.setup import small_test
 
 
 class TestPart(unittest.TestCase):
     def test_part_01(self):
         self.assertEqual(
-            test("with thick, woody rootstock."),
+            small_test("with thick, woody rootstock."),
             [
                 {
                     "woodiness": "woody",
@@ -26,7 +26,7 @@ class TestPart(unittest.TestCase):
 
     def test_part_02(self):
         self.assertEqual(
-            test("leaflets mostly 1 or 3"),
+            small_test("leaflets mostly 1 or 3"),
             [
                 {"leaf_part": "leaflet", "trait": "leaf_part", "start": 0, "end": 8},
                 {
@@ -42,7 +42,7 @@ class TestPart(unittest.TestCase):
 
     def test_part_03(self):
         self.assertEqual(
-            test("Receptacle discoid."),
+            small_test("Receptacle discoid."),
             [
                 {
                     "flower_part": "receptacle",
@@ -62,7 +62,7 @@ class TestPart(unittest.TestCase):
 
     def test_part_04(self):
         self.assertEqual(
-            test("Flowers: sepals (pistillate)"),
+            small_test("Flowers: sepals (pistillate)"),
             [
                 {"flower_part": "flower", "trait": "flower_part", "start": 0, "end": 7},
                 {
@@ -78,7 +78,7 @@ class TestPart(unittest.TestCase):
 
     def test_part_05(self):
         self.assertEqual(
-            test("Flowers: staminate:"),
+            small_test("Flowers: staminate:"),
             [
                 {
                     "flower_part": "flower",
@@ -97,7 +97,7 @@ class TestPart(unittest.TestCase):
 
     def test_part_06(self):
         self.assertEqual(
-            test("Heads more than 2-flowered"),
+            small_test("Heads more than 2-flowered"),
             [
                 {
                     "inflorescence": "head",
@@ -118,7 +118,7 @@ class TestPart(unittest.TestCase):
 
     def test_part_07(self):
         self.assertEqual(
-            test("Phyllodes glaucous"),
+            small_test("Phyllodes glaucous"),
             [
                 {"leaf_part": "phyllode", "trait": "leaf_part", "start": 0, "end": 9},
             ],
@@ -126,7 +126,7 @@ class TestPart(unittest.TestCase):
 
     def test_part_08(self):
         self.assertEqual(
-            test("""stems and lf-axes hispid"""),
+            small_test("""stems and lf-axes hispid"""),
             [
                 {
                     "trait": "multiple_parts",
@@ -146,7 +146,7 @@ class TestPart(unittest.TestCase):
 
     def test_part_09(self):
         self.assertEqual(
-            test("""no paraphyllidia"""),
+            small_test("""no paraphyllidia"""),
             [
                 {
                     "end": 16,

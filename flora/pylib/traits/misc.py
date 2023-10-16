@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from pathlib import Path
 
 from spacy import Language
@@ -7,6 +8,7 @@ from traiter.pylib import term_util
 from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
 
+from .base import Base
 
 ALL_CSVS = [
     Path(__file__).parent / "terms" / "duration_terms.csv",
@@ -55,13 +57,29 @@ def misc_patterns():
     ]
 
 
+@dataclass()
+class Misc(Base):
+    value: str = None
+
+    @classmethod
+    def misc_match(cls, ent):
+        frags = []
+        relabel = ""
+        for token in ent:
+            relabel = token._.term
+            if token.text not in "[]()":
+                frags.append(REPLACE.get(token.lower_, token.lower_))
+
+        ent._.relabel = relabel
+
+        trait = cls.from_ent(ent, value=" ".join(frags))
+
+        setattr(trait, relabel, trait.trait)
+        delattr(trait, "value")
+
+        return trait
+
+
 @registry.misc("misc_match")
 def misc_match(ent):
-    frags = []
-    relabel = ""
-    for token in ent:
-        relabel = token._.term
-        if token.text not in "[]()":
-            frags.append(REPLACE.get(token.lower_, token.lower_))
-    ent._.relabel = relabel
-    ent._.data = {relabel: " ".join(frags)}
+    return Misc.misc_match(ent)

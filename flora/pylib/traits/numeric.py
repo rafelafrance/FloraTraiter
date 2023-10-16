@@ -1,4 +1,5 @@
 import re
+from dataclasses import asdict
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -13,6 +14,7 @@ from traiter.pylib.pipes import add
 from traiter.pylib.pipes import reject_match
 from traiter.pylib.traits import terms as t_terms
 
+from .base import Base
 from .part import PART_LABELS
 
 ALL_CSVS = [
@@ -59,14 +61,12 @@ def build(nlp: Language):
         name="range_patterns",
         compiler=range_patterns(),
     )
-    # add.debug_tokens(nlp)  # #########################################
     add.trait_pipe(
         nlp,
         name="numeric_patterns",
         compiler=count_patterns() + size_patterns(),
         overwrite=[*ALL_PARTS, "sex"],
     )
-    # add.debug_tokens(nlp)  # #########################################
     comp.ACCUMULATOR.delete(NOT_NUMERIC)
     add.cleanup_pipe(nlp, name="numeric_cleanup")
 
@@ -377,74 +377,121 @@ def size_patterns():
     ]
 
 
+@dataclass()
+class Range(Base):
+    min: float = None
+    low: float = None
+    high: float = None
+    max: float = None
+
+    @classmethod
+    def range_match(cls, ent):
+        nums = []
+        for token in ent:
+            if token._.term == "per_count":
+                raise reject_match.RejectMatch
+
+            token._.flag = "range"
+            nums += re.findall(r"\d*\.?\d+", token.text)
+
+        # Cache the values in the first token
+        keys = ent.label_.split(".")[1:]
+        kwargs = {k: v for k, v in zip(keys, nums)}
+
+        trait = cls.from_ent(ent, **kwargs)
+
+        ent[0]._.trait = trait
+        ent[0]._.flag = "range_data"
+
+        return trait
+
+
+@dataclass()
+class Count(Base):
+    min: int = None
+    low: int = None
+    high: int = None
+    max: int = None
+    missing: bool = None
+    per_part: str = None
+    count_suffix: str = None
+    count_group: str = None
+
+    @classmethod
+    def count_match(cls, ent):
+        per_part = []
+        suffix = []
+        kwargs = {}
+
+        for token in ent:
+            if token._.flag == "range_data":
+                fld = {k: v for k, v in asdict(token._.trait).items() if v is not None}
+                for key, value in fld.items():
+                    value = t_util.to_positive_int(value)
+                    if value is None:
+                        raise reject_match.RejectMatch
+                    kwargs[key] = value
+
+            elif token._.term == "number_word":
+                value = REPLACE.get(token.lower_, token.lower_)
+                kwargs["low"] = t_util.to_positive_int(value)
+
+            elif token._.trait and token._.term == "subpart":
+                subpart = token._.trait.subpart
+                kwargs["subpart"] = subpart
+
+            elif token._.term in ("count_suffix", "subpart"):
+                suffix.append(token.lower_)
+
+            elif token._.trait and token._.flag == "part":
+                part_trait = token._.trait.trait
+                kwargs["per_part"] = getattr(token._.trait, part_trait)
+
+            elif token._.term == "per_count":
+                per_part.append(token.lower_)
+
+            elif token._.term == "missing":
+                kwargs["missing"] = True
+
+        if per_part:
+            per_part = " ".join(per_part)
+            kwargs["count_group"] = REPLACE.get(per_part, per_part)
+
+        if suffix:
+            suffix = "".join(suffix)
+            value = REPLACE.get(suffix, suffix)
+            key = SUFFIX_TERM.get(suffix)
+            if key:
+                kwargs[key] = value
+
+        return cls.from_ent(**kwargs)
+
+    @classmethod
+    def count_word_match(cls, ent):
+        return cls.from_ent(ent, low=int(REPLACE[ent[0].lower_]))
+
+
+@dataclass()
+class Size(Base):
+    min: int = None
+    low: int = None
+    high: int = None
+    max: int = None
+
+
 @registry.misc("range_match")
 def range_match(ent):
-    nums = []
-    for token in ent:
-        if token._.term == "per_count":
-            raise reject_match.RejectMatch
-
-        token._.flag = "range"
-        nums += re.findall(r"\d*\.?\d+", token.text)
-
-    # Cache the values in the first token
-    keys = ent.label_.split(".")[1:]
-    ent[0]._.data = {k: v for k, v in zip(keys, nums)}
-    ent[0]._.flag = "range_data"
+    return Range.range_match(ent)
 
 
 @registry.misc("count_match")
 def count_match(ent):
-    per_part = []
-    suffix = []
-    data = {}
-
-    for token in ent:
-        if token._.flag == "range_data":
-            for key, value in token._.data.items():
-                value = t_util.to_positive_int(value)
-                if value is None:
-                    raise reject_match.RejectMatch
-                data[key] = value
-
-        elif token._.term == "number_word":
-            value = REPLACE.get(token.lower_, token.lower_)
-            data["low"] = t_util.to_positive_int(value)
-
-        elif token._.data and token._.term == "subpart":
-            subpart = token._.data["subpart"]
-            data["subpart"] = subpart
-
-        elif token._.term in ("count_suffix", "subpart"):
-            suffix.append(token.lower_)
-
-        elif token._.data and token._.flag == "part":
-            part_trait = token._.data["trait"]
-            data["per_part"] = token._.data[part_trait]
-
-        elif token._.term == "per_count":
-            per_part.append(token.lower_)
-
-        elif token._.term == "missing":
-            data["missing"] = True
-
-    if per_part:
-        per_part = " ".join(per_part)
-        data["count_group"] = REPLACE.get(per_part, per_part)
-
-    if suffix:
-        suffix = "".join(suffix)
-        value = REPLACE.get(suffix, suffix)
-        key = SUFFIX_TERM.get(suffix)
-        if key:
-            data[key] = value
-
-    ent._.data = data
+    return Count.count_match(ent)
 
 
 @registry.misc("count_word_match")
 def count_word_match(ent):
-    ent._.data = {"low": int(REPLACE[ent[0].lower_])}
+    return Count.count_word_match(ent)
 
 
 @registry.misc("size_match")

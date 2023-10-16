@@ -1,12 +1,12 @@
 import unittest
 
-from tests.setup import test
+from tests.setup import small_test
 
 
 class TestReproduction(unittest.TestCase):
     def test_reproduction_01(self):
         self.assertEqual(
-            test(
+            small_test(
                 """
                 bisexual (unisexual and plants sometimes gynodioecious,
                 or plants dioecious"""

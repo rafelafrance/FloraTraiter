@@ -1,12 +1,12 @@
 import unittest
 
-from tests.setup import test
+from tests.setup import small_test
 
 
 class TestSurface(unittest.TestCase):
     def test_surface_01(self):
         self.assertEqual(
-            test("""glabrous flowers"""),
+            small_test("""glabrous flowers"""),
             [
                 {
                     "surface": "glabrous",

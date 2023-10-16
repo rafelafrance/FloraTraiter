@@ -18,27 +18,45 @@ PARTS_SET = set(PART_LABELS)
 SUBPART_SET = {"subpart"}
 
 
-def get_label(trait):
+def label_parts(trait):
     keys = set(trait.keys())
 
-    label = {}  # Dicts preserve order sets do not
+    name = {}  # Dicts preserve order sets do not
 
     part_key = list(keys & PARTS_SET)
     part = trait[part_key[0]] if part_key else ""
-    label[" ".join(part) if isinstance(part, list) else part] = 1
+    name[" ".join(part) if isinstance(part, list) else part] = 1
 
     subpart_key = list(keys & SUBPART_SET)
     if subpart_key:
-        label[trait[subpart_key[0]]] = 1
+        name[trait[subpart_key[0]]] = 1
 
-    label[trait["trait"]] = 1
+    name[trait["trait"]] = 1
 
     if trait.get("sex"):
-        label[trait["sex"]] = 1
+        name[trait["sex"]] = 1
 
-    label = "_".join(label.keys())
-    label = label.strip().replace(" ", "_").replace("-", "")
-    label = label.removeprefix("_")
-    label = label.removesuffix("_part")
+    return name
 
-    return label
+
+def html_label(trait):
+    parts = label_parts(trait)
+
+    parts = "_".join(parts.keys())
+    parts = parts.strip().replace(" ", "_").replace("-", "")
+    parts = parts.removeprefix("_")
+    parts = parts.removesuffix("_part")
+
+    return parts
+
+
+def dwc_label(trait):
+    parts = label_parts(trait)
+
+    parts = " ".join(parts)
+    parts = parts.removesuffix("part")
+    parts = parts.replace("-", " ")
+    parts = parts.title()
+    parts = "".join(parts.split())
+
+    return parts

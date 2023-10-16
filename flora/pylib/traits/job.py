@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
 
@@ -5,19 +6,24 @@ import regex as re
 from spacy.language import Language
 from spacy.util import registry
 from traiter.pylib import const as t_const
+from traiter.pylib import term_util
 from traiter.pylib.pattern_compiler import ACCUMULATOR
 from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
 from traiter.pylib.pipes import reject_match
-from traiter.pylib.pipes import trait
+from traiter.pylib.pipes import trait as t_trait
 from traiter.pylib.traits import terms as t_terms
 
-from flora.pylib.traits import terms as p_terms
+from flora.pylib.traits import terms as f_terms
+
+from .base import Base
 
 PERSON_CSV = Path(__file__).parent / "terms" / "person_terms.csv"
 NAME_CSV = Path(t_terms.__file__).parent / "name_terms.csv"
-JOB_CSV = Path(p_terms.__file__).parent / "job_terms.csv"
+JOB_CSV = Path(f_terms.__file__).parent / "job_terms.csv"
 ALL_CSVS = [PERSON_CSV, NAME_CSV, JOB_CSV]
+
+REPLACE = term_util.term_data(JOB_CSV, "replace")
 
 AND = ["and", "&"]
 PUNCT = "[.:;,_-]"
@@ -43,21 +49,10 @@ def build(nlp: Language, overwrite: Optional[list[str]] = None):
         name="name_patterns",
         compiler=name_patterns(),
         overwrite=overwrite + "name_prefix name_suffix no_label".split(),
-        keep=[
-            *ACCUMULATOR.keep,
-            "col_label",
-            "det_label",
-            "job_label",
-            "no_label",
-            "not_name",
-        ],
+        keep=[*ACCUMULATOR.keep, "job_label", "no_label", "not_name"],
     )
-    # add.debug_tokens(nlp)  # ##########################################
 
-    job_overwrite = (
-        overwrite
-        + """name col_label det_label job_label no_label other_label id_no""".split()
-    )
+    job_overwrite = overwrite + """name job_label no_label id_no""".split()
     add.trait_pipe(
         nlp,
         name="job_patterns",
@@ -71,11 +66,10 @@ def build(nlp: Language, overwrite: Optional[list[str]] = None):
         nlp,
         name="other_collector_patterns",
         compiler=other_collector_patterns(),
-        overwrite=["other_collector"],
+        overwrite=["job"],
         keep=[*ACCUMULATOR.keep, "not_name"],
     )
 
-    # add.debug_tokens(nlp)  # ##########################################
     add.custom_pipe(nlp, registered="name_only")
 
     add.cleanup_pipe(nlp, name="person_cleanup")
@@ -129,7 +123,7 @@ def name_patterns():
     return [
         Compiler(
             label="name",
-            on_match="person_name_match",
+            on_match="name_match",
             decoder=decoder,
             patterns=[
                 "       name  -? name? -? pre? pre?   name4",
@@ -189,13 +183,6 @@ def name_patterns():
                 "id1+ no_space+ id1",
                 "id1+ no_space+ id2",
                 "id1",
-            ],
-        ),
-        Compiler(
-            label="labeled_id_no",
-            on_match="id_no_match",
-            decoder=decoder,
-            patterns=[
                 "no_label+ :* id1? no_space? id1? -? id2",
             ],
         ),
@@ -209,7 +196,6 @@ def job_patterns():
         "and": {"POS": {"IN": CONJ}},
         "bad": {"ENT_TYPE": {"IN": ["month"]}},
         "by": {"LOWER": {"IN": ["by"]}},
-        "col_label": {"ENT_TYPE": "col_label"},
         "det_label": {"ENT_TYPE": "det_label"},
         "job_label": {"ENT_TYPE": "job_label"},
         "id_no": {"ENT_TYPE": {"IN": ["id_no", "labeled_id_no"]}},
@@ -224,65 +210,38 @@ def job_patterns():
 
     return [
         Compiler(
-            label="collector",
-            on_match="collector_match",
-            keep=["collector", "collector_no"],
+            label="job",
+            on_match="job_match",
+            keep="job",
             decoder=decoder,
             patterns=[
-                "col_label+ :* sp? name+",
-                "col_label+ :* sp? name+ sep sp? name+",
-                "col_label+ :* sp? name+ sep sp? name+ sep sp? name+",
-                "col_label+ :* sp? name+                             ,* sp? id_no+",
-                "col_label+ :* sp? name+ sep sp? name+               ,* sp? id_no+",
-                "col_label+ :* sp? name+ sep sp? name+ sep sp? name+ ,* sp? id_no+",
+                "job_label+ :* sp? name+",
+                "job_label+ :* sp? name+ sep sp? name+",
+                "job_label+ :* sp? name+ sep sp? name+ sep sp? name+",
+                "job_label+ :* sp? name+                             ,* sp? id_no+",
+                "job_label+ :* sp? name+ sep sp? name+               ,* sp? id_no+",
+                "job_label+ :* sp? name+ sep sp? name+ sep sp? name+ ,* sp? id_no+",
                 "                  name+                             ,* sp? id_no+",
                 "                  name+ sep sp? name+               ,* sp? id_no+",
                 "                  name+ sep sp? name+ sep sp? name+ ,* sp? id_no+",
                 "id_no+        sp? name+",
                 "id_no+        sp? name+ sep sp? name+",
                 "id_no+        sp? name+ sep sp? name+ sep sp? name+",
-                "col_label+ :* sp? name+ sep sp? name+ sep sp? name+ sep sp? name+",
-            ],
-        ),
-        Compiler(
-            label="other_collector",
-            on_match="other_collector_match",
-            keep="other_collector",
-            decoder=decoder,
-            patterns=[
-                "other_label+ name+ ",
-                "other_label+ name+ sep* sp? name+ ",
-                "other_label+ name+ sep* sp? name+ sep* sp? name+ ",
-                "other_label+ name+ sep* sp? name+ sep* sp? name+ sep* sp? name+ ",
+                "job_label+ :* sp? name+ sep sp? name+ sep sp? name+ sep sp? name+",
+                "job_label+ :* maybe? name+",
+                "job_label+ :* maybe? name+ and maybe? name+",
+                "job_label+ name+ ",
+                "job_label+ name+ sep* sp? name+ ",
+                "job_label+ name+ sep* sp? name+ sep* sp? name+ ",
+                "job_label+ name+ sep* sp? name+ sep* sp? name+ sep* sp? name+ ",
                 (
-                    "other_label+ name+ sep* sp? name+ sep* sp? name+ sep* sp? "
+                    "job_label+ name+ sep* sp? name+ sep* sp? name+ sep* sp? "
                     "name+ sep* sp? name+"
                 ),
                 (
-                    "other_label+ name+ sep* sp? name+ sep* sp? name+ sep* sp? "
+                    "job_label+ name+ sep* sp? name+ sep* sp? name+ sep* sp? "
                     "name+ sep* sp? name+ sep* sp? name+"
                 ),
-            ],
-        ),
-        Compiler(
-            label="determiner",
-            on_match="determiner_match",
-            keep="determiner",
-            decoder=decoder,
-            patterns=[
-                "det_label+ by? :* maybe? name+",
-                "det_label+ by? :* name+ ,* id_no+",
-                "det_label+ by? :* maybe? name+ and maybe? name+",
-            ],
-        ),
-        Compiler(
-            label="other_job",
-            on_match="other_job_match",
-            keep="other_job",
-            decoder=decoder,
-            patterns=[
-                "job_label+ by? :* maybe? name+",
-                "job_label+ by? :* name+ id_no+",
             ],
         ),
     ]
@@ -299,9 +258,9 @@ def other_collector_patterns():
 
     return [
         Compiler(
-            label="other_collector2",
-            id="other_collector",
-            on_match="other_collector2_match",
+            label="extend_names",
+            id="job",
+            on_match="extend_names",
             keep="other_collector",
             decoder=decoder,
             patterns=[
@@ -314,52 +273,131 @@ def other_collector_patterns():
     ]
 
 
-@registry.misc("person_name_match")
-def person_name_match(ent):
-    name = ent.text
-    name = re.sub(rf" ({PUNCT})", r"\1", name)
-    name = re.sub(r"\.\.|_", "", name)
+@dataclass()
+class Name(Base):
+    name: str | list[str] = None
 
-    if not NAME_RE.match(name.lower()):
-        raise reject_match.RejectMatch
+    @classmethod
+    def name_match(cls, ent):
+        name = ent.text
+        name = re.sub(rf" ({PUNCT})", r"\1", name)
+        name = re.sub(r"\.\.|_", "", name)
 
-    for token in ent:
-        token._.flag = "name"
-
-        # If there's a digit in the name reject it
-        if re.search(r"\d", token.text):
+        if not NAME_RE.match(name.lower()):
             raise reject_match.RejectMatch
 
-        # If it is all lower case reject it
-        if token.text.islower() and token.ent_type_ != "last_prefix":
+        for token in ent:
+            token._.flag = "name"
+
+            # If there's a digit in the name reject it
+            if re.search(r"\d", token.text):
+                raise reject_match.RejectMatch
+
+            # If it is all lower case reject it
+            if token.text.islower() and token.ent_type_ != "last_prefix":
+                raise reject_match.RejectMatch
+
+        trait = cls.from_ent(ent, name=name)
+        ent[0]._.trait = trait
+        ent[0]._.flag = "name_data"
+        return trait
+
+
+@dataclass()
+class IdNo(Base):
+    id_no: str = None
+
+    @classmethod
+    def id_no_match(cls, ent):
+        frags = [t.text for t in ent if t.ent_type_ != "no_label"]
+        id_no = "".join(frags)
+        id_no = re.sub(r"^[,]", "", id_no)
+        trait = cls.from_ent(ent, id_no=id_no)
+        ent[0]._.trait = trait
+        ent[0]._.flag = "id_no"
+        return trait
+
+
+@dataclass()
+class Job(Base):
+    job: str = None
+    name: str | list[str] = None
+    id_no: str = None
+
+    @classmethod
+    def job_match(cls, ent):
+        job = []
+        people = []
+        id_no = None
+
+        for token in ent:
+            if token._.flag == "name" or token.ent_type_ == "no_label":
+                continue
+
+            elif token.ent_type_ == "job_label":
+                job.append(token.lower_)
+
+            elif token._.flag == "name_data":
+                people.append(token._.trait.name)
+
+            elif token._.flag == "id_no":
+                id_no = token._.trait.id_no
+
+            token._.flag = "skip"
+
+        if not people or not job:
             raise reject_match.RejectMatch
 
-    ent._.data = {"name": name}
-    ent[0]._.data = ent._.data
-    ent[0]._.flag = "name_data"
+        job = " ".join(job)
+        job = job.replace(" :", ":")
+        job = REPLACE.get(job, job)
+
+        name = people if len(people) > 1 else people[0]
+
+        trait = cls.from_ent(ent, name=name, id_no=id_no, job=job)
+
+        ent[0]._.flag = job
+        ent[0]._.trait = trait
+
+        return trait
+
+    @classmethod
+    def extend_names(cls, ent):
+        people = []
+        person = []
+
+        for token in ent:
+            if token._.flag == "other_collector":
+                people += token._.trait.name
+
+            elif token._.flag == "skip" or token.text in PUNCT:
+                continue
+
+            else:
+                person.append(token.text)
+
+        if person:
+            ent._.trait.name = [*people, " ".join(person)]
 
 
-@registry.misc("collector_match")
-def collector_match(ent):
-    people = []
-    col_no = ""
+@registry.misc("name_match")
+def name_match(ent):
+    return Name.name_match(ent)
 
-    for token in ent:
-        if token._.flag == "name_data":
-            people.append(token._.data["name"])
 
-        elif token._.flag == "name" or token.ent_type_ in ("col_label", "no_label"):
-            continue
+@registry.misc("id_no_match")
+def id_no_match(ent):
+    return IdNo.id_no_match(ent)
 
-        elif token._.flag == "id_no":
-            col_no = token._.data["id_no"]
 
-    if not people:
-        raise reject_match.RejectMatch
+@registry.misc("job_match")
+def job_match(ent):
+    return Job.job_match(ent)
 
-    ent._.data = {"collector": people if len(people) > 1 else people[0]}
-    if col_no:
-        ent._.data["collector_no"] = col_no
+
+@registry.misc("extend_names")
+def extend_names(ent):
+    return Job.extend_names(ent)
 
 
 @Language.component("separated_collector")
@@ -375,43 +413,32 @@ def separated_collector(doc):
             if dist > 5:
                 return doc
 
-        if ent.label_ == "collector":
+        if hasattr(ent._.trait, "job") and ent.trait.job == "collector":
             dist = 1
             collector = ent
 
-        elif ent.label_ == "name" and not collector:
+        elif ent.label_ == "person" and not ent._.trait.job:
             dist = 1
             name = ent
 
         elif collector and ent.label_ == "labeled_id_no":
             collector_number(ent)
 
-            collector._.data["collector_no"] = ent._.data["collector_no"]
+            collector._.trait.id_no = ent._.trait.id_no
             return doc
 
         elif name and ent.label_ == "labeled_id_no":
             collector_number(ent)
 
-            trait.relabel_entity(name, "collector")
-            ent._.data["collector"] = name._.data["name"]
-            name._.data["trait"] = "collector"
-            name._.data["collector"] = name._.data["name"]
-            name._.data["collector_no"] = ent._.data["collector_no"]
-            del name._.data["name"]
+            t_trait.relabel_entity(name, "person")
+            ent._.trait.name = name._.trait.name
+            name._.trait.job = "collector"
+            name._.trait.id_no = ent._.trait.id_no
             for token in name:
-                token.ent_type_ = "collector"
+                token.ent_type_ = "person"
             return doc
 
     return doc
-
-
-def collector_number(ent):
-    trait.relabel_entity(ent, "collector_no")
-    ent._.data["trait"] = "collector_no"
-    ent._.data["collector_no"] = ent._.data["id_no"]
-    del ent._.data["id_no"]
-    for token in ent:
-        token.ent_type_ = "collector_no"
 
 
 @Language.component("name_only")
@@ -433,92 +460,13 @@ def name_only(doc):
 def name_to_collector(ent):
     if not ent._.data.get("name"):
         return
-    trait.relabel_entity(ent, "collector")
-    ent._.data["trait"] = "collector"
-    ent._.data["collector"] = ent._.data["name"]
-    del ent._.data["name"]
+    t_trait.relabel_entity(ent, "person")
+    ent._.trait["job"] = "collector"
     for token in ent:
-        token.ent_type_ = "collector"
+        token.ent_type_ = "person"
 
 
-@registry.misc("determiner_match")
-def determiner_match(ent):
-    people = []
-
+def collector_number(ent):
+    t_trait.relabel_entity(ent, "person")
     for token in ent:
-        if token.ent_type_ == "det_label" or token.ent_type_ == "no_label":
-            continue
-
-        if token._.flag == "name_data":
-            people.append(token._.data["name"])
-
-        elif token.pos_ in CONJ:
-            people.append(token.lower_)
-
-        elif token._.flag == "id_no":
-            ent._.data["determiner_no"] = token._.data["id_no"]
-
-    ent._.data["determiner"] = " ".join(people)
-
-
-@registry.misc("other_job_match")
-def other_job_match(ent):
-    people = []
-    job = []
-
-    for token in ent:
-        if token.ent_type_ == "job_label":
-            job.append(token.lower_)
-
-        if token._.flag == "name_data":
-            people.append(token._.data["name"])
-
-        elif token._.flag == "id_no":
-            ent._.data["id_no"] = token._.data["id_no"]
-
-    ent._.data["job"] = " ".join(job)
-    ent._.data["worker"] = " ".join(people)
-
-
-@registry.misc("other_collector_match")
-def other_collector_match(ent):
-    people = []
-
-    for token in ent:
-        if token._.flag == "name_data":
-            people.append(token._.data["name"])
-
-        token._.flag = "other_col"
-
-    ent._.data["other_collector"] = people
-    ent[0]._.data = ent._.data
-    ent[0]._.flag = "other_col_data"
-
-
-@registry.misc("other_collector2_match")
-def other_collector2_match(ent):
-    people = []
-    person = []
-
-    for token in ent:
-        if token._.flag == "other_col_data":
-            people += token._.data["other_collector"]
-
-        elif token._.flag == "other_col" or token.text in PUNCT:
-            continue
-
-        else:
-            person.append(token.text)
-
-    if person:
-        ent._.data["other_collector"] = [*people, " ".join(person)]
-
-
-@registry.misc("id_no_match")
-def id_no_match(ent):
-    frags = [t.text for t in ent if t.ent_type_ != "no_label"]
-    frags = "".join(frags)
-    frags = re.sub(r"^[,]", "", frags)
-    ent._.data["id_no"] = frags
-    ent[0]._.data = ent._.data
-    ent[0]._.flag = "id_no"
+        token.ent_type_ = "person"

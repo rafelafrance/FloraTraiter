@@ -1,5 +1,8 @@
 import unittest
 
+from flora.pylib.traits.admin_unit import AdminUnit
+from flora.pylib.traits.locality import Locality
+from flora.pylib.traits.part import Part
 from tests.setup import full_test
 
 
@@ -9,12 +12,12 @@ class TestAdminUnit(unittest.TestCase):
         self.assertEqual(
             full_test("""Hempstead County"""),
             [
-                {
-                    "us_county": "Hempstead",
-                    "trait": "admin_unit",
-                    "start": 0,
-                    "end": 16,
-                },
+                AdminUnit(
+                    us_county="Hempstead",
+                    trait="admin_unit",
+                    start=0,
+                    end=16,
+                ),
             ],
         )
 
@@ -30,13 +33,13 @@ class TestAdminUnit(unittest.TestCase):
         self.assertEqual(
             full_test("""Flora of ARKANSAS County: MISSISSIPPI"""),
             [
-                {
-                    "us_county": "Mississippi",
-                    "us_state": "Arkansas",
-                    "trait": "admin_unit",
-                    "start": 0,
-                    "end": 37,
-                },
+                AdminUnit(
+                    us_county="Mississippi",
+                    us_state="Arkansas",
+                    trait="admin_unit",
+                    start=0,
+                    end=37,
+                ),
             ],
         )
 
@@ -44,7 +47,7 @@ class TestAdminUnit(unittest.TestCase):
         """It handles a county label before the county name."""
         self.assertEqual(
             full_test("""COUNTY: Lee"""),
-            [{"us_county": "Lee", "trait": "admin_unit", "start": 0, "end": 11}],
+            [AdminUnit(us_county="Lee", trait="admin_unit", start=0, end=11)],
         )
 
     def test_admin_unit_05(self):
@@ -52,12 +55,12 @@ class TestAdminUnit(unittest.TestCase):
         self.assertEqual(
             full_test("""Alleghany Co,"""),
             [
-                {
-                    "us_county": "Alleghany",
-                    "trait": "admin_unit",
-                    "start": 0,
-                    "end": 12,
-                },
+                AdminUnit(
+                    us_county="Alleghany",
+                    trait="admin_unit",
+                    start=0,
+                    end=12,
+                ),
             ],
         )
 
@@ -66,13 +69,13 @@ class TestAdminUnit(unittest.TestCase):
         self.assertEqual(
             full_test("""Desha Co., Ark."""),
             [
-                {
-                    "us_state": "Arkansas",
-                    "us_county": "Desha",
-                    "trait": "admin_unit",
-                    "start": 0,
-                    "end": 15,
-                }
+                AdminUnit(
+                    us_state="Arkansas",
+                    us_county="Desha",
+                    trait="admin_unit",
+                    start=0,
+                    end=15,
+                )
             ],
         )
 
@@ -81,12 +84,12 @@ class TestAdminUnit(unittest.TestCase):
         self.assertEqual(
             full_test("""PLANTS OF ARKANSAS"""),
             [
-                {
-                    "us_state": "Arkansas",
-                    "trait": "admin_unit",
-                    "start": 0,
-                    "end": 18,
-                },
+                AdminUnit(
+                    us_state="Arkansas",
+                    trait="admin_unit",
+                    start=0,
+                    end=18,
+                ),
             ],
         )
 
@@ -95,12 +98,12 @@ class TestAdminUnit(unittest.TestCase):
         self.assertEqual(
             full_test("""PLANTS OF NORTH CAROLINA"""),
             [
-                {
-                    "us_state": "North Carolina",
-                    "trait": "admin_unit",
-                    "start": 0,
-                    "end": 24,
-                },
+                AdminUnit(
+                    us_state="North Carolina",
+                    trait="admin_unit",
+                    start=0,
+                    end=24,
+                ),
             ],
         )
 
@@ -116,18 +119,18 @@ class TestAdminUnit(unittest.TestCase):
                 """
             ),
             [
-                {
-                    "us_state": "North Carolina",
-                    "trait": "admin_unit",
-                    "start": 39,
-                    "end": 63,
-                },
-                {
-                    "us_county": "Wilkes",
-                    "trait": "admin_unit",
-                    "start": 90,
-                    "end": 103,
-                },
+                AdminUnit(
+                    us_state="North Carolina",
+                    trait="admin_unit",
+                    start=39,
+                    end=63,
+                ),
+                AdminUnit(
+                    us_county="Wilkes",
+                    trait="admin_unit",
+                    start=90,
+                    end=103,
+                ),
             ],
         )
 
@@ -136,13 +139,13 @@ class TestAdminUnit(unittest.TestCase):
         self.assertEqual(
             full_test("""Cape May, New Jersey"""),
             [
-                {
-                    "us_county": "Cape May",
-                    "us_state": "New Jersey",
-                    "trait": "admin_unit",
-                    "start": 0,
-                    "end": 20,
-                },
+                AdminUnit(
+                    us_county="Cape May",
+                    us_state="New Jersey",
+                    trait="admin_unit",
+                    start=0,
+                    end=20,
+                ),
             ],
         )
 
@@ -151,12 +154,12 @@ class TestAdminUnit(unittest.TestCase):
         self.assertEqual(
             full_test("""ARCHULETA CO"""),
             [
-                {
-                    "us_county": "Archuleta",
-                    "trait": "admin_unit",
-                    "start": 0,
-                    "end": 12,
-                },
+                AdminUnit(
+                    us_county="Archuleta",
+                    trait="admin_unit",
+                    start=0,
+                    end=12,
+                ),
             ],
         )
 
@@ -165,13 +168,13 @@ class TestAdminUnit(unittest.TestCase):
         self.assertEqual(
             full_test("""Archuleta CO"""),
             [
-                {
-                    "us_state": "Colorado",
-                    "us_county": "Archuleta",
-                    "trait": "admin_unit",
-                    "start": 0,
-                    "end": 12,
-                },
+                AdminUnit(
+                    us_state="Colorado",
+                    us_county="Archuleta",
+                    trait="admin_unit",
+                    start=0,
+                    end=12,
+                ),
             ],
         )
 
@@ -179,32 +182,32 @@ class TestAdminUnit(unittest.TestCase):
         """It does not pick up label headers and footers."""
         self.assertEqual(
             full_test("""The University of Georgia Athens, GA, U.S.A."""),
-            [{"country": "USA", "end": 44, "start": 38, "trait": "admin_unit"}],
+            [AdminUnit(country="USA", end=44, start=38, trait="admin_unit")],
         )
 
     def test_admin_unit_14(self):
         """It does not pick up label headers and footers."""
         self.assertEqual(
             full_test("""Tree The New York Botanical Garden Herbarium"""),
-            [{"end": 4, "plant_part": "tree", "start": 0, "trait": "plant_part"}],
+            [Part(end=4, part="tree", start=0, trait="part", type="plant_part")],
         )
 
     def test_admin_unit_15(self):
         self.assertEqual(
             full_test("""St. Lucie Co.: Fort Pierce."""),
             [
-                {
-                    "us_county": "St. Lucie",
-                    "trait": "admin_unit",
-                    "start": 0,
-                    "end": 13,
-                },
-                {
-                    "locality": "Fort Pierce.",
-                    "trait": "locality",
-                    "start": 15,
-                    "end": 27,
-                },
+                AdminUnit(
+                    us_county="St. Lucie",
+                    trait="admin_unit",
+                    start=0,
+                    end=13,
+                ),
+                Locality(
+                    locality="Fort Pierce.",
+                    trait="locality",
+                    start=15,
+                    end=27,
+                ),
             ],
         )
 
@@ -212,7 +215,7 @@ class TestAdminUnit(unittest.TestCase):
         """It gets a province."""
         self.assertEqual(
             full_test("""Province of Panama"""),
-            [{"end": 18, "province": "panama", "start": 0, "trait": "admin_unit"}],
+            [AdminUnit(end=18, province="panama", start=0, trait="admin_unit")],
         )
 
     def test_admin_unit_17(self):
@@ -226,12 +229,12 @@ class TestAdminUnit(unittest.TestCase):
                 """
             ),
             [
-                {
-                    "us_state": "South Carolina",
-                    "us_county": "Dillon",
-                    "trait": "admin_unit",
-                    "start": 46,
-                    "end": 74,
-                }
+                AdminUnit(
+                    us_state="South Carolina",
+                    us_county="Dillon",
+                    trait="admin_unit",
+                    start=46,
+                    end=74,
+                )
             ],
         )
