@@ -59,7 +59,19 @@ def misc_patterns():
 
 @dataclass()
 class Misc(Base):
-    value: str = None
+    duration: str = None
+    flower_location: str = None
+    flower_morphology: str = None
+    formula: str = None
+    leaf_duration: str = None
+    leaf_folding: str = None
+    morphology: str = None
+    odor: str = None
+    plant_duration: str = None
+    reproduction: str = None
+    sex: str = None
+    venation: str = None
+    woodiness: str = None
 
     @classmethod
     def misc_match(cls, ent):
@@ -72,10 +84,8 @@ class Misc(Base):
 
         ent._.relabel = relabel
 
-        trait = cls.from_ent(ent, value=" ".join(frags))
-
-        setattr(trait, relabel, trait.trait)
-        delattr(trait, "value")
+        data = {relabel: " ".join(frags)}
+        trait = cls.from_ent(ent, **data)
 
         return trait
 

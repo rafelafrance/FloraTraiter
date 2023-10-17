@@ -29,9 +29,10 @@ ALL_LABELS = ["part", *OTHER_LABELS]
 
 def build(nlp: Language):
     add.term_pipe(nlp, name="part_terms", path=ALL_CSVS)
-    add.debug_tokens(nlp)
-    add.trait_pipe(nlp, name="part_patterns", compiler=part_patterns())
-    add.debug_tokens(nlp)
+    overwrite = """ part part_and part_leader part_missing """.split()
+    add.trait_pipe(
+        nlp, name="part_patterns", compiler=part_patterns(), overwrite=overwrite
+    )
     overwrite = [*PART_LABELS, "subpart"]
     add.trait_pipe(
         nlp, name="subpart_patterns", compiler=subpart_patterns(), overwrite=overwrite
@@ -102,7 +103,7 @@ def subpart_patterns():
         "leader": {"ENT_TYPE": "part_leader"},
         "missing": {"ENT_TYPE": "missing"},
         "part": {"ENT_TYPE": "part"},
-        "subpart": {"ENT_TYPE": "subpart"},
+        "subpart": {"ENT_TYPE": "subpart_term"},
     }
 
     return [
@@ -167,13 +168,9 @@ class Part(Base):
         all_parts = [" ".join(f) for f in frags]
         all_parts = [re.sub(r" - ", "-", p) for p in all_parts]
         all_parts = [REPLACE.get(p, p) for p in all_parts]
+        part = all_parts[0] if len(all_parts) == 1 else all_parts
 
-        ent._.relabel = relabel
-        trait = cls.from_ent(
-            ent,
-            part=all_parts[0] if len(all_parts) == 1 else all_parts,
-            type=relabel,
-        )
+        trait = cls.from_ent(ent, part=part, type=TYPE.get(part, part))
 
         ent[0]._.trait = trait
         return trait
