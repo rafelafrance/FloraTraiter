@@ -1,5 +1,12 @@
 import unittest
 
+from traiter.pylib.traits.date_ import Date
+from traiter.pylib.traits.elevation import Elevation
+from traiter.pylib.traits.habitat import Habitat
+
+from flora.pylib.traits.associated_taxon import AssociatedTaxonLabel
+from flora.pylib.traits.job import Job
+from flora.pylib.traits.taxon import Taxon
 from tests.setup import full_test
 
 
@@ -9,13 +16,14 @@ class TestCollector(unittest.TestCase):
         self.assertEqual(
             full_test("""Sarah Nunn and S. Jacobs and R. Mc Elderry 9480"""),
             [
-                {
-                    "collector_no": "9480",
-                    "collector": ["Sarah Nunn", "S. Jacobs", "R. Mc Elderry"],
-                    "trait": "collector",
-                    "start": 0,
-                    "end": 47,
-                }
+                Job(
+                    trait="job",
+                    id_no="9480",
+                    name=["Sarah Nunn", "S. Jacobs", "R. Mc Elderry"],
+                    job="name",
+                    start=0,
+                    end=47,
+                )
             ],
         )
 
@@ -29,19 +37,21 @@ class TestCollector(unittest.TestCase):
                 """
             ),
             [
-                {
-                    "determiner": "Edwin B. Smith",
-                    "trait": "determiner",
-                    "start": 0,
-                    "end": 19,
-                },
-                {
-                    "collector_no": "5595",
-                    "collector": "Marie P. Locke",
-                    "trait": "collector",
-                    "start": 20,
-                    "end": 49,
-                },
+                Job(
+                    name="Edwin B. Smith",
+                    trait="job",
+                    job="determiner",
+                    start=0,
+                    end=19,
+                ),
+                Job(
+                    trait="job",
+                    id_no="5595",
+                    name="Marie P. Locke",
+                    job="collector",
+                    start=20,
+                    end=49,
+                ),
             ],
         )
 
@@ -50,12 +60,13 @@ class TestCollector(unittest.TestCase):
         self.assertEqual(
             full_test("""Collected by _Wayne.. Hutchins."""),
             [
-                {
-                    "collector": "Wayne Hutchins",
-                    "trait": "collector",
-                    "start": 0,
-                    "end": 30,
-                },
+                Job(
+                    trait="job",
+                    name="Wayne Hutchins",
+                    job="collector",
+                    start=0,
+                    end=30,
+                ),
             ],
         )
 
@@ -64,12 +75,13 @@ class TestCollector(unittest.TestCase):
         self.assertEqual(
             full_test("""Collected by _Wayne.. Hutchins."""),
             [
-                {
-                    "collector": "Wayne Hutchins",
-                    "trait": "collector",
-                    "start": 0,
-                    "end": 30,
-                },
+                Job(
+                    trait="job",
+                    name="Wayne Hutchins",
+                    job="collector",
+                    start=0,
+                    end=30,
+                ),
             ],
         )
 
@@ -78,13 +90,14 @@ class TestCollector(unittest.TestCase):
         self.assertEqual(
             full_test("Coll. E. E. Dale, Jr. No. 6061"),
             [
-                {
-                    "collector_no": "6061",
-                    "collector": "E. E. Dale, Jr.",
-                    "trait": "collector",
-                    "start": 0,
-                    "end": 30,
-                },
+                Job(
+                    trait="job",
+                    id_no="6061",
+                    name="E. E. Dale, Jr.",
+                    job="collector",
+                    start=0,
+                    end=30,
+                ),
             ],
         )
 
@@ -93,19 +106,20 @@ class TestCollector(unittest.TestCase):
         self.assertEqual(
             full_test("Sarah Nunn with Angela Brown 7529 20 October 2002 of"),
             [
-                {
-                    "collector_no": "7529",
-                    "collector": ["Sarah Nunn", "Angela Brown"],
-                    "trait": "collector",
-                    "start": 0,
-                    "end": 33,
-                },
-                {
-                    "date": "2002-10-20",
-                    "trait": "date",
-                    "start": 34,
-                    "end": 49,
-                },
+                Job(
+                    trait="job",
+                    id_no="7529",
+                    name=["Sarah Nunn", "Angela Brown"],
+                    job="collector",
+                    start=0,
+                    end=33,
+                ),
+                Date(
+                    date="2002-10-20",
+                    trait="date",
+                    start=34,
+                    end=49,
+                ),
             ],
         )
 
@@ -114,13 +128,14 @@ class TestCollector(unittest.TestCase):
         self.assertEqual(
             full_test("""Collector: Christopher Reid & Sarah Nunn 2018"""),
             [
-                {
-                    "collector_no": "2018",
-                    "collector": ["Christopher Reid", "Sarah Nunn"],
-                    "trait": "collector",
-                    "start": 0,
-                    "end": 45,
-                },
+                Job(
+                    trait="job",
+                    id_no="2018",
+                    name=["Christopher Reid", "Sarah Nunn"],
+                    job="collector",
+                    start=0,
+                    end=45,
+                ),
             ],
         )
 
@@ -129,13 +144,14 @@ class TestCollector(unittest.TestCase):
         self.assertEqual(
             full_test("""George P. Johnson #5689"""),
             [
-                {
-                    "collector_no": "5689",
-                    "collector": "George P. Johnson",
-                    "trait": "collector",
-                    "start": 0,
-                    "end": 23,
-                }
+                Job(
+                    trait="job",
+                    id_no="5689",
+                    name="George P. Johnson",
+                    job="collector",
+                    start=0,
+                    end=23,
+                )
             ],
         )
 
@@ -144,13 +160,14 @@ class TestCollector(unittest.TestCase):
         self.assertEqual(
             full_test("""Col Mrs. Jim Miller No. 736"""),
             [
-                {
-                    "collector_no": "736",
-                    "collector": "Mrs. Jim Miller",
-                    "trait": "collector",
-                    "start": 0,
-                    "end": 27,
-                }
+                Job(
+                    trait="job",
+                    id_no="736",
+                    name="Mrs. Jim Miller",
+                    job="collector",
+                    start=0,
+                    end=27,
+                )
             ],
         )
 
@@ -158,32 +175,33 @@ class TestCollector(unittest.TestCase):
         self.assertEqual(
             full_test("""collected by Merle Dortmond"""),
             [
-                {
-                    "collector": "Merle Dortmond",
-                    "trait": "collector",
-                    "start": 0,
-                    "end": 27,
-                }
+                Job(
+                    trait="job",
+                    name="Merle Dortmond",
+                    job="collector",
+                    start=0,
+                    end=27,
+                )
             ],
         )
 
     def test_collector_11(self):
         self.assertEqual(
             full_test(""" Grassland, GPS 30°"""),
-            [{"habitat": "grassland", "trait": "habitat", "start": 0, "end": 9}],
+            [Habitat(habitat="grassland", trait="habitat", start=0, end=9)],
         )
 
     def test_collector_12(self):
         self.assertEqual(
             full_test("""3807708N Elev: 1689m."""),
             [
-                {
-                    "elevation": 1689.0,
-                    "units": "m",
-                    "trait": "elevation",
-                    "start": 9,
-                    "end": 21,
-                }
+                Elevation(
+                    elevation=1689.0,
+                    units="m",
+                    trait="elevation",
+                    start=9,
+                    end=21,
+                )
             ],
         )
 
@@ -202,14 +220,15 @@ class TestCollector(unittest.TestCase):
                 Collector Number: 1388 Date: 11 Aug 2016"""
             ),
             [
-                {
-                    "collector_no": "1388",
-                    "collector": "Timothy J. S. Whitfield",
-                    "trait": "collector",
-                    "start": 34,
-                    "end": 94,
-                },
-                {"date": "2016-08-11", "trait": "date", "start": 95, "end": 112},
+                Job(
+                    trait="job",
+                    id_no="1388",
+                    name="Timothy J. S. Whitfield",
+                    job="collector",
+                    start=34,
+                    end=94,
+                ),
+                Date(date="2016-08-11", trait="date", start=95, end=112),
             ],
         )
 
@@ -222,8 +241,9 @@ class TestCollector(unittest.TestCase):
                 """
             ),
             [
-                {
-                    "other_collector": [
+                Job(
+                    trait="job",
+                    name=[
                         "Dawn Goldman",
                         "Army Prince",
                         "Steven Emrick",
@@ -231,10 +251,10 @@ class TestCollector(unittest.TestCase):
                         "Diane Hicks",
                         "Beechnut",
                     ],
-                    "trait": "other_collector",
-                    "start": 0,
-                    "end": 82,
-                },
+                    job="other_collector",
+                    start=0,
+                    end=82,
+                ),
             ],
         )
 
@@ -242,13 +262,14 @@ class TestCollector(unittest.TestCase):
         self.assertEqual(
             full_test("""Williams (Rocky) Gleason #F15GLEN55-B"""),
             [
-                {
-                    "collector_no": "F15GLEN55-B",
-                    "collector": "Williams (Rocky) Gleason",
-                    "trait": "collector",
-                    "start": 0,
-                    "end": 37,
-                },
+                Job(
+                    trait="job",
+                    id_no="F15GLEN55-B",
+                    name="Williams (Rocky) Gleason",
+                    job="collector",
+                    start=0,
+                    end=37,
+                ),
             ],
         )
 
@@ -260,16 +281,17 @@ class TestCollector(unittest.TestCase):
                 """
             ),
             [
-                {
-                    "other_collector": [
+                Job(
+                    trait="job",
+                    name=[
                         "Dixie Damrel",
                         "Sarah Hunkins",
                         "Steven and Johan LaMoure",
                     ],
-                    "trait": "other_collector",
-                    "start": 0,
-                    "end": 59,
-                },
+                    job="other_collector",
+                    start=0,
+                    end=59,
+                ),
             ],
         )
 
@@ -277,13 +299,14 @@ class TestCollector(unittest.TestCase):
         self.assertEqual(
             full_test("""Frederick H. Utech 91-1178"""),
             [
-                {
-                    "collector_no": "91-1178",
-                    "collector": "Frederick H. Utech",
-                    "trait": "collector",
-                    "start": 0,
-                    "end": 26,
-                },
+                Job(
+                    trait="job",
+                    id_no="91-1178",
+                    name="Frederick H. Utech",
+                    job="collector",
+                    start=0,
+                    end=26,
+                ),
             ],
         )
 
@@ -291,13 +314,14 @@ class TestCollector(unittest.TestCase):
         self.assertEqual(
             full_test("""A A.C. Saunders 39141"""),
             [
-                {
-                    "collector_no": "39141",
-                    "collector": "A A.C. Saunders",
-                    "trait": "collector",
-                    "start": 0,
-                    "end": 21,
-                },
+                Job(
+                    trait="job",
+                    id_no="39141",
+                    name="A A.C. Saunders",
+                    job="collector",
+                    start=0,
+                    end=21,
+                ),
             ],
         )
 
@@ -305,14 +329,15 @@ class TestCollector(unittest.TestCase):
         self.assertEqual(
             full_test("""purple. A A.C. Saunders 39141 14 Apr 2011"""),
             [
-                {
-                    "collector_no": "39141",
-                    "collector": "A A.C. Saunders",
-                    "trait": "collector",
-                    "start": 8,
-                    "end": 29,
-                },
-                {"date": "2011-04-14", "end": 41, "start": 30, "trait": "date"},
+                Job(
+                    trait="job",
+                    id_no="39141",
+                    name="A A.C. Saunders",
+                    job="collector",
+                    start=8,
+                    end=29,
+                ),
+                Date(date="2011-04-14", end=41, start=30, trait="date"),
             ],
         )
 
@@ -321,13 +346,14 @@ class TestCollector(unittest.TestCase):
         self.assertEqual(
             full_test("""Wendy McClure 2018-2"""),
             [
-                {
-                    "collector_no": "2018-2",
-                    "collector": "Wendy McClure",
-                    "trait": "collector",
-                    "start": 0,
-                    "end": 20,
-                },
+                Job(
+                    trait="job",
+                    id_no="2018-2",
+                    name="Wendy McClure",
+                    job="collector",
+                    start=0,
+                    end=20,
+                ),
             ],
         )
 
@@ -336,26 +362,28 @@ class TestCollector(unittest.TestCase):
         self.assertEqual(
             full_test("""Associated species: Neptunia gracilis G. Rink 7075"""),
             [
-                {
-                    "assoc_taxon_label": "associated species",
-                    "trait": "assoc_taxon_label",
-                    "start": 0,
-                    "end": 18,
-                },
-                {
-                    "rank": "species",
-                    "trait": "associated_taxon",
-                    "start": 20,
-                    "end": 37,
-                    "associated_taxon": "Neptunia gracilis",
-                },
-                {
-                    "collector": "G. Rink",
-                    "collector_no": "7075",
-                    "trait": "collector",
-                    "start": 38,
-                    "end": 50,
-                },
+                AssociatedTaxonLabel(
+                    label="associated species",
+                    trait="assoc_taxon_label",
+                    start=0,
+                    end=18,
+                ),
+                Taxon(
+                    rank="species",
+                    trait="taxon",
+                    start=20,
+                    end=37,
+                    taxon="Neptunia gracilis",
+                    associated=True,
+                ),
+                Job(
+                    trait="job",
+                    name="G. Rink",
+                    id_no="7075",
+                    job="collector",
+                    start=38,
+                    end=50,
+                ),
             ],
         )
 
@@ -364,12 +392,13 @@ class TestCollector(unittest.TestCase):
         self.assertEqual(
             full_test("""collected by Merle Dortmond The University"""),
             [
-                {
-                    "collector": "Merle Dortmond",
-                    "trait": "collector",
-                    "start": 0,
-                    "end": 27,
-                },
+                Job(
+                    trait="job",
+                    name="Merle Dortmond",
+                    job="collector",
+                    start=0,
+                    end=27,
+                ),
             ],
         )
 
@@ -380,26 +409,28 @@ class TestCollector(unittest.TestCase):
                 """Associated Species: Cephalanthus occidentalis Cass Blodgett 829"""
             ),
             [
-                {
-                    "assoc_taxon_label": "associated species",
-                    "trait": "assoc_taxon_label",
-                    "start": 0,
-                    "end": 18,
-                },
-                {
-                    "rank": "species",
-                    "trait": "associated_taxon",
-                    "start": 20,
-                    "end": 45,
-                    "associated_taxon": "Cephalanthus occidentalis",
-                },
-                {
-                    "collector": "Cass Blodgett",
-                    "collector_no": "829",
-                    "trait": "collector",
-                    "start": 46,
-                    "end": 63,
-                },
+                AssociatedTaxonLabel(
+                    label="associated species",
+                    trait="assoc_taxon_label",
+                    start=0,
+                    end=18,
+                ),
+                Taxon(
+                    rank="species",
+                    trait="taxon",
+                    start=20,
+                    end=45,
+                    taxon="Cephalanthus occidentalis",
+                    associated=True,
+                ),
+                Job(
+                    trait="job",
+                    name="Cass Blodgett",
+                    id_no="829",
+                    job="collector",
+                    start=46,
+                    end=63,
+                ),
             ],
         )
 
@@ -419,80 +450,85 @@ class TestCollector(unittest.TestCase):
                 """
             ),
             [
-                {
-                    "collector": ["W. Hess", "K. Allen", "K. Weise", "S. Peterson"],
-                    "trait": "collector",
-                    "start": 20,
-                    "end": 73,
-                }
+                Job(
+                    trait="job",
+                    name=["W. Hess", "K. Allen", "K. Weise", "S. Peterson"],
+                    job="collector",
+                    start=20,
+                    end=73,
+                )
             ],
         )
 
     def test_collector_27(self):
-        """It handles a collector separated from their collector number."""
+        """It handles a name separated from their name number."""
         self.assertEqual(
             full_test(
                 """Little Belt Mountains J.B. Scammons Elevation: 5800 ft.
                 No, 105 July 6, 1956"""
             ),
             [
-                {
-                    "trait": "collector",
-                    "start": 22,
-                    "end": 35,
-                    "collector": "J.B. Scammons",
-                    "collector_no": "105",
-                },
-                {
-                    "elevation": 1767.84,
-                    "units": "m",
-                    "trait": "elevation",
-                    "start": 36,
-                    "end": 54,
-                },
-                {
-                    "collector": "J.B. Scammons",
-                    "trait": "collector_no",
-                    "start": 56,
-                    "end": 63,
-                    "collector_no": "105",
-                },
-                {"date": "1956-07-06", "trait": "date", "start": 64, "end": 76},
+                Job(
+                    trait="job",
+                    job="collector",
+                    start=22,
+                    end=35,
+                    name="J.B. Scammons",
+                    id_no="105",
+                ),
+                Elevation(
+                    elevation=1767.84,
+                    units="m",
+                    trait="elevation",
+                    start=36,
+                    end=54,
+                ),
+                Job(
+                    trait="job",
+                    name="J.B. Scammons",
+                    start=56,
+                    end=63,
+                    id_no="105",
+                ),
+                Date(date="1956-07-06", trait="date", start=64, end=76),
             ],
         )
 
     def test_collector_28(self):
-        """It handles a collector with number and a other collectors."""
+        """It handles a name with number and a other collectors."""
         self.assertEqual(
             full_test("""Joshua R. Campbell 327 w/ S. Dickman"""),
             [
-                {
-                    "collector": "Joshua R. Campbell",
-                    "trait": "collector",
-                    "start": 0,
-                    "end": 22,
-                    "collector_no": "327",
-                },
-                {
-                    "other_collector": ["S. Dickman"],
-                    "trait": "other_collector",
-                    "start": 23,
-                    "end": 36,
-                },
+                Job(
+                    trait="job",
+                    name="Joshua R. Campbell",
+                    job="collector",
+                    start=0,
+                    end=22,
+                    id_no="327",
+                ),
+                Job(
+                    trait="job",
+                    name=["S. Dickman"],
+                    job="other_collector",
+                    start=23,
+                    end=36,
+                ),
             ],
         )
 
     def test_collector_29(self):
-        """It handles a collector with number and a other collectors."""
+        """It handles a name with number and a other collectors."""
         self.assertEqual(
             full_test("""with Bob Simmons, Dana Griffin & Tom Morris"""),
             [
-                {
-                    "other_collector": ["Bob Simmons", "Dana Griffin", "Tom Morris"],
-                    "trait": "other_collector",
-                    "start": 0,
-                    "end": 43,
-                },
+                Job(
+                    trait="job",
+                    name=["Bob Simmons", "Dana Griffin", "Tom Morris"],
+                    job="other_collector",
+                    start=0,
+                    end=43,
+                ),
             ],
         )
 
@@ -500,12 +536,13 @@ class TestCollector(unittest.TestCase):
         self.assertEqual(
             full_test("""With: Cindy Smith, Scott Rowan Sponsored by"""),
             [
-                {
-                    "other_collector": ["Cindy Smith", "Scott Rowan"],
-                    "trait": "other_collector",
-                    "start": 0,
-                    "end": 30,
-                },
+                Job(
+                    trait="job",
+                    name=["Cindy Smith", "Scott Rowan"],
+                    job="other_collector",
+                    start=0,
+                    end=30,
+                ),
             ],
         )
 
@@ -513,13 +550,14 @@ class TestCollector(unittest.TestCase):
         self.assertEqual(
             full_test("""Joni Ward 866-a"""),
             [
-                {
-                    "collector": "Joni Ward",
-                    "trait": "collector",
-                    "collector_no": "866-a",
-                    "start": 0,
-                    "end": 15,
-                },
+                Job(
+                    trait="job",
+                    name="Joni Ward",
+                    job="collector",
+                    id_no="866-a",
+                    start=0,
+                    end=15,
+                ),
             ],
         )
 
@@ -527,13 +565,14 @@ class TestCollector(unittest.TestCase):
         self.assertEqual(
             full_test("""Cole Larsson-Whittaker 866-a"""),
             [
-                {
-                    "collector": "Cole Larsson-Whittaker",
-                    "trait": "collector",
-                    "collector_no": "866-a",
-                    "start": 0,
-                    "end": 28,
-                },
+                Job(
+                    trait="job",
+                    name="Cole Larsson-Whittaker",
+                    job="collector",
+                    id_no="866-a",
+                    start=0,
+                    end=28,
+                ),
             ],
         )
 
@@ -541,12 +580,13 @@ class TestCollector(unittest.TestCase):
         self.assertEqual(
             full_test("""Collectors: Avena Nelson, Elias Nelson."""),
             [
-                {
-                    "collector": ["Avena Nelson", "Elias Nelson"],
-                    "trait": "collector",
-                    "start": 0,
-                    "end": 38,
-                },
+                Job(
+                    trait="job",
+                    name=["Avena Nelson", "Elias Nelson"],
+                    job="collector",
+                    start=0,
+                    end=38,
+                ),
             ],
         )
 
@@ -570,14 +610,14 @@ class TestCollector(unittest.TestCase):
         self.assertEqual(
             full_test("""Mimosa sensitiva Collected by: E. Mohr"""),
             [
-                {
-                    "taxon": "Mimosa sensitiva",
-                    "rank": "species",
-                    "trait": "taxon",
-                    "start": 0,
-                    "end": 16,
-                },
-                {"collector": "E. Mohr", "trait": "collector", "start": 17, "end": 38},
+                Taxon(
+                    taxon="Mimosa sensitiva",
+                    rank="species",
+                    trait="taxon",
+                    start=0,
+                    end=16,
+                ),
+                Job(trait="job", name="E. Mohr", job="collector", start=17, end=38),
             ],
         )
 
@@ -588,12 +628,13 @@ class TestCollector(unittest.TestCase):
                 with Juan Kaplan, Helena Walker Herbarium of a Botanical Garden"""
             ),
             [
-                {
-                    "other_collector": ["Juan Kaplan", "Helena Walker"],
-                    "trait": "other_collector",
-                    "start": 0,
-                    "end": 31,
-                }
+                Job(
+                    trait="job",
+                    name=["Juan Kaplan", "Helena Walker"],
+                    job="other_collector",
+                    start=0,
+                    end=31,
+                )
             ],
         )
 
@@ -601,24 +642,26 @@ class TestCollector(unittest.TestCase):
         self.assertEqual(
             full_test("""4 September 2008 J. Johnson with M. King Herbarium"""),
             [
-                {
-                    "date": "2008-09-04",
-                    "trait": "date",
-                    "start": 0,
-                    "end": 16,
-                },
-                {
-                    "collector": "J. Johnson",
-                    "trait": "collector",
-                    "start": 17,
-                    "end": 27,
-                },
-                {
-                    "other_collector": ["M. King"],
-                    "trait": "other_collector",
-                    "start": 28,
-                    "end": 40,
-                },
+                Date(
+                    date="2008-09-04",
+                    trait="date",
+                    start=0,
+                    end=16,
+                ),
+                Job(
+                    trait="job",
+                    name="J. Johnson",
+                    job="collector",
+                    start=17,
+                    end=27,
+                ),
+                Job(
+                    trait="job",
+                    name=["M. King"],
+                    job="other_collector",
+                    start=28,
+                    end=40,
+                ),
             ],
         )
 
@@ -631,13 +674,14 @@ class TestCollector(unittest.TestCase):
                 """
             ),
             [
-                {
-                    "collector": "H. Richey",
-                    "trait": "collector",
-                    "collector_no": "HR1998-01",
-                    "start": 0,
-                    "end": 19,
-                },
+                Job(
+                    trait="job",
+                    name="H. Richey",
+                    job="collector",
+                    id_no="HR1998-01",
+                    start=0,
+                    end=19,
+                ),
             ],
         )
 
@@ -645,13 +689,14 @@ class TestCollector(unittest.TestCase):
         self.assertEqual(
             full_test("""AC Saunders 34380 OS"""),
             [
-                {
-                    "collector": "AC Saunders",
-                    "trait": "collector",
-                    "collector_no": "34380",
-                    "start": 0,
-                    "end": 17,
-                },
+                Job(
+                    trait="job",
+                    name="AC Saunders",
+                    job="collector",
+                    id_no="34380",
+                    start=0,
+                    end=17,
+                ),
             ],
         )
 
@@ -664,12 +709,13 @@ class TestCollector(unittest.TestCase):
                 """
             ),
             [
-                {
-                    "collector": ["Lytle McGill", "Roy Brown"],
-                    "trait": "collector",
-                    "start": 9,
-                    "end": 42,
-                },
+                Job(
+                    trait="job",
+                    name=["Lytle McGill", "Roy Brown"],
+                    job="collector",
+                    start=9,
+                    end=42,
+                ),
             ],
         )
 
@@ -682,16 +728,17 @@ class TestCollector(unittest.TestCase):
                 """
             ),
             [
-                {
-                    "other_collector": [
+                Job(
+                    trait="job",
+                    name=[
                         "Marcelline VandeWater",
                         "Steven Williams",
                         "Janet",
                     ],
-                    "trait": "other_collector",
-                    "start": 0,
-                    "end": 51,
-                }
+                    job="other_collector",
+                    start=0,
+                    end=51,
+                )
             ],
         )
 
@@ -699,12 +746,13 @@ class TestCollector(unittest.TestCase):
         self.assertEqual(
             full_test("""w/ Mark A. Elvin, Tim Thomas"""),
             [
-                {
-                    "other_collector": ["Mark A. Elvin", "Tim Thomas"],
-                    "trait": "other_collector",
-                    "start": 0,
-                    "end": 28,
-                }
+                Job(
+                    trait="job",
+                    name=["Mark A. Elvin", "Tim Thomas"],
+                    job="other_collector",
+                    start=0,
+                    end=28,
+                )
             ],
         )
 
@@ -712,32 +760,20 @@ class TestCollector(unittest.TestCase):
         self.assertEqual(
             full_test("""Collector(s): JANET WINGATE No. 4937 Verified: H A Heber"""),
             [
-                {
-                    "collector": "JANET WINGATE",
-                    "collector_no": "4937",
-                    "trait": "collector",
-                    "start": 0,
-                    "end": 36,
-                },
-                {
-                    "job": "verified :",
-                    "worker": "H A Heber",
-                    "trait": "other_job",
-                    "start": 37,
-                    "end": 56,
-                },
+                Job(
+                    trait="job",
+                    name="JANET WINGATE",
+                    id_no="4937",
+                    job="collector",
+                    start=0,
+                    end=36,
+                ),
+                Job(
+                    trait="job",
+                    job="verified",
+                    name="H A Heber",
+                    start=37,
+                    end=56,
+                ),
             ],
         )
-
-    # def test_collector_45(self):
-    #     self.assertEqual(
-    #         full_test("""with Art and Barb Phillips, Hualapai Elders"""),
-    #         [
-    #             {
-    #                 "other_collector": ["Art and Barb Phillips", "Hualapai Elders"],
-    #                 "trait": "other_collector",
-    #                 "start": 0,
-    #                 "end": 43,
-    #             }
-    #         ],
-    #     )

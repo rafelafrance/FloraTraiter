@@ -529,6 +529,7 @@ class Taxon(Base):
     taxon: str | list[str] = None
     rank: str = None
     authority: str | list[str] = None
+    associated: bool = None
 
     @classmethod
     def taxon_match(cls, ent):
@@ -710,8 +711,8 @@ class Taxon(Base):
 
             token._.flag = "taxon"
 
-        authority = " ".join(auth)
-        trait = cls.from_ent(ent, authority=authority, **data)
+        data["authority"] = " ".join(auth)
+        trait = cls.from_ent(ent, **data)
 
         ent[0]._.trait = trait
         ent[0]._.flag = "taxon_data"

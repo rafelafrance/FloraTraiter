@@ -1,24 +1,26 @@
 import unittest
 
+from flora.pylib.traits.part import Part
+from flora.pylib.traits.taxon import Taxon
 from tests.setup import full_test
 from tests.setup import small_test
 
 
 class TestTaxon(unittest.TestCase):
-    def test_taxon_00(self):
-        small_test("""Cornus obliqua (Beth.)""")
+    # def test_taxon_00(self):
+    #     small_test("""Cornus obliqua (Beth.)""")
 
     def test_taxon_01(self):
         self.assertEqual(
             small_test("""M. sensitiva"""),
             [
-                {
-                    "rank": "species",
-                    "taxon": "Mimosa sensitiva",
-                    "trait": "taxon",
-                    "start": 0,
-                    "end": 12,
-                }
+                Taxon(
+                    rank="species",
+                    taxon="Mimosa sensitiva",
+                    trait="taxon",
+                    start=0,
+                    end=12,
+                )
             ],
         )
 
@@ -26,13 +28,13 @@ class TestTaxon(unittest.TestCase):
         self.assertEqual(
             small_test("""Mimosa sensitiva"""),
             [
-                {
-                    "rank": "species",
-                    "taxon": "Mimosa sensitiva",
-                    "trait": "taxon",
-                    "start": 0,
-                    "end": 16,
-                }
+                Taxon(
+                    rank="species",
+                    taxon="Mimosa sensitiva",
+                    trait="taxon",
+                    start=0,
+                    end=16,
+                )
             ],
         )
 
@@ -40,13 +42,13 @@ class TestTaxon(unittest.TestCase):
         self.assertEqual(
             small_test("""M. polycarpa var. spegazzinii"""),
             [
-                {
-                    "rank": "variety",
-                    "taxon": "M. polycarpa var. spegazzinii",
-                    "trait": "taxon",
-                    "start": 0,
-                    "end": 29,
-                }
+                Taxon(
+                    rank="variety",
+                    taxon="M. polycarpa var. spegazzinii",
+                    trait="taxon",
+                    start=0,
+                    end=29,
+                )
             ],
         )
 
@@ -54,13 +56,13 @@ class TestTaxon(unittest.TestCase):
         self.assertEqual(
             small_test("""A. pachyphloia subsp. brevipinnula."""),
             [
-                {
-                    "rank": "subspecies",
-                    "taxon": "Acacia pachyphloia subsp. brevipinnula",
-                    "trait": "taxon",
-                    "start": 0,
-                    "end": 34,
-                }
+                Taxon(
+                    rank="subspecies",
+                    taxon="Acacia pachyphloia subsp. brevipinnula",
+                    trait="taxon",
+                    start=0,
+                    end=34,
+                )
             ],
         )
 
@@ -68,13 +70,13 @@ class TestTaxon(unittest.TestCase):
         self.assertEqual(
             small_test("""A. pachyphloia Bamehy 184."""),
             [
-                {
-                    "rank": "species",
-                    "taxon": "Acacia pachyphloia",
-                    "trait": "taxon",
-                    "start": 0,
-                    "end": 14,
-                }
+                Taxon(
+                    rank="species",
+                    taxon="Acacia pachyphloia",
+                    trait="taxon",
+                    start=0,
+                    end=14,
+                )
             ],
         )
 
@@ -82,14 +84,14 @@ class TestTaxon(unittest.TestCase):
         self.assertEqual(
             small_test("""A. pachyphloia Britton & Rose"""),
             [
-                {
-                    "authority": "Britton and Rose",
-                    "rank": "species",
-                    "taxon": "Acacia pachyphloia",
-                    "trait": "taxon",
-                    "start": 0,
-                    "end": 29,
-                }
+                Taxon(
+                    authority="Britton and Rose",
+                    rank="species",
+                    taxon="Acacia pachyphloia",
+                    trait="taxon",
+                    start=0,
+                    end=29,
+                )
             ],
         )
 
@@ -97,20 +99,20 @@ class TestTaxon(unittest.TestCase):
         self.assertEqual(
             small_test("""Ser. Vulpinae is characterized"""),
             [
-                {
-                    "rank": "series",
-                    "taxon": "Vulpinae",
-                    "trait": "taxon",
-                    "start": 0,
-                    "end": 13,
-                }
+                Taxon(
+                    rank="series",
+                    taxon="Vulpinae",
+                    trait="taxon",
+                    start=0,
+                    end=13,
+                )
             ],
         )
 
     def test_taxon_08(self):
         self.assertEqual(
             small_test("""All species are trees"""),
-            [{"end": 21, "plant_part": "tree", "start": 16, "trait": "plant_part"}],
+            [Part(end=21, part="tree", start=16, trait="part", type="plant_part")],
         )
 
     def test_taxon_09(self):
@@ -123,20 +125,20 @@ class TestTaxon(unittest.TestCase):
         self.assertEqual(
             small_test("""together with A. pachyphloia (Vulpinae)"""),
             [
-                {
-                    "taxon": "Acacia pachyphloia",
-                    "rank": "species",
-                    "trait": "taxon",
-                    "start": 14,
-                    "end": 28,
-                },
-                {
-                    "taxon": "Vulpinae",
-                    "rank": "section",
-                    "trait": "taxon",
-                    "start": 30,
-                    "end": 38,
-                },
+                Taxon(
+                    taxon="Acacia pachyphloia",
+                    rank="species",
+                    trait="taxon",
+                    start=14,
+                    end=28,
+                ),
+                Taxon(
+                    taxon="Vulpinae",
+                    rank="section",
+                    trait="taxon",
+                    start=30,
+                    end=38,
+                ),
             ],
         )
 
@@ -144,14 +146,14 @@ class TestTaxon(unittest.TestCase):
         self.assertEqual(
             small_test("""Mimosa sensitiva (Bentham) Fox, Trans."""),
             [
-                {
-                    "authority": "Bentham Fox",
-                    "rank": "species",
-                    "taxon": "Mimosa sensitiva",
-                    "trait": "taxon",
-                    "start": 0,
-                    "end": 31,
-                }
+                Taxon(
+                    authority="Bentham Fox",
+                    rank="species",
+                    taxon="Mimosa sensitiva",
+                    trait="taxon",
+                    start=0,
+                    end=31,
+                )
             ],
         )
 
@@ -163,21 +165,21 @@ class TestTaxon(unittest.TestCase):
                 """
             ),
             [
-                {
-                    "taxon": "Neptunia gracilis f. gracilis",
-                    "rank": "form",
-                    "trait": "taxon",
-                    "start": 0,
-                    "end": 29,
-                },
-                {
-                    "taxon": "Neptunia gracilis var. villosula",
-                    "rank": "variety",
-                    "authority": "Benth",
-                    "trait": "taxon",
-                    "start": 30,
-                    "end": 69,
-                },
+                Taxon(
+                    taxon="Neptunia gracilis f. gracilis",
+                    rank="form",
+                    trait="taxon",
+                    start=0,
+                    end=29,
+                ),
+                Taxon(
+                    taxon="Neptunia gracilis var. villosula",
+                    rank="variety",
+                    authority="Benth",
+                    trait="taxon",
+                    start=30,
+                    end=69,
+                ),
             ],
         )
 
@@ -190,21 +192,21 @@ class TestTaxon(unittest.TestCase):
                 """
             ),
             [
-                {
-                    "taxon": "F. gracilis",
-                    "rank": "species",
-                    "trait": "taxon",
-                    "start": 0,
-                    "end": 11,
-                },
-                {
-                    "taxon": "Neptunia gracilis var. villosula",
-                    "rank": "variety",
-                    "authority": "Benth",
-                    "trait": "taxon",
-                    "start": 12,
-                    "end": 51,
-                },
+                Taxon(
+                    taxon="F. gracilis",
+                    rank="species",
+                    trait="taxon",
+                    start=0,
+                    end=11,
+                ),
+                Taxon(
+                    taxon="Neptunia gracilis var. villosula",
+                    rank="variety",
+                    authority="Benth",
+                    trait="taxon",
+                    start=12,
+                    end=51,
+                ),
             ],
         )
 
@@ -212,13 +214,13 @@ class TestTaxon(unittest.TestCase):
         self.assertEqual(
             small_test("""Ticanto rhombifolia"""),
             [
-                {
-                    "taxon": "Ticanto rhombifolia",
-                    "rank": "species",
-                    "trait": "taxon",
-                    "start": 0,
-                    "end": 19,
-                }
+                Taxon(
+                    taxon="Ticanto rhombifolia",
+                    rank="species",
+                    trait="taxon",
+                    start=0,
+                    end=19,
+                )
             ],
         )
 
@@ -232,21 +234,21 @@ class TestTaxon(unittest.TestCase):
                 """
             ),
             [
-                {
-                    "rank": "family",
-                    "taxon": "Cornaceae",
-                    "trait": "taxon",
-                    "start": 0,
-                    "end": 9,
-                },
-                {
-                    "authority": "Raf",
-                    "rank": "species",
-                    "taxon": "Cornus obliqua",
-                    "trait": "taxon",
-                    "start": 10,
-                    "end": 29,
-                },
+                Taxon(
+                    rank="family",
+                    taxon="Cornaceae",
+                    trait="taxon",
+                    start=0,
+                    end=9,
+                ),
+                Taxon(
+                    authority="Raf",
+                    rank="species",
+                    taxon="Cornus obliqua",
+                    trait="taxon",
+                    start=10,
+                    end=29,
+                ),
             ],
         )
 
@@ -261,21 +263,21 @@ class TestTaxon(unittest.TestCase):
                 """
             ),
             [
-                {
-                    "taxon": "Fabaceae",
-                    "rank": "family",
-                    "trait": "taxon",
-                    "start": 16,
-                    "end": 24,
-                },
-                {
-                    "taxon": "Vicia villosa subsp. varia",
-                    "rank": "subspecies",
-                    "authority": ["Roth", "Khan"],
-                    "trait": "taxon",
-                    "start": 25,
-                    "end": 61,
-                },
+                Taxon(
+                    taxon="Fabaceae",
+                    rank="family",
+                    trait="taxon",
+                    start=16,
+                    end=24,
+                ),
+                Taxon(
+                    taxon="Vicia villosa subsp. varia",
+                    rank="subspecies",
+                    authority=["Roth", "Khan"],
+                    trait="taxon",
+                    start=25,
+                    end=61,
+                ),
             ],
         )
 
@@ -284,14 +286,14 @@ class TestTaxon(unittest.TestCase):
         self.assertEqual(
             small_test("""Cephalanthus occidentalis L. Rubiaceas"""),
             [
-                {
-                    "taxon": "Cephalanthus occidentalis",
-                    "rank": "species",
-                    "authority": "L. Rubiaceas",
-                    "trait": "taxon",
-                    "start": 0,
-                    "end": 38,
-                }
+                Taxon(
+                    taxon="Cephalanthus occidentalis",
+                    rank="species",
+                    authority="L. Rubiaceas",
+                    trait="taxon",
+                    start=0,
+                    end=38,
+                )
             ],
         )
 
@@ -300,13 +302,13 @@ class TestTaxon(unittest.TestCase):
         self.assertEqual(
             small_test("""A. pachyphloia f. brevipinnula."""),
             [
-                {
-                    "rank": "form",
-                    "taxon": "Acacia pachyphloia f. brevipinnula",
-                    "trait": "taxon",
-                    "start": 0,
-                    "end": 30,
-                }
+                Taxon(
+                    rank="form",
+                    taxon="Acacia pachyphloia f. brevipinnula",
+                    trait="taxon",
+                    start=0,
+                    end=30,
+                )
             ],
         )
 
@@ -318,14 +320,14 @@ class TestTaxon(unittest.TestCase):
                 In Fraijanes Recreation Park"""
             ),
             [
-                {
-                    "taxon": "Cornus obliqua",
-                    "rank": "species",
-                    "authority": "Willd",
-                    "trait": "taxon",
-                    "start": 0,
-                    "end": 21,
-                }
+                Taxon(
+                    taxon="Cornus obliqua",
+                    rank="species",
+                    authority="Willd",
+                    trait="taxon",
+                    start=0,
+                    end=21,
+                )
             ],
         )
 
@@ -334,13 +336,13 @@ class TestTaxon(unittest.TestCase):
         self.assertEqual(
             small_test("""PLANTS OF PENNSYLVANIA ASTERACEAE"""),
             [
-                {
-                    "taxon": "Asteraceae",
-                    "rank": "family",
-                    "trait": "taxon",
-                    "start": 23,
-                    "end": 33,
-                }
+                Taxon(
+                    taxon="Asteraceae",
+                    rank="family",
+                    trait="taxon",
+                    start=23,
+                    end=33,
+                )
             ],
         )
 
@@ -348,14 +350,14 @@ class TestTaxon(unittest.TestCase):
         self.assertEqual(
             small_test("""Mimosa sensitiva (L.) Fox, Trans."""),
             [
-                {
-                    "authority": ["Linnaeus", "Fox"],
-                    "rank": "species",
-                    "taxon": "Mimosa sensitiva",
-                    "trait": "taxon",
-                    "start": 0,
-                    "end": 26,
-                }
+                Taxon(
+                    authority=["Linnaeus", "Fox"],
+                    rank="species",
+                    taxon="Mimosa sensitiva",
+                    trait="taxon",
+                    start=0,
+                    end=26,
+                )
             ],
         )
 
@@ -368,21 +370,21 @@ class TestTaxon(unittest.TestCase):
                 """
             ),
             [
-                {
-                    "taxon": "Cephalanthus occidentalis",
-                    "rank": "species",
-                    "authority": "L. Rubiaceas",
-                    "trait": "taxon",
-                    "start": 0,
-                    "end": 38,
-                },
-                {
-                    "taxon": "Cornus obliqua",
-                    "rank": "species",
-                    "trait": "taxon",
-                    "start": 59,
-                    "end": 73,
-                },
+                Taxon(
+                    taxon="Cephalanthus occidentalis",
+                    rank="species",
+                    authority="L. Rubiaceas",
+                    trait="taxon",
+                    start=0,
+                    end=38,
+                ),
+                Taxon(
+                    taxon="Cornus obliqua",
+                    rank="species",
+                    trait="taxon",
+                    start=59,
+                    end=73,
+                ),
             ],
         )
 
@@ -390,14 +392,14 @@ class TestTaxon(unittest.TestCase):
         self.assertEqual(
             small_test("""Mimosa sensitiva (L.) subsp. varia Fox."""),
             [
-                {
-                    "authority": ["Linnaeus", "Fox"],
-                    "rank": "subspecies",
-                    "taxon": "Mimosa sensitiva subsp. varia",
-                    "trait": "taxon",
-                    "start": 0,
-                    "end": 39,
-                }
+                Taxon(
+                    authority=["Linnaeus", "Fox"],
+                    rank="subspecies",
+                    taxon="Mimosa sensitiva subsp. varia",
+                    trait="taxon",
+                    start=0,
+                    end=39,
+                )
             ],
         )
 
@@ -405,14 +407,14 @@ class TestTaxon(unittest.TestCase):
         self.assertEqual(
             small_test("""Mimosa sensitiva (R. Person) subsp. varia Fox."""),
             [
-                {
-                    "authority": ["R. Person", "Fox"],
-                    "rank": "subspecies",
-                    "taxon": "Mimosa sensitiva subsp. varia",
-                    "trait": "taxon",
-                    "start": 0,
-                    "end": 46,
-                }
+                Taxon(
+                    authority=["R. Person", "Fox"],
+                    rank="subspecies",
+                    taxon="Mimosa sensitiva subsp. varia",
+                    trait="taxon",
+                    start=0,
+                    end=46,
+                )
             ],
         )
 
@@ -420,14 +422,14 @@ class TestTaxon(unittest.TestCase):
         self.assertEqual(
             small_test("""Mimosa sensitiva (L. Person) subsp. varia Fox."""),
             [
-                {
-                    "authority": ["L. Person", "Fox"],
-                    "rank": "subspecies",
-                    "taxon": "Mimosa sensitiva subsp. varia",
-                    "trait": "taxon",
-                    "start": 0,
-                    "end": 46,
-                }
+                Taxon(
+                    authority=["L. Person", "Fox"],
+                    rank="subspecies",
+                    taxon="Mimosa sensitiva subsp. varia",
+                    trait="taxon",
+                    start=0,
+                    end=46,
+                )
             ],
         )
 
@@ -436,13 +438,13 @@ class TestTaxon(unittest.TestCase):
         self.assertEqual(
             small_test("""Associated species: Neptunia gracilis G. Rink 7075"""),
             [
-                {
-                    "trait": "taxon",
-                    "taxon": "Neptunia gracilis",
-                    "rank": "species",
-                    "start": 20,
-                    "end": 37,
-                },
+                Taxon(
+                    trait="taxon",
+                    taxon="Neptunia gracilis",
+                    rank="species",
+                    start=20,
+                    end=37,
+                ),
             ],
         )
 
@@ -450,14 +452,14 @@ class TestTaxon(unittest.TestCase):
         self.assertEqual(
             small_test(""" Name Neptunia gracilis Geyser Locality Vernal, """),
             [
-                {
-                    "authority": "Geyser",
-                    "trait": "taxon",
-                    "taxon": "Neptunia gracilis",
-                    "rank": "species",
-                    "start": 5,
-                    "end": 29,
-                },
+                Taxon(
+                    authority="Geyser",
+                    trait="taxon",
+                    taxon="Neptunia gracilis",
+                    rank="species",
+                    start=5,
+                    end=29,
+                ),
             ],
         )
 
@@ -465,14 +467,14 @@ class TestTaxon(unittest.TestCase):
         self.assertEqual(
             small_test(""" Neptunia gracilis (Gray) """),
             [
-                {
-                    "authority": "Gray",
-                    "trait": "taxon",
-                    "taxon": "Neptunia gracilis",
-                    "rank": "species",
-                    "start": 0,
-                    "end": 24,
-                },
+                Taxon(
+                    authority="Gray",
+                    trait="taxon",
+                    taxon="Neptunia gracilis",
+                    rank="species",
+                    start=0,
+                    end=24,
+                ),
             ],
         )
 
@@ -480,13 +482,13 @@ class TestTaxon(unittest.TestCase):
         self.assertEqual(
             small_test("""Neptunia gracilis & Mimosa sensitiva"""),
             [
-                {
-                    "rank": "species",
-                    "taxon": ["Neptunia gracilis", "Mimosa sensitiva"],
-                    "trait": "multi_taxon",
-                    "start": 0,
-                    "end": 36,
-                }
+                Taxon(
+                    rank="species",
+                    taxon=["Neptunia gracilis", "Mimosa sensitiva"],
+                    trait="multi_taxon",
+                    start=0,
+                    end=36,
+                )
             ],
         )
 
@@ -494,14 +496,14 @@ class TestTaxon(unittest.TestCase):
         self.assertEqual(
             small_test("""Neptunia gracilis (Roxb.) T. Anderson"""),
             [
-                {
-                    "authority": "Roxb T. Anderson",
-                    "rank": "species",
-                    "taxon": "Neptunia gracilis",
-                    "trait": "taxon",
-                    "start": 0,
-                    "end": 37,
-                }
+                Taxon(
+                    authority="Roxb T. Anderson",
+                    rank="species",
+                    taxon="Neptunia gracilis",
+                    trait="taxon",
+                    start=0,
+                    end=37,
+                )
             ],
         )
 
@@ -509,27 +511,27 @@ class TestTaxon(unittest.TestCase):
         self.assertEqual(
             small_test("""Quercus/Cytisus/Agrostis"""),
             [
-                {
-                    "taxon": "Quercus",
-                    "rank": "genus",
-                    "trait": "taxon",
-                    "start": 0,
-                    "end": 7,
-                },
-                {
-                    "taxon": "Cytisus",
-                    "rank": "genus",
-                    "trait": "taxon",
-                    "start": 8,
-                    "end": 15,
-                },
-                {
-                    "taxon": "Agrostis",
-                    "rank": "genus",
-                    "trait": "taxon",
-                    "start": 16,
-                    "end": 24,
-                },
+                Taxon(
+                    taxon="Quercus",
+                    rank="genus",
+                    trait="taxon",
+                    start=0,
+                    end=7,
+                ),
+                Taxon(
+                    taxon="Cytisus",
+                    rank="genus",
+                    trait="taxon",
+                    start=8,
+                    end=15,
+                ),
+                Taxon(
+                    taxon="Agrostis",
+                    rank="genus",
+                    trait="taxon",
+                    start=16,
+                    end=24,
+                ),
             ],
         )
 
@@ -539,14 +541,14 @@ class TestTaxon(unittest.TestCase):
                 """Neptunia gracilis Muhl. ex Willd. var. varia (Nutt.) Brewer"""
             ),
             [
-                {
-                    "taxon": "Neptunia gracilis var. varia",
-                    "rank": "variety",
-                    "trait": "taxon",
-                    "start": 0,
-                    "end": 59,
-                    "authority": ["Muhl and Willd", "Nutt", "Brewer"],
-                }
+                Taxon(
+                    taxon="Neptunia gracilis var. varia",
+                    rank="variety",
+                    trait="taxon",
+                    start=0,
+                    end=59,
+                    authority=["Muhl and Willd", "Nutt", "Brewer"],
+                )
             ],
         )
 
@@ -554,14 +556,14 @@ class TestTaxon(unittest.TestCase):
         self.assertEqual(
             small_test("""Neptunia gracilis (L.) Pers."""),
             [
-                {
-                    "taxon": "Neptunia gracilis",
-                    "rank": "species",
-                    "trait": "taxon",
-                    "start": 0,
-                    "end": 28,
-                    "authority": ["Linnaeus", "Pers"],
-                }
+                Taxon(
+                    taxon="Neptunia gracilis",
+                    rank="species",
+                    trait="taxon",
+                    start=0,
+                    end=28,
+                    authority=["Linnaeus", "Pers"],
+                )
             ],
         )
 
@@ -569,14 +571,14 @@ class TestTaxon(unittest.TestCase):
         self.assertEqual(
             small_test("""Neptunia gracilis v.Varia by G. McPherson, confirmed Vink"""),
             [
-                {
-                    "taxon": "Neptunia gracilis var. varia",
-                    "rank": "variety",
-                    "trait": "taxon",
-                    "start": 0,
-                    "end": 42,
-                    "authority": "G. McPherson",
-                },
+                Taxon(
+                    taxon="Neptunia gracilis var. varia",
+                    rank="variety",
+                    trait="taxon",
+                    start=0,
+                    end=42,
+                    authority="G. McPherson",
+                ),
             ],
         )
 
@@ -586,14 +588,14 @@ class TestTaxon(unittest.TestCase):
                 "Neptunia gracilis (Torr. & A. Gray ex A. Gray) W.A. Weber & A. Love"
             ),
             [
-                {
-                    "taxon": "Neptunia gracilis",
-                    "rank": "species",
-                    "trait": "taxon",
-                    "start": 0,
-                    "end": 67,
-                    "authority": "Torr and A. Gray and A. Gray W. A. Weber and A. Love",
-                },
+                Taxon(
+                    taxon="Neptunia gracilis",
+                    rank="species",
+                    trait="taxon",
+                    start=0,
+                    end=67,
+                    authority="Torr and A. Gray and A. Gray W. A. Weber and A. Love",
+                ),
             ],
         )
 
@@ -606,18 +608,18 @@ class TestTaxon(unittest.TestCase):
                 """
             ),
             [
-                {
-                    "taxon": "Neptunia gracilis subsp. varia",
-                    "rank": "subspecies",
-                    "trait": "taxon",
-                    "start": 0,
-                    "end": 80,
-                    "authority": [
+                Taxon(
+                    taxon="Neptunia gracilis subsp. varia",
+                    rank="subspecies",
+                    trait="taxon",
+                    start=0,
+                    end=80,
+                    authority=[
                         "Heller Chuang and Heckard",
                         "Heller",
                         "Chuang",
                         "Heckard",
                     ],
-                }
+                )
             ],
         )
