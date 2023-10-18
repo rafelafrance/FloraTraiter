@@ -27,6 +27,7 @@ optional-dependencies.dev = [
     "pydocstyle",
     "pylint",
     "python-lsp-server[all]",
+    "ruff",
 ]
 
 [tool.setuptools]

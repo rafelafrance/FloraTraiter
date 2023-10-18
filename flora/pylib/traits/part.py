@@ -31,11 +31,17 @@ def build(nlp: Language):
     add.term_pipe(nlp, name="part_terms", path=ALL_CSVS)
     overwrite = """ part part_and part_leader part_missing """.split()
     add.trait_pipe(
-        nlp, name="part_patterns", compiler=part_patterns(), overwrite=overwrite
+        nlp,
+        name="part_patterns",
+        compiler=part_patterns(),
+        overwrite=overwrite,
     )
     overwrite = [*PART_LABELS, "subpart"]
     add.trait_pipe(
-        nlp, name="subpart_patterns", compiler=subpart_patterns(), overwrite=overwrite
+        nlp,
+        name="subpart_patterns",
+        compiler=subpart_patterns(),
+        overwrite=overwrite,
     )
     ACCUMULATOR.keep += ALL_LABELS
     add.cleanup_pipe(nlp, name="part_cleanup")
@@ -135,7 +141,7 @@ def subpart_patterns():
 
 @dataclass()
 class Part(Base):
-    part: str = None
+    part: str | list[str] = None
     type: str = None
 
     @classmethod
@@ -170,7 +176,9 @@ class Part(Base):
         all_parts = [REPLACE.get(p, p) for p in all_parts]
         part = all_parts[0] if len(all_parts) == 1 else all_parts
 
-        trait = cls.from_ent(ent, part=part, type=TYPE.get(part, part))
+        type_ = None if isinstance(part, list) else TYPE.get(part, part)
+
+        trait = cls.from_ent(ent, part=part, type=type_)
 
         ent[0]._.trait = trait
         return trait

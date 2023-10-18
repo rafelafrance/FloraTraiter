@@ -88,7 +88,7 @@ def reader(args, families):
                     link=treatment_link(flora_id, taxon_id),
                     path=path,
                     text=text if text else "",
-                )
+                ),
             )
 
     return rows
@@ -162,10 +162,10 @@ def get_families():
                 if times["count"]:
                     stat = path.stat()
                     times["created"] = datetime.fromtimestamp(stat.st_ctime).strftime(
-                        "%Y-%m-%d %H:%M"
+                        "%Y-%m-%d %H:%M",
                     )
                     times["modified"] = datetime.fromtimestamp(stat.st_mtime).strftime(
-                        "%Y-%m-%d %H:%M"
+                        "%Y-%m-%d %H:%M",
                     )
 
             key = (family["family"].lower(), int(family["flora_id"]))

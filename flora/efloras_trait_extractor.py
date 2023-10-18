@@ -4,6 +4,7 @@ import sys
 import textwrap
 from pathlib import Path
 
+from pylib.pipelines import full_pipeline
 from pylib.readers import efloras_reader as reader
 from pylib.writers.efloras_csv_writer import CsvWriter
 from pylib.writers.efloras_html_writer import HtmlWriter
@@ -15,7 +16,7 @@ def main(args):
     rows = reader.reader(args, families)
     rows = sorted(rows, key=lambda r: (r.flora_id, r.family, r.taxon))
 
-    nlp = pipeline.build()
+    nlp = full_pipeline.build()
     for row in rows:
         doc = nlp(row.text)
         row.traits = [e._.data for e in doc.ents]
@@ -77,7 +78,7 @@ def print_families(families):
             "Directory Created",
             "Directory Modified",
             "Treatments",
-        )
+        ),
     )
 
     for family in families.values():
@@ -90,18 +91,22 @@ def print_families(families):
                 family["created"],
                 family["modified"],
                 family["count"] if family["count"] else "",
-            )
+            ),
         )
 
 
 def parse_args():
     description = """Parse data from flora website."""
     arg_parser = argparse.ArgumentParser(
-        description=textwrap.dedent(description), fromfile_prefix_chars="@"
+        description=textwrap.dedent(description),
+        fromfile_prefix_chars="@",
     )
 
     arg_parser.add_argument(
-        "--family", "-f", action="append", help="""Which family to extract."""
+        "--family",
+        "-f",
+        action="append",
+        help="""Which family to extract.""",
     )
 
     arg_parser.add_argument(

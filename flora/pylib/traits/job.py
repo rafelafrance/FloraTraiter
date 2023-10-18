@@ -1,3 +1,5 @@
+from collections import namedtuple
+from dataclasses import asdict
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
@@ -24,6 +26,7 @@ JOB_CSV = Path(f_terms.__file__).parent / "job_terms.csv"
 ALL_CSVS = [PERSON_CSV, NAME_CSV, JOB_CSV]
 
 REPLACE = term_util.term_data(JOB_CSV, "replace")
+REPLACE = {"".join(k.split()): v for k, v in REPLACE.items()}
 
 AND = ["and", "&"]
 PUNCT = "[.:;,_-]"
@@ -35,6 +38,8 @@ UPPER4 = [s for s in t_const.UPPER_SHAPES if len(s) >= 4 and s[-1].isalpha()]
 
 NAME_RE = "".join(t_const.OPEN + t_const.CLOSE + t_const.QUOTE + list(".,'&"))
 NAME_RE = re.compile(rf"^[\sa-z{re.escape(NAME_RE)}-]+$")
+
+Separated = namedtuple("Separated", "idx ent")
 
 
 def build(nlp: Language, overwrite: Optional[list[str]] = None):
@@ -49,7 +54,15 @@ def build(nlp: Language, overwrite: Optional[list[str]] = None):
         name="name_patterns",
         compiler=name_patterns(),
         overwrite=overwrite + "name_prefix name_suffix no_label".split(),
-        keep=[*ACCUMULATOR.keep, "job_label", "no_label", "not_name"],
+        keep=[*ACCUMULATOR.keep, "job_label", "no_label", "not_name", "not_id_no"],
+    )
+
+    add.trait_pipe(
+        nlp,
+        name="double_name_patterns",
+        compiler=double_name_patterns(),
+        overwrite=overwrite + "name name_prefix name_suffix no_label".split(),
+        keep=[*ACCUMULATOR.keep, "job_label", "no_label", "not_name", "not_id_no"],
     )
 
     job_overwrite = overwrite + """name job_label no_label id_no""".split()
@@ -58,39 +71,72 @@ def build(nlp: Language, overwrite: Optional[list[str]] = None):
         name="job_patterns",
         compiler=job_patterns(),
         overwrite=job_overwrite,
+        keep=[*ACCUMULATOR.keep, "not_name", "not_id_no"],
+    )
+
+    add.trait_pipe(
+        nlp,
+        name="other_patterns",
+        compiler=other_patterns(),
+        overwrite=job_overwrite,
+        keep=[*ACCUMULATOR.keep, "not_name", "not_id_no"],
     )
 
     add.custom_pipe(nlp, registered="separated_collector")
 
     add.trait_pipe(
         nlp,
-        name="other_collector_patterns",
-        compiler=other_collector_patterns(),
+        name="extend_names",
+        compiler=extend_name_patterns(),
         overwrite=["job"],
-        keep=[*ACCUMULATOR.keep, "not_name"],
+        keep=[*ACCUMULATOR.keep, "not_name", "not_id_no"],
     )
 
     add.custom_pipe(nlp, registered="name_only")
+
+    add.trait_pipe(
+        nlp,
+        name="job_rename",
+        compiler=job_rename_patterns(),
+        overwrite=["other_collector", "extend_names"],
+    )
 
     add.cleanup_pipe(nlp, name="person_cleanup")
 
 
 def not_name_patterns():
     decoder = {
-        # "name": {"POS": {"IN": ["PROPN", "NOUN"]}},
-        "name": {"SHAPE": {"IN": t_const.NAME_AND_UPPER}},
-        "nope": {"ENT_TYPE": "not_name"},
+        "acc_label": {"ENT_TYPE": "acc_label"},
+        "id1": {"LOWER": {"REGEX": r"^(\w*\d+\w*)$"}},
+        "id2": {"LOWER": {"REGEX": r"^(\w*\d+\w*|[A-Za-z])$"}},
+        "no_space": {"SPACY": False},
+        "bad_name": {"ENT_TYPE": "not_name"},
+        "bad_prefix": {"ENT_TYPE": "not_name_prefix"},
+        "bad_suffix": {"ENT_TYPE": "not_name_suffix"},
+        "shape": {"SHAPE": {"IN": t_const.NAME_AND_UPPER}},
     }
 
     return [
         Compiler(
             label="not_name",
-            on_match=reject_match.REJECT_MATCH,
+            on_match="not_name_match",
             decoder=decoder,
             patterns=[
-                "      name+ nope+",
-                "nope+ name+",
-                "nope+ name+ nope+",
+                " bad_name+ ",
+                " bad_prefix+ ",
+                " bad_suffix+ ",
+                " shape+ bad_suffix+ ",
+                " bad_prefix+ shape+ ",
+            ],
+        ),
+        Compiler(
+            label="not_id_no",
+            on_match="not_id_no_match",
+            decoder=decoder,
+            patterns=[
+                "acc_label+ id1+ no_space+ id1",
+                "acc_label+ id1+ no_space+ id2",
+                "acc_label+ id1",
             ],
         ),
     ]
@@ -107,12 +153,13 @@ def name_patterns():
         "A": {"TEXT": {"REGEX": r"^[A-Z][A-Z]?[._,]?$"}},
         "_": {"TEXT": {"REGEX": r"^[._,]+$"}},
         "ambig": {"ENT_TYPE": {"IN": ["us_county", "color"]}},
+        "and": {"LOWER": {"IN": AND}},
         "dr": {"ENT_TYPE": "name_prefix"},
         "id1": {"LOWER": {"REGEX": r"^(\w*\d+\w*)$"}},
         "id2": {"LOWER": {"REGEX": r"^(\w*\d+\w*|[A-Za-z])$"}},
         "jr": {"ENT_TYPE": "name_suffix"},
-        "name": {"SHAPE": {"IN": t_const.NAME_SHAPES}},
-        "name4": {"SHAPE": {"IN": NAME4}},
+        "shape": {"SHAPE": {"IN": t_const.NAME_SHAPES}},
+        "shape4": {"SHAPE": {"IN": NAME4}},
         "no_label": {"ENT_TYPE": "no_label"},
         "no_space": {"SPACY": False},
         "pre": {"ENT_TYPE": "last_prefix"},
@@ -126,36 +173,36 @@ def name_patterns():
             on_match="name_match",
             decoder=decoder,
             patterns=[
-                "       name  -? name? -? pre? pre?   name4",
-                "       name  -? name? -? pre? pre?   name4   _? jr+",
-                "       name  -? name? -?   ambig",
-                "       name  -? name? -?   ambig   _? jr+",
-                "       ambig -? name? -? pre? pre?  name4 ",
-                "       ambig -? name? -? pre? pre?  name4   _? jr+",
-                "       A A? A?      pre? pre? name4",
-                "       A A? A?      pre? pre? name4   _? jr+",
-                "       name A A? A? pre? pre? name4",
-                "       name A A? A? pre? pre? name4   _? jr+",
-                "       name ..        name4",
-                "       name ..        name4   _? jr+",
-                "       name ( name )  name4",
-                "       name ( name )  name4   _? jr+",
-                "       name ( name )  name4",
-                "dr+ _? name  -? name? -?  name4",
-                "dr+ _? name  -? name? -?  name4   _? jr+",
-                "dr+ _? name  -? name? -?  ambig",
-                "dr+ _? name  -? name? -?  ambig   _? jr+",
-                "dr+ _? ambig -? name? -?  name4",
-                "dr+ _? ambig -? name? -?  name4   _? jr+",
-                "dr+ _? A A? A?        name4",
-                "dr+ _? A A? A?        name4   _? jr+",
-                "dr+ _? name A A? A?   name4",
-                "dr+ _? name A A? A?   name4   _? jr+",
-                "dr+ _? name ..        name4",
-                "dr+ _? name ..        name4   _? jr+",
-                "dr+ _? name ( name )  name4",
-                "dr+ _? name ( name )  name4   _? jr+",
-                "dr+ _? name ( name )  name4",
+                "       shape  -? shape? -? pre? pre?   shape4",
+                "       shape  -? shape? -? pre? pre?   shape4   _? jr+",
+                "       shape  -? shape? -?   ambig",
+                "       shape  -? shape? -?   ambig   _? jr+",
+                "       ambig  -? shape? -? pre? pre?  shape4 ",
+                "       ambig  -? shape? -? pre? pre?  shape4   _? jr+",
+                "       A A? A?             pre? pre? shape4",
+                "       A A? A?             pre? pre? shape4   _? jr+",
+                "       shape A A? A?       pre? pre? shape4",
+                "       shape A A? A?       pre? pre? shape4   _? jr+",
+                "       shape ..             shape4",
+                "       shape ..             shape4   _? jr+",
+                "       shape ( shape )      shape4",
+                "       shape ( shape )      shape4   _? jr+",
+                "       shape ( shape )      shape4",
+                "dr+ _? shape  -? shape? -?  shape4",
+                "dr+ _? shape  -? shape? -?  shape4   _? jr+",
+                "dr+ _? shape  -? shape? -?  ambig",
+                "dr+ _? shape  -? shape? -?  ambig   _? jr+",
+                "dr+ _? ambig -? shape?  -?  shape4",
+                "dr+ _? ambig -? shape?  -?  shape4   _? jr+",
+                "dr+ _? A A? A?              shape4",
+                "dr+ _? A A? A?              shape4   _? jr+",
+                "dr+ _? shape A A? A?        shape4",
+                "dr+ _? shape A A? A?        shape4   _? jr+",
+                "dr+ _? shape ..             shape4",
+                "dr+ _? shape ..             shape4   _? jr+",
+                "dr+ _? shape ( shape )      shape4",
+                "dr+ _? shape ( shape )      shape4   _? jr+",
+                "dr+ _? shape ( shape )      shape4",
                 "       upper  -? upper? -? pre? pre?   upper4",
                 "       upper  -? upper? -? pre? pre?   upper4   _? jr+",
                 "       upper  -? upper? -?   ambig",
@@ -169,10 +216,6 @@ def name_patterns():
                 "       upper ( upper )  upper4",
                 "       upper ( upper )  upper4   _? jr+",
                 "       upper ( upper )  upper4",
-                # " name_shape and name+ ",
-                # " A A? A?    and name+ ",
-                # "pre? pre? name4 , A? A? A",
-                # "pre? pre? name4 ,? name",
             ],
         ),
         Compiler(
@@ -189,28 +232,51 @@ def name_patterns():
     ]
 
 
-def job_patterns():
+def double_name_patterns():
     decoder = {
-        ":": {"LOWER": {"REGEX": rf"^(by|{PUNCT}+)$"}},
-        ",": {"LOWER": {"REGEX": rf"^({PUNCT}+)$"}},
-        "and": {"POS": {"IN": CONJ}},
-        "bad": {"ENT_TYPE": {"IN": ["month"]}},
-        "by": {"LOWER": {"IN": ["by"]}},
-        "job_label": {"ENT_TYPE": "job_label"},
-        "id_no": {"ENT_TYPE": {"IN": ["id_no", "labeled_id_no"]}},
-        "maybe": {"POS": "PROPN"},
+        "A": {"TEXT": {"REGEX": r"^[A-Z][A-Z]?[._,]?$"}},
+        "ambig": {"ENT_TYPE": {"IN": ["us_county", "color"]}},
+        "and": {"LOWER": {"IN": AND}},
+        "shape": {"SHAPE": {"IN": t_const.NAME_SHAPES}},
+        "shape4": {"SHAPE": {"IN": NAME4}},
         "name": {"ENT_TYPE": "name"},
-        "nope": {"ENT_TYPE": "not_name"},
-        "sep": {"LOWER": {"IN": SEP}},
-        "sp": {"IS_SPACE": True},
+        "no_space": {"SPACY": False},
+        "upper": {"SHAPE": {"IN": t_const.UPPER_SHAPES}},
+        "upper4": {"SHAPE": {"IN": UPPER4}},
     }
 
+    return [
+        Compiler(
+            label="name",
+            on_match="double_name_match",
+            decoder=decoder,
+            patterns=[
+                " shape and name+",
+            ],
+        ),
+    ]
+
+
+def job_patterns():
     return [
         Compiler(
             label="job",
             on_match="job_match",
             keep="job",
-            decoder=decoder,
+            decoder={
+                ":": {"LOWER": {"REGEX": rf"^(by|{PUNCT}+)$"}},
+                ",": {"LOWER": {"REGEX": rf"^({PUNCT}+)$"}},
+                "and": {"POS": {"IN": CONJ}},
+                "bad": {"ENT_TYPE": {"IN": ["month"]}},
+                "by": {"LOWER": {"IN": ["by"]}},
+                "job_label": {"ENT_TYPE": "job_label"},
+                "id_no": {"ENT_TYPE": {"IN": ["id_no", "labeled_id_no"]}},
+                "maybe": {"POS": "PROPN"},
+                "name": {"ENT_TYPE": "name"},
+                "nope": {"ENT_TYPE": "not_name"},
+                "sep": {"LOWER": {"IN": SEP}},
+                "sp": {"IS_SPACE": True},
+            },
             patterns=[
                 "job_label+ :* sp? name+",
                 "job_label+ :* sp? name+ sep sp? name+",
@@ -227,16 +293,35 @@ def job_patterns():
                 "job_label+ :* sp? name+ sep sp? name+ sep sp? name+ sep sp? name+",
                 "job_label+ :* maybe? name+",
                 "job_label+ :* maybe? name+ and maybe? name+",
-                "job_label+ name+ ",
-                "job_label+ name+ sep* sp? name+ ",
-                "job_label+ name+ sep* sp? name+ sep* sp? name+ ",
-                "job_label+ name+ sep* sp? name+ sep* sp? name+ sep* sp? name+ ",
+            ],
+        ),
+    ]
+
+
+def other_patterns():
+    decoder = {
+        "other_label": {"ENT_TYPE": "other_label"},
+        "name": {"ENT_TYPE": "name"},
+        "sep": {"LOWER": {"IN": SEP}},
+        "sp": {"IS_SPACE": True},
+    }
+
+    return [
+        Compiler(
+            label="other_collector",
+            on_match="other_match",
+            decoder=decoder,
+            patterns=[
+                "other_label+ sp? name+ ",
+                "other_label+ sp? name+ sep* sp? name+ ",
+                "other_label+ sp? name+ sep* sp? name+ sep* sp? name+ ",
+                "other_label+ sp? name+ sep* sp? name+ sep* sp? name+ sep* sp? name+ ",
                 (
-                    "job_label+ name+ sep* sp? name+ sep* sp? name+ sep* sp? "
+                    "other_label+ sp? name+ sep* sp? name+ sep* sp? name+ sep* sp? "
                     "name+ sep* sp? name+"
                 ),
                 (
-                    "job_label+ name+ sep* sp? name+ sep* sp? name+ sep* sp? "
+                    "other_label+ sp? name+ sep* sp? name+ sep* sp? name+ sep* sp? "
                     "name+ sep* sp? name+ sep* sp? name+"
                 ),
             ],
@@ -244,30 +329,42 @@ def job_patterns():
     ]
 
 
-def other_collector_patterns():
+def extend_name_patterns():
     decoder = {
         "and": {"POS": {"IN": CONJ}},
         "maybe": {"POS": "PROPN"},
         "name": {"ENT_TYPE": "name"},
-        "other_col": {"ENT_TYPE": "other_collector"},
+        "other_collector": {"ENT_TYPE": "other_collector"},
         "sep": {"LOWER": {"IN": SEP}},
     }
 
     return [
         Compiler(
             label="extend_names",
-            id="job",
             on_match="extend_names",
-            keep="other_collector",
             decoder=decoder,
             patterns=[
-                " other_col+ sep* name+ ",
-                " other_col+ sep* maybe ",
-                " other_col+ sep* name  and name+ ",
-                " other_col+ sep* maybe and maybe maybe ",
+                " other_collector+ sep* name+ ",
+                " other_collector+ sep* maybe ",
+                " other_collector+ sep* name  and name+ ",
+                " other_collector+ sep* maybe and maybe maybe ",
             ],
         ),
     ]
+
+
+def job_rename_patterns():
+    return Compiler(
+        label="job",
+        keep="job",
+        on_match="job_rename_match",
+        decoder={
+            "rename": {"ENT_TYPE": {"IN": ["other_collector", "extend_names"]}},
+        },
+        patterns=[
+            "rename+",
+        ],
+    )
 
 
 @dataclass()
@@ -284,20 +381,42 @@ class Name(Base):
             raise reject_match.RejectMatch
 
         for token in ent:
-            token._.flag = "name"
+            token._.flag = "skip"
 
             # If there's a digit in the name reject it
             if re.search(r"\d", token.text):
                 raise reject_match.RejectMatch
 
             # If it is all lower case reject it
-            if token.text.islower() and token.ent_type_ != "last_prefix":
+            if (
+                token.text.islower()
+                and token.ent_type_ != "last_prefix"
+                and token.lower_ not in AND
+            ):
                 raise reject_match.RejectMatch
 
         trait = cls.from_ent(ent, name=name)
         ent[0]._.trait = trait
-        ent[0]._.flag = "name_data"
+        ent[0]._.flag = "name"
         return trait
+
+    @classmethod
+    def double_name_match(cls, ent):
+        if ent[0].ent_type_ == "name":
+            raise reject_match.RejectMatch
+
+        trait = cls.from_ent(ent, name=ent.text)
+
+        for token in ent:
+            token._.flag = "skip"
+
+        ent[0]._.trait = trait
+        ent[0]._.flag = "name"
+        return trait
+
+    @classmethod
+    def not_name_match(cls, ent):
+        return cls.from_ent(ent)
 
 
 @dataclass()
@@ -314,6 +433,10 @@ class IdNo(Base):
         ent[0]._.flag = "id_no"
         return trait
 
+    @classmethod
+    def not_id_no_match(cls, ent):
+        return cls.from_ent(ent)
+
 
 @dataclass()
 class Job(Base):
@@ -328,13 +451,13 @@ class Job(Base):
         id_no = None
 
         for token in ent:
-            if token._.flag == "name" or token.ent_type_ == "no_label":
+            if token._.flag == "skip" or token.ent_type_ == "no_label":
                 continue
 
             elif token.ent_type_ == "job_label":
                 job.append(token.lower_)
 
-            elif token._.flag == "name_data":
+            elif token._.flag == "name":
                 people.append(token._.trait.name)
 
             elif token._.flag == "id_no":
@@ -342,12 +465,12 @@ class Job(Base):
 
             token._.flag = "skip"
 
-        if not people or not job:
+        if not people:
             raise reject_match.RejectMatch
 
-        job = " ".join(job)
-        job = job.replace(" :", ":")
+        job = "".join(job)
         job = REPLACE.get(job, job)
+        job = job if job else "collector"
 
         name = people if len(people) > 1 else people[0]
 
@@ -359,22 +482,71 @@ class Job(Base):
         return trait
 
     @classmethod
-    def extend_names(cls, ent):
+    def other_match(cls, ent):
         people = []
-        person = []
+
+        for token in ent:
+            if token._.flag == "name":
+                people.append(token._.trait.name)
+
+            token._.flag = "skip"
+
+        if not people:
+            raise reject_match.RejectMatch
+
+        name = people if len(people) > 1 else people[0]
+
+        trait = cls.from_ent(ent, name=name, job="other_collector")
+
+        ent[0]._.flag = "other_collector"
+        ent[0]._.trait = trait
+
+        return trait
+
+    @classmethod
+    def extend_names(cls, ent):
+        data = {}
+        people = []
 
         for token in ent:
             if token._.flag == "other_collector":
-                people += token._.trait.name
+                data = asdict(token._.trait)
+                names = token._.trait.name
+                people += names if isinstance(names, list) else [names]
 
             elif token._.flag == "skip" or token.text in PUNCT:
                 continue
 
             else:
-                person.append(token.text)
+                people.append(token.text)
 
-        if person:
-            ent._.trait.name = [*people, " ".join(person)]
+        data["name"] = people
+        data["job"] = "other_collector"
+
+        trait = cls.from_ent(ent, **data)
+
+        ent[0]._.flag = "other_collector"
+        ent[0]._.trait = trait
+
+        return trait
+
+    @classmethod
+    def job_rename_match(cls, ent):
+        data = {}
+
+        for token in ent:
+            if token._.flag == "other_collector":
+                data = asdict(token._.trait)
+
+        ent._.relabel = "job"
+        name = data["name"]
+        data["name"] = name if len(name) > 1 else name[0]
+        return cls.from_ent(ent, **data)
+
+
+@registry.misc("not_name_match")
+def not_name_match(ent):
+    return Name.not_name_match(ent)
 
 
 @registry.misc("name_match")
@@ -382,9 +554,19 @@ def name_match(ent):
     return Name.name_match(ent)
 
 
+@registry.misc("double_name_match")
+def double_name_match(ent):
+    return Name.double_name_match(ent)
+
+
 @registry.misc("id_no_match")
 def id_no_match(ent):
     return IdNo.id_no_match(ent)
+
+
+@registry.misc("not_id_no_match")
+def not_id_no_match(ent):
+    return IdNo.not_id_no_match(ent)
 
 
 @registry.misc("job_match")
@@ -392,48 +574,46 @@ def job_match(ent):
     return Job.job_match(ent)
 
 
+@registry.misc("other_match")
+def other_match(ent):
+    return Job.other_match(ent)
+
+
 @registry.misc("extend_names")
 def extend_names(ent):
     return Job.extend_names(ent)
+
+
+@registry.misc("job_rename_match")
+def job_rename_match(ent):
+    return Job.job_rename_match(ent)
 
 
 @Language.component("separated_collector")
 def separated_collector(doc):
     """Look for collectors separated from their ID numbers."""
     name = None
-    collector = None
-    dist = 0
+    id_no = None
 
-    for ent in doc.ents:
-        if dist:
-            dist += 1
-            if dist > 5:
-                return doc
+    for i, ent in enumerate(doc.ents):
+        # Last name before an ID number
+        if ent.label_ == "name" and not id_no:
+            name = Separated(i, ent)
 
-        if hasattr(ent._.trait, "job") and ent.trait.job == "collector":
-            dist = 1
-            collector = ent
+        # First ID number after a name
+        elif ent.label_ == "id_no" and not id_no and name:
+            id_no = Separated(i, ent)
 
-        elif ent.label_ == "person" and not ent._.trait.job:
-            dist = 1
-            name = ent
+    if name and id_no and id_no.idx - name.idx <= 5:
+        t_trait.relabel_entity(name.ent, "job", relabel_tokens=True)
+        t_trait.relabel_entity(id_no.ent, "job", relabel_tokens=True)
 
-        elif collector and ent.label_ == "labeled_id_no":
-            collector_number(ent)
+        name_t = name.ent._.trait
+        id_no_t = id_no.ent._.trait
 
-            collector._.trait.id_no = ent._.trait.id_no
-            return doc
-
-        elif name and ent.label_ == "labeled_id_no":
-            collector_number(ent)
-
-            t_trait.relabel_entity(name, "person")
-            ent._.trait.name = name._.trait.name
-            name._.trait.job = "collector"
-            name._.trait.id_no = ent._.trait.id_no
-            for token in name:
-                token.ent_type_ = "person"
-            return doc
+        data = {"job": "collector", "name": name_t.name, "id_no": id_no_t.id_no}
+        name.ent._.trait = Job.from_ent(name.ent, **data)
+        id_no.ent._.trait = Job.from_ent(id_no.ent, **data)
 
     return doc
 
@@ -455,15 +635,7 @@ def name_only(doc):
 
 
 def name_to_collector(ent):
-    if not ent._.data.get("name"):
+    if not hasattr(ent._.trait, "name"):
         return
-    t_trait.relabel_entity(ent, "person")
-    ent._.trait["job"] = "collector"
-    for token in ent:
-        token.ent_type_ = "person"
-
-
-def collector_number(ent):
-    t_trait.relabel_entity(ent, "person")
-    for token in ent:
-        token.ent_type_ = "person"
+    t_trait.relabel_entity(ent, "job", relabel_tokens=True)
+    ent._.trait = Job.from_ent(ent, job="collector", name=ent._.trait.name)

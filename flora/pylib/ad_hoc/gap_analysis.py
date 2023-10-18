@@ -26,11 +26,15 @@ def parse_args():
     """Process command-line arguments."""
     description = """Create a GAP analysis of traits vs taxa."""
     arg_parser = argparse.ArgumentParser(
-        description=textwrap.dedent(description), fromfile_prefix_chars="@"
+        description=textwrap.dedent(description),
+        fromfile_prefix_chars="@",
     )
 
     arg_parser.add_argument(
-        "--sqlite3", "-S", required=True, help="""Use this sqlite3 database as input."""
+        "--sqlite3",
+        "-S",
+        required=True,
+        help="""Use this sqlite3 database as input.""",
     )
 
     arg_parser.add_argument(

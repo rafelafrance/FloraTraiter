@@ -1,5 +1,4 @@
 import re
-from dataclasses import asdict
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -61,12 +60,14 @@ def build(nlp: Language):
         name="range_patterns",
         compiler=range_patterns(),
     )
+    # add.debug_tokens(nlp)  # #######################################################
     add.trait_pipe(
         nlp,
         name="numeric_patterns",
         compiler=count_patterns() + size_patterns(),
         overwrite=[*ALL_PARTS, "sex"],
     )
+    # add.debug_tokens(nlp)  # #######################################################
     comp.ACCUMULATOR.delete(NOT_NUMERIC)
     add.cleanup_pipe(nlp, name="numeric_cleanup")
 
@@ -425,12 +426,12 @@ class Count(Base):
 
         for token in ent:
             if token._.flag == "range_data":
-                fld = {k: v for k, v in asdict(token._.trait).items() if v is not None}
-                for key, value in fld.items():
-                    value = t_util.to_positive_int(value)
-                    if value is None:
-                        raise reject_match.RejectMatch
-                    kwargs[key] = value
+                for key in ("min", "low", "high", "max"):
+                    if value := getattr(token._.trait, key, None):
+                        value = t_util.to_positive_int(value)
+                        if value is None:
+                            raise reject_match.RejectMatch
+                        kwargs[key] = value
 
             elif token._.term == "number_word":
                 value = REPLACE.get(token.lower_, token.lower_)
@@ -464,7 +465,7 @@ class Count(Base):
             if key:
                 kwargs[key] = value
 
-        return cls.from_ent(**kwargs)
+        return cls.from_ent(ent, **kwargs)
 
     @classmethod
     def count_word_match(cls, ent):

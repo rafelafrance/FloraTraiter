@@ -1,6 +1,3 @@
-import json
-from pathlib import Path
-
 from spacy.language import Language
 from spacy.tokens import Doc
 from traiter.pylib.pipes import add
@@ -41,7 +38,7 @@ class DeleteMissing:
                 continue
 
             if ent.label_ in self.check:
-                data = ent._.data
+                data = ent._.trait.as_dict()
                 is_missing = set(data.keys()) & self.missing_set
                 if not is_missing:
                     self.clear_tokens(ent)
@@ -52,27 +49,9 @@ class DeleteMissing:
         doc.ents = entities
         return doc
 
-    def to_disk(self, path, exclude=tuple()):  # noqa
-        path = Path(path)
-        if not path.exists():
-            path.mkdir()
-        data_path = path / "data.json"
-        skip = ("nlp", "name", "missing_set")
-        fields = {k: v for k, v in self.__dict__.items() if k not in skip}
-        with data_path.open("w") as data_file:
-            data_file.write(json.dumps(fields))
-
-    def from_disk(self, path, exclude=tuple()):  # noqa
-        data_path = Path(path) / "data.json"
-        with data_path.open("r", encoding="utf8") as data_file:
-            data = json.load(data_file)
-            for key in data.keys():
-                self.__dict__[key] = data[key]
-        self.missing_set = set(self.if_missing)
-
     @staticmethod
     def clear_tokens(ent):
         for token in ent:
-            token._.data = {}
+            token._.trait = None
             token._.flag = ""
             token._.term = ""

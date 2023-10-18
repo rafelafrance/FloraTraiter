@@ -40,7 +40,7 @@ class HtmlWriter(BaseHtmlWriter):
                     taxon_id=efloras_row.taxon_id,
                     link=efloras_row.link,
                     path=efloras_row.path,
-                )
+                ),
             )
 
         self.write_template(in_file_name)

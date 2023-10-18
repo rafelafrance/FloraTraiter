@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-""" This builds taxon terms from downloaded data.
+"""This builds taxon terms from downloaded data.
 
 1. [ITIS sqlite database](https://www.itis.gov/downloads/index.html)
 2. [The WFO Plant List](https://wfoplantlist.org/plant-list/classifications)
@@ -110,7 +110,7 @@ class Taxa:
         rows = tu.read_terms(all_csvs)
 
         problem_taxa = set(
-            """end erica flora floral harms lake major may minor phoenix side""".split()
+            """end erica flora floral harms lake major may minor phoenix side""".split(),
         )
         problem_taxa |= {t["pattern"].lower() for t in rows}
 
@@ -207,7 +207,7 @@ def build_records(taxa):
                     label="monomial" if word_count == 1 else "binomial",
                     pattern=taxon_.lower(),
                     ranks=" ".join(ranks),
-                )
+                ),
             )
         else:
             logging.error(f"Parse error: {taxon_}")
@@ -297,7 +297,8 @@ def read_itis_taxa(itis_db, taxa):
 def parse_args():
     description = """Build a database taxon patterns."""
     arg_parser = argparse.ArgumentParser(
-        description=textwrap.dedent(description), fromfile_prefix_chars="@"
+        description=textwrap.dedent(description),
+        fromfile_prefix_chars="@",
     )
 
     arg_parser.add_argument(

@@ -19,7 +19,10 @@ REPLACE = term_util.term_data(SHAPE_CSV, "replace")
 def build(nlp: Language):
     add.term_pipe(nlp, name="shape_terms", path=SHAPE_CSV)
     add.trait_pipe(
-        nlp, name="shape_patterns", compiler=shape_patterns(), overwrite=["count"]
+        nlp,
+        name="shape_patterns",
+        compiler=shape_patterns(),
+        overwrite=["count"],
     )
     add.cleanup_pipe(nlp, name="shape_cleanup")
 

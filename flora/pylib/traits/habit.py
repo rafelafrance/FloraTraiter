@@ -39,7 +39,7 @@ def habit_patterns():
                 "habit",
                 "shape -? tree",
             ],
-        )
+        ),
     ]
 
 

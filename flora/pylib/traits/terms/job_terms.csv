@@ -69,9 +69,9 @@ job_label,verified:,verifier
 job_label,volunteer,volunteer
 job_label,volunteers,volunteer
 job_label,writer,writer
-job_label,w/,other_collector
-job_label,with,other_collector
-job_label,with:,other_collector
+other_label,w/,other_collector
+other_label,with,other_collector
+other_label,with:,other_collector
 no_label,#
 no_label,collector number
 no_label,collector number:
@@ -82,5 +82,8 @@ no_label,num.
 no_label,number
 no_label,number:
 acc_label,accession number
+acc_label,accession number:
 acc_label,accession no
 acc_label,accession no.
+acc_label,accession no:
+acc_label,accession no.:

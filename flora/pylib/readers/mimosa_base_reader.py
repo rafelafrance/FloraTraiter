@@ -46,7 +46,7 @@ class BaseReader:
         self.taxon_traits = defaultdict(list)
 
     def read(self):
-        raise NotImplementedError()
+        raise NotImplementedError
 
     @staticmethod
     def read_lines(in_text, limit):
