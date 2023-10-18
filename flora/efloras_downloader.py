@@ -15,7 +15,6 @@ import pandas as pd
 import regex
 from bs4 import BeautifulSoup
 from lxml import html
-
 from pylib import const
 from pylib.readers import efloras_reader as reader
 
@@ -91,7 +90,7 @@ def update_families():
                     "link": f"{const.EFLORAS_SITE}/{href}",
                     "family": link.text,
                     "flora_name": floras[flora_id],
-                }
+                },
             )
 
     df = pd.DataFrame(families)
@@ -285,7 +284,7 @@ def search_families(args, families):
             "Directory Created",
             "Directory Modified",
             "File Count",
-        )
+        ),
     )
 
     for family in families.values():
@@ -299,7 +298,7 @@ def search_families(args, families):
                     family["created"],
                     family["modified"],
                     family["count"] if family["count"] else "",
-                )
+                ),
             )
 
 
@@ -334,7 +333,8 @@ def parse_args(flora_ids):
     """Process command-line arguments."""
     description = """Download data from the eFloras website."""
     arg_parser = argparse.ArgumentParser(
-        description=textwrap.dedent(description), fromfile_prefix_chars="@"
+        description=textwrap.dedent(description),
+        fromfile_prefix_chars="@",
     )
 
     arg_parser.add_argument(
@@ -345,7 +345,10 @@ def parse_args(flora_ids):
     )
 
     arg_parser.add_argument(
-        "--family", "-f", action="append", help="""Which family to download."""
+        "--family",
+        "-f",
+        action="append",
+        help="""Which family to download.""",
     )
 
     arg_parser.add_argument(

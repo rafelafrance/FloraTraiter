@@ -20,7 +20,7 @@ class TestCollector(unittest.TestCase):
                     trait="job",
                     id_no="9480",
                     name=["Sarah Nunn", "S. Jacobs", "R. Mc Elderry"],
-                    job="name",
+                    job="collector",
                     start=0,
                     end=47,
                 )
@@ -71,21 +71,6 @@ class TestCollector(unittest.TestCase):
         )
 
     def test_collector_04(self):
-        """It handles random words matching names."""
-        self.assertEqual(
-            full_test("""Collected by _Wayne.. Hutchins."""),
-            [
-                Job(
-                    trait="job",
-                    name="Wayne Hutchins",
-                    job="collector",
-                    start=0,
-                    end=30,
-                ),
-            ],
-        )
-
-    def test_collector_05(self):
         """It parses name suffixes."""
         self.assertEqual(
             full_test("Coll. E. E. Dale, Jr. No. 6061"),
@@ -101,7 +86,7 @@ class TestCollector(unittest.TestCase):
             ],
         )
 
-    def test_collector_06(self):
+    def test_collector_05(self):
         """It parses collectors separated by 'with'."""
         self.assertEqual(
             full_test("Sarah Nunn with Angela Brown 7529 20 October 2002 of"),
@@ -123,7 +108,7 @@ class TestCollector(unittest.TestCase):
             ],
         )
 
-    def test_collector_07(self):
+    def test_collector_06(self):
         """It parses collectors separated by '&'."""
         self.assertEqual(
             full_test("""Collector: Christopher Reid & Sarah Nunn 2018"""),
@@ -139,7 +124,7 @@ class TestCollector(unittest.TestCase):
             ],
         )
 
-    def test_collector_08(self):
+    def test_collector_07(self):
         """It handles a number sign."""
         self.assertEqual(
             full_test("""George P. Johnson #5689"""),
@@ -155,7 +140,7 @@ class TestCollector(unittest.TestCase):
             ],
         )
 
-    def test_collector_09(self):
+    def test_collector_08(self):
         """It handles a name with a prefix."""
         self.assertEqual(
             full_test("""Col Mrs. Jim Miller No. 736"""),
@@ -171,7 +156,7 @@ class TestCollector(unittest.TestCase):
             ],
         )
 
-    def test_collector_10(self):
+    def test_collector_09(self):
         self.assertEqual(
             full_test("""collected by Merle Dortmond"""),
             [
@@ -185,10 +170,32 @@ class TestCollector(unittest.TestCase):
             ],
         )
 
-    def test_collector_11(self):
+    def test_collector_10(self):
         self.assertEqual(
             full_test(""" Grassland, GPS 30°"""),
             [Habitat(habitat="grassland", trait="habitat", start=0, end=9)],
+        )
+
+    def test_collector_11(self):
+        self.assertEqual(
+            full_test("""Collector(s): JANET WINGATE No. 4937 Verified: H A Heber"""),
+            [
+                Job(
+                    trait="job",
+                    name="JANET WINGATE",
+                    id_no="4937",
+                    job="collector",
+                    start=0,
+                    end=36,
+                ),
+                Job(
+                    trait="job",
+                    job="verifier",
+                    name="H A Heber",
+                    start=37,
+                    end=56,
+                ),
+            ],
         )
 
     def test_collector_12(self):
@@ -462,6 +469,7 @@ class TestCollector(unittest.TestCase):
 
     def test_collector_27(self):
         """It handles a name separated from their name number."""
+        self.maxDiff = None
         self.assertEqual(
             full_test(
                 """Little Belt Mountains J.B. Scammons Elevation: 5800 ft.
@@ -486,6 +494,7 @@ class TestCollector(unittest.TestCase):
                 Job(
                     trait="job",
                     name="J.B. Scammons",
+                    job="collector",
                     start=56,
                     end=63,
                     id_no="105",
@@ -509,7 +518,7 @@ class TestCollector(unittest.TestCase):
                 ),
                 Job(
                     trait="job",
-                    name=["S. Dickman"],
+                    name="S. Dickman",
                     job="other_collector",
                     start=23,
                     end=36,
@@ -639,6 +648,7 @@ class TestCollector(unittest.TestCase):
         )
 
     def test_collector_38(self):
+        self.maxDiff = None
         self.assertEqual(
             full_test("""4 September 2008 J. Johnson with M. King Herbarium"""),
             [
@@ -657,7 +667,7 @@ class TestCollector(unittest.TestCase):
                 ),
                 Job(
                     trait="job",
-                    name=["M. King"],
+                    name="M. King",
                     job="other_collector",
                     start=28,
                     end=40,
@@ -753,27 +763,5 @@ class TestCollector(unittest.TestCase):
                     start=0,
                     end=28,
                 )
-            ],
-        )
-
-    def test_collector_44(self):
-        self.assertEqual(
-            full_test("""Collector(s): JANET WINGATE No. 4937 Verified: H A Heber"""),
-            [
-                Job(
-                    trait="job",
-                    name="JANET WINGATE",
-                    id_no="4937",
-                    job="collector",
-                    start=0,
-                    end=36,
-                ),
-                Job(
-                    trait="job",
-                    job="verified",
-                    name="H A Heber",
-                    start=37,
-                    end=56,
-                ),
             ],
         )

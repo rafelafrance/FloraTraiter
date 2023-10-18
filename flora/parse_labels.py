@@ -38,7 +38,7 @@ def parse_args() -> argparse.Namespace:
             A file stem is a file name without the directories and
             without the file suffix. For example:
                 /my_dir/sub_dir/my_label_file.txt -> my_label_file
-            """
+            """,
         ),
     )
 

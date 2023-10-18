@@ -45,7 +45,7 @@ class BaseHtmlWriter:
         self.formatted = []
 
     def write(self, rows, args=None):
-        raise NotImplementedError()
+        raise NotImplementedError
 
     def format_text(self, row, exclude=None):
         """Wrap traits in the text with <spans> that can be formatted with CSS."""

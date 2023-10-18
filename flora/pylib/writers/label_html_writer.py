@@ -46,7 +46,7 @@ class HtmlWriter(BaseHtmlWriter):
                     word_count=lb.word_count,
                     valid_words=lb.valid_words,
                     score=lb.score,
-                )
+                ),
             )
 
         total = len(labels.labels)

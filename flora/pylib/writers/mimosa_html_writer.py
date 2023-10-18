@@ -28,7 +28,7 @@ class HtmlWriter(BaseHtmlWriter):
                     text_id=i,
                     formatted_text=text,
                     formatted_traits=traits,
-                )
+                ),
             )
 
         self.write_template(in_file_name)

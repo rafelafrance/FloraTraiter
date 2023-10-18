@@ -30,7 +30,7 @@ class BaseCsvWriter:
         return csv_rows
 
     def format_row(self, row):
-        raise NotImplementedError()
+        raise NotImplementedError
 
     def row_builder(self, row, csv_row):
         by_header = defaultdict(list)

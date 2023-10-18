@@ -66,7 +66,10 @@ RANK_REPLACE = term_util.term_data(ALL_CSVS["rank_terms"], "replace")
 
 
 def build(
-    nlp: Language, extend=1, overwrite: list[str] = None, auth_keep: list[str] = None
+    nlp: Language,
+    extend=1,
+    overwrite: list[str] = None,
+    auth_keep: list[str] = None,
 ):
     overwrite = overwrite if overwrite else []
     auth_keep = auth_keep if auth_keep else []
@@ -367,7 +370,7 @@ def multi_taxon_patterns():
             patterns=[
                 "taxon and taxon",
             ],
-        )
+        ),
     ]
 
 
@@ -561,7 +564,7 @@ class Taxon(Base):
                 taxon.append(token.text)
 
             else:
-                raise reject_match.RejectMatch()
+                raise reject_match.RejectMatch
 
         if re.match(ABBREV_RE, taxon[0]) and len(taxon) > 1:
             taxon[0] = taxon[0] if taxon[0][-1] == "." else taxon[0] + "."
@@ -779,12 +782,12 @@ class Taxon(Base):
             elif token._.term in ANY_RANK:
                 rank = RANK_REPLACE.get(token.lower_, token.lower_)
 
+        ent._.relabel = "taxon"
+
         trait = cls.from_ent(ent, **data)
 
         if rank:
             trait.rank = rank
-
-        ent._.relabel = "taxon"
 
         ent[0]._.trait = trait
         ent[0]._.flag = "taxon_data"

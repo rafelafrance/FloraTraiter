@@ -3,12 +3,11 @@ import argparse
 import textwrap
 from pathlib import Path
 
-from traiter.pylib import log
-
 from pylib.readers.mimosa_marked_reader import MarkedReader
 from pylib.readers.mimosa_proximity_reader import ProximityReader
 from pylib.writers.mimosa_csv_writer import CsvWriter
 from pylib.writers.mimosa_html_writer import HtmlWriter
+from traiter.pylib import log
 
 
 def main():
@@ -35,7 +34,8 @@ def main():
 def parse_args():
     description = """Parse data about mimosas from PDFs converted into text files."""
     arg_parser = argparse.ArgumentParser(
-        description=textwrap.dedent(description), fromfile_prefix_chars="@"
+        description=textwrap.dedent(description),
+        fromfile_prefix_chars="@",
     )
 
     arg_parser.add_argument(

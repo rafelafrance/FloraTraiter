@@ -10,7 +10,6 @@ from traiter.pylib import const as t_const
 from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
 
-
 LINK_LOCATION_PART_PARENTS = (
     """ location flower_location part_as_loc part_as_distance """.split()
 )

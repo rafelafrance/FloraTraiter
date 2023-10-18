@@ -55,7 +55,8 @@ class TaxonLike(Base):
     @classmethod
     def taxon_like_match(cls, ent):
         data = next(
-            (asdict(e._.trait) for e in ent.ents if e.label_ in TAXON_LABELS), {}
+            (asdict(e._.trait) for e in ent.ents if e.label_ in TAXON_LABELS),
+            {},
         )
         taxon_like = data["taxon"]
         similar = [t.text.lower() for t in ent if t._.term == "similar"]

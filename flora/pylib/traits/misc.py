@@ -33,7 +33,10 @@ LABELS = term_util.get_labels(ALL_CSVS)
 def build(nlp: Language):
     add.term_pipe(nlp, name="misc_terms", path=ALL_CSVS)
     add.trait_pipe(
-        nlp, name="misc_patterns", compiler=misc_patterns(), overwrite=LABELS
+        nlp,
+        name="misc_patterns",
+        compiler=misc_patterns(),
+        overwrite=LABELS,
     )
     # No cleanup here, we want the traits to hang around to help build other traits
 

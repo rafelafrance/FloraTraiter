@@ -49,7 +49,10 @@ def build(nlp: Language):
         "mock_locality_terms": "loc",
     }
     add.term_pipe(
-        nlp, name="locality_terms", path=get_csvs(), default_labels=default_labels
+        nlp,
+        name="locality_terms",
+        path=get_csvs(),
+        default_labels=default_labels,
     )
 
     add.trait_pipe(nlp, name="locality_patterns", compiler=locality_patterns())
@@ -131,7 +134,7 @@ def extend_locality():
                 "locality+   word? ,? and? trait* and? ,? loc+",
                 "loc+        word? ,? and? trait* and? ,? locality+",
             ],
-        )
+        ),
     ]
 
 

@@ -3,8 +3,8 @@ reader looks for treatment header for the taxon. A header a given regular expres
 pattern. The very next taxon is grabbed as the one to associate with the traits.
 """
 import sys
-from enum import auto
 from enum import Enum
+from enum import auto
 
 import rich
 
