@@ -1,10 +1,10 @@
 import unittest
 
-from flora.pylib.traits.misc import Misc
+from flora.pylib.traits.location import Location
+from flora.pylib.traits.misc import Sex
 from flora.pylib.traits.numeric import Count
 from flora.pylib.traits.part import Part
 from flora.pylib.traits.part import Subpart
-from flora.pylib.traits.part_location import PartLocation
 from flora.pylib.traits.taxon import Taxon
 from tests.setup import full_test
 from tests.setup import small_test
@@ -106,7 +106,7 @@ class TestCount(unittest.TestCase):
         self.assertEqual(
             small_test("Staminate flowers (3–)5–10(–20)"),
             [
-                Misc(
+                Sex(
                     sex="staminate",
                     trait="sex",
                     start=0,
@@ -212,7 +212,7 @@ class TestCount(unittest.TestCase):
         self.assertEqual(
             small_test("Male flowers with 2-8(-20) stamens;"),
             [
-                Count(
+                Sex(
                     sex="male",
                     trait="sex",
                     start=0,
@@ -317,7 +317,7 @@ class TestCount(unittest.TestCase):
             small_test("""leaf 0.5–1 times as long as opaque base."""),
             [
                 Part(part="leaf", trait="part", type="leaf_part", start=0, end=4),
-                Count(
+                Subpart(
                     subpart="base",
                     trait="subpart",
                     start=35,
@@ -447,7 +447,7 @@ class TestCount(unittest.TestCase):
         self.assertEqual(
             small_test("""staminate catkins in 1 or more clusters of 3--6;"""),
             [
-                Misc(sex="staminate", trait="sex", start=0, end=9),
+                Sex(sex="staminate", trait="sex", start=0, end=9),
                 Part(
                     part="catkin",
                     trait="part",
@@ -507,7 +507,7 @@ class TestCount(unittest.TestCase):
     def test_count_29(self):
         self.assertEqual(
             small_test("bracts 84; 30,"),
-            [Part(part="bract", trait="part", type="leaf_part", start=0, end=6)],
+            [Part(part="bract", trait="part", type="flower_part", start=0, end=6)],
         )
 
     def test_count_30(self):
@@ -638,7 +638,7 @@ class TestCount(unittest.TestCase):
                 aculei 0.5–1 times as long as opaque base."""
             ),
             [
-                Misc(
+                Sex(
                     sex="pistillate",
                     trait="sex",
                     start=0,
@@ -652,22 +652,25 @@ class TestCount(unittest.TestCase):
                     end=18,
                     sex="pistillate",
                 ),
-                Count(
+                Subpart(
                     subpart="setae",
                     trait="subpart",
+                    location="at apex of hypanthial aculei",
                     start=28,
                     end=35,
                     part="flower",
                 ),
-                PartLocation(
-                    subpart_as_loc="at apex of hypanthial aculei",
-                    trait="subpart_as_loc",
+                Location(
+                    trait="location",
+                    location="at apex of hypanthial aculei",
+                    type="subpart_as_location",
                     start=36,
                     end=64,
                 ),
-                Count(
+                Subpart(
                     subpart="base",
                     trait="subpart",
+                    location="at apex of hypanthial aculei",
                     start=95,
                     end=99,
                     part="flower",
@@ -764,7 +767,6 @@ class TestCount(unittest.TestCase):
         )
 
     def test_count_45(self):
-        self.maxDiff = None
         self.assertEqual(
             small_test(
                 """
@@ -773,7 +775,7 @@ class TestCount(unittest.TestCase):
                 """
             ),
             [
-                Misc(sex="staminate", trait="sex", start=0, end=9),
+                Sex(sex="staminate", trait="sex", start=0, end=9),
                 Part(
                     part="catkin",
                     trait="part",
@@ -792,7 +794,7 @@ class TestCount(unittest.TestCase):
                     part="catkin",
                     sex="staminate",
                 ),
-                Misc(sex="pistillate", trait="sex", start=49, end=59),
+                Sex(sex="pistillate", trait="sex", start=49, end=59),
                 Part(
                     part="catkin",
                     trait="part",

@@ -8,11 +8,11 @@ from flora.pylib.traits import link_location
 from flora.pylib.traits import link_part
 from flora.pylib.traits import link_sex
 from flora.pylib.traits import link_taxon_like
+from flora.pylib.traits import location
 from flora.pylib.traits import margin
 from flora.pylib.traits import misc
 from flora.pylib.traits import numeric
 from flora.pylib.traits import part
-from flora.pylib.traits import part_location
 from flora.pylib.traits import shape
 from flora.pylib.traits import surface
 from flora.pylib.traits import taxon
@@ -36,7 +36,7 @@ def build():
     shape.build(nlp)
     surface.build(nlp)
 
-    part_location.build(nlp)
+    location.build(nlp)
     taxon_like.build(nlp)
 
     link_part.build(nlp)

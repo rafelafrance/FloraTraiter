@@ -65,7 +65,6 @@ class TestAssociatedTaxon(unittest.TestCase):
 
     def test_associated_taxon_03(self):
         """It does not label a higher taxon as primary."""
-        self.maxDiff = None
         self.assertEqual(
             full_test(
                 """

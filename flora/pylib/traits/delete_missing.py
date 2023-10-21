@@ -2,13 +2,11 @@ from spacy.language import Language
 from spacy.tokens import Doc
 from traiter.pylib.pipes import add
 
-from .part import PART_LABELS
 
-
-def build(nlp: Language):
+def pipe(nlp: Language):
     config = {
-        "check": """color count shape size surface location margin""".split(),
-        "missing": PART_LABELS + ["subpart", "multiple_parts"],
+        "check": """color count shape size surface margin""".split(),
+        "missing": ["part", "subpart", "multiple_parts"],
     }
     add.custom_pipe(nlp, "delete_missing", config=config)
 

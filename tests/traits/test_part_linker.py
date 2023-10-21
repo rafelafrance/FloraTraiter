@@ -83,7 +83,6 @@ class TestPartLinker(unittest.TestCase):
         )
 
     def test_part_linker_04(self):
-        self.maxDiff = None
         self.assertEqual(
             small_test(
                 """Lvs (except of A. pachyphloia) bipinnate, the primary and secondary

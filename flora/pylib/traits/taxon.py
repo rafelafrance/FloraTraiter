@@ -14,9 +14,9 @@ from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
 from traiter.pylib.pipes import reject_match
 from traiter.pylib.traits import terms as t_terms
+from traiter.pylib.traits.base import Base
 
 from .. import const
-from .base import Base
 
 
 def get_csvs():

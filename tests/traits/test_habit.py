@@ -1,8 +1,9 @@
 import unittest
 
 from flora.pylib.traits.habit import Habit
-from flora.pylib.traits.misc import Misc
 from flora.pylib.traits.part import Part
+from flora.pylib.traits.plant_duration import PlantDuration
+from flora.pylib.traits.woodiness import Woodiness
 from tests.setup import small_test
 
 
@@ -22,18 +23,17 @@ class TestHabit(unittest.TestCase):
         )
 
     def test_habit_02(self):
-        self.maxDiff = None
         self.assertEqual(
             small_test("Herbs perennial or subshrubs, epiphytic or epilithic."),
             [
-                Misc(
+                Woodiness(
                     woodiness="herb",
                     trait="woodiness",
                     start=0,
                     end=5,
                     part="shrub",
                 ),
-                Misc(
+                PlantDuration(
                     plant_duration="perennial",
                     trait="plant_duration",
                     start=6,

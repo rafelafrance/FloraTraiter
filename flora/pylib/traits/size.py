@@ -13,8 +13,7 @@ from traiter.pylib.pipes import add
 from traiter.pylib.pipes import reject_match
 from traiter.pylib.traits import terms as t_terms
 
-from .base import Base
-from .part import PART_LABELS
+from .linkable import Linkable
 
 ALL_CSVS = [
     Path(__file__).parent / "terms" / "numeric_terms.csv",
@@ -27,7 +26,6 @@ ALL_CSVS = [
     Path(t_terms.__file__).parent / "month_terms.csv",
 ]
 
-ALL_PARTS = PART_LABELS + ["subpart"]
 AND = ["&", "and", "et"]
 CONJ = AND + ["or"]
 CROSS = t_const.CROSS + t_const.COMMA
@@ -60,14 +58,12 @@ def build(nlp: Language):
         name="range_patterns",
         compiler=range_patterns(),
     )
-    # add.debug_tokens(nlp)  # #######################################################
     add.trait_pipe(
         nlp,
         name="numeric_patterns",
         compiler=count_patterns() + size_patterns(),
-        overwrite=[*ALL_PARTS, "sex"],
+        overwrite=["part", "subpart", "sex"],
     )
-    # add.debug_tokens(nlp)  # #######################################################
     comp.ACCUMULATOR.delete(NOT_NUMERIC)
     add.cleanup_pipe(nlp, name="numeric_cleanup")
 
@@ -245,7 +241,7 @@ def count_patterns():
         "missing": {"ENT_TYPE": "missing"},
         "not_count_symbol": {"LOWER": {"IN": NOT_COUNT_SYMBOL}},
         "not_numeric": {"ENT_TYPE": {"IN": NOT_NUMERIC}},
-        "part": {"ENT_TYPE": {"IN": ALL_PARTS}},
+        "part": {"ENT_TYPE": {"IN": ["part", "subpart"]}},
         "per_count": {"ENT_TYPE": "per_count"},
         "subpart": {"ENT_TYPE": "subpart"},
         "X": {"LOWER": "x"},
@@ -379,7 +375,7 @@ def size_patterns():
 
 
 @dataclass()
-class Range(Base):
+class Range(Linkable):
     min: float = None
     low: float = None
     high: float = None
@@ -408,14 +404,13 @@ class Range(Base):
 
 
 @dataclass()
-class Count(Base):
+class Count(Linkable):
     min: int = None
     low: int = None
     high: int = None
     max: int = None
     missing: bool = None
     per_part: str = None
-    count_suffix: str = None
     count_group: str = None
 
     @classmethod
@@ -473,7 +468,7 @@ class Count(Base):
 
 
 @dataclass()
-class Size(Base):
+class Size(Linkable):
     min: int = None
     low: int = None
     high: int = None

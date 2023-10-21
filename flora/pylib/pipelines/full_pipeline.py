@@ -2,36 +2,21 @@ import spacy
 from traiter.pylib.pipes import extensions
 from traiter.pylib.pipes import sentence
 from traiter.pylib.pipes import tokenizer
-from traiter.pylib.traits import color
-from traiter.pylib.traits import date_
-from traiter.pylib.traits import elevation
-from traiter.pylib.traits import geocoordinates
-from traiter.pylib.traits import habitat
+from traiter.pylib.traits.date_ import Date
+from traiter.pylib.traits.elevation import Elevation
+from traiter.pylib.traits.habitat import Habitat
+from traiter.pylib.traits.lat_long import LatLong
+from traiter.pylib.traits.trs import TRS
+from traiter.pylib.traits.utm import UTM
 
-from flora.pylib.traits import admin_unit
-from flora.pylib.traits import associated_taxon
 from flora.pylib.traits import delete_missing
-from flora.pylib.traits import habit
-from flora.pylib.traits import job
-from flora.pylib.traits import link_location
-from flora.pylib.traits import link_part
-from flora.pylib.traits import link_sex
-from flora.pylib.traits import link_taxon_like
-from flora.pylib.traits import locality
-from flora.pylib.traits import margin
-from flora.pylib.traits import misc
-from flora.pylib.traits import numeric
-from flora.pylib.traits import part
-from flora.pylib.traits import part_location
-from flora.pylib.traits import shape
-from flora.pylib.traits import surface
-from flora.pylib.traits import taxon
-from flora.pylib.traits import taxon_like
-
-# from traiter.pylib.pipes import debug
+from flora.pylib.traits.admin_unit import AdminUnit
+from flora.pylib.traits.associated_taxon import AssociatedTaxonLabel
+from flora.pylib.traits.color import Color
+from flora.pylib.traits.habit import Habit
 
 
-def build(model_path=None):
+def build():
     extensions.add_extensions()
 
     nlp = spacy.load("en_core_web_md", exclude=["ner"])
@@ -41,52 +26,43 @@ def build(model_path=None):
     config = {"base_model": "en_core_web_md"}
     nlp.add_pipe(sentence.SENTENCES, config=config, before="parser")
 
-    date_.build(nlp)
+    Date.pipe(nlp)
 
-    part.build(nlp)
+    # part.build(nlp)
 
-    elevation.build(nlp)
-    geocoordinates.build(nlp)
-    # debug.ents(nlp)  # ################################################
+    Elevation.pipe(nlp)
+    LatLong.pipe(nlp)
+    TRS.pipe(nlp)
+    UTM.pipe(nlp)
 
-    color.build(nlp)
-    habitat.build(nlp)
+    Color.pipe(nlp)
+    Habitat.pipe(nlp)
 
-    misc.build(nlp)
+    # misc.build(nlp)
 
-    job.build(nlp, overwrite=["subpart", "color", "admin_unit"])
-    numeric.build(nlp)
+    # job.build(nlp, overwrite=["subpart", "color", "admin_unit"])
+    # numeric.build(nlp)
 
-    habit.build(nlp)
-    margin.build(nlp)
-    shape.build(nlp)
-    surface.build(nlp)
+    Habit.pipe(nlp)
+    # margin.build(nlp)
+    # shape.build(nlp)
+    # surface.build(nlp)
 
-    admin_unit.build(nlp, overwrite=["color"])
-    taxon.build(nlp, extend=2, overwrite=["habitat", "color"], auth_keep=["not_name"])
+    AdminUnit.pipe(nlp, overwrite=["color"])
+    # taxon.build(nlp, extend=2, overwrite=["habitat", "color"], auth_keep=["not_name"])
 
-    part_location.build(nlp)
-    taxon_like.build(nlp)
+    # location.build(nlp)
+    # taxon_like.build(nlp)
 
-    link_part.build(nlp)
-    link_sex.build(nlp)
-    link_location.build(nlp)
-    link_taxon_like.build(nlp)
+    # link_part.build(nlp)
+    # link_sex.build(nlp)
+    # link_location.build(nlp)
+    # link_taxon_like.build(nlp)
 
-    delete_missing.build(nlp)
+    delete_missing.pipe(nlp)
 
-    associated_taxon.build(nlp)
+    AssociatedTaxonLabel.pipe(nlp)
 
-    locality.build(nlp)
-    # debug.ents(nlp)  # ################################################
+    # locality.build(nlp)
 
-    if model_path:
-        nlp.to_disk(model_path)
-
-    return nlp
-
-
-def load(model_path):
-    extensions.add_extensions()
-    nlp = spacy.load(model_path)
     return nlp

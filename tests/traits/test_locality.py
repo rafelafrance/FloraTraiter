@@ -1,5 +1,13 @@
 import unittest
 
+from traiter.pylib.traits.color import Color
+from traiter.pylib.traits.elevation import Elevation
+from traiter.pylib.traits.habitat import Habitat
+
+from flora.pylib.traits.locality import Locality
+from flora.pylib.traits.misc import PlantDuration
+from flora.pylib.traits.part import Part
+from flora.pylib.traits.part import Subpart
 from tests.setup import full_test
 
 
@@ -8,12 +16,12 @@ class TestLocality(unittest.TestCase):
         self.assertEqual(
             full_test("""5 miles North of Mason off Hwy 386."""),
             [
-                {
-                    "locality": "5 miles North of Mason off Hwy 386.",
-                    "trait": "locality",
-                    "start": 0,
-                    "end": 35,
-                }
+                Locality(
+                    locality="5 miles North of Mason off Hwy 386.",
+                    trait="locality",
+                    start=0,
+                    end=35,
+                )
             ],
         )
 
@@ -27,31 +35,31 @@ class TestLocality(unittest.TestCase):
                 """
             ),
             [
-                {
-                    "locality": "Tunkhannock Twp.",
-                    "trait": "locality",
-                    "start": 0,
-                    "end": 16,
-                },
-                {
-                    "locality": "Pocono Pines Quadrangle.",
-                    "trait": "locality",
-                    "start": 17,
-                    "end": 41,
-                },
-                {
-                    "locality": "Mud Run, Stonecrest Park,"
+                Locality(
+                    locality="Tunkhannock Twp.",
+                    trait="locality",
+                    start=0,
+                    end=16,
+                ),
+                Locality(
+                    locality="Pocono Pines Quadrangle.",
+                    trait="locality",
+                    start=17,
+                    end=41,
+                ),
+                Locality(
+                    locality="Mud Run, Stonecrest Park,"
                     ".16 miles SSW of Long Pond, PA.",
-                    "trait": "locality",
-                    "start": 42,
-                    "end": 98,
-                },
-                {
-                    "locality": "Headwaters wetland of Indiana Mountains Lake.",
-                    "trait": "locality",
-                    "start": 99,
-                    "end": 144,
-                },
+                    trait="locality",
+                    start=42,
+                    end=98,
+                ),
+                Locality(
+                    locality="Headwaters wetland of Indiana Mountains Lake.",
+                    trait="locality",
+                    start=99,
+                    end=144,
+                ),
             ],
         )
 
@@ -65,12 +73,12 @@ class TestLocality(unittest.TestCase):
         self.assertEqual(
             full_test("""(Florida's Turnpike)"""),
             [
-                {
-                    "locality": "Florida's Turnpike",
-                    "trait": "locality",
-                    "start": 0,
-                    "end": 19,
-                }
+                Locality(
+                    locality="Florida's Turnpike",
+                    trait="locality",
+                    start=0,
+                    end=19,
+                )
             ],
         )
 
@@ -82,13 +90,13 @@ class TestLocality(unittest.TestCase):
                 """
             ),
             [
-                {
-                    "locality": "Wallowa-Whitman National Forest, Forest Service "
+                Locality(
+                    locality="Wallowa-Whitman National Forest, Forest Service "
                     "Road 7312.",
-                    "trait": "locality",
-                    "start": 0,
-                    "end": 58,
-                },
+                    trait="locality",
+                    start=0,
+                    end=58,
+                ),
             ],
         )
 
@@ -98,24 +106,24 @@ class TestLocality(unittest.TestCase):
                 """Sonoran Desert scrub, disturbed trail side. Occasional annual."""
             ),
             [
-                {
-                    "habitat": "sonoran desert scrub",
-                    "trait": "habitat",
-                    "start": 0,
-                    "end": 20,
-                },
-                {
-                    "locality": "disturbed trail side.",
-                    "trait": "locality",
-                    "start": 22,
-                    "end": 43,
-                },
-                {
-                    "plant_duration": "annual",
-                    "trait": "plant_duration",
-                    "start": 55,
-                    "end": 61,
-                },
+                Habitat(
+                    habitat="sonoran desert scrub",
+                    trait="habitat",
+                    start=0,
+                    end=20,
+                ),
+                Locality(
+                    locality="disturbed trail side.",
+                    trait="locality",
+                    start=22,
+                    end=43,
+                ),
+                PlantDuration(
+                    plant_duration="annual",
+                    trait="plant_duration",
+                    start=55,
+                    end=61,
+                ),
             ],
         )
 
@@ -128,40 +136,40 @@ class TestLocality(unittest.TestCase):
                 """
             ),
             [
-                {
-                    "habitat": "uppland sonoran desert desert scrub flats",
-                    "trait": "habitat",
-                    "start": 8,
-                    "end": 50,
-                },
-                {"habitat": "sandy soil", "trait": "habitat", "start": 52, "end": 62},
-                {
-                    "plant_duration": "annual",
-                    "trait": "plant_duration",
-                    "start": 76,
-                    "end": 82,
-                },
+                Habitat(
+                    habitat="uppland sonoran desert desert scrub flats",
+                    trait="habitat",
+                    start=8,
+                    end=50,
+                ),
+                Habitat(habitat="sandy soil", trait="habitat", start=52, end=62),
+                PlantDuration(
+                    plant_duration="annual",
+                    trait="plant_duration",
+                    start=76,
+                    end=82,
+                ),
             ],
         )
 
     def test_locality_08(self):
         self.assertEqual(
             full_test("""Scattered on edge of forest;"""),
-            [{"end": 27, "habitat": "edge of forest", "start": 13, "trait": "habitat"}],
+            [Habitat(end=27, habitat="edge of forest", start=13, trait="habitat")],
         )
 
     def test_locality_09(self):
         self.assertEqual(
             full_test("""lobes turned out or black."""),
             [
-                {"trait": "subpart", "subpart": "lobe", "start": 0, "end": 5},
-                {
-                    "color": "black",
-                    "trait": "color",
-                    "start": 20,
-                    "end": 25,
-                    "subpart": "lobe",
-                },
+                Subpart(trait="subpart", subpart="lobe", start=0, end=5),
+                Color(
+                    color="black",
+                    trait="color",
+                    start=20,
+                    end=25,
+                    subpart="lobe",
+                ),
             ],
         )
 
@@ -174,19 +182,19 @@ class TestLocality(unittest.TestCase):
                 """
             ),
             [
-                {
-                    "locality": "Along Rte. 39, 9.1 mi SEof Santiago Papasquiaro.",
-                    "labeled": True,
-                    "trait": "locality",
-                    "start": 0,
-                    "end": 57,
-                },
-                {
-                    "habitat": "Pine-juniper-oak-acacia zone",
-                    "trait": "habitat",
-                    "start": 58,
-                    "end": 94,
-                },
+                Locality(
+                    locality="Along Rte. 39, 9.1 mi SEof Santiago Papasquiaro.",
+                    labeled=True,
+                    trait="locality",
+                    start=0,
+                    end=57,
+                ),
+                Habitat(
+                    habitat="Pine-juniper-oak-acacia zone",
+                    trait="habitat",
+                    start=58,
+                    end=94,
+                ),
             ],
         )
 
@@ -199,14 +207,14 @@ class TestLocality(unittest.TestCase):
                 """
             ),
             [
-                {"fruit_part": "fruit", "trait": "fruit_part", "start": 0, "end": 5},
-                {
-                    "color": "purple-in-color",
-                    "trait": "color",
-                    "start": 24,
-                    "end": 44,
-                    "fruit_part": "fruit",
-                },
+                Part(fruit_part="fruit", trait="fruit_part", start=0, end=5),
+                Color(
+                    color="purple-in-color",
+                    trait="color",
+                    start=24,
+                    end=44,
+                    part="fruit",
+                ),
             ],
         )
 
@@ -214,20 +222,20 @@ class TestLocality(unittest.TestCase):
         self.assertEqual(
             full_test("""Monteverde. Elev. 1400- 1500 m. Lower montane rainforest"""),
             [
-                {
-                    "trait": "elevation",
-                    "elevation": 1400.0,
-                    "elevation_high": 1500.0,
-                    "units": "m",
-                    "start": 12,
-                    "end": 31,
-                },
-                {
-                    "end": 56,
-                    "habitat": "montane rain forest",
-                    "start": 38,
-                    "trait": "habitat",
-                },
+                Elevation(
+                    trait="elevation",
+                    elevation=1400.0,
+                    elevation_high=1500.0,
+                    units="m",
+                    start=12,
+                    end=31,
+                ),
+                Habitat(
+                    end=56,
+                    habitat="montane rain forest",
+                    start=38,
+                    trait="habitat",
+                ),
             ],
         )
 
@@ -235,12 +243,12 @@ class TestLocality(unittest.TestCase):
         self.assertEqual(
             full_test("""Point Sublime Road about 1 miles east of Milk Creek."""),
             [
-                {
-                    "locality": "Point Sublime Road about 1 miles east of Milk Creek.",
-                    "trait": "locality",
-                    "start": 0,
-                    "end": 52,
-                },
+                Locality(
+                    locality="Point Sublime Road about 1 miles east of Milk Creek.",
+                    trait="locality",
+                    start=0,
+                    end=52,
+                ),
             ],
         )
 
@@ -248,11 +256,11 @@ class TestLocality(unittest.TestCase):
         self.assertEqual(
             full_test("""north of the Illinois Central Railroad,"""),
             [
-                {
-                    "locality": "north of the Illinois Central Railroad",
-                    "trait": "locality",
-                    "start": 0,
-                    "end": 38,
-                },
+                Locality(
+                    locality="north of the Illinois Central Railroad",
+                    trait="locality",
+                    start=0,
+                    end=38,
+                ),
             ],
         )

@@ -12,7 +12,7 @@ from traiter.pylib.pipes import add
 
 LINK_SEX_PARENTS = ["sex"]
 LINK_SEX_CHILDREN = """
-    color count duration duration flower_location habit habitat
+    color count duration duration flower_location habit
     joined leaf_duration leaf_folding location flower_morphology
     margin multiple_parts part_as_loc part plant_morphology shape
     size subpart subpart_as_loc subpart_suffix surface venation
