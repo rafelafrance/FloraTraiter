@@ -8,7 +8,7 @@ from traiter.pylib import term_util
 from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
 
-from .base import Base
+from .linkable import Linkable
 
 SURFACE_CSV = Path(__file__).parent / "terms" / "surface_terms.csv"
 REPLACE = term_util.term_data(SURFACE_CSV, "replace")
@@ -39,8 +39,8 @@ def surface_patterns():
     ]
 
 
-@dataclass()
-class Surface(Base):
+@dataclass
+class Surface(Linkable):
     surface: str = None
 
     @classmethod

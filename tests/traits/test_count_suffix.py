@@ -1,5 +1,8 @@
 import unittest
 
+from flora.pylib.traits.numeric import Count
+from flora.pylib.traits.part import Part
+from flora.pylib.traits.shape import Shape
 from tests.setup import small_test
 
 
@@ -8,18 +11,18 @@ class TestCountSuffix(unittest.TestCase):
         self.assertEqual(
             small_test("leaf rarely 1- or 5-7-foliolate;"),
             [
-                {"leaf_part": "leaf", "trait": "leaf_part", "start": 0, "end": 4},
-                {
-                    "min": 1,
-                    "low": 5,
-                    "max": 7,
-                    "trait": "count",
-                    "start": 5,
-                    "end": 31,
-                    "subpart": "lobe",
-                    "missing": True,
-                    "leaf_part": "leaf",
-                },
+                Part(part="leaf", trait="part", type="leaf_part", start=0, end=4),
+                Count(
+                    min=1,
+                    low=5,
+                    max=7,
+                    trait="count",
+                    start=5,
+                    end=31,
+                    subpart="lobe",
+                    missing=True,
+                    part="leaf",
+                ),
             ],
         )
 
@@ -27,24 +30,24 @@ class TestCountSuffix(unittest.TestCase):
         self.assertEqual(
             small_test("Leaves imparipinnate, 5- or 7(or 9)-foliolate;"),
             [
-                {"leaf_part": "leaf", "trait": "leaf_part", "start": 0, "end": 6},
-                {
-                    "shape": "imparipinnate",
-                    "trait": "shape",
-                    "start": 7,
-                    "end": 20,
-                    "leaf_part": "leaf",
-                },
-                {
-                    "low": 5,
-                    "high": 7,
-                    "max": 9,
-                    "trait": "count",
-                    "start": 22,
-                    "end": 45,
-                    "subpart": "lobe",
-                    "leaf_part": "leaf",
-                },
+                Part(part="leaf", trait="part", type="leaf_part", start=0, end=6),
+                Shape(
+                    shape="imparipinnate",
+                    trait="shape",
+                    start=7,
+                    end=20,
+                    part="leaf",
+                ),
+                Count(
+                    low=5,
+                    high=7,
+                    max=9,
+                    trait="count",
+                    start=22,
+                    end=45,
+                    subpart="lobe",
+                    part="leaf",
+                ),
             ],
         )
 
@@ -52,23 +55,24 @@ class TestCountSuffix(unittest.TestCase):
         self.assertEqual(
             small_test("Racemes compact, 1- or 2- or 5-7-flowered"),
             [
-                {
-                    "inflorescence": "raceme",
-                    "trait": "inflorescence",
-                    "start": 0,
-                    "end": 7,
-                },
-                {
-                    "min": 1,
-                    "low": 2,
-                    "high": 5,
-                    "max": 7,
-                    "trait": "count",
-                    "start": 17,
-                    "end": 41,
-                    "inflorescence": "raceme",
-                    "subpart": "flower",
-                },
+                Part(
+                    part="raceme",
+                    trait="part",
+                    type="inflorescence",
+                    start=0,
+                    end=7,
+                ),
+                Count(
+                    min=1,
+                    low=2,
+                    high=5,
+                    max=7,
+                    trait="count",
+                    start=17,
+                    end=41,
+                    part="raceme",
+                    subpart="flower",
+                ),
             ],
         )
 
@@ -76,17 +80,17 @@ class TestCountSuffix(unittest.TestCase):
         self.assertEqual(
             small_test("leaf 3(or 5-9)-foliolate;"),
             [
-                {"leaf_part": "leaf", "trait": "leaf_part", "start": 0, "end": 4},
-                {
-                    "min": 3,
-                    "low": 5,
-                    "high": 9,
-                    "trait": "count",
-                    "start": 5,
-                    "end": 24,
-                    "subpart": "lobe",
-                    "leaf_part": "leaf",
-                },
+                Part(part="leaf", trait="part", type="leaf_part", start=0, end=4),
+                Count(
+                    min=3,
+                    low=5,
+                    high=9,
+                    trait="count",
+                    start=5,
+                    end=24,
+                    subpart="lobe",
+                    part="leaf",
+                ),
             ],
         )
 
@@ -94,18 +98,18 @@ class TestCountSuffix(unittest.TestCase):
         self.assertEqual(
             small_test("leaflets (2or)3- or 4(or 5)-paired"),
             [
-                {"leaf_part": "leaflet", "trait": "leaf_part", "start": 0, "end": 8},
-                {
-                    "min": 2,
-                    "low": 3,
-                    "high": 4,
-                    "max": 5,
-                    "trait": "count",
-                    "start": 9,
-                    "end": 34,
-                    "count_group": "pairs",
-                    "leaf_part": "leaflet",
-                },
+                Part(part="leaflet", trait="part", type="leaf_part", start=0, end=8),
+                Count(
+                    min=2,
+                    low=3,
+                    high=4,
+                    max=5,
+                    trait="count",
+                    start=9,
+                    end=34,
+                    count_group="pairs",
+                    part="leaflet",
+                ),
             ],
         )
 
@@ -113,17 +117,17 @@ class TestCountSuffix(unittest.TestCase):
         self.assertEqual(
             small_test("Leaves (19-)23- or 25-foliolate;"),
             [
-                {"leaf_part": "leaf", "trait": "leaf_part", "start": 0, "end": 6},
-                {
-                    "min": 19,
-                    "low": 23,
-                    "high": 25,
-                    "trait": "count",
-                    "start": 7,
-                    "end": 31,
-                    "subpart": "lobe",
-                    "leaf_part": "leaf",
-                },
+                Part(part="leaf", trait="part", type="leaf_part", start=0, end=6),
+                Count(
+                    min=19,
+                    low=23,
+                    high=25,
+                    trait="count",
+                    start=7,
+                    end=31,
+                    subpart="lobe",
+                    part="leaf",
+                ),
             ],
         )
 
@@ -131,15 +135,15 @@ class TestCountSuffix(unittest.TestCase):
         self.assertEqual(
             small_test("Calyx (5-lobed)"),
             [
-                {"flower_part": "calyx", "trait": "flower_part", "start": 0, "end": 5},
-                {
-                    "low": 5,
-                    "trait": "count",
-                    "start": 7,
-                    "end": 14,
-                    "subpart": "lobe",
-                    "flower_part": "calyx",
-                },
+                Part(part="calyx", trait="part", type="flower_part", start=0, end=5),
+                Count(
+                    low=5,
+                    trait="count",
+                    start=7,
+                    end=14,
+                    subpart="lobe",
+                    part="calyx",
+                ),
             ],
         )
 
@@ -147,23 +151,24 @@ class TestCountSuffix(unittest.TestCase):
         self.assertEqual(
             small_test("Inflorescences 1–64(–90)[–100]-flowered"),
             [
-                {
-                    "inflorescence": "inflorescence",
-                    "trait": "inflorescence",
-                    "start": 0,
-                    "end": 14,
-                },
-                {
-                    "min": 1,
-                    "low": 64,
-                    "high": 90,
-                    "max": 100,
-                    "trait": "count",
-                    "start": 15,
-                    "end": 39,
-                    "inflorescence": "inflorescence",
-                    "subpart": "flower",
-                },
+                Part(
+                    part="inflorescence",
+                    trait="part",
+                    type="inflorescence",
+                    start=0,
+                    end=14,
+                ),
+                Count(
+                    min=1,
+                    low=64,
+                    high=90,
+                    max=100,
+                    trait="count",
+                    start=15,
+                    end=39,
+                    part="inflorescence",
+                    subpart="flower",
+                ),
             ],
         )
 
@@ -171,20 +176,21 @@ class TestCountSuffix(unittest.TestCase):
         self.assertEqual(
             small_test("""Cymes [1–]few[–many]-flowered."""),
             [
-                {
-                    "inflorescence": "cyme",
-                    "trait": "inflorescence",
-                    "start": 0,
-                    "end": 5,
-                },
-                {
-                    "low": 1,
-                    "trait": "count",
-                    "start": 6,
-                    "end": 29,
-                    "inflorescence": "cyme",
-                    "subpart": "flower",
-                },
+                Part(
+                    part="cyme",
+                    trait="part",
+                    type="inflorescence",
+                    start=0,
+                    end=5,
+                ),
+                Count(
+                    low=1,
+                    trait="count",
+                    start=6,
+                    end=29,
+                    part="cyme",
+                    subpart="flower",
+                ),
             ],
         )
 
@@ -192,17 +198,17 @@ class TestCountSuffix(unittest.TestCase):
         self.assertEqual(
             small_test("""Capsules [2–]3[–5+]-locular."""),
             [
-                {"fruit_part": "capsule", "trait": "fruit_part", "start": 0, "end": 8},
-                {
-                    "min": 2,
-                    "low": 3,
-                    "max": 5,
-                    "trait": "count",
-                    "start": 9,
-                    "end": 27,
-                    "subpart": "locular",
-                    "fruit_part": "capsule",
-                },
+                Part(part="capsule", trait="part", type="fruit_part", start=0, end=8),
+                Count(
+                    min=2,
+                    low=3,
+                    max=5,
+                    trait="count",
+                    start=9,
+                    end=27,
+                    subpart="locular",
+                    part="capsule",
+                ),
             ],
         )
 
@@ -210,16 +216,16 @@ class TestCountSuffix(unittest.TestCase):
         self.assertEqual(
             small_test("""Flowers mostly 4- or 5-merous"""),
             [
-                {"flower_part": "flower", "trait": "flower_part", "start": 0, "end": 7},
-                {
-                    "low": 4,
-                    "high": 5,
-                    "trait": "count",
-                    "start": 15,
-                    "end": 29,
-                    "count": "merous",
-                    "flower_part": "flower",
-                },
+                Part(part="flower", trait="part", type="flower_part", start=0, end=7),
+                Count(
+                    low=4,
+                    high=5,
+                    trait="count",
+                    start=15,
+                    end=29,
+                    subpart="merous",
+                    part="flower",
+                ),
             ],
         )
 
@@ -227,15 +233,15 @@ class TestCountSuffix(unittest.TestCase):
         self.assertEqual(
             small_test("""Capsule 2-locular. x = 9."""),
             [
-                {"fruit_part": "capsule", "trait": "fruit_part", "start": 0, "end": 7},
-                {
-                    "low": 2,
-                    "trait": "count",
-                    "start": 8,
-                    "end": 17,
-                    "subpart": "locular",
-                    "fruit_part": "capsule",
-                },
+                Part(part="capsule", trait="part", type="fruit_part", start=0, end=7),
+                Count(
+                    low=2,
+                    trait="count",
+                    start=8,
+                    end=17,
+                    subpart="locular",
+                    part="capsule",
+                ),
             ],
         )
 
@@ -243,16 +249,16 @@ class TestCountSuffix(unittest.TestCase):
         self.assertEqual(
             small_test("""pinnae 16-29-jug."""),
             [
-                {"leaf_part": "pinnae", "trait": "leaf_part", "start": 0, "end": 6},
-                {
-                    "low": 16,
-                    "high": 29,
-                    "trait": "count",
-                    "start": 7,
-                    "end": 17,
-                    "count_group": "pairs",
-                    "leaf_part": "pinnae",
-                },
+                Part(part="pinnae", trait="part", type="leaf_part", start=0, end=6),
+                Count(
+                    low=16,
+                    high=29,
+                    trait="count",
+                    start=7,
+                    end=17,
+                    count_group="pairs",
+                    part="pinnae",
+                ),
             ],
         )
 
@@ -260,16 +266,16 @@ class TestCountSuffix(unittest.TestCase):
         self.assertEqual(
             small_test("""4-6-seeded, the replum"""),
             [
-                {
-                    "low": 4,
-                    "high": 6,
-                    "trait": "count",
-                    "start": 0,
-                    "end": 10,
-                    "subpart": "seed",
-                    "fruit_part": "replum",
-                },
-                {"fruit_part": "replum", "trait": "fruit_part", "start": 16, "end": 22},
+                Count(
+                    low=4,
+                    high=6,
+                    trait="count",
+                    start=0,
+                    end=10,
+                    subpart="seed",
+                    part="replum",
+                ),
+                Part(part="replum", trait="part", type="fruit_part", start=16, end=22),
             ],
         )
 
@@ -277,15 +283,15 @@ class TestCountSuffix(unittest.TestCase):
         self.assertEqual(
             small_test("""one-seeded replum"""),
             [
-                {
-                    "low": 1,
-                    "trait": "count",
-                    "start": 0,
-                    "end": 10,
-                    "subpart": "seed",
-                    "fruit_part": "replum",
-                },
-                {"fruit_part": "replum", "trait": "fruit_part", "start": 11, "end": 17},
+                Count(
+                    low=1,
+                    trait="count",
+                    start=0,
+                    end=10,
+                    subpart="seed",
+                    part="replum",
+                ),
+                Part(part="replum", trait="part", type="fruit_part", start=11, end=17),
             ],
         )
 
@@ -293,20 +299,20 @@ class TestCountSuffix(unittest.TestCase):
         self.assertEqual(
             small_test("""lvs, 1 -nerved"""),
             [
-                {"leaf_part": "leaf", "trait": "leaf_part", "start": 0, "end": 3},
-                {
-                    "start": 5,
-                    "end": 14,
-                    "leaf_part": "leaf",
-                    "low": 1,
-                    "venation": "vein",
-                    "trait": "count",
-                },
+                Part(part="leaf", trait="part", type="leaf_part", start=0, end=3),
+                Count(
+                    start=5,
+                    end=14,
+                    part="leaf",
+                    low=1,
+                    subpart="vein",
+                    trait="count",
+                ),
             ],
         )
 
     def test_count_suffix_17(self):
         self.assertEqual(
             small_test("""lvs few-nerved"""),
-            [{"leaf_part": "leaf", "trait": "leaf_part", "start": 0, "end": 3}],
+            [Part(part="leaf", trait="part", type="leaf_part", start=0, end=3)],
         )

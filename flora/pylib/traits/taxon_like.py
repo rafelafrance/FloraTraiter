@@ -7,8 +7,7 @@ from spacy import registry
 from traiter.pylib import term_util
 from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
-
-from .base import Base
+from traiter.pylib.traits.base import Base
 
 TAXON_LIKE_CSV = Path(__file__).parent / "terms" / "taxon_like_terms.csv"
 REPLACE = term_util.term_data(TAXON_LIKE_CSV, "replace")

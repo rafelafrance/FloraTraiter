@@ -1,0 +1,90 @@
+label,pattern,replace,suffix_term
+count_suffix,- androus,androus,subpart
+count_suffix,- bracteolate,bracteolate,subpart
+count_suffix,- callose,callose,subpart
+count_suffix,- carpellate,carpellate,subpart
+count_suffix,- columned,column,subpart
+count_suffix,- flowered,flower,subpart
+count_suffix,- foliolate,lobe,subpart
+count_suffix,- horned,horn,subpart
+count_suffix,- incised,incised,subpart
+count_suffix,- jointed,joint,subpart
+count_suffix,- jug,pairs,count_group
+count_suffix,- jug.,pairs,count_group
+count_suffix,- lobed,lobe,subpart
+count_suffix,- locular,locular,subpart
+count_suffix,- merous,merous,subpart
+count_suffix,- nate,nate,subpart
+count_suffix,- nerved,vein,subpart
+count_suffix,- paired,pairs,count_group
+count_suffix,- pairs,pairs,count_group
+count_suffix,- ranked,ranked,subpart
+count_suffix,- rayed,ray,subpart
+count_suffix,- ribbed,rib,subpart
+count_suffix,- seeded,seed,subpart
+count_suffix,- toothed,tooth,subpart
+count_suffix,- veined,vein,subpart
+count_suffix,-androus,androus,subpart
+count_suffix,-bracteolate,bracteolate,subpart
+count_suffix,-callose,callose,subpart
+count_suffix,-carpellate,carpellate,subpart
+count_suffix,-columned,column,subpart
+count_suffix,-flowered,flower,subpart
+count_suffix,-foliolate,lobe,subpart
+count_suffix,-horned,horn,subpart
+count_suffix,-incised,incised,subpart
+count_suffix,-jointed,joint,subpart
+count_suffix,-jug,pairs,count_group
+count_suffix,-jug.,pairs,count_group
+count_suffix,-lobed,lobe,subpart
+count_suffix,-locular,locular,subpart
+count_suffix,-merous,merous,subpart
+count_suffix,-nate,nate,subpart
+count_suffix,-nerved,vein,subpart
+count_suffix,-paired,pairs,count_group
+count_suffix,-pairs,pairs,count_group
+count_suffix,-ranked,ranked,subpart
+count_suffix,-rayed,ray,subpart
+count_suffix,-ribbed,rib,subpart
+count_suffix,-seeded,seed,subpart
+count_suffix,-toothed,tooth,subpart
+count_suffix,-veined,vein,subpart
+count_word,absent,0,
+count_word,decamerous,10,
+count_word,decamery,10,
+count_word,dimerous,2,
+count_word,dimery,2,
+count_word,double,2,
+count_word,heptamerous,7,
+count_word,heptamery,7,
+count_word,hexamerous,6,
+count_word,hexamery,6,
+count_word,monomerous,1,
+count_word,monomery,1,
+count_word,nonamerous,9,
+count_word,nonamery,9,
+count_word,octamerous,8,
+count_word,octamery,8,
+count_word,pentamerous,5,
+count_word,pentamery,5,
+count_word,simple,1,
+count_word,single,1,
+count_word,tetrad,4,
+count_word,tetramerous,4,
+count_word,tetramery,4,
+count_word,triad,3,
+count_word,trimerous,3,
+count_word,trimery,3,
+count_word,triple,3,
+per_count,1 or more clusters,cluster,
+per_count,cluster,cluster,
+per_count,clusters,cluster,
+per_count,jugate,pairs,
+per_count,one or more clusters,cluster,
+per_count,pair,pairs,
+per_count,paired,pairs,
+per_count,pairs,pairs,
+per_count,per row,per row,
+per_count,per side,per side,
+per_count,row,row,
+per_count,rows,rows,

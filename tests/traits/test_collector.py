@@ -469,7 +469,6 @@ class TestCollector(unittest.TestCase):
 
     def test_collector_27(self):
         """It handles a name separated from their name number."""
-        self.maxDiff = None
         self.assertEqual(
             full_test(
                 """Little Belt Mountains J.B. Scammons Elevation: 5800 ft.
@@ -648,7 +647,6 @@ class TestCollector(unittest.TestCase):
         )
 
     def test_collector_38(self):
-        self.maxDiff = None
         self.assertEqual(
             full_test("""4 September 2008 J. Johnson with M. King Herbarium"""),
             [

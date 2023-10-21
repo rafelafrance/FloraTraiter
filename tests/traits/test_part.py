@@ -69,7 +69,6 @@ class TestPart(unittest.TestCase):
         )
 
     def test_part_04(self):
-        self.maxDiff = None
         self.assertEqual(
             small_test("Flowers: sepals (pistillate)"),
             [

@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from pathlib import Path
+from typing import ClassVar
 
 from spacy import Language
 from spacy import registry
@@ -7,49 +8,50 @@ from traiter.pylib import const as t_const
 from traiter.pylib import term_util
 from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
-
-from .base import Base
-
-HABIT_CSV = Path(__file__).parent / "terms" / "habit_terms.csv"
-SHAPE_CSV = Path(__file__).parent / "terms" / "shape_terms.csv"
-ALL_CSVS = [HABIT_CSV, SHAPE_CSV]
-
-REPLACE = term_util.term_data(HABIT_CSV, "replace")
+from traiter.pylib.traits.base import Base
 
 
-def build(nlp: Language):
-    add.term_pipe(nlp, name="habit_terms", path=ALL_CSVS)
-    add.trait_pipe(nlp, name="habit_patterns", compiler=habit_patterns())
-    add.cleanup_pipe(nlp, name="habit_cleanup")
-
-
-def habit_patterns():
-    return [
-        Compiler(
-            label="habit",
-            on_match="habit_match",
-            keep="habit",
-            decoder={
-                "-": {"TEXT": {"IN": t_const.DASH}, "OP": "+"},
-                "habit": {"ENT_TYPE": "habit_term"},
-                "shape": {"ENT_TYPE": "shape"},
-                "tree": {"ENT_TYPE": "habit_tree"},
-            },
-            patterns=[
-                "habit",
-                "shape -? tree",
-            ],
-        ),
-    ]
-
-
-@dataclass()
+@dataclass
 class Habit(Base):
+    # Class vars ----------
+    all_csvs: ClassVar[list[Path]] = [
+        Path(__file__).parent / "terms" / "habit_terms.csv",
+        Path(__file__).parent / "terms" / "shape_terms.csv",
+    ]
+    replace: ClassVar[dict[str, str]] = term_util.term_data(all_csvs, "replace")
+    # ---------------------
+
     habit: str = None
 
     @classmethod
+    def pipe(cls, nlp: Language):
+        add.term_pipe(nlp, name="habit_terms", path=cls.all_csvs)
+        add.trait_pipe(nlp, name="habit_patterns", compiler=cls.habit_patterns())
+        add.cleanup_pipe(nlp, name="habit_cleanup")
+
+    @classmethod
+    def habit_patterns(cls):
+        return [
+            Compiler(
+                label="habit",
+                on_match="habit_match",
+                keep="habit",
+                decoder={
+                    "-": {"TEXT": {"IN": t_const.DASH}, "OP": "+"},
+                    "habit": {"ENT_TYPE": "habit_term"},
+                    "shape": {"ENT_TYPE": "shape"},
+                    "tree": {"ENT_TYPE": "habit_tree"},
+                },
+                patterns=[
+                    "habit",
+                    "shape -? tree",
+                ],
+            ),
+        ]
+
+    @classmethod
     def habit_match(cls, ent):
-        frags = [REPLACE.get(t.lower_, t.lower_) for t in ent]
+        frags = [cls.replace.get(t.lower_, t.lower_) for t in ent]
         return cls.from_ent(ent, habit=" ".join(frags))
 
 

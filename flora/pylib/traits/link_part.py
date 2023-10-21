@@ -11,16 +11,16 @@ from traiter.pylib.pipes import add
 
 from . import part
 
-CHILDREN = """
+CHILDREN_PART_SUBPART = """
     color duration duration margin shape surface venation woodiness
     """.split()
 
 LINK_PART_PARENTS = part.PART_LABELS + ["multiple_parts"]
-LINK_PART_CHILDREN = CHILDREN + ["subpart"]
+LINK_PART_CHILDREN = [*CHILDREN_PART_SUBPART, "subpart"]
 LINK_PART_ONCE_CHILDREN = ["size", "count"]
 
 LINK_SUBPART_PARENTS = ["subpart"]
-LINK_SUBPART_CHILDREN = CHILDREN
+LINK_SUBPART_CHILDREN = CHILDREN_PART_SUBPART
 
 
 DECODER = {
@@ -122,11 +122,11 @@ def link_subpart_once_patterns():
         label="link_subpart_once",
         decoder=DECODER
         | {
-            "part": {"ENT_TYPE": {"IN": LINK_SUBPART_PARENTS}},
+            "subpart": {"ENT_TYPE": {"IN": LINK_SUBPART_PARENTS}},
             "trait": {"ENT_TYPE": {"IN": LINK_PART_ONCE_CHILDREN}},
         },
         patterns=[
-            "trait+ any* part+",
-            "part+  any* trait+",
+            "trait+    any* subpart+",
+            "subpart+  any* trait+",
         ],
     )

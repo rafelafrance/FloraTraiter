@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from pathlib import Path
+from typing import ClassVar
 
 from spacy import Language
 from spacy import registry
@@ -8,55 +9,58 @@ from traiter.pylib import term_util
 from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
 
-from .base import Base
-
-MARGIN_CSV = Path(__file__).parent / "terms" / "margin_terms.csv"
-
-REPLACE = term_util.term_data(MARGIN_CSV, "replace")
+from .linkable import Linkable
 
 
-def build(nlp: Language):
-    add.term_pipe(nlp, name="margin_terms", path=MARGIN_CSV)
-    add.trait_pipe(nlp, name="margin_patterns", compiler=margin_patterns())
-    add.cleanup_pipe(nlp, name="margin_cleanup")
+@dataclass
+class Margin(Linkable):
+    # Class vars ----------
+    margin_csv: ClassVar[Path] = Path(__file__).parent / "terms" / "margin_terms.csv"
+    replace: ClassVar[dict[str, str]] = term_util.term_data(margin_csv, "replace")
+    # ---------------------
 
-
-def margin_patterns():
-    return [
-        Compiler(
-            label="margin",
-            on_match="margin_match",
-            keep="margin",
-            decoder={
-                "-": {"TEXT": {"IN": t_const.DASH}},
-                "margin": {"ENT_TYPE": "margin_term"},
-                "shape": {"ENT_TYPE": "shape"},
-                "leader": {"ENT_TYPE": {"IN": ["shape", "margin_leader"]}},
-                "follower": {"ENT_TYPE": {"IN": ["margin_term", "margin_follower"]}},
-            },
-            patterns=[
-                "leader* -* margin+",
-                "leader* -* margin -* follower*",
-                "leader* -* margin -* shape? follower+ shape?",
-                "shape+ -* follower+",
-            ],
-        ),
-    ]
-
-
-@dataclass()
-class Margin(Base):
     margin: str = None
+
+    @classmethod
+    def pipe(cls, nlp: Language):
+        add.term_pipe(nlp, name="margin_terms", path=cls.margin_csv)
+        add.trait_pipe(nlp, name="margin_patterns", compiler=cls.margin_patterns())
+        add.cleanup_pipe(nlp, name="margin_cleanup")
+
+    @classmethod
+    def margin_patterns(cls):
+        return [
+            Compiler(
+                label="margin",
+                on_match="margin_match",
+                keep="margin",
+                decoder={
+                    "-": {"TEXT": {"IN": t_const.DASH}},
+                    "margin": {"ENT_TYPE": "margin_term"},
+                    "shape": {"ENT_TYPE": "shape"},
+                    "leader": {"ENT_TYPE": {"IN": ["shape", "margin_leader"]}},
+                    "follower": {
+                        "ENT_TYPE": {"IN": ["margin_term", "margin_follower"]}
+                    },
+                },
+                patterns=[
+                    "leader* -* margin+",
+                    "leader* -* margin -* follower*",
+                    "leader* -* margin -* shape? follower+ shape?",
+                    "shape+ -* follower+",
+                ],
+            ),
+        ]
 
     @classmethod
     def margin_match(cls, ent):
         margin = {}  # Dicts preserve order sets do not
         for token in ent:
             if token._.term in ["margin_term", "shape"] and token.text != "-":
-                word = REPLACE.get(token.lower_, token.lower_)
+                word = cls.replace.get(token.lower_, token.lower_)
                 margin[word] = 1
         margin = "-".join(margin.keys())
-        margin = REPLACE.get(margin, margin)
+        margin = cls.replace.get(margin, margin)
         return cls.from_ent(ent, margin=margin)
 
 
