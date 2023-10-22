@@ -3,7 +3,6 @@ from dataclasses import asdict
 from dataclasses import dataclass
 from pathlib import Path
 from typing import ClassVar
-from typing import Optional
 
 import regex as re
 from spacy.language import Language
@@ -24,10 +23,10 @@ Separated = namedtuple("Separated", "idx ent")
 @dataclass
 class Job(Base):
     # Class vars ----------
-    job_terms: ClassVar[Path] = Path(__file__).parent / "job_terms.csv"
+    job_terms: ClassVar[Path] = Path(__file__).parent / "terms" / "job_terms.csv"
     all_csvs: ClassVar[list[Path]] = [
         job_terms,
-        Path(__file__).parent / "terms" / "person_terms.csv",
+        Path(__file__).parent / "terms" / "id_num_terms.csv",
         Path(t_terms.__file__).parent / "name_terms.csv",
     ]
 
@@ -56,20 +55,19 @@ class Job(Base):
 
     job: str = None
     name: str | list[str] = None
-    id_no: str = None
+    id_num: str = None
 
     @classmethod
-    def pipe(cls, nlp: Language, overwrite: Optional[list[str]] = None):
-        add.term_pipe(nlp, name="person_terms", path=cls.all_csvs)
+    def pipe(cls, nlp: Language):
+        add.term_pipe(nlp, name="job_terms", path=cls.all_csvs)
 
-        overwrite = overwrite if overwrite else []
-        job_overwrite = overwrite + """name job_label no_label id_no""".split()
+        job_overwrite = """name job_label num_label id_num""".split()
         add.trait_pipe(
             nlp,
             name="job_patterns",
             compiler=cls.job_patterns(),
             overwrite=job_overwrite,
-            keep=[*ACCUMULATOR.keep, "not_name", "not_id_no"],
+            keep=[*ACCUMULATOR.keep, "not_name", "not_id_num"],
         )
 
         add.trait_pipe(
@@ -77,7 +75,7 @@ class Job(Base):
             name="other_patterns",
             compiler=cls.other_patterns(),
             overwrite=job_overwrite,
-            keep=[*ACCUMULATOR.keep, "not_name", "not_id_no"],
+            keep=[*ACCUMULATOR.keep, "not_name", "not_id_num"],
         )
 
         add.custom_pipe(nlp, registered="separated_collector")
@@ -87,7 +85,7 @@ class Job(Base):
             name="extend_job_names",
             compiler=cls.extend_job_name_patterns(),
             overwrite=["job"],
-            keep=[*ACCUMULATOR.keep, "not_name", "not_id_no"],
+            keep=[*ACCUMULATOR.keep, "not_name", "not_id_num"],
         )
 
         add.custom_pipe(nlp, registered="name_only")
@@ -99,7 +97,8 @@ class Job(Base):
             overwrite=["other_collector", "extend_job_names"],
         )
 
-        add.cleanup_pipe(nlp, name="person_cleanup")
+        delete = ["not_name", "name", "id_num"]
+        add.cleanup_pipe(nlp, name="person_cleanup", delete=delete)
 
     @classmethod
     def job_patterns(cls):
@@ -115,10 +114,9 @@ class Job(Base):
                     "bad": {"ENT_TYPE": {"IN": ["month"]}},
                     "by": {"LOWER": {"IN": ["by"]}},
                     "job_label": {"ENT_TYPE": "job_label"},
-                    "id_no": {"ENT_TYPE": {"IN": ["id_no", "labeled_id_no"]}},
+                    "id_num": {"ENT_TYPE": {"IN": ["id_num", "labeled_id_num"]}},
                     "maybe": {"POS": "PROPN"},
                     "name": {"ENT_TYPE": "name"},
-                    "nope": {"ENT_TYPE": "not_name"},
                     "sep": {"LOWER": {"IN": cls.sep}},
                     "sp": {"IS_SPACE": True},
                 },
@@ -126,15 +124,18 @@ class Job(Base):
                     "job_label+ :* sp? name+",
                     "job_label+ :* sp? name+ sep sp? name+",
                     "job_label+ :* sp? name+ sep sp? name+ sep sp? name+",
-                    "job_label+ :* sp? name+                             ,* sp? id_no+",
-                    "job_label+ :* sp? name+ sep sp? name+               ,* sp? id_no+",
-                    "job_label+ :* sp? name+ sep sp? name+ sep sp? name+ ,* sp? id_no+",
-                    "                  name+                             ,* sp? id_no+",
-                    "                  name+ sep sp? name+               ,* sp? id_no+",
-                    "                  name+ sep sp? name+ sep sp? name+ ,* sp? id_no+",
-                    "id_no+        sp? name+",
-                    "id_no+        sp? name+ sep sp? name+",
-                    "id_no+        sp? name+ sep sp? name+ sep sp? name+",
+                    "job_label+ :* sp? name+                           ,* sp? id_num+",
+                    "job_label+ :* sp? name+ sep sp? name+             ,* sp? id_num+",
+                    (
+                        "job_label+ :* sp? name+ sep sp? name+ sep sp? name+ ,* sp? "
+                        "id_num+"
+                    ),
+                    "                name+                             ,* sp? id_num+",
+                    "                name+ sep sp? name+               ,* sp? id_num+",
+                    "                name+ sep sp? name+ sep sp? name+ ,* sp? id_num+",
+                    "id_num+        sp? name+",
+                    "id_num+        sp? name+ sep sp? name+",
+                    "id_num+        sp? name+ sep sp? name+ sep sp? name+",
                     "job_label+ :* sp? name+ sep sp? name+ sep sp? name+ sep sp? name+",
                     "job_label+ :* maybe? name+",
                     "job_label+ :* maybe? name+ and maybe? name+",
@@ -160,7 +161,10 @@ class Job(Base):
                     "other_label+ sp? name+ ",
                     "other_label+ sp? name+ sep* sp? name+ ",
                     "other_label+ sp? name+ sep* sp? name+ sep* sp? name+ ",
-                    "other_label+ sp? name+ sep* sp? name+ sep* sp? name+ sep* sp? name+ ",
+                    (
+                        "other_label+ sp? name+ sep* sp? name+ sep* sp? name+ sep* sp? "
+                        "name+"
+                    ),
                     (
                         "other_label+ sp? name+ sep* sp? name+ sep* sp? name+ sep* sp? "
                         "name+ sep* sp? name+"
@@ -215,10 +219,10 @@ class Job(Base):
     def job_match(cls, ent):
         job = []
         people = []
-        id_no = None
+        id_num = None
 
         for token in ent:
-            if token._.flag == "skip" or token.ent_type_ == "no_label":
+            if token._.flag == "skip" or token.ent_type_ == "num_label":
                 continue
 
             elif token.ent_type_ == "job_label":
@@ -227,8 +231,8 @@ class Job(Base):
             elif token._.flag == "name":
                 people.append(token._.trait.name)
 
-            elif token._.flag == "id_no":
-                id_no = token._.trait.id_no
+            elif token._.flag == "id_num":
+                id_num = token._.trait.id_num
 
             token._.flag = "skip"
 
@@ -241,7 +245,7 @@ class Job(Base):
 
         name = people if len(people) > 1 else people[0]
 
-        trait = cls.from_ent(ent, name=name, id_no=id_no, job=job)
+        trait = cls.from_ent(ent, name=name, id_num=id_num, job=job)
 
         ent[0]._.flag = job
         ent[0]._.trait = trait
@@ -335,27 +339,27 @@ def job_rename_match(ent):
 def separated_collector(doc):
     """Look for collectors separated from their ID numbers."""
     name = None
-    id_no = None
+    id_num = None
 
     for i, ent in enumerate(doc.ents):
         # Last name before an ID number
-        if ent.label_ == "name" and not id_no:
+        if ent.label_ == "name" and not id_num:
             name = Separated(i, ent)
 
         # First ID number after a name
-        elif ent.label_ == "id_no" and not id_no and name:
-            id_no = Separated(i, ent)
+        elif ent.label_ == "id_num" and not id_num and name:
+            id_num = Separated(i, ent)
 
-    if name and id_no and id_no.idx - name.idx <= 5:
+    if name and id_num and id_num.idx - name.idx <= 5:
         t_trait.relabel_entity(name.ent, "job", relabel_tokens=True)
-        t_trait.relabel_entity(id_no.ent, "job", relabel_tokens=True)
+        t_trait.relabel_entity(id_num.ent, "job", relabel_tokens=True)
 
         name_t = name.ent._.trait
-        id_no_t = id_no.ent._.trait
+        id_num_t = id_num.ent._.trait
 
-        data = {"job": "collector", "name": name_t.name, "id_no": id_no_t.id_no}
+        data = {"job": "collector", "name": name_t.name, "id_num": id_num_t.id_num}
         name.ent._.trait = Job.from_ent(name.ent, **data)
-        id_no.ent._.trait = Job.from_ent(id_no.ent, **data)
+        id_num.ent._.trait = Job.from_ent(id_num.ent, **data)
 
     return doc
 

@@ -53,7 +53,7 @@ class Range(Linkable):
             name="range_patterns",
             compiler=cls.range_patterns(),
         )
-        add.cleanup_pipe(nlp, name="range_cleanup")
+        # Keep these traits around for building size and count traits
 
     @classmethod
     def range_patterns(cls):
@@ -86,6 +86,7 @@ class Range(Linkable):
             Compiler(
                 label="range.low",
                 id="range",
+                keep="range",
                 on_match="range_match",
                 decoder=decoder,
                 patterns=[
@@ -97,6 +98,7 @@ class Range(Linkable):
             Compiler(
                 label="range.min.low",
                 id="range",
+                keep="range",
                 on_match="range_match",
                 decoder=decoder,
                 patterns=[
@@ -108,6 +110,7 @@ class Range(Linkable):
             Compiler(
                 label="range.low.high",
                 id="range",
+                keep="range",
                 on_match="range_match",
                 decoder=decoder,
                 patterns=[
@@ -119,6 +122,7 @@ class Range(Linkable):
             Compiler(
                 label="range.low.max",
                 id="range",
+                keep="range",
                 on_match="range_match",
                 decoder=decoder,
                 patterns=[
@@ -129,6 +133,7 @@ class Range(Linkable):
             Compiler(
                 label="range.min.low.high",
                 id="range",
+                keep="range",
                 on_match="range_match",
                 decoder=decoder,
                 patterns=[
@@ -143,6 +148,7 @@ class Range(Linkable):
             Compiler(
                 label="range.min.low.max",
                 id="range",
+                keep="range",
                 on_match="range_match",
                 decoder=decoder,
                 patterns=[
@@ -155,6 +161,7 @@ class Range(Linkable):
             Compiler(
                 label="range.low.high.max",
                 id="range",
+                keep="range",
                 on_match="range_match",
                 decoder=decoder,
                 patterns=[
@@ -170,6 +177,7 @@ class Range(Linkable):
             Compiler(
                 label="range.min.low.high.max",
                 id="range",
+                keep="range",
                 on_match="range_match",
                 decoder=decoder,
                 patterns=[

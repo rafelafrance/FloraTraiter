@@ -2,14 +2,14 @@ import unittest
 
 from flora.pylib.traits.associated_taxon import AssociatedTaxonLabel
 from flora.pylib.traits.taxon import Taxon
-from tests.setup import full_test
+from tests.setup import test
 
 
 class TestAssociatedTaxon(unittest.TestCase):
     def test_associated_taxon_01(self):
         """It labels a primary and associated taxa."""
         self.assertEqual(
-            full_test(
+            test(
                 """
                 Cephalanthus occidentalis L. Rubiaceas
                 Associated species: Cornus obliqua
@@ -44,7 +44,7 @@ class TestAssociatedTaxon(unittest.TestCase):
     def test_associated_taxon_02(self):
         """It does not label the first taxon after the label."""
         self.assertEqual(
-            full_test("""Associated species: Cornus obliqua"""),
+            test("""Associated species: Cornus obliqua"""),
             [
                 AssociatedTaxonLabel(
                     label="associated species",
@@ -66,7 +66,7 @@ class TestAssociatedTaxon(unittest.TestCase):
     def test_associated_taxon_03(self):
         """It does not label a higher taxon as primary."""
         self.assertEqual(
-            full_test(
+            test(
                 """
                 Fabaceae
                 Cephalanthus occidentalis L. Rubiaceas
@@ -110,7 +110,7 @@ class TestAssociatedTaxon(unittest.TestCase):
     def test_associated_taxon_04(self):
         """It does not label the first taxon after the label."""
         self.assertEqual(
-            full_test(""" Cornus obliqua near Cephalanthus occidentalis """),
+            test(""" Cornus obliqua near Cephalanthus occidentalis """),
             [
                 Taxon(
                     taxon="Cornus obliqua",

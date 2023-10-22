@@ -4,13 +4,13 @@ from flora.pylib.traits.habit import Habit
 from flora.pylib.traits.part import Part
 from flora.pylib.traits.plant_duration import PlantDuration
 from flora.pylib.traits.woodiness import Woodiness
-from tests.setup import small_test
+from tests.setup import test
 
 
 class TestHabit(unittest.TestCase):
     def test_habit_01(self):
         self.assertEqual(
-            small_test("Stems often caespitose"),
+            test("Stems often caespitose"),
             [
                 Part(part="stem", trait="part", start=0, end=5, type="plant_part"),
                 Habit(
@@ -23,8 +23,9 @@ class TestHabit(unittest.TestCase):
         )
 
     def test_habit_02(self):
+        self.maxDiff = None
         self.assertEqual(
-            small_test("Herbs perennial or subshrubs, epiphytic or epilithic."),
+            test("Herbs perennial or subshrubs, epiphytic or epilithic."),
             [
                 Woodiness(
                     woodiness="herb",
@@ -46,17 +47,7 @@ class TestHabit(unittest.TestCase):
                     end=28,
                     type="plant_part",
                 ),
-                Habit(
-                    habit="epiphytic",
-                    trait="habit",
-                    start=30,
-                    end=39,
-                ),
-                Habit(
-                    habit="epilithic",
-                    trait="habit",
-                    start=43,
-                    end=52,
-                ),
+                Habit(habit="epiphytic", trait="habit", start=30, end=39),
+                Habit(habit="epilithic", trait="habit", start=43, end=52),
             ],
         )

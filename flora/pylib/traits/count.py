@@ -20,7 +20,7 @@ class Count(Linkable):
     # Class vars ----------
     all_csvs: ClassVar[list[Path]] = [
         Path(__file__).parent / "terms" / "count_terms.csv",
-        Path(__file__).parent / "terms" / "dim_terms.csv",
+        Path(__file__).parent / "terms" / "dimension_terms.csv",
         Path(__file__).parent / "terms" / "numeric_terms.csv",
         Path(__file__).parent / "terms" / "missing_terms.csv",
         Path(__file__).parent / "terms" / "sex_terms.csv",
@@ -57,12 +57,14 @@ class Count(Linkable):
     @classmethod
     def pipe(cls, nlp: Language):
         add.term_pipe(nlp, name="count_terms", path=cls.all_csvs)
+        add.debug_tokens(nlp)  # ############################################
         add.trait_pipe(
             nlp,
-            name="count_patterns",
+            name="count_match",
             compiler=cls.count_patterns(),
-            overwrite=["part", "subpart", "sex"],
+            overwrite=["range"],
         )
+        add.debug_tokens(nlp)  # ############################################
         add.cleanup_pipe(nlp, name="count_cleanup")
 
     @classmethod
@@ -74,7 +76,7 @@ class Count(Linkable):
             "-": {"TEXT": {"IN": t_const.DASH}},
             "/": {"TEXT": {"IN": t_const.SLASH}},
             "9": {"IS_DIGIT": True},
-            "99-99": {"ENT_TYPE": "range", "OP": "+"},
+            "99-99": {"ENT_TYPE": "range"},
             ":": {"TEXT": {"IN": t_const.COLON}},
             ";": {"TEXT": {"IN": t_const.SEMICOLON}},
             "=": {"TEXT": {"IN": ["=", ":"]}},
@@ -100,21 +102,20 @@ class Count(Linkable):
         return [
             Compiler(
                 label="count",
-                id="count",
                 on_match="count_match",
                 decoder=decoder,
                 keep="count",
                 patterns=[
-                    "  99-99",
-                    "  99-99 -*             per_count+",
-                    "( 99-99 )              per_count+",
-                    "  99-99 -* every+ part per_count*",
-                    "( 99-99 )  every+ part",
-                    "per_count+ adp? 99-99",
-                    "missing? 99-99 count_suffix+",
-                    "count_word     count_suffix+",
-                    "missing? 99-99 subpart+",
-                    "count_word     subpart+",
+                    "  99-99+",
+                    "  99-99+ -*             per_count+",
+                    "( 99-99+ )              per_count+",
+                    "  99-99+ -* every+ part per_count*",
+                    "( 99-99+ )  every+ part",
+                    "per_count+ adp? 99-99+",
+                    "missing? 99-99+ count_suffix+",
+                    "count_word      count_suffix+",
+                    "missing? 99-99+ subpart+",
+                    "count_word      subpart+",
                 ],
             ),
             Compiler(
@@ -142,7 +143,7 @@ class Count(Linkable):
                     "99-99 °",
                     "! -? 9",
                     "is_alpha - 9",
-                    "9  not_numeric",
+                    "9 not_numeric",
                 ],
             ),
         ]
@@ -198,6 +199,9 @@ class Count(Linkable):
 
     @classmethod
     def count_word_match(cls, ent):
+        for token in ent:
+            if token._.flag == "range_data":
+                print(token._.trait)
         return cls.from_ent(ent, low=int(cls.replace[ent[0].lower_]))
 
 

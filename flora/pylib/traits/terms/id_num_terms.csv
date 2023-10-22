@@ -1,13 +1,13 @@
 label,pattern,replace
-no_label,#
-no_label,collector number
-no_label,collector number:
-no_label,no
-no_label,no.
-no_label,num
-no_label,num.
-no_label,number
-no_label,number:
+num_label,#
+num_label,collector number
+num_label,collector number:
+num_label,no
+num_label,no.
+num_label,num
+num_label,num.
+num_label,number
+num_label,number:
 acc_label,accession number
 acc_label,accession number:
 acc_label,accession no

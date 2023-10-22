@@ -1,6 +1,7 @@
 from dataclasses import asdict
 from dataclasses import dataclass
 from pathlib import Path
+from typing import ClassVar
 
 from spacy import Language
 from spacy import registry
@@ -9,52 +10,56 @@ from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
 from traiter.pylib.traits.base import Base
 
-TAXON_LIKE_CSV = Path(__file__).parent / "terms" / "taxon_like_terms.csv"
-REPLACE = term_util.term_data(TAXON_LIKE_CSV, "replace")
-
-TAXON_LABELS = ["taxon", "multi_taxon"]
-
-
-def build(nlp: Language):
-    with nlp.select_pipes(enable="tokenizer"):
-        add.term_pipe(nlp, name="taxon_like_terms", path=TAXON_LIKE_CSV)
-
-    add.trait_pipe(
-        nlp,
-        name="taxon_like_patterns",
-        compiler=taxon_like_patterns(),
-        overwrite=[*TAXON_LABELS, "similar"],
-    )
-    add.cleanup_pipe(nlp, name="taxon_like_cleanup")
-
-
-def taxon_like_patterns():
-    return Compiler(
-        label="taxon_like",
-        on_match="taxon_like_match",
-        keep="taxon_like",
-        decoder={
-            "any": {},
-            "prep": {"POS": {"IN": ["ADP", "CCONJ"]}},
-            "similar": {"ENT_TYPE": "similar"},
-            "taxon": {"ENT_TYPE": {"IN": TAXON_LABELS}},
-        },
-        patterns=[
-            "similar+ taxon+",
-            "similar+ any? prep taxon+",
-        ],
-    )
-
 
 @dataclass
 class TaxonLike(Base):
+    # Class vars ----------
+    taxon_like_csv: ClassVar[Path] = (
+        Path(__file__).parent / "terms" / "taxon_like_terms.csv"
+    )
+    replace: ClassVar[dict[str, str]] = term_util.term_data(taxon_like_csv, "replace")
+
+    taxon_labels: ClassVar[list[str]] = ["taxon", "multi_taxon"]
+    # ---------------------
+
     taxon_like: str | list[str] = None
     relation: str = None
 
     @classmethod
+    def pipe(cls, nlp: Language):
+        with nlp.select_pipes(enable="tokenizer"):
+            add.term_pipe(nlp, name="taxon_like_terms", path=cls.taxon_like_csv)
+
+        add.trait_pipe(
+            nlp,
+            name="taxon_like_patterns",
+            compiler=cls.taxon_like_patterns(),
+            overwrite=[*cls.taxon_labels, "similar"],
+        )
+        add.cleanup_pipe(nlp, name="taxon_like_cleanup")
+
+    @classmethod
+    def taxon_like_patterns(cls):
+        return Compiler(
+            label="taxon_like",
+            on_match="taxon_like_match",
+            keep="taxon_like",
+            decoder={
+                "any": {},
+                "prep": {"POS": {"IN": ["ADP", "CCONJ"]}},
+                "similar": {"ENT_TYPE": "similar"},
+                "taxon": {"ENT_TYPE": {"IN": cls.taxon_labels}},
+            },
+            patterns=[
+                "similar+ taxon+",
+                "similar+ any? prep taxon+",
+            ],
+        )
+
+    @classmethod
     def taxon_like_match(cls, ent):
         data = next(
-            (asdict(e._.trait) for e in ent.ents if e.label_ in TAXON_LABELS),
+            (asdict(e._.trait) for e in ent.ents if e.label_ in cls.taxon_labels),
             {},
         )
         taxon_like = data["taxon"]

@@ -5,16 +5,16 @@ from traiter.pylib.traits.elevation import Elevation
 from traiter.pylib.traits.habitat import Habitat
 
 from flora.pylib.traits.locality import Locality
-from flora.pylib.traits.misc import PlantDuration
 from flora.pylib.traits.part import Part
-from flora.pylib.traits.part import Subpart
-from tests.setup import full_test
+from flora.pylib.traits.plant_duration import PlantDuration
+from flora.pylib.traits.subpart import Subpart
+from tests.setup import test
 
 
 class TestLocality(unittest.TestCase):
     def test_locality_01(self):
         self.assertEqual(
-            full_test("""5 miles North of Mason off Hwy 386."""),
+            test("""5 miles North of Mason off Hwy 386."""),
             [
                 Locality(
                     locality="5 miles North of Mason off Hwy 386.",
@@ -27,7 +27,7 @@ class TestLocality(unittest.TestCase):
 
     def test_locality_02(self):
         self.assertEqual(
-            full_test(
+            test(
                 """
                 Tunkhannock Twp. Pocono Pines Quadrangle. Mud Run, Stonecrest Park,.16
                 miles SSW of Long Pond, PA. Headwaters wetland of Indiana Mountains
@@ -65,13 +65,13 @@ class TestLocality(unittest.TestCase):
 
     def test_locality_03(self):
         self.assertEqual(
-            full_test("""; files. purple."""),
+            test("""; files. purple."""),
             [],
         )
 
     def test_locality_04(self):
         self.assertEqual(
-            full_test("""(Florida's Turnpike)"""),
+            test("""(Florida's Turnpike)"""),
             [
                 Locality(
                     locality="Florida's Turnpike",
@@ -84,7 +84,7 @@ class TestLocality(unittest.TestCase):
 
     def test_locality_05(self):
         self.assertEqual(
-            full_test(
+            test(
                 """
                 Wallowa-Whitman National Forest, Forest Service Road 7312.
                 """
@@ -102,9 +102,7 @@ class TestLocality(unittest.TestCase):
 
     def test_locality_06(self):
         self.assertEqual(
-            full_test(
-                """Sonoran Desert scrub, disturbed trail side. Occasional annual."""
-            ),
+            test("""Sonoran Desert scrub, disturbed trail side. Occasional annual."""),
             [
                 Habitat(
                     habitat="sonoran desert scrub",
@@ -129,7 +127,7 @@ class TestLocality(unittest.TestCase):
 
     def test_locality_07(self):
         self.assertEqual(
-            full_test(
+            test(
                 """
                 Arizona Uppland Sonoran Desert desert scrub, flats.
                 Sandy soil Local erecta annual,
@@ -154,13 +152,13 @@ class TestLocality(unittest.TestCase):
 
     def test_locality_08(self):
         self.assertEqual(
-            full_test("""Scattered on edge of forest;"""),
+            test("""Scattered on edge of forest;"""),
             [Habitat(end=27, habitat="edge of forest", start=13, trait="habitat")],
         )
 
     def test_locality_09(self):
         self.assertEqual(
-            full_test("""lobes turned out or black."""),
+            test("""lobes turned out or black."""),
             [
                 Subpart(trait="subpart", subpart="lobe", start=0, end=5),
                 Color(
@@ -175,7 +173,7 @@ class TestLocality(unittest.TestCase):
 
     def test_locality_10(self):
         self.assertEqual(
-            full_test(
+            test(
                 """
                 LOCATION Along Rte. 39, 9.1 mi SEof Santiago Papasquiaro.
                 HABITAT Pine-juniper-oak-acacia zone.
@@ -200,7 +198,7 @@ class TestLocality(unittest.TestCase):
 
     def test_locality_11(self):
         self.assertEqual(
-            full_test(
+            test(
                 """
                 Fruit is a
                 grape and is dark purple in color.
@@ -220,7 +218,7 @@ class TestLocality(unittest.TestCase):
 
     def test_locality_12(self):
         self.assertEqual(
-            full_test("""Monteverde. Elev. 1400- 1500 m. Lower montane rainforest"""),
+            test("""Monteverde. Elev. 1400- 1500 m. Lower montane rainforest"""),
             [
                 Elevation(
                     trait="elevation",
@@ -241,7 +239,7 @@ class TestLocality(unittest.TestCase):
 
     def test_locality_13(self):
         self.assertEqual(
-            full_test("""Point Sublime Road about 1 miles east of Milk Creek."""),
+            test("""Point Sublime Road about 1 miles east of Milk Creek."""),
             [
                 Locality(
                     locality="Point Sublime Road about 1 miles east of Milk Creek.",
@@ -254,7 +252,7 @@ class TestLocality(unittest.TestCase):
 
     def test_locality_14(self):
         self.assertEqual(
-            full_test("""north of the Illinois Central Railroad,"""),
+            test("""north of the Illinois Central Railroad,"""),
             [
                 Locality(
                     locality="north of the Illinois Central Railroad",

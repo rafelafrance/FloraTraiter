@@ -3,13 +3,13 @@ import unittest
 from flora.pylib.traits.location import Location
 from flora.pylib.traits.part import Subpart
 from flora.pylib.traits.shape import Shape
-from tests.setup import small_test
+from tests.setup import test
 
 
 class TestSubpart(unittest.TestCase):
     def test_subpart_01(self):
         self.assertEqual(
-            small_test("terminal lobe ovate-trullate,"),
+            test("terminal lobe ovate-trullate,"),
             [
                 Location(
                     trait="location",

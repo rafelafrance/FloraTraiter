@@ -1,20 +1,21 @@
 import unittest
 
-from tests.setup import full_test
+from flora.pylib.traits.job import Job
+from tests.setup import test
 
 
 class TestOtherJob(unittest.TestCase):
     def test_other_job_01(self):
         """It gets a job notation."""
         self.assertEqual(
-            full_test("""Verified by: John Kinsman:"""),
+            test("""Verified by: John Kinsman:"""),
             [
-                {
-                    "name": "John Kinsman",
-                    "job": "verified by",
-                    "trait": "job",
-                    "start": 0,
-                    "end": 25,
-                }
+                Job(
+                    name="John Kinsman",
+                    job="verifier",
+                    trait="job",
+                    start=0,
+                    end=25,
+                )
             ],
         )

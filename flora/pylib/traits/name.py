@@ -18,7 +18,8 @@ from traiter.pylib.traits.base import Base
 class Name(Base):
     # Class vars ----------
     all_csvs: ClassVar[list[Path]] = [
-        Path(__file__).parent / "terms" / "person_terms.csv",
+        Path(__file__).parent / "terms" / "id_num_terms.csv",
+        Path(__file__).parent / "terms" / "job_terms.csv",
         Path(t_terms.__file__).parent / "name_terms.csv",
     ]
 
@@ -42,7 +43,7 @@ class Name(Base):
 
     @classmethod
     def pipe(cls, nlp: Language, overwrite: Optional[list[str]] = None):
-        add.term_pipe(nlp, name="person_terms", path=cls.all_csvs)
+        add.term_pipe(nlp, name="name_terms", path=cls.all_csvs)
 
         overwrite = overwrite if overwrite else []
 
@@ -62,7 +63,7 @@ class Name(Base):
             overwrite=overwrite + "name name_prefix name_suffix".split(),
         )
 
-        add.cleanup_pipe(nlp, name="name_cleanup")
+        add.cleanup_pipe(nlp, name="name_cleanup", delete=["not_name"])
 
     @classmethod
     def not_name_patterns(cls):
@@ -70,7 +71,9 @@ class Name(Base):
             "acc_label": {"ENT_TYPE": "acc_label"},
             "id1": {"LOWER": {"REGEX": r"^(\w*\d+\w*)$"}},
             "id2": {"LOWER": {"REGEX": r"^(\w*\d+\w*|[A-Za-z])$"}},
+            "job_label": {"ENT_TYPE": "job_label"},
             "no_space": {"SPACY": False},
+            "num_label": {"ENT_TYPE": "num_label"},
             "bad_name": {"ENT_TYPE": "not_name"},
             "bad_prefix": {"ENT_TYPE": "not_name_prefix"},
             "bad_suffix": {"ENT_TYPE": "not_name_suffix"},
@@ -79,6 +82,7 @@ class Name(Base):
         return [
             Compiler(
                 label="not_name",
+                keep="not_name",
                 on_match="not_name_match",
                 decoder=decoder,
                 patterns=[
@@ -87,6 +91,24 @@ class Name(Base):
                     " bad_suffix+ ",
                     " shape+ bad_suffix+ ",
                     " bad_prefix+ shape+ ",
+                ],
+            ),
+            Compiler(
+                label="num_label",
+                keep="num_label",
+                on_match="not_name_match",
+                decoder=decoder,
+                patterns=[
+                    " num_label+ ",
+                ],
+            ),
+            Compiler(
+                label="job_label",
+                keep="job_label",
+                on_match="not_name_match",
+                decoder=decoder,
+                patterns=[
+                    " job_label+ ",
                 ],
             ),
         ]
@@ -108,9 +130,9 @@ class Name(Base):
             "id1": {"LOWER": {"REGEX": r"^(\w*\d+\w*)$"}},
             "id2": {"LOWER": {"REGEX": r"^(\w*\d+\w*|[A-Za-z])$"}},
             "jr": {"ENT_TYPE": "name_suffix"},
-            "shape": {"SHAPE": {"IN": t_const.NAME_SHAPES}},
-            "shape4": {"SHAPE": {"IN": cls.name4}},
-            "no_label": {"ENT_TYPE": "no_label"},
+            "mix": {"SHAPE": {"IN": t_const.NAME_SHAPES}},
+            "mix4": {"SHAPE": {"IN": cls.name4}},
+            "num_label": {"ENT_TYPE": "num_label"},
             "no_space": {"SPACY": False},
             "pre": {"ENT_TYPE": "last_prefix"},
             "upper": {"SHAPE": {"IN": t_const.UPPER_SHAPES}},
@@ -119,39 +141,40 @@ class Name(Base):
         return [
             Compiler(
                 label="name",
+                keep="name",
                 on_match="name_match",
                 decoder=decoder,
                 patterns=[
-                    "       shape  -? shape? -? pre? pre?   shape4",
-                    "       shape  -? shape? -? pre? pre?   shape4   _? jr+",
-                    "       shape  -? shape? -?   ambig",
-                    "       shape  -? shape? -?   ambig   _? jr+",
-                    "       ambig  -? shape? -? pre? pre?  shape4 ",
-                    "       ambig  -? shape? -? pre? pre?  shape4   _? jr+",
-                    "       A A? A?             pre? pre? shape4",
-                    "       A A? A?             pre? pre? shape4   _? jr+",
-                    "       shape A A? A?       pre? pre? shape4",
-                    "       shape A A? A?       pre? pre? shape4   _? jr+",
-                    "       shape ..             shape4",
-                    "       shape ..             shape4   _? jr+",
-                    "       shape ( shape )      shape4",
-                    "       shape ( shape )      shape4   _? jr+",
-                    "       shape ( shape )      shape4",
-                    "dr+ _? shape  -? shape? -?  shape4",
-                    "dr+ _? shape  -? shape? -?  shape4   _? jr+",
-                    "dr+ _? shape  -? shape? -?  ambig",
-                    "dr+ _? shape  -? shape? -?  ambig   _? jr+",
-                    "dr+ _? ambig -? shape?  -?  shape4",
-                    "dr+ _? ambig -? shape?  -?  shape4   _? jr+",
-                    "dr+ _? A A? A?              shape4",
-                    "dr+ _? A A? A?              shape4   _? jr+",
-                    "dr+ _? shape A A? A?        shape4",
-                    "dr+ _? shape A A? A?        shape4   _? jr+",
-                    "dr+ _? shape ..             shape4",
-                    "dr+ _? shape ..             shape4   _? jr+",
-                    "dr+ _? shape ( shape )      shape4",
-                    "dr+ _? shape ( shape )      shape4   _? jr+",
-                    "dr+ _? shape ( shape )      shape4",
+                    "       mix  -?   mix? -?  pre? pre?   mix4",
+                    "       mix  -?   mix? -?  pre? pre?   mix4   _? jr+",
+                    "       mix  -?   mix? -?  ambig",
+                    "       mix  -?   mix? -?  ambig   _? jr+",
+                    "       mix  -? mix? -?  pre? pre?  ambig ",
+                    "       mix  -? mix? -?  pre? pre?  ambig   _? jr+",
+                    "       A A? A?            pre? pre? mix4",
+                    "       A A? A?            pre? pre? mix4   _? jr+",
+                    "       mix A A? A?        pre? pre? mix4",
+                    "       mix A A? A?        pre? pre? mix4   _? jr+",
+                    "       mix ..             mix4",
+                    "       mix ..             mix4   _? jr+",
+                    "       mix ( mix )        mix4",
+                    "       mix ( mix )        mix4   _? jr+",
+                    "       mix ( mix )        mix4",
+                    "dr+ _? mix  -? mix? -?    mix4",
+                    "dr+ _? mix  -? mix? -?    mix4   _? jr+",
+                    "dr+ _? mix  -? mix? -?    ambig",
+                    "dr+ _? mix  -? mix? -?    ambig   _? jr+",
+                    "dr+ _? mix -? mix?  -?  ambig",
+                    "dr+ _? mix -? mix?  -?  ambig   _? jr+",
+                    "dr+ _? A A? A?            mix4",
+                    "dr+ _? A A? A?            mix4   _? jr+",
+                    "dr+ _? mix A A? A?        mix4",
+                    "dr+ _? mix A A? A?        mix4   _? jr+",
+                    "dr+ _? mix ..             mix4",
+                    "dr+ _? mix ..             mix4   _? jr+",
+                    "dr+ _? mix ( mix )        mix4",
+                    "dr+ _? mix ( mix )        mix4   _? jr+",
+                    "dr+ _? mix ( mix )        mix4",
                     "       upper  -? upper? -? pre? pre?   upper4",
                     "       upper  -? upper? -? pre? pre?   upper4   _? jr+",
                     "       upper  -? upper? -?   ambig",
@@ -175,8 +198,8 @@ class Name(Base):
             "A": {"TEXT": {"REGEX": r"^[A-Z][A-Z]?[._,]?$"}},
             "ambig": {"ENT_TYPE": {"IN": ["us_county", "color"]}},
             "and": {"LOWER": {"IN": cls.and_}},
-            "shape": {"SHAPE": {"IN": t_const.NAME_SHAPES}},
-            "shape4": {"SHAPE": {"IN": cls.name4}},
+            "mix": {"SHAPE": {"IN": t_const.NAME_SHAPES}},
+            "mix4": {"SHAPE": {"IN": cls.name4}},
             "name": {"ENT_TYPE": "name"},
             "no_space": {"SPACY": False},
             "upper": {"SHAPE": {"IN": t_const.UPPER_SHAPES}},
@@ -185,10 +208,11 @@ class Name(Base):
         return [
             Compiler(
                 label="name",
+                keep="name",
                 on_match="double_name_match",
                 decoder=decoder,
                 patterns=[
-                    " shape and name+",
+                    " mix and name+",
                 ],
             ),
         ]

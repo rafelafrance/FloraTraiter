@@ -2,17 +2,16 @@ import unittest
 
 from flora.pylib.traits.part import Part
 from flora.pylib.traits.taxon import Taxon
-from tests.setup import full_test
-from tests.setup import small_test
+from tests.setup import test
 
 
 class TestTaxon(unittest.TestCase):
     # def test_taxon_00(self):
-    #     small_test("""Cornus obliqua (Beth.)""")
+    #     test("""Cornus obliqua (Beth.)""")
 
     def test_taxon_01(self):
         self.assertEqual(
-            small_test("""M. sensitiva"""),
+            test("""M. sensitiva"""),
             [
                 Taxon(
                     rank="species",
@@ -26,7 +25,7 @@ class TestTaxon(unittest.TestCase):
 
     def test_taxon_02(self):
         self.assertEqual(
-            small_test("""Mimosa sensitiva"""),
+            test("""Mimosa sensitiva"""),
             [
                 Taxon(
                     rank="species",
@@ -40,7 +39,7 @@ class TestTaxon(unittest.TestCase):
 
     def test_taxon_03(self):
         self.assertEqual(
-            small_test("""M. polycarpa var. spegazzinii"""),
+            test("""M. polycarpa var. spegazzinii"""),
             [
                 Taxon(
                     rank="variety",
@@ -54,7 +53,7 @@ class TestTaxon(unittest.TestCase):
 
     def test_taxon_04(self):
         self.assertEqual(
-            small_test("""A. pachyphloia subsp. brevipinnula."""),
+            test("""A. pachyphloia subsp. brevipinnula."""),
             [
                 Taxon(
                     rank="subspecies",
@@ -68,7 +67,7 @@ class TestTaxon(unittest.TestCase):
 
     def test_taxon_05(self):
         self.assertEqual(
-            small_test("""A. pachyphloia Bamehy 184."""),
+            test("""A. pachyphloia Bamehy 184."""),
             [
                 Taxon(
                     rank="species",
@@ -82,7 +81,7 @@ class TestTaxon(unittest.TestCase):
 
     def test_taxon_06(self):
         self.assertEqual(
-            small_test("""A. pachyphloia Britton & Rose"""),
+            test("""A. pachyphloia Britton & Rose"""),
             [
                 Taxon(
                     authority="Britton and Rose",
@@ -97,7 +96,7 @@ class TestTaxon(unittest.TestCase):
 
     def test_taxon_07(self):
         self.assertEqual(
-            small_test("""Ser. Vulpinae is characterized"""),
+            test("""Ser. Vulpinae is characterized"""),
             [
                 Taxon(
                     rank="series",
@@ -111,19 +110,19 @@ class TestTaxon(unittest.TestCase):
 
     def test_taxon_08(self):
         self.assertEqual(
-            small_test("""All species are trees"""),
+            test("""All species are trees"""),
             [Part(end=21, part="tree", start=16, trait="part", type="plant_part")],
         )
 
     def test_taxon_09(self):
         self.assertEqual(
-            small_test("""Alajuela, between La Palma and Rio Platanillo"""),
+            test("""Alajuela, between La Palma and Rio Platanillo"""),
             [],
         )
 
     def test_taxon_10(self):
         self.assertEqual(
-            small_test("""together with A. pachyphloia (Vulpinae)"""),
+            test("""together with A. pachyphloia (Vulpinae)"""),
             [
                 Taxon(
                     taxon="Acacia pachyphloia",
@@ -144,7 +143,7 @@ class TestTaxon(unittest.TestCase):
 
     def test_taxon_11(self):
         self.assertEqual(
-            small_test("""Mimosa sensitiva (Bentham) Fox, Trans."""),
+            test("""Mimosa sensitiva (Bentham) Fox, Trans."""),
             [
                 Taxon(
                     authority="Bentham Fox",
@@ -159,7 +158,7 @@ class TestTaxon(unittest.TestCase):
 
     def test_taxon_12(self):
         self.assertEqual(
-            small_test(
+            test(
                 """
                 Neptunia gracilis f. gracilis Neptunia gracilis var. villosula Benth.,
                 """
@@ -186,7 +185,7 @@ class TestTaxon(unittest.TestCase):
     def test_taxon_13(self):
         """It handles 'F.' genus abbreviation vs 'f.' form abbreviation."""
         self.assertEqual(
-            small_test(
+            test(
                 """
                 F. gracilis Neptunia gracilis var. villosula Benth.,
                 """
@@ -212,7 +211,7 @@ class TestTaxon(unittest.TestCase):
 
     def test_taxon_14(self):
         self.assertEqual(
-            small_test("""Ticanto rhombifolia"""),
+            test("""Ticanto rhombifolia"""),
             [
                 Taxon(
                     taxon="Ticanto rhombifolia",
@@ -227,7 +226,7 @@ class TestTaxon(unittest.TestCase):
     def test_taxon_15(self):
         """It gets a taxon notation."""
         self.assertEqual(
-            small_test(
+            test(
                 """
                 Cornaceae
                 Cornus obliqua Raf.
@@ -255,7 +254,7 @@ class TestTaxon(unittest.TestCase):
     def test_taxon_16(self):
         """It gets a family notation."""
         self.assertEqual(
-            small_test(
+            test(
                 """
                 Crowley's Ridge
                 Fabaceae
@@ -284,7 +283,7 @@ class TestTaxon(unittest.TestCase):
     def test_taxon_17(self):
         """It gets the full notation."""
         self.assertEqual(
-            small_test("""Cephalanthus occidentalis L. Rubiaceas"""),
+            test("""Cephalanthus occidentalis L. Rubiaceas"""),
             [
                 Taxon(
                     taxon="Cephalanthus occidentalis",
@@ -300,7 +299,7 @@ class TestTaxon(unittest.TestCase):
     def test_taxon_18(self):
         """It handles 'f.' form abbreviation vs 'F.' genus abbreviation."""
         self.assertEqual(
-            small_test("""A. pachyphloia f. brevipinnula."""),
+            test("""A. pachyphloia f. brevipinnula."""),
             [
                 Taxon(
                     rank="form",
@@ -315,7 +314,7 @@ class TestTaxon(unittest.TestCase):
     def test_taxon_19(self):
         """Do not maximize the authority."""
         self.assertEqual(
-            small_test(
+            test(
                 """Cornus obliqua Willd.
                 In Fraijanes Recreation Park"""
             ),
@@ -334,7 +333,7 @@ class TestTaxon(unittest.TestCase):
     def test_taxon_20(self):
         """It gets an all caps monomial."""
         self.assertEqual(
-            small_test("""PLANTS OF PENNSYLVANIA ASTERACEAE"""),
+            test("""PLANTS OF PENNSYLVANIA ASTERACEAE"""),
             [
                 Taxon(
                     taxon="Asteraceae",
@@ -348,7 +347,7 @@ class TestTaxon(unittest.TestCase):
 
     def test_taxon_21(self):
         self.assertEqual(
-            small_test("""Mimosa sensitiva (L.) Fox, Trans."""),
+            test("""Mimosa sensitiva (L.) Fox, Trans."""),
             [
                 Taxon(
                     authority=["Linnaeus", "Fox"],
@@ -363,7 +362,7 @@ class TestTaxon(unittest.TestCase):
 
     def test_taxon_22(self):
         self.assertEqual(
-            small_test(
+            test(
                 """
                 Cephalanthus occidentalis L. Rubiaceas
                 Associated species: Cornus obliqua
@@ -390,7 +389,7 @@ class TestTaxon(unittest.TestCase):
 
     def test_taxon_23(self):
         self.assertEqual(
-            small_test("""Mimosa sensitiva (L.) subsp. varia Fox."""),
+            test("""Mimosa sensitiva (L.) subsp. varia Fox."""),
             [
                 Taxon(
                     authority=["Linnaeus", "Fox"],
@@ -405,7 +404,7 @@ class TestTaxon(unittest.TestCase):
 
     def test_taxon_24(self):
         self.assertEqual(
-            small_test("""Mimosa sensitiva (R. Person) subsp. varia Fox."""),
+            test("""Mimosa sensitiva (R. Person) subsp. varia Fox."""),
             [
                 Taxon(
                     authority=["R. Person", "Fox"],
@@ -420,7 +419,7 @@ class TestTaxon(unittest.TestCase):
 
     def test_taxon_25(self):
         self.assertEqual(
-            small_test("""Mimosa sensitiva (L. Person) subsp. varia Fox."""),
+            test("""Mimosa sensitiva (L. Person) subsp. varia Fox."""),
             [
                 Taxon(
                     authority=["L. Person", "Fox"],
@@ -436,7 +435,7 @@ class TestTaxon(unittest.TestCase):
     def test_taxon_26(self):
         """It handles a taxon next to a name with a trailing ID number."""
         self.assertEqual(
-            small_test("""Associated species: Neptunia gracilis G. Rink 7075"""),
+            test("""Associated species: Neptunia gracilis G. Rink 7075"""),
             [
                 Taxon(
                     trait="taxon",
@@ -450,7 +449,7 @@ class TestTaxon(unittest.TestCase):
 
     def test_taxon_27(self):
         self.assertEqual(
-            small_test(""" Name Neptunia gracilis Geyser Locality Vernal, """),
+            test(""" Name Neptunia gracilis Geyser Locality Vernal, """),
             [
                 Taxon(
                     authority="Geyser",
@@ -465,7 +464,7 @@ class TestTaxon(unittest.TestCase):
 
     def test_taxon_28(self):
         self.assertEqual(
-            small_test(""" Neptunia gracilis (Gray) """),
+            test(""" Neptunia gracilis (Gray) """),
             [
                 Taxon(
                     authority="Gray",
@@ -480,7 +479,7 @@ class TestTaxon(unittest.TestCase):
 
     def test_taxon_29(self):
         self.assertEqual(
-            small_test("""Neptunia gracilis & Mimosa sensitiva"""),
+            test("""Neptunia gracilis & Mimosa sensitiva"""),
             [
                 Taxon(
                     rank="species",
@@ -494,7 +493,7 @@ class TestTaxon(unittest.TestCase):
 
     def test_taxon_30(self):
         self.assertEqual(
-            small_test("""Neptunia gracilis (Roxb.) T. Anderson"""),
+            test("""Neptunia gracilis (Roxb.) T. Anderson"""),
             [
                 Taxon(
                     authority="Roxb T. Anderson",
@@ -509,7 +508,7 @@ class TestTaxon(unittest.TestCase):
 
     def test_taxon_31(self):
         self.assertEqual(
-            small_test("""Quercus/Cytisus/Agrostis"""),
+            test("""Quercus/Cytisus/Agrostis"""),
             [
                 Taxon(
                     taxon="Quercus",
@@ -537,9 +536,7 @@ class TestTaxon(unittest.TestCase):
 
     def test_taxon_32(self):
         self.assertEqual(
-            small_test(
-                """Neptunia gracilis Muhl. ex Willd. var. varia (Nutt.) Brewer"""
-            ),
+            test("""Neptunia gracilis Muhl. ex Willd. var. varia (Nutt.) Brewer"""),
             [
                 Taxon(
                     taxon="Neptunia gracilis var. varia",
@@ -554,7 +551,7 @@ class TestTaxon(unittest.TestCase):
 
     def test_taxon_33(self):
         self.assertEqual(
-            small_test("""Neptunia gracilis (L.) Pers."""),
+            test("""Neptunia gracilis (L.) Pers."""),
             [
                 Taxon(
                     taxon="Neptunia gracilis",
@@ -569,7 +566,7 @@ class TestTaxon(unittest.TestCase):
 
     def test_taxon_34(self):
         self.assertEqual(
-            small_test("""Neptunia gracilis v.Varia by G. McPherson, confirmed Vink"""),
+            test("""Neptunia gracilis v.Varia by G. McPherson, confirmed Vink"""),
             [
                 Taxon(
                     taxon="Neptunia gracilis var. varia",
@@ -584,9 +581,7 @@ class TestTaxon(unittest.TestCase):
 
     def test_taxon_35(self):
         self.assertEqual(
-            small_test(
-                "Neptunia gracilis (Torr. & A. Gray ex A. Gray) W.A. Weber & A. Love"
-            ),
+            test("Neptunia gracilis (Torr. & A. Gray ex A. Gray) W.A. Weber & A. Love"),
             [
                 Taxon(
                     taxon="Neptunia gracilis",
@@ -601,7 +596,7 @@ class TestTaxon(unittest.TestCase):
 
     def test_taxon_36(self):
         self.assertEqual(
-            full_test(
+            test(
                 """
                 Neptunia gracilis (Heller) Chuang & Heckard
                 ssp. varia (Heller) Chuang & Heckard

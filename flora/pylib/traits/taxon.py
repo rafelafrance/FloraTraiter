@@ -387,7 +387,7 @@ def taxon_auth_patterns():
         "linnaeus": {"ENT_TYPE": "linnaeus"},
         "taxon": {"ENT_TYPE": "taxon"},
         "_": {"TEXT": {"IN": list(":._;,")}},
-        "id_no": {"LOWER": {"REGEX": r"^(\w*\d+\w*|[A-Za-z])$"}},
+        "id_num": {"LOWER": {"REGEX": r"^(\w*\d+\w*|[A-Za-z])$"}},
     }
 
     return [
@@ -424,8 +424,8 @@ def taxon_auth_patterns():
             on_match=reject_match.REJECT_MATCH,
             decoder=decoder,
             patterns=[
-                "taxon auth      id_no",
-                "taxon auth auth id_no",
+                "taxon auth      id_num",
+                "taxon auth auth id_num",
             ],
         ),
     ]
