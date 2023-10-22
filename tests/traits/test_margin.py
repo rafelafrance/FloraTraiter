@@ -1,77 +1,73 @@
 import unittest
 
-from tests.setup import small_test
+from flora.pylib.traits.margin import Margin
+from flora.pylib.traits.subpart import Subpart
+from tests.setup import test
 
 
 class TestMargin(unittest.TestCase):
-    def test_margin_00(self):
-        small_test(
-            """margins coarsely toothed or remotely sinuate-dentate to serrate,"""
-        )
-
     def test_margin_01(self):
         self.assertEqual(
-            small_test("margin shallowly undulate-crenate"),
+            test("margin shallowly undulate-crenate"),
             [
-                {"subpart": "margin", "trait": "subpart", "start": 0, "end": 6},
-                {
-                    "margin": "undulate-crenate",
-                    "trait": "margin",
-                    "subpart": "margin",
-                    "start": 7,
-                    "end": 33,
-                },
+                Subpart(subpart="margin", trait="subpart", start=0, end=6),
+                Margin(
+                    margin="undulate-crenate",
+                    trait="margin",
+                    subpart="margin",
+                    start=7,
+                    end=33,
+                ),
             ],
         )
 
     def test_margin_02(self):
+        """It removes unattached margins."""
         self.assertEqual(
-            small_test("reniform, undulate-margined"),
+            test("reniform, undulate-margined"),
             [],
         )
 
     def test_margin_03(self):
         self.assertEqual(
-            small_test("margins thickened-corrugated"),
+            test("margins thickened-corrugated"),
             [
-                {"subpart": "margin", "trait": "subpart", "start": 0, "end": 7},
-                {
-                    "margin": "corrugated",
-                    "trait": "margin",
-                    "subpart": "margin",
-                    "start": 8,
-                    "end": 28,
-                },
+                Subpart(subpart="margin", trait="subpart", start=0, end=7),
+                Margin(
+                    margin="corrugated",
+                    trait="margin",
+                    subpart="margin",
+                    start=8,
+                    end=28,
+                ),
             ],
         )
 
     def test_margin_04(self):
         self.assertEqual(
-            small_test(
-                "margins coarsely toothed or remotely sinuate-dentate to serrate,"
-            ),
+            test("margins coarsely toothed or remotely sinuate-dentate to serrate,"),
             [
-                {"subpart": "margin", "trait": "subpart", "start": 0, "end": 7},
-                {
-                    "margin": "toothed",
-                    "trait": "margin",
-                    "subpart": "margin",
-                    "start": 8,
-                    "end": 24,
-                },
-                {
-                    "margin": "sinuate-dentate",
-                    "trait": "margin",
-                    "subpart": "margin",
-                    "start": 28,
-                    "end": 52,
-                },
-                {
-                    "margin": "serrate",
-                    "trait": "margin",
-                    "subpart": "margin",
-                    "start": 56,
-                    "end": 63,
-                },
+                Subpart(subpart="margin", trait="subpart", start=0, end=7),
+                Margin(
+                    margin="toothed",
+                    trait="margin",
+                    subpart="margin",
+                    start=8,
+                    end=24,
+                ),
+                Margin(
+                    margin="sinuate-dentate",
+                    trait="margin",
+                    subpart="margin",
+                    start=28,
+                    end=52,
+                ),
+                Margin(
+                    margin="serrate",
+                    trait="margin",
+                    subpart="margin",
+                    start=56,
+                    end=63,
+                ),
             ],
         )

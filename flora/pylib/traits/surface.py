@@ -10,48 +10,50 @@ from traiter.pylib.pipes import add
 
 from .linkable import Linkable
 
-SURFACE_CSV = Path(__file__).parent / "terms" / "surface_terms.csv"
-REPLACE = term_util.term_data(SURFACE_CSV, "replace")
-
-
-def build(nlp: Language):
-    add.term_pipe(nlp, name="surface_terms", path=SURFACE_CSV)
-    add.trait_pipe(nlp, name="surface_patterns", compiler=surface_patterns())
-    add.cleanup_pipe(nlp, name="surface_cleanup")
-
-
-def surface_patterns():
-    return [
-        Compiler(
-            label="surface",
-            on_match="surface_match",
-            keep="surface",
-            decoder={
-                "-": {"TEXT": {"IN": t_const.DASH}},
-                "surface": {"ENT_TYPE": "surface_term"},
-                "surface_leader": {"ENT_TYPE": "surface_leader"},
-            },
-            patterns=[
-                "                  surface",
-                "surface_leader -? surface",
-            ],
-        ),
-    ]
-
 
 @dataclass
 class Surface(Linkable):
+    # Class vars ----------
+    surface_csv = Path(__file__).parent / "terms" / "surface_terms.csv"
+    replace = term_util.term_data(surface_csv, "replace")
+    # ---------------------
+
     surface: str = None
+
+    @classmethod
+    def pipe(cls, nlp: Language):
+        add.term_pipe(nlp, name="surface_terms", path=cls.surface_csv)
+        add.trait_pipe(nlp, name="surface_patterns", compiler=cls.surface_patterns())
+        add.cleanup_pipe(nlp, name="surface_cleanup")
+
+    @classmethod
+    def surface_patterns(cls):
+        return [
+            Compiler(
+                label="surface",
+                on_match="surface_match",
+                keep="surface",
+                decoder={
+                    "-": {"TEXT": {"IN": t_const.DASH}},
+                    "surface": {"ENT_TYPE": "surface_term"},
+                    "surface_leader": {"ENT_TYPE": "surface_leader"},
+                },
+                patterns=[
+                    "                  surface",
+                    "surface_leader -? surface",
+                ],
+            ),
+        ]
 
     @classmethod
     def surface_match(cls, ent):
         surface = {}  # Dicts preserve order sets do not
         for token in ent:
             if token._.term == "surface_term" and token.text != "-":
-                word = REPLACE.get(token.lower_, token.lower_)
+                word = cls.replace.get(token.lower_, token.lower_)
                 surface[word] = 1
         surface = " ".join(surface)
-        surface = REPLACE.get(surface, surface)
+        surface = cls.replace.get(surface, surface)
         return cls.from_ent(ent, surface=surface)
 
 

@@ -1,18 +1,18 @@
 import unittest
 
 from flora.pylib.traits.job import Job
-from tests.setup import full_test
+from tests.setup import test
 
 
 class TestDeterminer(unittest.TestCase):
     def test_determiner_01(self):
         """It gets a multiple name notations."""
         self.assertEqual(
-            full_test("""Det;; N. H Russell 195"""),
+            test("""Det;; N. H Russell 195"""),
             [
                 Job(
                     trait="job",
-                    id_no="195",
+                    id_num="195",
                     name="N. H Russell",
                     job="determiner",
                     start=0,
@@ -24,7 +24,7 @@ class TestDeterminer(unittest.TestCase):
     def test_determiner_02(self):
         """It gets a multiple name notations."""
         self.assertEqual(
-            full_test("""Det. Carter Rosston & Allan Nelson"""),
+            test("""Det. Carter Rosston & Allan Nelson"""),
             [
                 Job(
                     trait="job",
@@ -39,7 +39,7 @@ class TestDeterminer(unittest.TestCase):
     def test_determiner_03(self):
         """It gets lower case name parts."""
         self.assertEqual(
-            full_test("""det. H. van der Werff & G. McPherson"""),
+            test("""det. H. van der Werff & G. McPherson"""),
             [
                 Job(
                     trait="job",
@@ -53,7 +53,7 @@ class TestDeterminer(unittest.TestCase):
 
     def test_determiner_04(self):
         self.assertEqual(
-            full_test(
+            test(
                 """
                 Reveal
                 det. James L. Reveal 1971 =
@@ -63,7 +63,7 @@ class TestDeterminer(unittest.TestCase):
                 Job(
                     trait="job",
                     name="James L. Reveal",
-                    id_no="1971",
+                    id_num="1971",
                     job="determiner",
                     start=7,
                     end=32,

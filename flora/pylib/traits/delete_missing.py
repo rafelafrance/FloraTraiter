@@ -36,7 +36,7 @@ class DeleteMissing:
                 continue
 
             if ent.label_ in self.check:
-                data = ent._.trait.as_dict()
+                data = ent._.trait.clean_dict()
                 is_missing = set(data.keys()) & self.missing_set
                 if not is_missing:
                     self.clear_tokens(ent)

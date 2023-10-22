@@ -1,20 +1,21 @@
 import unittest
 
-from flora.pylib.traits.misc import Misc
-from flora.pylib.traits.numeric import Count
+from flora.pylib.traits.count import Count
 from flora.pylib.traits.part import Part
+from flora.pylib.traits.sex import Sex
 from flora.pylib.traits.shape import Shape
 from flora.pylib.traits.surface import Surface
 from flora.pylib.traits.taxon import Taxon
-from tests.setup import small_test
+from flora.pylib.traits.woodiness import Woodiness
+from tests.setup import test
 
 
 class TestPart(unittest.TestCase):
     def test_part_01(self):
         self.assertEqual(
-            small_test("with thick, woody rootstock."),
+            test("with thick, woody rootstock."),
             [
-                Misc(
+                Woodiness(
                     woodiness="woody",
                     trait="woodiness",
                     part="rootstock",
@@ -33,7 +34,7 @@ class TestPart(unittest.TestCase):
 
     def test_part_02(self):
         self.assertEqual(
-            small_test("leaflets mostly 1 or 3"),
+            test("leaflets mostly 1 or 3"),
             [
                 Part(part="leaflet", trait="part", type="leaf_part", start=0, end=8),
                 Count(
@@ -49,7 +50,7 @@ class TestPart(unittest.TestCase):
 
     def test_part_03(self):
         self.assertEqual(
-            small_test("Receptacle discoid."),
+            test("Receptacle discoid."),
             [
                 Part(
                     part="receptacle",
@@ -70,7 +71,7 @@ class TestPart(unittest.TestCase):
 
     def test_part_04(self):
         self.assertEqual(
-            small_test("Flowers: sepals (pistillate)"),
+            test("Flowers: sepals (pistillate)"),
             [
                 Part(part="flower", trait="part", type="flower_part", start=0, end=7),
                 Part(
@@ -81,13 +82,13 @@ class TestPart(unittest.TestCase):
                     end=15,
                     sex="pistillate",
                 ),
-                Misc(sex="pistillate", trait="sex", start=16, end=28),
+                Sex(sex="pistillate", trait="sex", start=16, end=28),
             ],
         )
 
     def test_part_05(self):
         self.assertEqual(
-            small_test("Flowers: staminate:"),
+            test("Flowers: staminate:"),
             [
                 Part(
                     part="flower",
@@ -96,7 +97,7 @@ class TestPart(unittest.TestCase):
                     start=0,
                     end=7,
                 ),
-                Misc(
+                Sex(
                     sex="staminate",
                     trait="sex",
                     start=9,
@@ -107,7 +108,7 @@ class TestPart(unittest.TestCase):
 
     def test_part_06(self):
         self.assertEqual(
-            small_test("Heads more than 2-flowered"),
+            test("Heads more than 2-flowered"),
             [
                 Part(
                     part="head",
@@ -129,18 +130,19 @@ class TestPart(unittest.TestCase):
 
     def test_part_07(self):
         self.assertEqual(
-            small_test("Phyllodes glaucous"),
+            test("Phyllodes glaucous"),
             [
-                Taxon(part="phyllode", trait="leaf_part", start=0, end=9),
+                Taxon(taxon="Phyllodes glaucous", start=0, end=9),
             ],
         )
 
     def test_part_08(self):
+        self.maxDiff = None
         self.assertEqual(
-            small_test("""stems and lf-axes hispid"""),
+            test("""stems and lf-axes hispid"""),
             [
                 Part(
-                    trait="multiple_parts",
+                    trait="part",
                     start=0,
                     end=17,
                     part=["stem", "leaf-axis"],
@@ -157,13 +159,15 @@ class TestPart(unittest.TestCase):
 
     def test_part_09(self):
         self.assertEqual(
-            small_test("""no paraphyllidia"""),
+            test("""no paraphyllidia"""),
             [
                 Part(
                     end=16,
                     part="no paraphyllidia",
+                    type="plant_part",
                     start=0,
-                    trait="missing_part",
+                    trait="part",
+                    missing=True,
                 ),
             ],
         )

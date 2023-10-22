@@ -5,8 +5,9 @@ from traiter.pylib import term_util
 from traiter.pylib.spell_well import SpellWell
 
 from flora.pylib.label import Label
-from flora.pylib.pipelines import full_pipeline
 from flora.pylib.traits import terms as p_terms
+
+from . import pipeline
 
 
 class Labels:
@@ -16,7 +17,7 @@ class Labels:
         self.length_cutoff: int = 0
         self.score_cutoff: int = 0
 
-        self.nlp = full_pipeline.build()
+        self.nlp = pipeline.build()
 
         self.image_paths = self.get_image_paths(args)
 

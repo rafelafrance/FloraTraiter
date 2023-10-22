@@ -1,52 +1,121 @@
 label,pattern,replace,type
-part,apocarpus,apocarpus,female_flower_part
-part,carpellate,carpellate,female_flower_part
-part,compound pistil,compound pistil,female_flower_part
-part,funicle,funicle,female_flower_part
-part,funicles,funicle,female_flower_part
-part,funiculus,funiculus,female_flower_part
-part,gynoecia,carpel,female_flower_part
-part,gynoecium,carpel,female_flower_part
-part,locule,locule,female_flower_part
-part,loculus,loculus,female_flower_part
-part,multicarpellate,multicarpellate,female_flower_part
-part,ovaries,ovary,female_flower_part
-part,ovary,ovary,female_flower_part
-part,ovule,ovary,female_flower_part
-part,ovules,ovary,female_flower_part
-part,pistil,pistil,female_flower_part
-part,pistillode,pistil,female_flower_part
-part,pistillodes,pistil,female_flower_part
-part,pistils,carpel,female_flower_part
-part,placenta,placenta,female_flower_part
-part,seed-funicle,seed-funicle,female_flower_part
-part,septa,septum,female_flower_part
-part,septum,septum,female_flower_part
-part,stigma,stigma,female_flower_part
-part,stigmas,stigma,female_flower_part
-part,unicarpellate,unicarpellate,female_flower_part
+bad_part,plant atlas,,bad_part
+bad_part,plant inventory,,bad_part
+bad_part,plants atlas,,bad_part
+bad_part,plants inventory,,bad_part
+bad_part,plants of,,bad_part
 part,acephalous,corona,flower_part
+part,achaenocarp,achaenocarp,fruit_part
+part,achene,achene,fruit_part
+part,achenes,achene,fruit_part
 part,achlamydeous,achlamydeous,flower_part
+part,acutangular,acutangular,plant_part
+part,adelphous,adelphous,male_flower_part
+part,androecia,stamen,male_flower_part
+part,androecium,stamen,male_flower_part
+part,anthela,anthela,inflorescence
+part,anther,anther,male_flower_part
+part,anthers,anther,male_flower_part
 part,apetalous,apetalous,flower_part
+part,apocarpus,apocarpus,female_flower_part
+part,bark,bark,plant_part
+part,bathyphyll,bathyphyll,leaf_part
+part,beak,beak,fruit_part
+part,beaks,beak,fruit_part
+part,beltian bodies,beltian body,plant_part
+part,beltian body,beltian body,plant_part
+part,berries,berry,fruit_part
+part,berry,berry,fruit_part
+part,blade,leaf,leaf_part
+part,blades,leaf,leaf_part
+part,bostryx,bostryx,inflorescence
+part,brachyblast,brachyblast,plant_part
 part,bract,bract,flower_part
+part,bracteole,bract,flower_part
+part,bracteoles,bract,flower_part
+part,bractlet,bract,flower_part
+part,bractlets,bract,flower_part
+part,bracts,bract,flower_part
+part,branch,branch,plant_part
+part,branches,branch,plant_part
+part,branchlet,branch,plant_part
+part,branchlets,branch,plant_part
+part,bud,bud,plant_part
+part,buds,bud,plant_part
+part,calathid,calathid,inflorescence
 part,calyces,calyx,flower_part
 part,calyx,calyx,flower_part
+part,capitula,capitulum,inflorescence
+part,capitulum,capitulum,inflorescence
+part,capsule,capsule,fruit_part
+part,capsules,capsule,fruit_part
 part,carpel,carpel,flower_part
+part,carpellate,carpellate,female_flower_part
 part,carpels,carpel,flower_part
+part,caryopsis,caryopsis,fruit_part
+part,catkin,catkin,inflorescence
+part,catkins,catkin,inflorescence
+part,caudex,caudex,plant_part
+part,caudices,caudex,plant_part
+part,cincinnus,cincinnus,inflorescence
+part,circumscissile,circumscissile,fruit_part
+part,cladode,cladode,plant_part
+part,cladophyll,cladophyll,plant_part
 part,claw,claw,flower_part
 part,claws,claw,flower_part
+part,column,column,plant_part
+part,columned,column,plant_part
+part,compound capitulum,compound capitulum,inflorescence
+part,compound pistil,compound pistil,female_flower_part
+part,compound raceme,compound raceme,inflorescence
+part,compound spike,compound spike,inflorescence
+part,compound spikes,compound spikes,inflorescence
+part,compound umbel,compound umbel,inflorescence
+part,connective,connective,male_flower_part
+part,corm,corm,plant_part
 part,corolla,corolla,flower_part
 part,corollas,corolla,flower_part
 part,corona,corona,flower_part
 part,coronas,coronas,flower_part
+part,cortex,,plant_part
+part,corymb,corymb,inflorescence
+part,costate,rib,leaf_part
+part,cotyledon,cotyledon,fruit_part
+part,cotyledons,cotyledon,fruit_part
+part,craspedium,craspedium,plant_part
+part,cyathium,cyathium,inflorescence
+part,cyme,cyme,inflorescence
+part,cymes,cyme,inflorescence
+part,cymose corymb,cymose corymb,inflorescence
+part,dehiscent,dehiscent,fruit_part
+part,diadelphous,diadelphous,male_flower_part
+part,dichasium,dichasium,inflorescence
+part,didynamous,didynamous,male_flower_part
 part,disc,disk,flower_part
 part,discs,disk,flower_part
 part,disk,disk,flower_part
 part,disks,disk,flower_part
+part,double cyme ,double cyme,inflorescence
+part,double umbel,double umbel,inflorescence
+part,drepanium,drepanium,inflorescence
+part,drupe,drupe,fruit_part
+part,drupes,drupes,fruit_part
+part,endocarp,endocarp,fruit_part
+part,endodermis,,plant_part
 part,epicalyces,epicalyx,flower_part
 part,epicalyx,epicalyx,flower_part
+part,epidermis,,plant_part
+part,epipetalous,epipetalous,male_flower_part
+part,exocarp,exocarp,fruit_part
+part,exserted,exserted,male_flower_part
+part,false spike,false spike,inflorescence
+part,fascicle,fascicle,plant_part
+part,fascicles,fascicles,inflorescence
+part,filament,filament,male_flower_part
+part,filaments,filament,male_flower_part
 part,fl,flower,flower_part
 part,fl-buds,flower-buds,flower_part
+part,fl-spikes,flower-spikes,inflorescence
 part,fld,flowered,flower_part
 part,floral axis,floral axis,flower_part
 part,floral bracts,bract,flower_part
@@ -61,161 +130,61 @@ part,flowering stem,flowering stem,flower_part
 part,flowering stems,flowering stem,flower_part
 part,flowers,flower,flower_part
 part,fls,flower,flower_part
-part,hypanthia,hypanthium,flower_part
-part,hypanthium,hypanthium,flower_part
-part,intemode,intemode,flower_part
-part,keel,keel,flower_part
-part,keels,keel,flower_part
-part,nectar disk,nectar disk,flower_part
-part,nectaries,nectary,flower_part
-part,nectary,nectary,flower_part
-part,pedicel,pedicel,flower_part
-part,pedicels,pedicel,flower_part
-part,peduncle,peduncle,flower_part
-part,peduncles,peduncle,flower_part
-part,perianth,perianth,flower_part
-part,petal,petal,flower_part
-part,petals,petal,flower_part
-part,receptacle,receptacle,flower_part
-part,sepal,sepal,flower_part
-part,sepals,sepal,flower_part
-part,tepal,tepal,flower_part
-part,tepals,tepal,flower_part
-part,achaenocarp,achaenocarp,fruit_part
-part,achene,achene,fruit_part
-part,achenes,achene,fruit_part
-part,beak,beak,fruit_part
-part,beaks,beak,fruit_part
-part,berries,berry,fruit_part
-part,berry,berry,fruit_part
-part,capsule,capsule,fruit_part
-part,capsules,capsule,fruit_part
-part,caryopsis,caryopsis,fruit_part
-part,circumscissile,circumscissile,fruit_part
-part,cotyledon,cotyledon,fruit_part
-part,cotyledons,cotyledon,fruit_part
-part,dehiscent,dehiscent,fruit_part
-part,drupe,drupe,fruit_part
-part,drupes,drupes,fruit_part
-part,endocarp,endocarp,fruit_part
-part,exocarp,exocarp,fruit_part
+part,foliage,foliage,leaf_part
 part,fr,fruit,fruit_part
 part,fr.,fruit,fruit_part
 part,fruit,fruit,fruit_part
 part,fruiting perianth,perianth,fruit_part
 part,fruits,fruit,fruit_part
-part,hilum,hilum,fruit_part
-part,indehiscent,indehiscent,fruit_part
-part,infructescence,infructescence,fruit_part
-part,infructescences,infructescence,fruit_part
-part,legume,legume,fruit_part
-part,legumes,legume,fruit_part
-part,mesocarp,mesocarp,fruit_part
-part,nut,nut,fruit_part
-part,nutlet,nutlet,fruit_part
-part,nutlets,nutlet,fruit_part
-part,nuts,nut,fruit_part
-part,pepo,pepo,fruit_part
-part,pepos,pepo,fruit_part
-part,pericarp,pericarp,fruit_part
-part,pleurogram,pleurogram,fruit_part
-part,pod,pod,fruit_part
-part,pods,pod,fruit_part
-part,pome,pome,fruit_part
-part,pomes,pome,fruit_part
-part,pyrena,pyrena,fruit_part
-part,replum,replum,fruit_part
-part,samara,samara,fruit_part
-part,samaras,fruit,fruit_part
-part,sarcotesta,sarcotesta,fruit_part
-part,sclerotesta,sclerotesta,fruit_part
-part,seed,seed,fruit_part
-part,seed-testa,testa,fruit_part
-part,seedpod,seedpod,fruit_part
-part,seedpods,seedpod,fruit_part
-part,seeds,seed,fruit_part
-part,suture,suture,fruit_part
-part,syncarp,syncarp,fruit_part
-part,testa,testa,fruit_part
-part,utricle ,utricle,fruit_part
-part,anthela,anthela,inflorescence
-part,bostryx,bostryx,inflorescence
-part,calathid,calathid,inflorescence
-part,capitula,capitulum,inflorescence
-part,capitulum,capitulum,inflorescence
-part,catkin,catkin,inflorescence
-part,catkins,catkin,inflorescence
-part,cincinnus,cincinnus,inflorescence
-part,compound capitulum,compound capitulum,inflorescence
-part,compound raceme,compound raceme,inflorescence
-part,compound spike,compound spike,inflorescence
-part,compound spikes,compound spikes,inflorescence
-part,compound umbel,compound umbel,inflorescence
-part,corymb,corymb,inflorescence
-part,cyathium,cyathium,inflorescence
-part,cyme,cyme,inflorescence
-part,cymes,cyme,inflorescence
-part,cymose corymb,cymose corymb,inflorescence
-part,dichasium,dichasium,inflorescence
-part,double cyme ,double cyme,inflorescence
-part,double umbel,double umbel,inflorescence
-part,drepanium,drepanium,inflorescence
-part,false spike,false spike,inflorescence
-part,fascicles,fascicles,inflorescence
-part,fl-spikes,flower-spikes,inflorescence
+part,funicle,funicle,female_flower_part
+part,funicles,funicle,female_flower_part
+part,funiculus,funiculus,female_flower_part
 part,glomerule,glomerule,inflorescence
 part,glomerules,glomerule,inflorescence
+part,gynandrium,gynandrium,male_flower_part
+part,gynoecia,carpel,female_flower_part
+part,gynoecium,carpel,female_flower_part
+part,gynostegium,gynostegium,male_flower_part
 part,head,head,inflorescence
 part,heads,head,inflorescence
 part,heterothetic,heterothetic,inflorescence
+part,hilum,hilum,fruit_part
 part,homeothetic,homeothetic,inflorescence
+part,hypanthia,hypanthium,flower_part
+part,hypanthium,hypanthium,flower_part
+part,indehiscent,indehiscent,fruit_part
+part,indumenta,indumentum,plant_part
+part,indumentum,indumentum,plant_part
+part,indumentums,indumentum,plant_part
 part,inflorescence,inflorescence,inflorescence
 part,inflorescence-axes,inflorescence-axes,inflorescence
 part,inflorescences,inflorescence,inflorescence
 part,inflorescenses,inflorescence,inflorescence
-part,monochasium,monochasium,inflorescence
-part,panicle,panicle,inflorescence
-part,panicles,panicle,inflorescence
-part,pseudoraceme,pseudoraceme,inflorescence
-part,pseudoracemes,pseudoraceme,inflorescence
-part,raceme,raceme,inflorescence
-part,racemes,raceme,inflorescence
-part,rhipidium,rhipidium,inflorescence
-part,solitary,solitary,inflorescence
-part,spadix,spadix,inflorescence
-part,spica,spica,inflorescence
-part,spike,spike,inflorescence
-part,spikes,spikes,inflorescence
-part,syconium,syconium,inflorescence
-part,thyrse,thyrse,inflorescence
-part,thyrsoid,thyrsoid,inflorescence
-part,triple umbel,triple umbel,inflorescence
-part,umbel,umbel,inflorescence
-part,umbels,umbel,inflorescence
-part,verticil,verticil,inflorescence
-part,verticillaster,verticillaster,inflorescence
-part,bathyphyll,bathyphyll,leaf_part
-part,blade,leaf,leaf_part
-part,blades,leaf,leaf_part
-part,bracteole,bract,leaf_part
-part,bracteoles,bract,leaf_part
-part,bractlet,bract,leaf_part
-part,bractlets,bract,leaf_part
-part,bracts,bract,leaf_part
-part,costate,rib,leaf_part
-part,foliage,foliage,leaf_part
+part,infructescence,infructescence,fruit_part
+part,infructescences,infructescence,fruit_part
+part,intemode,intemode,flower_part
+part,interfoliolar segment,interfoliolar segment,plant_part
+part,interfoliolar segments,interfoliolar segment,plant_part
+part,interpetiolar segments,interpetiolar segment,plant_part
+part,interpinnal segment,interpinnal segment,plant_part
+part,interpinnal segments,interpinnal segment,plant_part
+part,introrse,introrse,male_flower_part
+part,keel,keel,flower_part
+part,keels,keel,flower_part
 part,lamina,lamina,leaf_part
-part,leaf,leaf,leaf_part
+part,leaf axes,leaf-axis,leaf_part
 part,leaf axis,leaf-axis,leaf_part
 part,leaf blade,leaf,leaf_part
 part,leaf blades,leaf,leaf_part
+part,leaf,leaf,leaf_part
+part,leaf-axes,leaf-axis,leaf_part
 part,leaf-axis,leaf-axis,leaf_part
 part,leaf-bracteate,leaf-bracteate,leaf_part
 part,leaf-stalk,leaf-stalk,leaf_part
 part,leaf-stalks,leaf-stalk,leaf_part
-part,leaflet,leaflet,leaf_part
 part,leaflet blade,leaflet,leaf_part
 part,leaflet blades,leaflet,leaf_part
+part,leaflet,leaflet,leaf_part
 part,leaflet-pair,leaflet,leaf_part
 part,leaflet-pairs,leaflet,leaf_part
 part,leaflets,leaflet,leaf_part
@@ -223,6 +192,10 @@ part,leafstalk,leaf-stalk,leaf_part
 part,leafstalks,leaf-stalk,leaf_part
 part,leaved,,leaf_part
 part,leaves,leaf,leaf_part
+part,legume,legume,fruit_part
+part,legumes,legume,fruit_part
+part,lenticel,lenticel,plant_part
+part,lenticels,lenticel,plant_part
 part,lf,leaf,leaf_part
 part,lf-axes,leaf-axis,leaf_part
 part,lf-axis,leaf-axis,leaf_part
@@ -235,132 +208,146 @@ part,lfstks,leaf-stalk,leaf_part
 part,lft,leaflet,leaf_part
 part,lfts,leaflet,leaf_part
 part,ligule,ligule,leaf_part
+part,locule,locule,female_flower_part
+part,loculus,loculus,female_flower_part
 part,lvd,leaved,leaf_part
 part,lvs,leaf,leaf_part
+part,mesocarp,mesocarp,fruit_part
+part,mid-stem,,plant_part
+part,monadelphous,monadelphous,male_flower_part
+part,monochasium,monochasium,inflorescence
+part,monodelphous,monodelphous,male_flower_part
+part,multicarpellate,multicarpellate,female_flower_part
+part,nectar disk,nectar disk,flower_part
+part,nectaries,nectary,flower_part
+part,nectary,nectary,flower_part
+part,non-flowering branch,branch,plant_part
+part,non-flowering branches,branch,plant_part
+part,non-flowering stem,stem,plant_part
+part,non-flowering stems,stem,plant_part
+part,nut,nut,fruit_part
+part,nutlet,nutlet,fruit_part
+part,nutlets,nutlet,fruit_part
+part,nuts,nut,fruit_part
+part,ovaries,ovary,female_flower_part
+part,ovary,ovary,female_flower_part
+part,ovule,ovary,female_flower_part
+part,ovules,ovary,female_flower_part
+part,pachycaul,,plant_part
+part,panicle,panicle,inflorescence
+part,panicles,panicle,inflorescence
+part,paraphyllidia,paraphyllidia,plant_part
+part,pedicel,pedicel,flower_part
+part,pedicels,pedicel,flower_part
+part,peduncle,peduncle,flower_part
+part,peduncles,peduncle,flower_part
+part,pepo,pepo,fruit_part
+part,pepos,pepo,fruit_part
+part,perianth,perianth,flower_part
+part,pericarp,pericarp,fruit_part
 part,perigonium,perianth,leaf_part
-part,petiole,petiole,leaf_part
+part,petal,petal,flower_part
+part,petals,petal,flower_part
 part,petiole blade,petiole,leaf_part
 part,petiole blades,petiole,leaf_part
+part,petiole,petiole,leaf_part
 part,petioles,petiole,leaf_part
 part,petiolule,petiolule,leaf_part
 part,petiolules,petiolule,leaf_part
 part,phyllode,phyllode,leaf_part
 part,phyllodes,phyllode,leaf_part
 part,pinna,pinna,leaf_part
+part,pinna-rachis,pinna-rachis,plant_part
+part,pinna-rachises,pinna-rachis,plant_part
 part,pinnae,pinnae,leaf_part
 part,pinnule,pinnule,leaf_part
 part,pinnules,pinnule,leaf_part
+part,pistil,pistil,female_flower_part
+part,pistillode,pistil,female_flower_part
+part,pistillodes,pistil,female_flower_part
+part,pistils,carpel,female_flower_part
+part,pith,pith,plant_part
+part,placenta,placenta,female_flower_part
+part,plant,plant,plant_part
+part,plants,plant,plant_part
+part,pleurogram,pleurogram,fruit_part
+part,pod,pod,fruit_part
+part,pods,pod,fruit_part
+part,pollen sac,pollen sac,male_flower_part
+part,pollen sacs,pollen sac,male_flower_part
+part,pollen,pollen,male_flower_part
+part,pome,pome,fruit_part
+part,pomes,pome,fruit_part
+part,poricidal,poricidal,male_flower_part
+part,pseudoraceme,pseudoraceme,inflorescence
+part,pseudoracemes,pseudoraceme,inflorescence
 part,pulvini,pulvini,leaf_part
 part,pulvinule,pulvinule,leaf_part
 part,pulvinules,pulvinule,leaf_part
 part,pulvinus,pulvinus,leaf_part
-part,shade-leaf,leaf,leaf_part
-part,shade-leaves,leaf,leaf_part
-part,sheath,sheath,leaf_part
-part,sheaves,sheaves,leaf_part
-part,stipel,stipel,leaf_part
-part,stipels,stipels,leaf_part
-part,stipular spines,,leaf_part
-part,stipule,stipule,leaf_part
-part,stipules,stipule,leaf_part
-part,stipuloid,stipuloid,leaf_part
-part,adelphous,adelphous,male_flower_part
-part,androecia,stamen,male_flower_part
-part,androecium,stamen,male_flower_part
-part,anther,anther,male_flower_part
-part,anthers,anther,male_flower_part
-part,connective,connective,male_flower_part
-part,diadelphous,diadelphous,male_flower_part
-part,didynamous,didynamous,male_flower_part
-part,epipetalous,epipetalous,male_flower_part
-part,exserted,exserted,male_flower_part
-part,filament,filament,male_flower_part
-part,filaments,filament,male_flower_part
-part,gynandrium,gynandrium,male_flower_part
-part,gynostegium,gynostegium,male_flower_part
-part,introrse,introrse,male_flower_part
-part,monadelphous,monadelphous,male_flower_part
-part,monodelphous,monodelphous,male_flower_part
-part,pollen,pollen,male_flower_part
-part,pollen sac,pollen sac,male_flower_part
-part,pollen sacs,pollen sac,male_flower_part
-part,poricidal,poricidal,male_flower_part
-part,stamen,stamen,male_flower_part
-part,stamens,stamen,male_flower_part
-part,staminode,stamen,male_flower_part
-part,staminodes,stamen,male_flower_part
-part,staminodia,staminodia,male_flower_part
-part,staminodial,staminodial,male_flower_part
-part,syngenesious,syngenesious,male_flower_part
-part,tetradynamous,tetradynamous,male_flower_part
-part,translator,translator,male_flower_part
-part,trinucleate,trinucleate,male_flower_part
-part,versatile,versatile,male_flower_part
-part,acutangular,acutangular,plant_part
-part,bark,bark,plant_part
-part,beltian bodies,beltian body,plant_part
-part,beltian body,beltian body,plant_part
-part,brachyblast,brachyblast,plant_part
-part,branch,branch,plant_part
-part,branches,branch,plant_part
-part,branchlet,branch,plant_part
-part,branchlets,branch,plant_part
-part,bud,bud,plant_part
-part,buds,bud,plant_part
-part,caudex,caudex,plant_part
-part,caudices,caudex,plant_part
-part,cladode,cladode,plant_part
-part,cladophyll,cladophyll,plant_part
-part,column,column,plant_part
-part,columned,column,plant_part
-part,corm,corm,plant_part
-part,cortex,,plant_part
-part,craspedium,craspedium,plant_part
-part,endodermis,,plant_part
-part,epidermis,,plant_part
-part,fascicle,fascicle,plant_part
-part,indumenta,indumentum,plant_part
-part,indumentum,indumentum,plant_part
-part,indumentums,indumentum,plant_part
-part,interfoliolar segment,interfoliolar segment,plant_part
-part,interfoliolar segments,interfoliolar segment,plant_part
-part,interpetiolar segments,interpetiolar segment,plant_part
-part,interpinnal segment,interpinnal segment,plant_part
-part,interpinnal segments,interpinnal segment,plant_part
-part,lenticel,lenticel,plant_part
-part,lenticels,lenticel,plant_part
-part,mid-stem,,plant_part
-part,non-flowering branch,branch,plant_part
-part,non-flowering branches,branch,plant_part
-part,non-flowering stem,stem,plant_part
-part,non-flowering stems,stem,plant_part
-part,pachycaul,,plant_part
-part,paraphyllidia,paraphyllidia,plant_part
-part,pinna-rachis,pinna-rachis,plant_part
-part,pinna-rachises,pinna-rachis,plant_part
-part,pith,pith,plant_part
-part,plant,plant,plant_part
-part,plants,plant,plant_part
+part,pyrena,pyrena,fruit_part
+part,raceme,raceme,inflorescence
+part,racemes,raceme,inflorescence
 part,rachis,rachis,plant_part
+part,receptacle,receptacle,flower_part
+part,replum,replum,fruit_part
+part,rhipidium,rhipidium,inflorescence
 part,root,root,plant_part
 part,roots,root,plant_part
 part,rootstock,rootstock,plant_part
 part,rootstocks,rootstock,plant_part
 part,runner,runner,plant_part
 part,runners,runner,plant_part
+part,samara,samara,fruit_part
+part,samaras,fruit,fruit_part
+part,sarcotesta,sarcotesta,fruit_part
+part,sclerotesta,sclerotesta,fruit_part
+part,seed,seed,fruit_part
+part,seed-funicle,seed-funicle,female_flower_part
+part,seed-testa,testa,fruit_part
+part,seedpod,seedpod,fruit_part
+part,seedpods,seedpod,fruit_part
+part,seeds,seed,fruit_part
+part,sepal,sepal,flower_part
+part,sepals,sepal,flower_part
+part,septa,septum,female_flower_part
+part,septum,septum,female_flower_part
 part,set(ul)ae,set(ul)ae,plant_part
 part,setae,setae,plant_part
 part,setulae,setulae,plant_part
+part,shade-leaf,leaf,leaf_part
+part,shade-leaves,leaf,leaf_part
+part,sheath,sheath,leaf_part
+part,sheaves,sheaves,leaf_part
 part,shrub,shrub,plant_part
 part,shrubs,shrub,plant_part
+part,solitary,solitary,inflorescence
+part,spadix,spadix,inflorescence
+part,spica,spica,inflorescence
 part,spicule,spicule,plant_part
 part,spicules,spicule,plant_part
+part,spike,spike,inflorescence
+part,spikes,spikes,inflorescence
 part,stalk,stalk,plant_part
 part,stalks,stalk,plant_part
+part,stamen,stamen,male_flower_part
+part,stamens,stamen,male_flower_part
+part,staminode,stamen,male_flower_part
+part,staminodes,stamen,male_flower_part
+part,staminodia,staminodia,male_flower_part
+part,staminodial,staminodial,male_flower_part
 part,stem,stem,plant_part
 part,stems,stem,plant_part
+part,stigma,stigma,female_flower_part
+part,stigmas,stigma,female_flower_part
 part,stipe,stipe,plant_part
+part,stipel,stipel,leaf_part
+part,stipels,stipels,leaf_part
 part,stipes,stipe,plant_part
+part,stipular spines,,leaf_part
+part,stipule,stipule,leaf_part
+part,stipules,stipule,leaf_part
+part,stipuloid,stipuloid,leaf_part
 part,stk,stalk,plant_part
 part,stks,stalk,plant_part
 part,stock,rootstock,plant_part
@@ -368,116 +355,37 @@ part,stolon,stolon,plant_part
 part,stolons,stolons,plant_part
 part,subshrub,shrub,plant_part
 part,subshrubs,shrub,plant_part
+part,suture,suture,fruit_part
+part,syconium,syconium,inflorescence
+part,syncarp,syncarp,fruit_part
+part,syngenesious,syngenesious,male_flower_part
+part,tepal,tepal,flower_part
+part,tepals,tepal,flower_part
+part,testa,testa,fruit_part
+part,tetradynamous,tetradynamous,male_flower_part
+part,thyrse,thyrse,inflorescence
+part,thyrsoid,thyrsoid,inflorescence
+part,translator,translator,male_flower_part
 part,tree,tree,plant_part
 part,trees,tree,plant_part
+part,trinucleate,trinucleate,male_flower_part
+part,triple umbel,triple umbel,inflorescence
 part,trunk,trunk,plant_part
 part,trunks,trunk,plant_part
 part,twig,twig,plant_part
 part,twigs,twig,plant_part
+part,umbel,umbel,inflorescence
+part,umbels,umbel,inflorescence
 part,underbark,underbark,plant_part
-part_and,&,,part_and
-part_and,and,,part_and
-part_and,et,,part_and
-part_leader,alternate,,part_leader
-part_leader,primary,,part_leader
-part_leader,palmately,,part_leader
-part_leader,secondary,,part_leader
-subpart,aculei,aculei,subpart
-subpart,aculeoli,aculeolus,subpart
-subpart,aculeolus,aculeolus,subpart
-subpart,aculeus,aculeus,subpart
-subpart,anastomosing,anastomosing,subpart
-subpart,apex,apex,subpart
-subpart,apiculi,apiculus,subpart
-subpart,apiculus,apiculus,subpart
-subpart,appendix,appendix,subpart
-subpart,article,article,subpart
-subpart,articles,article,subpart
-subpart,axes,axis,subpart
-subpart,axil,axil,subpart
-subpart,axils,axil,subpart
-subpart,axis,axis,subpart
-subpart,base,base,subpart
-subpart,bases,base,subpart
-subpart,bilobed,bilobate,subpart
-subpart,bivalve,bivalve,subpart
-subpart,bivalves,bivalve,subpart
-subpart,bristle,setae,subpart
-subpart,bristles,setae,subpart
-subpart,callose,callose,subpart
-subpart,callous,callous,subpart
-subpart,cilia,cilia,subpart
-subpart,ciliolate,ciliolate,subpart
-subpart,crown,crown,subpart
-subpart,crowns,crown,subpart
-subpart,cusp,cusp,subpart
-subpart,dehiscence,dehiscence,subpart
-subpart,endosperm,endosperm,subpart
-subpart,flesh,flesh,subpart
-subpart,furcate,furcate,subpart
-subpart,gland,gland,subpart
-subpart,glands,gland,subpart
-subpart,groove,groove,subpart
-subpart,hair,hair,subpart
-subpart,hairs,hair,subpart
-subpart,horn,horn,subpart
-subpart,horns,horn,subpart
-subpart,intervenium,intervenium,subpart
-subpart,leaf axil,leaf-axil,subpart
-subpart,leaf-axil,leaf-axil,subpart
-subpart,lf-axil,leaf-axil,subpart
-subpart,limb,limb,subpart
-subpart,limbs,limb,subpart
-subpart,lobe,lobe,subpart
-subpart,lobes,lobe,subpart
-subpart,margin,margin,subpart
-subpart,margins,margin,subpart
-subpart,microphyll,microphyll,subpart
-subpart,microphyllidious,microphyllidious,subpart
-subpart,node,node,subpart
-subpart,orifice,orifice,subpart
-subpart,pili,pili,subpart
-subpart,pilus,hair,subpart
-subpart,pore,pore,subpart
-subpart,pores,pore,subpart
-subpart,primary axis,primary axis,subpart
-subpart,prominulous,prominulous,subpart
-subpart,rachilla,rachilla,subpart
-subpart,rachillae,rachilla,subpart
-subpart,ranked,ranked,subpart
-subpart,ray,ray,subpart
-subpart,rayed,ray,subpart
-subpart,rays,ray,subpart
-subpart,reticulum,reticulum,subpart
-subpart,rhachis,rhachis,subpart
-subpart,rim,rim,subpart
-subpart,scales,scales,subpart
-subpart,segment,segment,subpart
-subpart,sinus,sinus,subpart
-subpart,sinuses,sinus,subpart
-subpart,spine,spine,subpart
-subpart,spines,spine,subpart
-subpart,subcallose,subcallose,subpart
-subpart,sulci,sulcus,subpart
-subpart,sulcus,sulcus,subpart
-subpart,teeth,tooth,subpart
-subpart,tip,tip,subpart
-subpart,tips,tip,subpart
-subpart,trichome,trichome,subpart
-subpart,trichomes,trichome,subpart
-subpart,tube,tube,subpart
-subpart,tubes,tube,subpart
-subpart,valve,valve,subpart
-subpart,valves,valve,subpart
-subpart,venulation,venulation,subpart
-subpart,venule,vein,subpart
-subpart,venules,vein,subpart
-subpart,villi,villi,subpart
-subpart,villus,villus,subpart
-subpart,wing,wing,subpart
-subpart,wings,wing,subpart
-bad_part,plants of,,bad_part
-bad_part,plant atlas,,bad_part
-bad_part,plant inventory,,bad_part
-bad_part,plants atlas,,bad_part
-bad_part,plants inventory,,bad_part
+part,unicarpellate,unicarpellate,female_flower_part
+part,utricle ,utricle,fruit_part
+part,versatile,versatile,male_flower_part
+part,verticil,verticil,inflorescence
+part,verticillaster,verticillaster,inflorescence
+part_and,&,,
+part_and,and,,
+part_and,et,,
+part_leader,alternate,,
+part_leader,palmately,,
+part_leader,primary,,
+part_leader,secondary,,

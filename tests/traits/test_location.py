@@ -3,16 +3,14 @@ import unittest
 from flora.pylib.traits.location import Location
 from flora.pylib.traits.part import Part
 from flora.pylib.traits.surface import Surface
-from tests.setup import small_test
+from tests.setup import test
 
 
 class TestLocation(unittest.TestCase):
     def test_location_01(self):
         self.maxDiff = None
         self.assertEqual(
-            small_test(
-                """setose their whole length dorsally and the flowers are smaller"""
-            ),
+            test("""setose their whole length dorsally and the flowers are smaller"""),
             [
                 Surface(
                     surface="setose",

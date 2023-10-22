@@ -22,15 +22,7 @@ class Venation(Linkable):
     replace: ClassVar[dict[str, str]] = term_util.term_data(venation_csv, "replace")
     # ---------------------
 
-    def __init__(
-        self,
-        trait: str = None,
-        start: int = None,
-        end: int = None,
-        venation: str = None,
-    ):
-        super().__init__(trait, start, end)
-        self.venation = venation
+    venation: str = None
 
     @classmethod
     def pipe(cls, nlp: Language):

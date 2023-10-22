@@ -1,15 +1,15 @@
 import unittest
 
-from flora.pylib.traits.numeric import Count
+from flora.pylib.traits.count import Count
 from flora.pylib.traits.part import Part
 from flora.pylib.traits.shape import Shape
-from tests.setup import small_test
+from tests.setup import test
 
 
 class TestCountSuffix(unittest.TestCase):
     def test_count_suffix_01(self):
         self.assertEqual(
-            small_test("leaf rarely 1- or 5-7-foliolate;"),
+            test("leaf rarely 1- or 5-7-foliolate;"),
             [
                 Part(part="leaf", trait="part", type="leaf_part", start=0, end=4),
                 Count(
@@ -28,7 +28,7 @@ class TestCountSuffix(unittest.TestCase):
 
     def test_count_suffix_02(self):
         self.assertEqual(
-            small_test("Leaves imparipinnate, 5- or 7(or 9)-foliolate;"),
+            test("Leaves imparipinnate, 5- or 7(or 9)-foliolate;"),
             [
                 Part(part="leaf", trait="part", type="leaf_part", start=0, end=6),
                 Shape(
@@ -53,7 +53,7 @@ class TestCountSuffix(unittest.TestCase):
 
     def test_count_suffix_03(self):
         self.assertEqual(
-            small_test("Racemes compact, 1- or 2- or 5-7-flowered"),
+            test("Racemes compact, 1- or 2- or 5-7-flowered"),
             [
                 Part(
                     part="raceme",
@@ -78,7 +78,7 @@ class TestCountSuffix(unittest.TestCase):
 
     def test_count_suffix_04(self):
         self.assertEqual(
-            small_test("leaf 3(or 5-9)-foliolate;"),
+            test("leaf 3(or 5-9)-foliolate;"),
             [
                 Part(part="leaf", trait="part", type="leaf_part", start=0, end=4),
                 Count(
@@ -96,7 +96,7 @@ class TestCountSuffix(unittest.TestCase):
 
     def test_count_suffix_05(self):
         self.assertEqual(
-            small_test("leaflets (2or)3- or 4(or 5)-paired"),
+            test("leaflets (2or)3- or 4(or 5)-paired"),
             [
                 Part(part="leaflet", trait="part", type="leaf_part", start=0, end=8),
                 Count(
@@ -115,7 +115,7 @@ class TestCountSuffix(unittest.TestCase):
 
     def test_count_suffix_06(self):
         self.assertEqual(
-            small_test("Leaves (19-)23- or 25-foliolate;"),
+            test("Leaves (19-)23- or 25-foliolate;"),
             [
                 Part(part="leaf", trait="part", type="leaf_part", start=0, end=6),
                 Count(
@@ -133,7 +133,7 @@ class TestCountSuffix(unittest.TestCase):
 
     def test_count_suffix_07(self):
         self.assertEqual(
-            small_test("Calyx (5-lobed)"),
+            test("Calyx (5-lobed)"),
             [
                 Part(part="calyx", trait="part", type="flower_part", start=0, end=5),
                 Count(
@@ -149,7 +149,7 @@ class TestCountSuffix(unittest.TestCase):
 
     def test_count_suffix_08(self):
         self.assertEqual(
-            small_test("Inflorescences 1–64(–90)[–100]-flowered"),
+            test("Inflorescences 1–64(–90)[–100]-flowered"),
             [
                 Part(
                     part="inflorescence",
@@ -174,7 +174,7 @@ class TestCountSuffix(unittest.TestCase):
 
     def test_count_suffix_09(self):
         self.assertEqual(
-            small_test("""Cymes [1–]few[–many]-flowered."""),
+            test("""Cymes [1–]few[–many]-flowered."""),
             [
                 Part(
                     part="cyme",
@@ -196,7 +196,7 @@ class TestCountSuffix(unittest.TestCase):
 
     def test_count_suffix_10(self):
         self.assertEqual(
-            small_test("""Capsules [2–]3[–5+]-locular."""),
+            test("""Capsules [2–]3[–5+]-locular."""),
             [
                 Part(part="capsule", trait="part", type="fruit_part", start=0, end=8),
                 Count(
@@ -214,7 +214,7 @@ class TestCountSuffix(unittest.TestCase):
 
     def test_count_suffix_11(self):
         self.assertEqual(
-            small_test("""Flowers mostly 4- or 5-merous"""),
+            test("""Flowers mostly 4- or 5-merous"""),
             [
                 Part(part="flower", trait="part", type="flower_part", start=0, end=7),
                 Count(
@@ -231,7 +231,7 @@ class TestCountSuffix(unittest.TestCase):
 
     def test_count_suffix_12(self):
         self.assertEqual(
-            small_test("""Capsule 2-locular. x = 9."""),
+            test("""Capsule 2-locular. x = 9."""),
             [
                 Part(part="capsule", trait="part", type="fruit_part", start=0, end=7),
                 Count(
@@ -247,7 +247,7 @@ class TestCountSuffix(unittest.TestCase):
 
     def test_count_suffix_13(self):
         self.assertEqual(
-            small_test("""pinnae 16-29-jug."""),
+            test("""pinnae 16-29-jug."""),
             [
                 Part(part="pinnae", trait="part", type="leaf_part", start=0, end=6),
                 Count(
@@ -264,7 +264,7 @@ class TestCountSuffix(unittest.TestCase):
 
     def test_count_suffix_14(self):
         self.assertEqual(
-            small_test("""4-6-seeded, the replum"""),
+            test("""4-6-seeded, the replum"""),
             [
                 Count(
                     low=4,
@@ -281,7 +281,7 @@ class TestCountSuffix(unittest.TestCase):
 
     def test_count_suffix_15(self):
         self.assertEqual(
-            small_test("""one-seeded replum"""),
+            test("""one-seeded replum"""),
             [
                 Count(
                     low=1,
@@ -297,7 +297,7 @@ class TestCountSuffix(unittest.TestCase):
 
     def test_count_suffix_16(self):
         self.assertEqual(
-            small_test("""lvs, 1 -nerved"""),
+            test("""lvs, 1 -nerved"""),
             [
                 Part(part="leaf", trait="part", type="leaf_part", start=0, end=3),
                 Count(
@@ -313,6 +313,6 @@ class TestCountSuffix(unittest.TestCase):
 
     def test_count_suffix_17(self):
         self.assertEqual(
-            small_test("""lvs few-nerved"""),
+            test("""lvs few-nerved"""),
             [Part(part="leaf", trait="part", type="leaf_part", start=0, end=3)],
         )
