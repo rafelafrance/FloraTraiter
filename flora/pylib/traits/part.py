@@ -82,20 +82,17 @@ class Part(Linkable):
         part = cls.replace.get(token.lower_, token.lower_)
         if part not in frags[-1]:
             frags[-1].append(part)
-        return part
 
     @classmethod
     def part_match(cls, ent):
         frags = [[]]
         missing = None
-        type_ = None
 
         for token in ent:
             token._.flag = "part"
 
             if token._.term == "part":
-                part = cls.append_frag(token, frags)
-                type_ = cls.type_.get(part, type_)
+                cls.append_frag(token, frags)
 
             elif token._.term == "missing":
                 cls.append_frag(token, frags)
@@ -104,14 +101,16 @@ class Part(Linkable):
             elif token._.term == "part_and":
                 frags.append([])
 
-        type_ = type_ if len(frags) == 1 else None
-
         all_parts = [" ".join(f) for f in frags]
         all_parts = [p.replace(r" - ", "-") for p in all_parts]
         all_parts = [cls.replace.get(p, p) for p in all_parts]
         part = all_parts[0] if len(all_parts) == 1 else all_parts
 
-        trait = cls.from_ent(ent, part=part, type=type_, missing=missing)
+        types = [cls.type_.get(p, "plant_part") for p in all_parts]
+        if any(t != types[0] for t in types):
+            types[0] = "plant_part"
+
+        trait = cls.from_ent(ent, part=part, type=types[0], missing=missing)
 
         ent[0]._.trait = trait
         return trait

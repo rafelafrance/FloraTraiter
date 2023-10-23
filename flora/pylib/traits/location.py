@@ -57,6 +57,7 @@ class Location(Base):
             "of": {"LOWER": "of"},
             "part": {"ENT_TYPE": "part"},
             "prep": {"POS": {"IN": ["ADP", "CCONJ"]}},
+            "sp": {"IS_SPACE": True},
             "subpart": {"ENT_TYPE": "subpart"},
         }
         return [
@@ -80,9 +81,9 @@ class Location(Base):
                 keep="location",
                 patterns=[
                     "missing? joined?  leader subpart",
-                    "missing? joined?  leader subpart of adj? subpart",
+                    "missing? joined?  leader subpart sp? of adj? sp? subpart",
                     "missing? location leader subpart",
-                    "missing? location leader subpart of adj? subpart",
+                    "missing? location leader subpart sp? of adj? sp? subpart",
                 ],
             ),
             Compiler(
@@ -110,7 +111,8 @@ class Location(Base):
 
     @classmethod
     def loc(cls, ent):
-        return " ".join([cls.replace.get(t.lower_, t.lower_) for t in ent])
+        location = " ".join([cls.replace.get(t.lower_, t.lower_) for t in ent])
+        return " ".join(location.split())
 
     @classmethod
     def part_as_distance_match(cls, ent):
