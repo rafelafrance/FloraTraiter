@@ -1,5 +1,7 @@
 import unittest
 
+from traiter.pylib.traits.habitat import Habitat
+
 from flora.pylib.traits.count import Count
 from flora.pylib.traits.location import Location
 from flora.pylib.traits.part import Part
@@ -47,7 +49,6 @@ class TestCount(unittest.TestCase):
         )
 
     def test_count_03(self):
-        self.maxDiff = None
         self.assertEqual(
             test("blade 5–10 × 4–9 cm"),
             [
@@ -541,7 +542,10 @@ class TestCount(unittest.TestCase):
     def test_count_32(self):
         self.assertEqual(
             test("lf-stk; Chihuahuan Desert 59."),
-            [Part(part="leaf-stalk", trait="part", type="leaf_part", start=0, end=6)],
+            [
+                Part(part="leaf-stalk", trait="part", type="leaf_part", start=0, end=6),
+                Habitat(trait="habitat", start=8, end=25, habitat="chihuahuan desert"),
+            ],
         )
 
     def test_count_33(self):
@@ -871,7 +875,6 @@ class TestCount(unittest.TestCase):
         )
 
     def test_count_53(self):
-        self.maxDiff = None
         self.assertEqual(
             test("""24 heads on 3-4 flowering stems;"""),
             [

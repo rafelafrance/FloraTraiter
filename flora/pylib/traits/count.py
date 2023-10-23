@@ -29,10 +29,11 @@ class Count(Linkable):
         Path(t_terms.__file__).parent / "unit_mass_terms.csv",
         Path(t_terms.__file__).parent / "numeric_terms.csv",
         Path(t_terms.__file__).parent / "month_terms.csv",
+        Path(t_terms.__file__).parent / "habitat_terms.csv",
     ]
     and_: ClassVar[list[str]] = ["&", "and", "et"]
     cross: ClassVar[list[str]] = t_const.CROSS + t_const.COMMA
-    EVERY: ClassVar[list[str]] = """ every per each or more """.split()
+    every: ClassVar[list[str]] = """ every per each or more """.split()
     not_count_prefix: ClassVar[
         list[str]
     ] = """ chapter figure fig nos no # sec sec. """.split()
@@ -51,21 +52,20 @@ class Count(Linkable):
     high: int = None
     max: int = None
     missing: bool = None
-    per_part: str = None
     count_group: str = None
+    per_part: str = None
+    per_count: str = None
 
     @classmethod
     def pipe(cls, nlp: Language):
         add.term_pipe(nlp, name="count_terms", path=cls.all_csvs)
-        add.debug_tokens(nlp)  # ############################################
         add.trait_pipe(
             nlp,
             name="count_match",
             compiler=cls.count_patterns(),
-            overwrite=["range"],
+            overwrite=["range", "part", "subpart", "per_count", "habitat"],
         )
-        add.debug_tokens(nlp)  # ############################################
-        add.cleanup_pipe(nlp, name="count_cleanup")
+        add.cleanup_pipe(nlp, name="count_cleanup", delete=["range", "per_count"])
 
     @classmethod
     def count_patterns(cls):
@@ -81,17 +81,19 @@ class Count(Linkable):
             ";": {"TEXT": {"IN": t_const.SEMICOLON}},
             "=": {"TEXT": {"IN": ["=", ":"]}},
             "[.,]": {"LOWER": {"IN": t_const.COMMA + t_const.DOT}},
-            "adp": {"POS": {"IN": ["ADP"]}},
+            "adp": {"POS": "ADP"},
             "any": {},
             "as": {"LOWER": {"IN": ["as"]}},
             "count_suffix": {"ENT_TYPE": "count_suffix"},
             "count_word": {"ENT_TYPE": {"IN": ["count_word", "number_word"]}},
             "dim": {"ENT_TYPE": "dim"},
-            "every": {"LOWER": {"IN": cls.EVERY}},
+            "every": {"LOWER": {"IN": cls.every}},
+            "habitat": {"ENT_TYPE": "habitat"},
             "is_alpha": {"IS_ALPHA": True},
             "missing": {"ENT_TYPE": "missing"},
             "not_count_symbol": {"LOWER": {"IN": cls.not_count_symbol}},
             "not_numeric": {"ENT_TYPE": {"IN": cls.not_numeric}},
+            "or": {"POS": {"IN": ["CONJ"]}},
             "part": {"ENT_TYPE": {"IN": ["part", "subpart"]}},
             "per_count": {"ENT_TYPE": "per_count"},
             "subpart": {"ENT_TYPE": "subpart"},
@@ -107,15 +109,16 @@ class Count(Linkable):
                 keep="count",
                 patterns=[
                     "  99-99+",
-                    "  99-99+ -*             per_count+",
-                    "( 99-99+ )              per_count+",
-                    "  99-99+ -* every+ part per_count*",
                     "( 99-99+ )  every+ part",
-                    "per_count+ adp? 99-99+",
                     "missing? 99-99+ count_suffix+",
                     "count_word      count_suffix+",
                     "missing? 99-99+ subpart+",
                     "count_word      subpart+",
+                    " per_count+ adp? 99-99+",
+                    "  99-99+ -*             per_count+",
+                    "( 99-99+ )              per_count+",
+                    "  99-99+ -* every+ part per_count*",
+                    "99-99+ per_count+ adp? 99-99+",
                 ],
             ),
             Compiler(
@@ -133,17 +136,18 @@ class Count(Linkable):
                 on_match=reject_match.REJECT_MATCH,
                 decoder=decoder,
                 patterns=[
-                    "not_numeric [.,]? 99-99",
+                    "not_numeric [.,]? 99-99+",
                     "9 / 9",
-                    "X =? 99-99",
-                    "99-99 ; 99-99",
-                    "99-99 x 99-99",
-                    "99-99 :",
-                    "99-99 any? any? any? as dim",
-                    "99-99 °",
+                    "X =? 99-99+",
+                    "99-99+ ; 99-99+",
+                    "99-99+ x 99-99+",
+                    "99-99+ :",
+                    "99-99+ any? any? any? as dim",
+                    "99-99+ °",
                     "! -? 9",
                     "is_alpha - 9",
                     "9 not_numeric",
+                    "habitat+ 99-99+",
                 ],
             ),
         ]
@@ -167,11 +171,7 @@ class Count(Linkable):
                 value = cls.replace.get(token.lower_, token.lower_)
                 kwargs["low"] = t_util.to_positive_int(value)
 
-            elif token._.trait and token._.term == "subpart":
-                subpart = token._.trait.subpart
-                kwargs["subpart"] = subpart
-
-            elif token._.term in ("count_suffix", "subpart"):
+            elif token.ent_type_ in ("count_suffix", "subpart"):
                 suffix.append(token.lower_)
 
             elif token._.trait and token._.flag == "part":

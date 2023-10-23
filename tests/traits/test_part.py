@@ -143,6 +143,7 @@ class TestPart(unittest.TestCase):
             [
                 Part(
                     trait="part",
+                    type="plant_part",
                     start=0,
                     end=17,
                     part=["stem", "leaf-axis"],

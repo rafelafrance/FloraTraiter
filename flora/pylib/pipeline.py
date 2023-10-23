@@ -63,6 +63,7 @@ def build():
     Date.pipe(nlp)
 
     Part.pipe(nlp)
+    # debug.ents(nlp)  # #################################################
     Subpart.pipe(nlp)
 
     Elevation.pipe(nlp)
