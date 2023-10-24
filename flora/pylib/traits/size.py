@@ -53,7 +53,6 @@ class Size(Linkable):
         """.split()
     replace: ClassVar[dict[str, str]] = term_util.term_data(ALL_CSVS, "replace")
     lengths: ClassVar[list[str]] = ["metric_length", "imperial_length"]
-    split: ClassVar[list[str]] = t_const.COMMA + ["and"]
     # ---------------------
 
     dims: list[Dimension] = field(default_factory=list)
@@ -72,6 +71,10 @@ class Size(Linkable):
         )
 
         add.cleanup_pipe(nlp, name="size_cleanup")
+
+    @property
+    def dimensions(self):
+        return tuple(d.dim for d in self.dims)
 
     @classmethod
     def size_patterns(cls):
