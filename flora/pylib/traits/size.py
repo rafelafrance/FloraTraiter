@@ -18,6 +18,7 @@ ALL_CSVS = [
     Path(__file__).parent / "terms" / "numeric_terms.csv",
     Path(__file__).parent / "terms" / "missing_terms.csv",
     Path(__file__).parent / "terms" / "sex_terms.csv",
+    Path(__file__).parent / "terms" / "dimension_terms.csv",
     Path(t_terms.__file__).parent / "unit_distance_terms.csv",
     Path(t_terms.__file__).parent / "unit_length_terms.csv",
     Path(t_terms.__file__).parent / "unit_mass_terms.csv",
@@ -29,7 +30,7 @@ ALL_CSVS = [
 @dataclass
 class Dimension:
     dim: str = None
-    units: str = ""
+    units: str = None
     min: float = None
     low: float = None
     high: float = None
@@ -51,6 +52,8 @@ class Size(Linkable):
         not_numeric metric_mass imperial_mass metric_dist imperial_dist
         """.split()
     replace: ClassVar[dict[str, str]] = term_util.term_data(ALL_CSVS, "replace")
+    lengths: ClassVar[list[str]] = ["metric_length", "imperial_length"]
+    split: ClassVar[list[str]] = t_const.COMMA + ["and"]
     # ---------------------
 
     dims: list[Dimension] = field(default_factory=list)
@@ -65,8 +68,9 @@ class Size(Linkable):
             nlp,
             name="size_patterns",
             compiler=cls.size_patterns(),
-            overwrite=["range", "dim", "sex"],
+            overwrite=["range", "dim", "sex", "metric_length", "imperial_length"],
         )
+
         add.cleanup_pipe(nlp, name="size_cleanup")
 
     @classmethod
@@ -75,12 +79,12 @@ class Size(Linkable):
             "(": {"TEXT": {"IN": t_const.OPEN}},
             ")": {"TEXT": {"IN": t_const.CLOSE}},
             "99.9": {"TEXT": {"REGEX": t_const.FLOAT_TOKEN_RE}},
-            "99-99": {"ENT_TYPE": "range", "OP": "+"},
+            "99-99": {"ENT_TYPE": "range"},
             ",": {"TEXT": {"IN": t_const.COMMA}},
             "about": {"ENT_TYPE": "about"},
             "any": {},
             "and": {"LOWER": "and"},
-            "cm": {"ENT_TYPE": {"IN": ["metric_length", "imperial_length"]}},
+            "cm": {"ENT_TYPE": {"IN": cls.lengths}},
             "dim": {"ENT_TYPE": "dim"},
             "in": {"LOWER": "in"},
             "sex/dim": {"ENT_TYPE": {"IN": ["dim", "sex"]}},
@@ -93,41 +97,39 @@ class Size(Linkable):
         return [
             Compiler(
                 label="size",
-                id="size",
-                on_match="size_match",
                 keep="size",
+                on_match="size_match",
                 decoder=decoder,
                 patterns=[
-                    "about* 99-99 sp?                about*       cm+ in? sex/dim*",
-                    "about* 99-99 sp?                about*       cm+ in? sex/dim*",
-                    "about* 99-99 cm* sex/dim* x to? about* 99-99 cm+ in? sex/dim*",
+                    "about* 99-99+ sp?                about*        cm+ in? sex/dim*",
+                    "about* 99-99+ cm* sex/dim* x to? about* 99-99+ cm+ in? sex/dim*",
                     (
-                        "      about* 99-99 cm* in? sex/dim* "
-                        "x to? about* 99-99 cm* in? sex/dim* "
-                        "x to? about* 99-99 cm+ in? sex/dim*"
+                        "      about* 99-99+ cm* in? sex/dim* "
+                        "x to? about* 99-99+ cm* in? sex/dim* "
+                        "x to? about* 99-99+ cm+ in? sex/dim*"
                     ),
                 ],
             ),
             Compiler(
-                label="size",
+                label="size_high_only",
                 id="size",
                 on_match="size_high_only_match",
-                keep="size",
+                keep="size_high_only",
                 decoder=decoder,
                 patterns=[
-                    "to about* 99.9 about* cm+ in? sex/dim*",
+                    "to about* 99.9+ about* cm+ in? sex/dim*",
                 ],
             ),
             Compiler(
-                label="size",
+                label="size_double_dim",
                 id="size",
                 on_match="size_double_dim_match",
-                keep="size",
+                keep="size_double_dim",
                 decoder=decoder,
                 patterns=[
-                    "about* 99-99 cm+ sex? ,? dim+ and  dim+",
-                    "about* 99-99 cm* sex? ,? 99-99 cm+ dim+ and dim+",
-                    "about* 99-99 cm* sex? ,? 99-99 cm+ dim+ ,   dim+",
+                    "about* 99-99+ cm+ sex? ,?            dim+ and dim+",
+                    "about* 99-99+ cm* sex? ,? 99-99+ cm+ dim+ and dim+",
+                    "about* 99-99+ cm* sex? ,? 99-99+ cm+ dim+ ,   dim+",
                 ],
             ),
             Compiler(
@@ -135,9 +137,9 @@ class Size(Linkable):
                 on_match=reject_match.REJECT_MATCH,
                 decoder=decoder,
                 patterns=[
-                    "not_numeric about* 99-99 cm+",
-                    "not_numeric about* 99-99 cm* x about* 99-99 cm+",
-                    "                   99-99 cm not_numeric",
+                    "not_numeric about* 99-99+ cm+",
+                    "not_numeric about* 99-99+ cm* x about* 99-99+ cm+",
+                    "                   99-99+ cm not_numeric",
                 ],
             ),
         ]
@@ -157,11 +159,17 @@ class Size(Linkable):
                 if dims[-1].units and token.lower_ in ("in",):
                     continue
                 if word := cls.replace.get(token.lower_):
-                    dims[-1].units += word
+                    if dims[-1].units is None:
+                        dims[-1].units = word
+                    else:
+                        dims[-1].units += word
 
             elif token._.term == "dim":
                 if token.lower_ not in ("in",):
-                    dims[-1].dim += token.lower_
+                    if dims[-1].dim is None:
+                        dims[-1].dim = token.lower_
+                    else:
+                        dims[-1].dim += token.lower_
                     dims[-1].dim = cls.replace.get(dims[-1].dim, dims[-1].dim)
 
             elif token._.term in ("about", "quest"):
@@ -169,7 +177,10 @@ class Size(Linkable):
 
             elif token._.term == "sex":
                 if word := cls.replace.get(token.lower_):
-                    dims[-1].sex += word
+                    if dims[-1].sex is None:
+                        dims[-1].sex = word
+                    else:
+                        dims[-1].sex += word
 
             elif token.lower_ in cls.cross:
                 dims.append(Dimension())
@@ -199,9 +210,6 @@ class Size(Linkable):
 
         uncertain = True if any(d.about for d in dims) else None
 
-        # "dimensions" is used to link traits
-        dims = sorted(dims, key=lambda d: d.dim)
-
         # Build the key and value for the range's: min, low, high, max
         for dim in dims:
             for key in ("min", "low", "high", "max"):
@@ -220,50 +228,55 @@ class Size(Linkable):
             setattr(dim, "about", None)
             setattr(dim, "sex", None)
 
-        cls.from_ent(ent, dims=dims, uncertain=uncertain, sex=sex)
+        trait = cls.from_ent(ent, dims=dims, uncertain=uncertain, sex=sex)
+        return trait
 
     @classmethod
     def size_match(cls, ent):
         dims = cls.scan_tokens(ent)
         cls.fill_units(dims)
         cls.fill_dimensions(dims)
-        cls.fill_trait_data(dims, ent)
+        return cls.fill_trait_data(dims, ent)
 
     @classmethod
     def size_high_only_match(cls, ent):
         dims = cls.scan_tokens(ent)
-        dims[0].high, dims[0].low = dims[0].low, None
         cls.fill_units(dims)
         cls.fill_dimensions(dims)
-        cls.fill_trait_data(dims, ent)
+        trait = cls.fill_trait_data(dims, ent)
+        trait.dims[0].high = trait.dims[0].low
+        trait.dims[0].low = None
+        return trait
 
     @classmethod
     def size_double_dim_match(cls, ent):
-        dimensions = cls.scan_tokens(ent)
+        dims = cls.scan_tokens(ent)
+        cls.fill_units(dims)
+        cls.fill_dimensions(dims)
 
-        dims = []
+        trait = cls.fill_trait_data(dims, ent)
+
+        reals = []
         for token in ent:
             if token._.term == "dim":
-                dims.append(cls.replace.get(token.lower_, token.lower_))
+                reals.append(cls.replace.get(token.lower_, token.lower_))
 
-        for dimension, dim in zip(dimensions, dims):
-            dimension.dim = dim
+        for real, dim in zip(reals, dims):
+            dim.dim = real
 
-        cls.fill_units(dimensions)
-        cls.fill_dimensions(dimensions)
-        cls.fill_trait_data(dimensions, ent)
+        return trait
 
 
 @registry.misc("size_match")
 def size_match(ent):
-    Size.size_match(ent)
+    return Size.size_match(ent)
 
 
 @registry.misc("size_high_only_match")
 def size_high_only_match(ent):
-    Size.size_high_only_match(ent)
+    return Size.size_high_only_match(ent)
 
 
 @registry.misc("size_double_dim_match")
 def size_double_dim_match(ent):
-    Size.size_double_dim_match(ent)
+    return Size.size_double_dim_match(ent)

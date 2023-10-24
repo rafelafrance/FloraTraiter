@@ -1,14 +1,14 @@
 import unittest
 
+from flora.pylib.traits.admin_unit import AdminUnit
+from flora.pylib.traits.associated_taxon import AssociatedTaxonLabel
+from flora.pylib.traits.job import Job
 from flora.pylib.traits.part import Part
 from flora.pylib.traits.taxon import Taxon
 from tests.setup import test
 
 
 class TestTaxon(unittest.TestCase):
-    # def test_taxon_00(self):
-    #     test("""Cornus obliqua (Beth.)""")
-
     def test_taxon_01(self):
         self.assertEqual(
             test("""M. sensitiva"""),
@@ -73,8 +73,9 @@ class TestTaxon(unittest.TestCase):
                     rank="species",
                     taxon="Acacia pachyphloia",
                     trait="taxon",
+                    authority="Bamehy",
                     start=0,
-                    end=14,
+                    end=21,
                 )
             ],
         )
@@ -104,6 +105,7 @@ class TestTaxon(unittest.TestCase):
                     trait="taxon",
                     start=0,
                     end=13,
+                    associated=True,
                 )
             ],
         )
@@ -137,6 +139,7 @@ class TestTaxon(unittest.TestCase):
                     trait="taxon",
                     start=30,
                     end=38,
+                    associated=True,
                 ),
             ],
         )
@@ -178,6 +181,7 @@ class TestTaxon(unittest.TestCase):
                     trait="taxon",
                     start=30,
                     end=69,
+                    associated=True,
                 ),
             ],
         )
@@ -205,6 +209,7 @@ class TestTaxon(unittest.TestCase):
                     trait="taxon",
                     start=12,
                     end=51,
+                    associated=True,
                 ),
             ],
         )
@@ -239,6 +244,7 @@ class TestTaxon(unittest.TestCase):
                     trait="taxon",
                     start=0,
                     end=9,
+                    associated=True,
                 ),
                 Taxon(
                     authority="Raf",
@@ -268,6 +274,7 @@ class TestTaxon(unittest.TestCase):
                     trait="taxon",
                     start=16,
                     end=24,
+                    associated=True,
                 ),
                 Taxon(
                     taxon="Vicia villosa subsp. varia",
@@ -335,13 +342,15 @@ class TestTaxon(unittest.TestCase):
         self.assertEqual(
             test("""PLANTS OF PENNSYLVANIA ASTERACEAE"""),
             [
+                AdminUnit(trait="admin_unit", start=0, end=22, us_state="Pennsylvania"),
                 Taxon(
                     taxon="Asteraceae",
                     rank="family",
                     trait="taxon",
                     start=23,
                     end=33,
-                )
+                    associated=True,
+                ),
             ],
         )
 
@@ -377,12 +386,19 @@ class TestTaxon(unittest.TestCase):
                     start=0,
                     end=38,
                 ),
+                AssociatedTaxonLabel(
+                    trait="assoc_taxon_label",
+                    label="associated species",
+                    start=39,
+                    end=57,
+                ),
                 Taxon(
                     taxon="Cornus obliqua",
                     rank="species",
                     trait="taxon",
                     start=59,
                     end=73,
+                    associated=True,
                 ),
             ],
         )
@@ -437,12 +453,27 @@ class TestTaxon(unittest.TestCase):
         self.assertEqual(
             test("""Associated species: Neptunia gracilis G. Rink 7075"""),
             [
+                AssociatedTaxonLabel(
+                    trait="assoc_taxon_label",
+                    label="associated species",
+                    start=0,
+                    end=18,
+                ),
                 Taxon(
                     trait="taxon",
                     taxon="Neptunia gracilis",
                     rank="species",
                     start=20,
                     end=37,
+                    associated=True,
+                ),
+                Job(
+                    trait="job",
+                    job="collector",
+                    name="G. Rink",
+                    id_num="7075",
+                    start=38,
+                    end=50,
                 ),
             ],
         )
@@ -516,6 +547,7 @@ class TestTaxon(unittest.TestCase):
                     trait="taxon",
                     start=0,
                     end=7,
+                    associated=True,
                 ),
                 Taxon(
                     taxon="Cytisus",
@@ -523,6 +555,7 @@ class TestTaxon(unittest.TestCase):
                     trait="taxon",
                     start=8,
                     end=15,
+                    associated=True,
                 ),
                 Taxon(
                     taxon="Agrostis",
@@ -530,6 +563,7 @@ class TestTaxon(unittest.TestCase):
                     trait="taxon",
                     start=16,
                     end=24,
+                    associated=True,
                 ),
             ],
         )

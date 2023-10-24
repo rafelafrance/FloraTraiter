@@ -18,6 +18,7 @@ from .linkable import Linkable
 class Range(Linkable):
     # Class vars ----------
     all_csvs: ClassVar[list[Path]] = [
+        Path(__file__).parent / "terms" / "about_terms.csv",
         Path(__file__).parent / "terms" / "numeric_terms.csv",
         Path(__file__).parent / "terms" / "missing_terms.csv",
         Path(__file__).parent / "terms" / "sex_terms.csv",
@@ -46,11 +47,13 @@ class Range(Linkable):
     max: float = None
 
     @classmethod
-    def pipe(cls, nlp: Language):
+    def pipe(cls, nlp: Language, overwrite=None):
+        overwrite = overwrite if overwrite else []
         add.term_pipe(nlp, name="range_terms", path=cls.all_csvs)
         add.trait_pipe(
             nlp,
             name="range_patterns",
+            overwrite=overwrite,
             compiler=cls.range_patterns(),
         )
         # Keep these traits around for building size and count traits

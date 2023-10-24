@@ -200,8 +200,6 @@ part,lf,leaf,leaf_part
 part,lf-axes,leaf-axis,leaf_part
 part,lf-axis,leaf-axis,leaf_part
 part,lf-stk,leaf-stalk,leaf_part
-part,lf-stk,leaf-stalk,leaf_part
-part,lf-stks,leaf-stalk,leaf_part
 part,lf-stks,leaf-stalk,leaf_part
 part,lfstk,leaf-stalk,leaf_part
 part,lfstks,leaf-stalk,leaf_part

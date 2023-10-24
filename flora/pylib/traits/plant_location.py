@@ -13,7 +13,7 @@ from traiter.pylib.traits.base import Base
 
 
 @dataclass
-class Location(Base):
+class PlantLocation(Base):
     # Class vars ----------
     location_ents: ClassVar[list[str]] = ["location"]
 
@@ -133,19 +133,19 @@ class Location(Base):
 
 @registry.misc("part_as_distance_match")
 def part_as_distance_match(ent):
-    return Location.part_as_distance_match(ent)
+    return PlantLocation.part_as_distance_match(ent)
 
 
 @registry.misc("part_as_location_match")
 def part_as_location_match(ent):
-    return Location.part_as_location_match(ent)
+    return PlantLocation.part_as_location_match(ent)
 
 
 @registry.misc("subpart_as_location_match")
 def subpart_as_location_match(ent):
-    return Location.subpart_as_location_match(ent)
+    return PlantLocation.subpart_as_location_match(ent)
 
 
 @registry.misc("part_location_match")
 def part_location_match(ent):
-    return Location.part_location_match(ent)
+    return PlantLocation.part_location_match(ent)

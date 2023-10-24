@@ -24,7 +24,6 @@ from flora.pylib.traits.job import Job
 from flora.pylib.traits.leaf_duration import LeafDuration
 from flora.pylib.traits.leaf_folding import LeafFolding
 from flora.pylib.traits.locality import Locality
-from flora.pylib.traits.location import Location
 from flora.pylib.traits.location_linker import LocationLinker
 from flora.pylib.traits.margin import Margin
 from flora.pylib.traits.morphology import Morphology
@@ -33,6 +32,7 @@ from flora.pylib.traits.odor import Odor
 from flora.pylib.traits.part import Part
 from flora.pylib.traits.part_linker import PartLinker
 from flora.pylib.traits.plant_duration import PlantDuration
+from flora.pylib.traits.plant_location import PlantLocation
 from flora.pylib.traits.range import Range
 from flora.pylib.traits.reproduction import Reproduction
 from flora.pylib.traits.sex import Sex
@@ -42,6 +42,7 @@ from flora.pylib.traits.size import Size
 from flora.pylib.traits.subpart import Subpart
 from flora.pylib.traits.subpart_linker import SubpartLinker
 from flora.pylib.traits.surface import Surface
+from flora.pylib.traits.taxon import Taxon
 from flora.pylib.traits.taxon_like import TaxonLike
 from flora.pylib.traits.taxon_like_linker import TaxonLikeLinker
 from flora.pylib.traits.venation import Venation
@@ -63,7 +64,6 @@ def build():
     Date.pipe(nlp)
 
     Part.pipe(nlp)
-    # debug.ents(nlp)  # #################################################
     Subpart.pipe(nlp)
 
     Elevation.pipe(nlp)
@@ -103,9 +103,9 @@ def build():
 
     AdminUnit.pipe(nlp, overwrite=["color"])
 
-    # Taxon.pipe(nlp, extend=2, overwrite=["habitat", "color"], auth_keep=["not_name"])
+    Taxon.pipe(nlp, extend=2, overwrite=["habitat", "color"], auth_keep=["not_name"])
 
-    Location.pipe(nlp)
+    PlantLocation.pipe(nlp)
     TaxonLike.pipe(nlp)
 
     PartLinker.pipe(nlp)

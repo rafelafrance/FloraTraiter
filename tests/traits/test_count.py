@@ -1,10 +1,11 @@
 import unittest
 
 from traiter.pylib.traits.habitat import Habitat
+from traiter.pylib.traits.lat_long import LatLong
 
 from flora.pylib.traits.count import Count
-from flora.pylib.traits.location import Location
 from flora.pylib.traits.part import Part
+from flora.pylib.traits.plant_location import PlantLocation
 from flora.pylib.traits.sex import Sex
 from flora.pylib.traits.size import Dimension
 from flora.pylib.traits.size import Size
@@ -558,6 +559,7 @@ class TestCount(unittest.TestCase):
                     trait="taxon",
                     start=0,
                     end=6,
+                    associated=True,
                 )
             ],
         )
@@ -572,7 +574,11 @@ class TestCount(unittest.TestCase):
                     trait="taxon",
                     start=0,
                     end=6,
-                )
+                    associated=True,
+                ),
+                LatLong(
+                    trait="lat_long", start=12, end=25, lat_long="13° 40 -14° 10'S"
+                ),
             ],
         )
 
@@ -586,6 +592,7 @@ class TestCount(unittest.TestCase):
                     trait="taxon",
                     start=0,
                     end=6,
+                    associated=True,
                 )
             ],
         )
@@ -665,7 +672,7 @@ class TestCount(unittest.TestCase):
                     end=35,
                     part="flower",
                 ),
-                Location(
+                PlantLocation(
                     trait="location",
                     location="at apex of hypanthial aculei",
                     type="subpart_as_location",

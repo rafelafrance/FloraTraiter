@@ -3,6 +3,7 @@ import re
 from dataclasses import asdict
 from dataclasses import dataclass
 from pathlib import Path
+from typing import ClassVar
 
 from spacy import Language
 from spacy import registry
@@ -19,7 +20,7 @@ from traiter.pylib.traits.base import Base
 from .. import const
 
 
-def get_csvs():
+def get_csvs() -> dict[str, Path]:
     here = Path(__file__).parent / "terms"
     csvs = {
         "name_terms": Path(t_terms.__file__).parent / "name_terms.csv",
@@ -45,494 +46,525 @@ def get_csvs():
     return csvs
 
 
-ALL_CSVS = get_csvs()
-
-RANK_TERMS = term_util.read_terms(ALL_CSVS["rank_terms"])
-
-ABBREV_RE = r"^[A-Z][.,_]$"
-AND = ["&", "and", "et", "ex"]
-ANY_RANK = sorted({r["label"] for r in RANK_TERMS})
-AUTH3 = [s for s in t_const.NAME_SHAPES if len(s) > 2 and s[-1] != "."]
-AUTH3_UPPER = [s for s in t_const.NAME_AND_UPPER if len(s) > 2 and s[-1] != "."]
-BINOMIAL_ABBREV = taxon_util.abbrev_binomial_term(ALL_CSVS["binomial_terms"])
-AMBIGUOUS = ["us_county", "color"]
-HIGHER_RANK = sorted({r["label"] for r in RANK_TERMS if r["level"] == "higher"})
-LEVEL = term_util.term_data(ALL_CSVS["rank_terms"], "level")
-LINNAEUS = ["l", "l.", "lin", "lin.", "linn", "linn.", "linnaeus"]
-LOWER_RANK = sorted({r["label"] for r in RANK_TERMS if r["level"] == "lower"})
-MONOMIAL_RANKS = term_util.term_data(ALL_CSVS["monomial_terms"], "ranks")
-RANK_ABBREV = term_util.term_data(ALL_CSVS["rank_terms"], "abbrev")
-RANK_REPLACE = term_util.term_data(ALL_CSVS["rank_terms"], "replace")
-
-
-def build(
-    nlp: Language,
-    extend=1,
-    overwrite: list[str] = None,
-    auth_keep: list[str] = None,
-):
-    overwrite = overwrite if overwrite else []
-    auth_keep = auth_keep if auth_keep else []
-
-    default_labels = {
-        "binomial_terms": "binomial",
-        "monomial_terms": "monomial",
-        "mock_binomial_terms": "binomial",
-        "mock_monomial_terms": "monomial",
-    }
-
-    add.term_pipe(
-        nlp,
-        name="taxon_terms",
-        path=list(ALL_CSVS.values()),
-        default_labels=default_labels,
-    )
-
-    add.trait_pipe(
-        nlp,
-        name="taxon_patterns",
-        compiler=taxon_patterns(),
-        merge=["taxon", "single"],
-        overwrite=["taxon"],
-    )
-
-    add.trait_pipe(
-        nlp,
-        name="taxon_linnaeus_patterns",
-        compiler=taxon_linnaeus_patterns() + multi_taxon_patterns(),
-        merge=["linnaeus", "not_linnaeus"],
-        overwrite=["taxon"],
-    )
-
-    auth_keep = auth_keep + ACCUMULATOR.keep + ["single", "not_name"]
-    add.trait_pipe(
-        nlp,
-        name="taxon_auth_patterns",
-        compiler=taxon_auth_patterns(),
-        merge=["taxon"],
-        keep=auth_keep,
-        overwrite=["taxon", *overwrite],
-    )
-
-    for i in range(1, extend + 1):
-        name = f"taxon_extend_{i}"
-        add.trait_pipe(
-            nlp,
-            name=name,
-            compiler=taxon_extend_patterns(),
-            merge=["taxon"],
-            overwrite=["taxon", "linnaeus", "not_linnaeus", "single"],
-        )
-
-    add.trait_pipe(
-        nlp,
-        name="taxon_rename",
-        compiler=taxon_rename_patterns(),
-        overwrite=["taxon", "linnaeus", "not_linnaeus", "single"],
-    )
-
-    add.cleanup_pipe(nlp, name="taxon_cleanup")
-
-
-def taxon_patterns():
-    decoder = {
-        ":": {"TEXT": {"IN": [":", ";"]}},
-        "A.": {"TEXT": {"REGEX": ABBREV_RE}},
-        "bad_prefix": {"ENT_TYPE": "bad_taxon_prefix"},
-        "bad_suffix": {"ENT_TYPE": "bad_taxon_suffix"},
-        "maybe": {"POS": {"IN": ["PROPN", "NOUN"]}},
-        "binomial": {"ENT_TYPE": "binomial"},
-        "monomial": {"ENT_TYPE": "monomial"},
-        "higher_rank": {"ENT_TYPE": {"IN": HIGHER_RANK}},
-        "subsp": {"ENT_TYPE": "subspecies_rank"},
-        "var": {"ENT_TYPE": "variety_rank"},
-        "subvar": {"ENT_TYPE": "subvariety_rank"},
-        "f.": {"ENT_TYPE": "form_rank"},
-        "subf": {"ENT_TYPE": "subform_rank"},
-        "species_rank": {"ENT_TYPE": "species_rank"},
-    }
-
-    return [
-        Compiler(
-            label="single",
-            on_match="single_taxon_match",
-            decoder=decoder,
-            patterns=[
-                "monomial",
-                "higher_rank  monomial",
-                "species_rank monomial",
-            ],
-        ),
-        Compiler(
-            label="species",
-            id="taxon",
-            keep="taxon",
-            on_match="taxon_match",
-            decoder=decoder,
-            patterns=[
-                "binomial{2}",
-                "monomial monomial",
-                "A. monomial",
-            ],
-        ),
-        Compiler(
-            label="subspecies",
-            id="taxon",
-            keep="taxon",
-            on_match="taxon_match",
-            decoder=decoder,
-            patterns=[
-                "   binomial{2} subsp? monomial",
-                "   binomial{2} subsp  maybe",
-                "A. monomial    subsp? monomial",
-                "A. monomial    subsp  maybe",
-                "A. maybe       subsp? monomial",
-                "A. maybe       subsp  maybe",
-            ],
-        ),
-        Compiler(
-            label="variety",
-            id="taxon",
-            keep="taxon",
-            on_match="taxon_match",
-            decoder=decoder,
-            patterns=[
-                "   binomial{2}                var monomial",
-                "   binomial{2} subsp monomial var monomial",
-                "   binomial{2}                var maybe",
-                "   binomial{2} subsp monomial var maybe",
-                "A. monomial                   var monomial",
-                "A. monomial    subsp monomial var monomial",
-                "A. monomial                   var maybe",
-                "A. monomial    subsp monomial var maybe",
-                "A. monomial                   var monomial",
-                "A. monomial    subsp monomial var monomial",
-                "A. monomial                   var maybe",
-                "A. monomial    subsp monomial var maybe",
-                "A. maybe                      var monomial",
-                "A. maybe       subsp monomial var monomial",
-                "A. maybe                      var maybe",
-                "A. maybe       subsp monomial var maybe",
-                "A. maybe                      var monomial",
-                "A. maybe       subsp monomial var monomial",
-                "A. maybe                      var maybe",
-                "A. maybe       subsp monomial var maybe",
-            ],
-        ),
-        Compiler(
-            label="subvariety",
-            id="taxon",
-            keep="taxon",
-            on_match="taxon_match",
-            decoder=decoder,
-            patterns=[
-                "   binomial{2}                subvar monomial",
-                "   binomial{2} var   monomial subvar monomial",
-                "   binomial{2} subsp monomial subvar monomial",
-                "   binomial{2}                subvar maybe",
-                "   binomial{2} var   monomial subvar maybe",
-                "   binomial{2} subsp monomial subvar maybe",
-                "   binomial{2} var   maybe    subvar maybe",
-                "   binomial{2} subsp maybe    subvar maybe",
-                "   binomial{2} var   maybe    subvar monomial",
-                "   binomial{2} subsp maybe    subvar monomial",
-                "A. monomial                   subvar monomial",
-                "A. monomial    var   monomial subvar monomial",
-                "A. monomial    subsp monomial subvar monomial",
-                "A. monomial                   subvar maybe",
-                "A. monomial    var   monomial subvar maybe",
-                "A. monomial    subsp monomial subvar maybe",
-                "A. monomial    var   maybe    subvar maybe",
-                "A. monomial    subsp maybe    subvar maybe",
-                "A. monomial    var   maybe    subvar monomial",
-                "A. monomial    subsp maybe    subvar monomial",
-                "A. maybe                      subvar monomial",
-                "A. maybe       var   monomial subvar monomial",
-                "A. maybe       subsp monomial subvar monomial",
-                "A. maybe                      subvar maybe",
-                "A. maybe       var   monomial subvar maybe",
-                "A. maybe       subsp monomial subvar maybe",
-                "A. maybe       var   maybe    subvar maybe",
-                "A. maybe       subsp maybe    subvar maybe",
-                "A. maybe       var   maybe    subvar monomial",
-                "A. maybe       subsp maybe    subvar monomial",
-            ],
-        ),
-        Compiler(
-            label="form",
-            id="taxon",
-            keep="taxon",
-            on_match="taxon_match",
-            decoder=decoder,
-            patterns=[
-                "   binomial{2}                f. monomial",
-                "   binomial{2} var   monomial f. monomial",
-                "   binomial{2} subsp monomial f. monomial",
-                "   binomial{2}                f. maybe",
-                "   binomial{2} var   monomial f. maybe",
-                "   binomial{2} subsp monomial f. maybe",
-                "   binomial{2} var   maybe    f. maybe",
-                "   binomial{2} subsp maybe    f. maybe",
-                "   binomial{2} var   maybe    f. monomial",
-                "   binomial{2} subsp maybe    f. monomial",
-                "A. monomial                   f. monomial",
-                "A. monomial    var   monomial f. monomial",
-                "A. monomial    subsp monomial f. monomial",
-                "A. monomial                   f. maybe",
-                "A. monomial    var   monomial f. maybe",
-                "A. monomial    subsp monomial f. maybe",
-                "A. monomial    var   maybe    f. maybe",
-                "A. monomial    subsp maybe    f. maybe",
-                "A. monomial    var   maybe    f. monomial",
-                "A. monomial    subsp maybe    f. monomial",
-                "A. maybe                      f. monomial",
-                "A. maybe       var   monomial f. monomial",
-                "A. maybe       subsp monomial f. monomial",
-                "A. maybe                      f. maybe",
-                "A. maybe       var   monomial f. maybe",
-                "A. maybe       subsp monomial f. maybe",
-                "A. maybe       var   maybe    f. maybe",
-                "A. maybe       subsp maybe    f. maybe",
-                "A. maybe       var   maybe    f. monomial",
-                "A. maybe       subsp maybe    f. monomial",
-            ],
-        ),
-        Compiler(
-            label="subform",
-            id="taxon",
-            keep="taxon",
-            on_match="taxon_match",
-            decoder=decoder,
-            patterns=[
-                "   binomial{2}                subf monomial",
-                "   binomial{2} var   monomial subf monomial",
-                "   binomial{2} subsp monomial subf monomial",
-                "   binomial{2}                subf maybe",
-                "   binomial{2} var   monomial subf maybe",
-                "   binomial{2} subsp monomial subf maybe",
-                "   binomial{2} var   maybe    subf maybe",
-                "   binomial{2} subsp maybe    subf maybe",
-                "   binomial{2} var   maybe    subf monomial",
-                "   binomial{2} subsp maybe    subf monomial",
-                "A. monomial                   subf monomial",
-                "A. monomial    var   monomial subf monomial",
-                "A. monomial    subsp monomial subf monomial",
-                "A. monomial                   subf maybe",
-                "A. monomial    var   monomial subf maybe",
-                "A. monomial    subsp monomial subf maybe",
-                "A. monomial    var   maybe    subf maybe",
-                "A. monomial    subsp maybe    subf maybe",
-                "A. monomial    var   maybe    subf monomial",
-                "A. monomial    subsp maybe    subf monomial",
-                "A. maybe                      subf monomial",
-                "A. maybe       var   monomial subf monomial",
-                "A. maybe       subsp monomial subf monomial",
-                "A. maybe                      subf maybe",
-                "A. maybe       var   monomial subf maybe",
-                "A. maybe       subsp monomial subf maybe",
-                "A. maybe       var   maybe    subf maybe",
-                "A. maybe       subsp maybe    subf maybe",
-                "A. maybe       var   maybe    subf monomial",
-                "A. maybe       subsp maybe    subf monomial",
-            ],
-        ),
-        Compiler(
-            label="bad_taxon",
-            id="taxon",
-            keep="taxon",
-            decoder=decoder,
-            on_match=reject_match.REJECT_MATCH,
-            patterns=[
-                "bad_prefix :?    monomial",
-                "bad_prefix :? A. monomial",
-                "                 monomial    bad_suffix",
-                "              A. monomial    bad_suffix",
-                "bad_prefix :?    monomial    bad_suffix",
-                "bad_prefix :? A. monomial    bad_suffix",
-                "bad_prefix :?    binomial{2}",
-                "                 binomial{2} bad_suffix",
-                "bad_prefix :?    binomial{2} bad_suffix",
-            ],
-        ),
-    ]
-
-
-def multi_taxon_patterns():
-    return [
-        Compiler(
-            label="multi_taxon",
-            keep="multi_taxon",
-            on_match="multi_taxon_match",
-            decoder={
-                "and": {"LOWER": {"IN": AND}},
-                "taxon": {"ENT_TYPE": "taxon"},
-            },
-            patterns=[
-                "taxon and taxon",
-            ],
-        ),
-    ]
-
-
-def taxon_auth_patterns():
-    decoder = {
-        "(": {"TEXT": {"IN": t_const.OPEN}},
-        ")": {"TEXT": {"IN": t_const.CLOSE}},
-        "A.": {"TEXT": {"REGEX": ABBREV_RE}},
-        "and": {"LOWER": {"IN": AND}},
-        "auth": {"SHAPE": {"IN": t_const.NAME_SHAPES}},
-        "auth3": {"SHAPE": {"IN": AUTH3}},
-        "ambig": {"ENT_TYPE": {"IN": AMBIGUOUS}},
-        "by": {"LOWER": {"IN": ["by"]}},
-        "linnaeus": {"ENT_TYPE": "linnaeus"},
-        "taxon": {"ENT_TYPE": "taxon"},
-        "_": {"TEXT": {"IN": list(":._;,")}},
-        "id_num": {"LOWER": {"REGEX": r"^(\w*\d+\w*|[A-Za-z])$"}},
-    }
-
-    return [
-        Compiler(
-            label="auth",
-            id="taxon",
-            on_match="taxon_auth_match",
-            keep="taxon",
-            decoder=decoder,
-            patterns=[
-                "taxon ( ambig+ _? )",
-                "taxon ( A.* auth+ _? )",
-                "taxon ( A.* auth+ _? and  A.* auth+ _? )",
-                "taxon ( auth+  _? ) A.* auth* auth3 _?",
-                "taxon ( auth+  _? ) A.* auth* auth3 _? and A.* auth* auth3",
-                "taxon ( auth+ _? and  auth+ _?  ) A.* auth* auth3 _?",
-                "taxon by? A.* auth3 _?",
-                "taxon by? A.* auth  _?         auth3 _?",
-                "taxon by? A.* auth+ _? and A.* auth3 _?",
-                "taxon ( A.* auth+   _? and A.* auth+ _? and A.* auth+ _? )",
-                (
-                    "taxon ( A.* auth+  _? and A.* auth+ _? and A.* auth+ _? ) "
-                    "A.* auth* auth3 _?"
-                ),
-                (
-                    "taxon ( A.* auth+  _? and A.* auth+ _? and A.* auth+ _? ) "
-                    "A.* auth* auth3 _? and A.* auth* auth3 _?"
-                ),
-            ],
-        ),
-        Compiler(
-            label="not_auth",
-            id="taxon",
-            on_match=reject_match.REJECT_MATCH,
-            decoder=decoder,
-            patterns=[
-                "taxon auth      id_num",
-                "taxon auth auth id_num",
-            ],
-        ),
-    ]
-
-
-def taxon_linnaeus_patterns():
-    decoder = {
-        "(": {"TEXT": {"IN": t_const.OPEN}},
-        ")": {"TEXT": {"IN": t_const.CLOSE}},
-        ".": {"TEXT": {"IN": t_const.DOT}},
-        "_": {"TEXT": {"IN": list(":._;,")}},
-        "A.": {"TEXT": {"REGEX": ABBREV_RE}},
-        "auth": {"SHAPE": {"IN": t_const.NAME_SHAPES}},
-        "auth3": {"SHAPE": {"IN": AUTH3}},
-        "L.": {"TEXT": {"REGEX": r"^L[.,_]$"}},
-        "linnaeus": {"LOWER": {"IN": LINNAEUS}},
-        "taxon": {"ENT_TYPE": "taxon"},
-    }
-
-    return [
-        Compiler(
-            label="linnaeus",
-            on_match="taxon_linnaeus_match",
-            decoder=decoder,
-            patterns=[
-                "taxon ( linnaeus )",
-                "taxon   linnaeus ",
-                "taxon ( linnaeus ) A.+  auth3 _?",
-                "taxon ( linnaeus )      auth3 _?",
-                "taxon ( linnaeus ) auth auth3 _?",
-            ],
-        ),
-        Compiler(
-            label="not_linnaeus",
-            on_match="taxon_not_linnaeus_match",
-            decoder=decoder,
-            patterns=[
-                "taxon L. .? auth3",
-            ],
-        ),
-    ]
-
-
-def taxon_extend_patterns():
-    return [
-        Compiler(
-            label="extend",
-            id="taxon",
-            keep="taxon",
-            on_match="taxon_extend_match",
-            decoder={
-                "(": {"TEXT": {"IN": t_const.OPEN}},
-                ")": {"TEXT": {"IN": t_const.CLOSE}},
-                "_": {"TEXT": {"IN": list(":._;,")}},
-                "A.": {"TEXT": {"REGEX": ABBREV_RE}},
-                "ambig": {"ENT_TYPE": {"IN": AMBIGUOUS}},
-                "and": {"LOWER": {"IN": AND}},
-                "auth": {"SHAPE": {"IN": t_const.NAME_SHAPES}},
-                "auth3": {"SHAPE": {"IN": AUTH3}},
-                "by": {"LOWER": {"IN": ["by"]}},
-                "single": {"ENT_TYPE": "single"},
-                "sp": {"IS_SPACE": True},
-                "taxon": {"ENT_TYPE": {"IN": ["taxon", "linnaeus", "not_linnaeus"]}},
-                "l_rank": {"ENT_TYPE": {"IN": LOWER_RANK}},
-            },
-            patterns=[
-                "taxon sp? l_rank+ single",
-                "taxon sp? l_rank+ single ( auth+ _? ) ",
-                "taxon sp? l_rank+ single ( auth+ _? and auth+ _? ) ",
-                "taxon sp? l_rank+ single by? auth* auth3 _? ",
-                "taxon sp? l_rank+ single by? auth+ auth3 _? and auth* auth3 _? ",
-                "taxon sp? l_rank+ single by? A.* auth3 _?          ",
-                "taxon sp? l_rank+ single by? A.* auth+ _? auth3 _? ",
-                "taxon sp? l_rank+ single by? A.* auth+ _? and A.* auth3 _? ",
-                "taxon sp? l_rank+ single ( auth+  _? ) A.+  auth3 _?",
-                "taxon sp? l_rank+ single ( auth+  _? )      auth3 _?",
-                "taxon sp? l_rank+ single ( auth+  _? ) auth3 _? and auth* auth3 _? ",
-                "taxon sp? l_rank+ single ( ambig+ _? ) auth3 _?",
-                "taxon sp? l_rank+ single ( auth+ _? and  auth+ _? ) auth auth3 _?",
-                "taxon sp? l_rank+ single ( auth+ _? and  auth+ _? ) A.+  auth3 _?",
-            ],
-        ),
-    ]
-
-
-def taxon_rename_patterns():
-    return Compiler(
-        label="taxon",
-        keep="taxon",
-        on_match="rename_taxon_match",
-        decoder={
-            "taxon": {"ENT_TYPE": {"IN": ["single", "linnaeus", "not_linnaeus"]}},
-            "rank": {"ENT_TYPE": {"IN": ANY_RANK}},
-        },
-        patterns=[
-            "taxon",
-            "rank taxon",
-        ],
-    )
-
-
 @dataclass
 class Taxon(Base):
+    # Class vars ----------
+    all_csvs: ClassVar[dict[str, Path]] = get_csvs()
+
+    rank_terms: ClassVar[list[dict]] = term_util.read_terms(all_csvs["rank_terms"])
+
+    abbrev_re: ClassVar[str] = r"^[A-Z][.,_]$"
+    and_: ClassVar[list[str]] = ["&", "and", "et", "ex"]
+    any_rank: ClassVar[list[str]] = sorted({r["label"] for r in rank_terms})
+    auth3: ClassVar[list[str]] = [
+        s for s in t_const.NAME_SHAPES if len(s) > 2 and s[-1] != "."
+    ]
+    auth3_upper: ClassVar[list[str]] = [
+        s for s in t_const.NAME_AND_UPPER if len(s) > 2 and s[-1] != "."
+    ]
+    binomial_abbrev: ClassVar[dict[str, str]] = taxon_util.abbrev_binomial_term(
+        all_csvs["binomial_terms"]
+    )
+    ambiguous: ClassVar[list[str]] = ["us_county", "color"]
+    higher_rank: ClassVar[list[str]] = sorted(
+        {r["label"] for r in rank_terms if r["level"] == "higher"}
+    )
+    level: ClassVar[dict[str, str]] = term_util.term_data(
+        all_csvs["rank_terms"], "level"
+    )
+    linnaeus: ClassVar[list[str]] = [
+        "l",
+        "l.",
+        "lin",
+        "lin.",
+        "linn",
+        "linn.",
+        "linnaeus",
+    ]
+    lower_rank: ClassVar[list[str]] = sorted(
+        {r["label"] for r in rank_terms if r["level"] == "lower"}
+    )
+    monomial_ranks: ClassVar[dict[str, str]] = term_util.term_data(
+        all_csvs["monomial_terms"], "ranks"
+    )
+    rank_abbrev: ClassVar[dict[str, str]] = term_util.term_data(
+        all_csvs["rank_terms"], "abbrev"
+    )
+    rank_replace: ClassVar[dict[str, str]] = term_util.term_data(
+        all_csvs["rank_terms"], "replace"
+    )
+    # ---------------------
+
     taxon: str | list[str] = None
     rank: str = None
     authority: str | list[str] = None
+    taxon_like: str = None
     associated: bool = None
+
+    @classmethod
+    def pipe(
+        cls,
+        nlp: Language,
+        extend=1,
+        overwrite: list[str] = None,
+        auth_keep: list[str] = None,
+    ):
+        overwrite = overwrite if overwrite else []
+        auth_keep = auth_keep if auth_keep else []
+
+        default_labels = {
+            "binomial_terms": "binomial",
+            "monomial_terms": "monomial",
+            "mock_binomial_terms": "binomial",
+            "mock_monomial_terms": "monomial",
+        }
+
+        add.term_pipe(
+            nlp,
+            name="taxon_terms",
+            path=list(cls.all_csvs.values()),
+            default_labels=default_labels,
+        )
+
+        add.trait_pipe(
+            nlp,
+            name="taxon_patterns",
+            compiler=cls.taxon_patterns(),
+            merge=["taxon", "single"],
+            overwrite=["taxon"],
+        )
+
+        add.trait_pipe(
+            nlp,
+            name="taxon_linnaeus_patterns",
+            compiler=cls.taxon_linnaeus_patterns() + cls.multi_taxon_patterns(),
+            merge=["linnaeus", "not_linnaeus"],
+            overwrite=["taxon"],
+        )
+
+        auth_keep = auth_keep + ACCUMULATOR.keep + ["single", "not_name"]
+        add.trait_pipe(
+            nlp,
+            name="taxon_auth_patterns",
+            compiler=cls.taxon_auth_patterns(),
+            merge=["taxon"],
+            keep=auth_keep,
+            overwrite=["taxon", *overwrite],
+        )
+
+        for i in range(1, extend + 1):
+            name = f"taxon_extend_{i}"
+            add.trait_pipe(
+                nlp,
+                name=name,
+                compiler=cls.taxon_extend_patterns(),
+                merge=["taxon"],
+                overwrite=["taxon", "linnaeus", "not_linnaeus", "single"],
+            )
+
+        add.trait_pipe(
+            nlp,
+            name="taxon_rename",
+            compiler=cls.taxon_rename_patterns(),
+            overwrite=["taxon", "linnaeus", "not_linnaeus", "single"],
+        )
+
+        add.cleanup_pipe(nlp, name="taxon_cleanup")
+
+    @classmethod
+    def taxon_patterns(cls):
+        decoder = {
+            ":": {"TEXT": {"IN": [":", ";"]}},
+            "A.": {"TEXT": {"REGEX": cls.abbrev_re}},
+            "bad_prefix": {"ENT_TYPE": "bad_taxon_prefix"},
+            "bad_suffix": {"ENT_TYPE": "bad_taxon_suffix"},
+            "maybe": {"POS": {"IN": ["PROPN", "NOUN"]}},
+            "binomial": {"ENT_TYPE": "binomial"},
+            "monomial": {"ENT_TYPE": "monomial"},
+            "higher_rank": {"ENT_TYPE": {"IN": cls.higher_rank}},
+            "subsp": {"ENT_TYPE": "subspecies_rank"},
+            "var": {"ENT_TYPE": "variety_rank"},
+            "subvar": {"ENT_TYPE": "subvariety_rank"},
+            "f.": {"ENT_TYPE": "form_rank"},
+            "subf": {"ENT_TYPE": "subform_rank"},
+            "species_rank": {"ENT_TYPE": "species_rank"},
+        }
+
+        return [
+            Compiler(
+                label="single",
+                on_match="single_taxon_match",
+                decoder=decoder,
+                patterns=[
+                    "monomial",
+                    "higher_rank  monomial",
+                    "species_rank monomial",
+                ],
+            ),
+            Compiler(
+                label="species",
+                id="taxon",
+                keep="taxon",
+                on_match="taxon_match",
+                decoder=decoder,
+                patterns=[
+                    "binomial{2}",
+                    "monomial monomial",
+                    "A. monomial",
+                ],
+            ),
+            Compiler(
+                label="subspecies",
+                id="taxon",
+                keep="taxon",
+                on_match="taxon_match",
+                decoder=decoder,
+                patterns=[
+                    "   binomial{2} subsp? monomial",
+                    "   binomial{2} subsp  maybe",
+                    "A. monomial    subsp? monomial",
+                    "A. monomial    subsp  maybe",
+                    "A. maybe       subsp? monomial",
+                    "A. maybe       subsp  maybe",
+                ],
+            ),
+            Compiler(
+                label="variety",
+                id="taxon",
+                keep="taxon",
+                on_match="taxon_match",
+                decoder=decoder,
+                patterns=[
+                    "   binomial{2}                var monomial",
+                    "   binomial{2} subsp monomial var monomial",
+                    "   binomial{2}                var maybe",
+                    "   binomial{2} subsp monomial var maybe",
+                    "A. monomial                   var monomial",
+                    "A. monomial    subsp monomial var monomial",
+                    "A. monomial                   var maybe",
+                    "A. monomial    subsp monomial var maybe",
+                    "A. monomial                   var monomial",
+                    "A. monomial    subsp monomial var monomial",
+                    "A. monomial                   var maybe",
+                    "A. monomial    subsp monomial var maybe",
+                    "A. maybe                      var monomial",
+                    "A. maybe       subsp monomial var monomial",
+                    "A. maybe                      var maybe",
+                    "A. maybe       subsp monomial var maybe",
+                    "A. maybe                      var monomial",
+                    "A. maybe       subsp monomial var monomial",
+                    "A. maybe                      var maybe",
+                    "A. maybe       subsp monomial var maybe",
+                ],
+            ),
+            Compiler(
+                label="subvariety",
+                id="taxon",
+                keep="taxon",
+                on_match="taxon_match",
+                decoder=decoder,
+                patterns=[
+                    "   binomial{2}                subvar monomial",
+                    "   binomial{2} var   monomial subvar monomial",
+                    "   binomial{2} subsp monomial subvar monomial",
+                    "   binomial{2}                subvar maybe",
+                    "   binomial{2} var   monomial subvar maybe",
+                    "   binomial{2} subsp monomial subvar maybe",
+                    "   binomial{2} var   maybe    subvar maybe",
+                    "   binomial{2} subsp maybe    subvar maybe",
+                    "   binomial{2} var   maybe    subvar monomial",
+                    "   binomial{2} subsp maybe    subvar monomial",
+                    "A. monomial                   subvar monomial",
+                    "A. monomial    var   monomial subvar monomial",
+                    "A. monomial    subsp monomial subvar monomial",
+                    "A. monomial                   subvar maybe",
+                    "A. monomial    var   monomial subvar maybe",
+                    "A. monomial    subsp monomial subvar maybe",
+                    "A. monomial    var   maybe    subvar maybe",
+                    "A. monomial    subsp maybe    subvar maybe",
+                    "A. monomial    var   maybe    subvar monomial",
+                    "A. monomial    subsp maybe    subvar monomial",
+                    "A. maybe                      subvar monomial",
+                    "A. maybe       var   monomial subvar monomial",
+                    "A. maybe       subsp monomial subvar monomial",
+                    "A. maybe                      subvar maybe",
+                    "A. maybe       var   monomial subvar maybe",
+                    "A. maybe       subsp monomial subvar maybe",
+                    "A. maybe       var   maybe    subvar maybe",
+                    "A. maybe       subsp maybe    subvar maybe",
+                    "A. maybe       var   maybe    subvar monomial",
+                    "A. maybe       subsp maybe    subvar monomial",
+                ],
+            ),
+            Compiler(
+                label="form",
+                id="taxon",
+                keep="taxon",
+                on_match="taxon_match",
+                decoder=decoder,
+                patterns=[
+                    "   binomial{2}                f. monomial",
+                    "   binomial{2} var   monomial f. monomial",
+                    "   binomial{2} subsp monomial f. monomial",
+                    "   binomial{2}                f. maybe",
+                    "   binomial{2} var   monomial f. maybe",
+                    "   binomial{2} subsp monomial f. maybe",
+                    "   binomial{2} var   maybe    f. maybe",
+                    "   binomial{2} subsp maybe    f. maybe",
+                    "   binomial{2} var   maybe    f. monomial",
+                    "   binomial{2} subsp maybe    f. monomial",
+                    "A. monomial                   f. monomial",
+                    "A. monomial    var   monomial f. monomial",
+                    "A. monomial    subsp monomial f. monomial",
+                    "A. monomial                   f. maybe",
+                    "A. monomial    var   monomial f. maybe",
+                    "A. monomial    subsp monomial f. maybe",
+                    "A. monomial    var   maybe    f. maybe",
+                    "A. monomial    subsp maybe    f. maybe",
+                    "A. monomial    var   maybe    f. monomial",
+                    "A. monomial    subsp maybe    f. monomial",
+                    "A. maybe                      f. monomial",
+                    "A. maybe       var   monomial f. monomial",
+                    "A. maybe       subsp monomial f. monomial",
+                    "A. maybe                      f. maybe",
+                    "A. maybe       var   monomial f. maybe",
+                    "A. maybe       subsp monomial f. maybe",
+                    "A. maybe       var   maybe    f. maybe",
+                    "A. maybe       subsp maybe    f. maybe",
+                    "A. maybe       var   maybe    f. monomial",
+                    "A. maybe       subsp maybe    f. monomial",
+                ],
+            ),
+            Compiler(
+                label="subform",
+                id="taxon",
+                keep="taxon",
+                on_match="taxon_match",
+                decoder=decoder,
+                patterns=[
+                    "   binomial{2}                subf monomial",
+                    "   binomial{2} var   monomial subf monomial",
+                    "   binomial{2} subsp monomial subf monomial",
+                    "   binomial{2}                subf maybe",
+                    "   binomial{2} var   monomial subf maybe",
+                    "   binomial{2} subsp monomial subf maybe",
+                    "   binomial{2} var   maybe    subf maybe",
+                    "   binomial{2} subsp maybe    subf maybe",
+                    "   binomial{2} var   maybe    subf monomial",
+                    "   binomial{2} subsp maybe    subf monomial",
+                    "A. monomial                   subf monomial",
+                    "A. monomial    var   monomial subf monomial",
+                    "A. monomial    subsp monomial subf monomial",
+                    "A. monomial                   subf maybe",
+                    "A. monomial    var   monomial subf maybe",
+                    "A. monomial    subsp monomial subf maybe",
+                    "A. monomial    var   maybe    subf maybe",
+                    "A. monomial    subsp maybe    subf maybe",
+                    "A. monomial    var   maybe    subf monomial",
+                    "A. monomial    subsp maybe    subf monomial",
+                    "A. maybe                      subf monomial",
+                    "A. maybe       var   monomial subf monomial",
+                    "A. maybe       subsp monomial subf monomial",
+                    "A. maybe                      subf maybe",
+                    "A. maybe       var   monomial subf maybe",
+                    "A. maybe       subsp monomial subf maybe",
+                    "A. maybe       var   maybe    subf maybe",
+                    "A. maybe       subsp maybe    subf maybe",
+                    "A. maybe       var   maybe    subf monomial",
+                    "A. maybe       subsp maybe    subf monomial",
+                ],
+            ),
+            Compiler(
+                label="bad_taxon",
+                id="taxon",
+                keep="taxon",
+                decoder=decoder,
+                on_match=reject_match.REJECT_MATCH,
+                patterns=[
+                    "bad_prefix :?    monomial",
+                    "bad_prefix :? A. monomial",
+                    "                 monomial    bad_suffix",
+                    "              A. monomial    bad_suffix",
+                    "bad_prefix :?    monomial    bad_suffix",
+                    "bad_prefix :? A. monomial    bad_suffix",
+                    "bad_prefix :?    binomial{2}",
+                    "                 binomial{2} bad_suffix",
+                    "bad_prefix :?    binomial{2} bad_suffix",
+                ],
+            ),
+        ]
+
+    @classmethod
+    def multi_taxon_patterns(cls):
+        return [
+            Compiler(
+                label="multi_taxon",
+                keep="multi_taxon",
+                on_match="multi_taxon_match",
+                decoder={
+                    "and": {"LOWER": {"IN": cls.and_}},
+                    "taxon": {"ENT_TYPE": "taxon"},
+                },
+                patterns=[
+                    "taxon and taxon",
+                ],
+            ),
+        ]
+
+    @classmethod
+    def taxon_auth_patterns(cls):
+        decoder = {
+            "(": {"TEXT": {"IN": t_const.OPEN}},
+            ")": {"TEXT": {"IN": t_const.CLOSE}},
+            "A.": {"TEXT": {"REGEX": cls.abbrev_re}},
+            "and": {"LOWER": {"IN": cls.and_}},
+            "auth": {"SHAPE": {"IN": t_const.NAME_SHAPES}},
+            "auth3": {"SHAPE": {"IN": cls.auth3}},
+            "ambig": {"ENT_TYPE": {"IN": cls.ambiguous}},
+            "by": {"LOWER": {"IN": ["by"]}},
+            "linnaeus": {"ENT_TYPE": "linnaeus"},
+            "taxon": {"ENT_TYPE": "taxon"},
+            "_": {"TEXT": {"IN": list(":._;,")}},
+            "id_num": {"LOWER": {"REGEX": r"^(\w*\d+\w*|[A-Za-z])$"}},
+        }
+
+        return [
+            Compiler(
+                label="auth",
+                id="taxon",
+                on_match="taxon_auth_match",
+                keep="taxon",
+                decoder=decoder,
+                patterns=[
+                    "taxon ( ambig+ _? )",
+                    "taxon ( A.* auth+ _? )",
+                    "taxon ( A.* auth+ _? and  A.* auth+ _? )",
+                    "taxon ( auth+  _? ) A.* auth* auth3 _?",
+                    "taxon ( auth+  _? ) A.* auth* auth3 _? and A.* auth* auth3",
+                    "taxon ( auth+ _? and  auth+ _?  ) A.* auth* auth3 _?",
+                    "taxon by? A.* auth3 _?",
+                    "taxon by? A.* auth  _?         auth3 _?",
+                    "taxon by? A.* auth+ _? and A.* auth3 _?",
+                    "taxon ( A.* auth+   _? and A.* auth+ _? and A.* auth+ _? )",
+                    (
+                        "taxon ( A.* auth+  _? and A.* auth+ _? and A.* auth+ _? ) "
+                        "A.* auth* auth3 _?"
+                    ),
+                    (
+                        "taxon ( A.* auth+  _? and A.* auth+ _? and A.* auth+ _? ) "
+                        "A.* auth* auth3 _? and A.* auth* auth3 _?"
+                    ),
+                ],
+            ),
+            Compiler(
+                label="not_auth",
+                id="taxon",
+                on_match=reject_match.REJECT_MATCH,
+                decoder=decoder,
+                patterns=[
+                    "taxon auth      id_num",
+                    "taxon auth auth id_num",
+                ],
+            ),
+        ]
+
+    @classmethod
+    def taxon_linnaeus_patterns(cls):
+        decoder = {
+            "(": {"TEXT": {"IN": t_const.OPEN}},
+            ")": {"TEXT": {"IN": t_const.CLOSE}},
+            ".": {"TEXT": {"IN": t_const.DOT}},
+            "_": {"TEXT": {"IN": list(":._;,")}},
+            "A.": {"TEXT": {"REGEX": cls.abbrev_re}},
+            "auth": {"SHAPE": {"IN": t_const.NAME_SHAPES}},
+            "auth3": {"SHAPE": {"IN": cls.auth3}},
+            "L.": {"TEXT": {"REGEX": r"^L[.,_]$"}},
+            "linnaeus": {"LOWER": {"IN": cls.linnaeus}},
+            "taxon": {"ENT_TYPE": "taxon"},
+        }
+
+        return [
+            Compiler(
+                label="linnaeus",
+                on_match="taxon_linnaeus_match",
+                decoder=decoder,
+                patterns=[
+                    "taxon ( linnaeus )",
+                    "taxon   linnaeus ",
+                    "taxon ( linnaeus ) A.+  auth3 _?",
+                    "taxon ( linnaeus )      auth3 _?",
+                    "taxon ( linnaeus ) auth auth3 _?",
+                ],
+            ),
+            Compiler(
+                label="not_linnaeus",
+                on_match="taxon_not_linnaeus_match",
+                decoder=decoder,
+                patterns=[
+                    "taxon L. .? auth3",
+                ],
+            ),
+        ]
+
+    @classmethod
+    def taxon_extend_patterns(cls):
+        return [
+            Compiler(
+                label="extend",
+                id="taxon",
+                keep="taxon",
+                on_match="taxon_extend_match",
+                decoder={
+                    "(": {"TEXT": {"IN": t_const.OPEN}},
+                    ")": {"TEXT": {"IN": t_const.CLOSE}},
+                    "_": {"TEXT": {"IN": list(":._;,")}},
+                    "A.": {"TEXT": {"REGEX": cls.abbrev_re}},
+                    "ambig": {"ENT_TYPE": {"IN": cls.ambiguous}},
+                    "and": {"LOWER": {"IN": cls.and_}},
+                    "auth": {"SHAPE": {"IN": t_const.NAME_SHAPES}},
+                    "auth3": {"SHAPE": {"IN": cls.auth3}},
+                    "by": {"LOWER": {"IN": ["by"]}},
+                    "single": {"ENT_TYPE": "single"},
+                    "sp": {"IS_SPACE": True},
+                    "taxon": {
+                        "ENT_TYPE": {"IN": ["taxon", "linnaeus", "not_linnaeus"]}
+                    },
+                    "l_rank": {"ENT_TYPE": {"IN": cls.lower_rank}},
+                },
+                patterns=[
+                    "taxon sp? l_rank+ single",
+                    "taxon sp? l_rank+ single ( auth+ _? ) ",
+                    "taxon sp? l_rank+ single ( auth+ _? and auth+ _? ) ",
+                    "taxon sp? l_rank+ single by? auth* auth3 _? ",
+                    "taxon sp? l_rank+ single by? auth+ auth3 _? and auth* auth3 _? ",
+                    "taxon sp? l_rank+ single by? A.* auth3 _?          ",
+                    "taxon sp? l_rank+ single by? A.* auth+ _? auth3 _? ",
+                    "taxon sp? l_rank+ single by? A.* auth+ _? and A.* auth3 _? ",
+                    "taxon sp? l_rank+ single ( auth+  _? ) A.+  auth3 _?",
+                    "taxon sp? l_rank+ single ( auth+  _? )      auth3 _?",
+                    "taxon sp? l_rank+ single ( auth+  _? ) auth3 _? and auth* auth3 _? ",
+                    "taxon sp? l_rank+ single ( ambig+ _? ) auth3 _?",
+                    "taxon sp? l_rank+ single ( auth+ _? and  auth+ _? ) auth auth3 _?",
+                    "taxon sp? l_rank+ single ( auth+ _? and  auth+ _? ) A.+  auth3 _?",
+                ],
+            ),
+        ]
+
+    @classmethod
+    def taxon_rename_patterns(cls):
+        return Compiler(
+            label="taxon",
+            keep="taxon",
+            on_match="rename_taxon_match",
+            decoder={
+                "taxon": {"ENT_TYPE": {"IN": ["single", "linnaeus", "not_linnaeus"]}},
+                "rank": {"ENT_TYPE": {"IN": cls.any_rank}},
+            },
+            patterns=[
+                "taxon",
+                "rank taxon",
+            ],
+        )
 
     @classmethod
     def taxon_match(cls, ent):
@@ -542,8 +574,8 @@ class Taxon(Base):
         for i, token in enumerate(ent):
             token._.flag = "taxon"
 
-            if LEVEL.get(token.lower_) == "lower":
-                taxon.append(RANK_ABBREV.get(token.lower_, token.lower_))
+            if cls.level.get(token.lower_) == "lower":
+                taxon.append(cls.rank_abbrev.get(token.lower_, token.lower_))
                 rank_seen = True
 
             elif token._.term == "binomial" and i == 0:
@@ -557,7 +589,7 @@ class Taxon(Base):
 
             elif token._.term == "monomial" and i == 2:
                 if not rank_seen:
-                    taxon.append(RANK_ABBREV["subspecies"])
+                    taxon.append(cls.rank_abbrev["subspecies"])
                 taxon.append(token.lower_)
 
             elif token.pos_ in ["PROPN", "NOUN"]:
@@ -566,10 +598,10 @@ class Taxon(Base):
             else:
                 raise reject_match.RejectMatch
 
-        if re.match(ABBREV_RE, taxon[0]) and len(taxon) > 1:
+        if re.match(cls.abbrev_re, taxon[0]) and len(taxon) > 1:
             taxon[0] = taxon[0] if taxon[0][-1] == "." else taxon[0] + "."
             abbrev = " ".join(taxon[:2])
-            taxon[0] = BINOMIAL_ABBREV.get(abbrev, taxon[0])
+            taxon[0] = cls.binomial_abbrev.get(abbrev, taxon[0])
 
         taxon = " ".join(taxon)
         taxon = taxon[0].upper() + taxon[1:]
@@ -595,10 +627,10 @@ class Taxon(Base):
                 taxon = taxon.replace("- ", "-")
 
                 # A given rank will override the one in the DB
-                rank_ = MONOMIAL_RANKS.get(token.lower_)
+                rank_ = cls.monomial_ranks.get(token.lower_)
                 if not rank and rank_:
                     rank_ = rank_.split()[0]
-                    level = LEVEL[rank_]
+                    level = cls.level[rank_]
                     if level == "higher" and token.shape_ in t_const.NAME_AND_UPPER:
                         rank = rank_
                     elif (
@@ -608,8 +640,8 @@ class Taxon(Base):
                         rank = rank_
 
             # A given rank overrides the one in the DB
-            elif LEVEL.get(token.lower_) in ("higher", "lower"):
-                rank = RANK_REPLACE.get(token.lower_, token.lower_)
+            elif cls.level.get(token.lower_) in ("higher", "lower"):
+                rank = cls.rank_replace.get(token.lower_, token.lower_)
 
             elif token.pos_ in ("PROPN", "NOUN"):
                 taxon = token.lower_
@@ -617,16 +649,13 @@ class Taxon(Base):
         if not rank:
             raise reject_match.RejectMatch
 
-        taxon = taxon.title() if LEVEL[rank] == "higher" else taxon.lower()
+        taxon = taxon.title() if cls.level[rank] == "higher" else taxon.lower()
 
         if len(taxon) < const.MIN_TAXON_LEN:
             raise reject_match.RejectMatch
 
-        trait = cls.from_ent(
-            ent,
-            taxon=taxon.title() if LEVEL[rank] == "higher" else taxon.lower(),
-            rank=rank,
-        )
+        trait = cls.from_ent(ent, taxon=taxon, rank=rank)
+
         ent[0]._.trait = trait
         ent[0]._.flag = "taxon_data"
 
@@ -635,12 +664,13 @@ class Taxon(Base):
     @classmethod
     def multi_taxon_match(cls, ent):
         taxa = []
+        rank = None
 
         for sub_ent in ent.ents:
             taxa.append(sub_ent._.trait.taxon)
-            ent._.trait.rank = sub_ent._.trait.rank
+            rank = sub_ent._.trait.rank
 
-        return cls.from_ent(ent, taxon=taxa)
+        return cls.from_ent(ent, taxon=taxa, rank=rank)
 
     @classmethod
     def taxon_auth_match(cls, ent):
@@ -654,7 +684,7 @@ class Taxon(Base):
                 if token._.trait.authority:
                     prev_auth = token._.trait.authority
 
-            elif auth and token.lower_ in AND:
+            elif auth and token.lower_ in cls.and_:
                 auth.append("and")
 
             elif token.shape_ in t_const.NAME_SHAPES:
@@ -666,9 +696,9 @@ class Taxon(Base):
             token._.flag = "taxon"
 
         auth = " ".join(auth)
-        authority = [prev_auth, auth] if prev_auth else auth
+        data["authority"] = [prev_auth, auth] if prev_auth else auth
 
-        trait = cls.from_ent(ent, authority=authority, **data)
+        trait = cls.from_ent(ent, **data)
 
         ent[0]._.trait = trait
         ent[0]._.flag = "taxon_data"
@@ -682,7 +712,7 @@ class Taxon(Base):
         for token in ent:
             if token._.flag == "taxon_data":
                 data = asdict(token._.trait)
-            elif token.lower_ in LINNAEUS:
+            elif token.lower_ in cls.linnaeus:
                 pass
             elif token.shape_ in t_const.NAME_SHAPES:
                 if len(token) == 1:
@@ -690,8 +720,8 @@ class Taxon(Base):
                 else:
                     auth.append(token.text)
 
-        authority = ["Linnaeus", " ".join(auth)] if auth else "Linnaeus"
-        trait = cls.from_ent(ent, authority=authority, **data)
+        data["authority"] = ["Linnaeus", " ".join(auth)] if auth else "Linnaeus"
+        trait = cls.from_ent(ent, **data)
 
         ent[0]._.trait = trait
         ent[0]._.flag = "taxon_data"
@@ -731,14 +761,14 @@ class Taxon(Base):
 
         for token in ent:
             if token._.flag == "taxon_data":
-                taxon.append(ent._.trait.taxon)
-                if ent._.trait.authority:
-                    auth.append(ent._.authority)
+                taxon.append(token._.trait.taxon)
+                if token._.trait.authority:
+                    auth.append(token._.trait.authority)
 
             elif token._.flag == "taxon" or token.text in "().":
                 pass
 
-            elif auth and token.lower_ in AND:
+            elif auth and token.lower_ in cls.and_:
                 pass
 
             elif token.shape_ in t_const.NAME_SHAPES:
@@ -747,9 +777,9 @@ class Taxon(Base):
                 else:
                     auth.append(token.text)
 
-            elif token._.term in LOWER_RANK:
-                taxon.append(RANK_ABBREV.get(token.lower_, token.lower_))
-                rank = RANK_REPLACE.get(token.lower_, token.text)
+            elif token._.term in cls.lower_rank:
+                taxon.append(cls.rank_abbrev.get(token.lower_, token.lower_))
+                rank = cls.rank_replace.get(token.lower_, token.text)
                 next_is_lower_taxon = True
 
             elif next_is_lower_taxon:
@@ -758,10 +788,7 @@ class Taxon(Base):
 
             token._.flag = "taxon"
 
-        taxon = " ".join(taxon)
-        rank = rank
-        authority = auth
-        trait = cls.from_ent(ent, authority=authority, rank=rank, taxon=taxon)
+        trait = cls.from_ent(ent, authority=auth, rank=rank, taxon=" ".join(taxon))
 
         ent._.relabel = "taxon"
 
@@ -779,8 +806,8 @@ class Taxon(Base):
             if token._.flag == "taxon_data":
                 data = asdict(token._.trait)
 
-            elif token._.term in ANY_RANK:
-                rank = RANK_REPLACE.get(token.lower_, token.lower_)
+            elif token._.term in cls.any_rank:
+                rank = cls.rank_replace.get(token.lower_, token.lower_)
 
         ent._.relabel = "taxon"
 
