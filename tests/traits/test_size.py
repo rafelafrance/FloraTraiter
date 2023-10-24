@@ -373,6 +373,7 @@ class TestSize(unittest.TestCase):
         )
 
     def test_size_18(self):
+        # self.maxDiff = None
         self.assertEqual(
             test("petals (1–)3–10(–12) mm (pistillate) or 5–8(–10) mm (staminate)"),
             [
