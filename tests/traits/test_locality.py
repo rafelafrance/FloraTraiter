@@ -1,9 +1,9 @@
 import unittest
 
-from traiter.pylib.traits.color import Color
 from traiter.pylib.traits.elevation import Elevation
 from traiter.pylib.traits.habitat import Habitat
 
+from flora.pylib.traits.color import Color
 from flora.pylib.traits.locality import Locality
 from flora.pylib.traits.part import Part
 from flora.pylib.traits.plant_duration import PlantDuration
@@ -83,6 +83,7 @@ class TestLocality(unittest.TestCase):
         )
 
     def test_locality_05(self):
+        self.maxDiff = None
         self.assertEqual(
             test(
                 """
@@ -205,7 +206,7 @@ class TestLocality(unittest.TestCase):
                 """
             ),
             [
-                Part(fruit_part="fruit", trait="fruit_part", start=0, end=5),
+                Part(part="fruit", trait="part", type="fruit_part", start=0, end=5),
                 Color(
                     color="purple-in-color",
                     trait="color",

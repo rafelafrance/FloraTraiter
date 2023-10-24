@@ -1,5 +1,11 @@
 import unittest
 
+from flora.pylib.traits.part import Part
+from flora.pylib.traits.plant_location import PlantLocation
+from flora.pylib.traits.shape import Shape
+from flora.pylib.traits.size import Dimension
+from flora.pylib.traits.size import Size
+from flora.pylib.traits.surface import Surface
 from tests.setup import test
 
 
@@ -8,30 +14,29 @@ class TestPartLocation(unittest.TestCase):
         self.assertEqual(
             test("stipules 3-8 mm, semiamplexicaul, adnate to petiole for 1-2 mm"),
             [
-                {"leaf_part": "stipule", "trait": "leaf_part", "start": 0, "end": 8},
-                {
-                    "dimensions": "length",
-                    "length_low": 0.3,
-                    "length_high": 0.8,
-                    "trait": "size",
-                    "start": 9,
-                    "end": 15,
-                    "units": "cm",
-                    "leaf_part": "stipule",
-                },
-                {
-                    "shape": "semiamplexicaul",
-                    "trait": "shape",
-                    "start": 17,
-                    "end": 32,
-                    "leaf_part": "stipule",
-                },
-                {
-                    "part_as_distance": "adnate to petiole for 1 - 2 mm",
-                    "trait": "part_as_distance",
-                    "start": 34,
-                    "end": 62,
-                },
+                Part(part="stipule", trait="part", type="leaf_part", start=0, end=8),
+                Size(
+                    dims=[Dimension("length", low=0.3, high=0.8)],
+                    trait="size",
+                    start=9,
+                    end=15,
+                    units="cm",
+                    part="stipule",
+                ),
+                Shape(
+                    shape="semiamplexicaul",
+                    trait="shape",
+                    start=17,
+                    end=32,
+                    part="stipule",
+                ),
+                PlantLocation(
+                    location="adnate to petiole for 1 - 2 mm",
+                    trait="location",
+                    type="part_as_distance",
+                    start=34,
+                    end=62,
+                ),
             ],
         )
 
@@ -39,19 +44,21 @@ class TestPartLocation(unittest.TestCase):
         self.assertEqual(
             test("leaves completely embracing stem but not connate"),
             [
-                {
-                    "leaf_part": "leaf",
-                    "trait": "leaf_part",
-                    "start": 0,
-                    "end": 6,
-                    "part_as_loc": "embracing stem",
-                },
-                {
-                    "part_as_loc": "embracing stem",
-                    "trait": "part_as_loc",
-                    "start": 18,
-                    "end": 32,
-                },
+                Part(
+                    part="leaf",
+                    trait="part",
+                    type="leaf_part",
+                    start=0,
+                    end=6,
+                    location="embracing stem",
+                ),
+                PlantLocation(
+                    location="embracing stem",
+                    trait="location",
+                    type="part_as_location",
+                    start=18,
+                    end=32,
+                ),
             ],
         )
 
@@ -59,106 +66,137 @@ class TestPartLocation(unittest.TestCase):
         self.assertEqual(
             test("stipules shortly ciliate at margin"),
             [
-                {
-                    "leaf_part": "stipule",
-                    "trait": "leaf_part",
-                    "subpart_as_loc": "at margin",
-                    "start": 0,
-                    "end": 8,
-                },
-                {
-                    "surface": "ciliate",
-                    "trait": "surface",
-                    "subpart_as_loc": "at margin",
-                    "start": 9,
-                    "end": 24,
-                    "leaf_part": "stipule",
-                },
-                {
-                    "subpart_as_loc": "at margin",
-                    "trait": "subpart_as_loc",
-                    "start": 25,
-                    "end": 34,
-                },
+                Part(
+                    part="stipule",
+                    trait="part",
+                    type="leaf_part",
+                    location="at margin",
+                    start=0,
+                    end=8,
+                ),
+                Surface(
+                    surface="ciliate",
+                    trait="surface",
+                    location="at margin",
+                    start=9,
+                    end=24,
+                    part="stipule",
+                ),
+                PlantLocation(
+                    location="at margin",
+                    trait="location",
+                    type="subpart_as_location",
+                    start=25,
+                    end=34,
+                ),
             ],
         )
 
     def test_part_location_04(self):
         self.assertEqual(
-            test("the short terminal pseudoraceme"),
+            test("capitula immersed in foliage."),
             [
-                {
-                    "inflorescence": "pseudoraceme",
-                    "trait": "inflorescence",
-                    "start": 19,
-                    "end": 31,
-                    "location": "terminal",
-                },
+                Part(
+                    part="capitulum",
+                    trait="part",
+                    type="inflorescence",
+                    location="immersed in foliage",
+                    start=0,
+                    end=8,
+                ),
+                PlantLocation(
+                    location="immersed in foliage",
+                    trait="location",
+                    type="part_as_location",
+                    start=9,
+                    end=28,
+                ),
             ],
         )
 
     def test_part_location_05(self):
-        self.assertEqual(
-            test("capitula immersed in foliage."),
-            [
-                {
-                    "inflorescence": "capitulum",
-                    "trait": "inflorescence",
-                    "part_as_loc": "immersed in foliage",
-                    "start": 0,
-                    "end": 8,
-                },
-                {
-                    "part_as_loc": "immersed in foliage",
-                    "trait": "part_as_loc",
-                    "start": 9,
-                    "end": 28,
-                },
-            ],
-        )
-
-    def test_part_location_06(self):
+        self.maxDiff = None
         self.assertEqual(
             test(
                 "the short terminal pseudoraceme of ovoid-ellipsoid or globose "
                 "capitula immersed in foliage."
             ),
             [
-                {
-                    "inflorescence": "pseudoraceme",
-                    "trait": "inflorescence",
-                    "start": 19,
-                    "end": 31,
-                    "location": "terminal",
-                },
-                {
-                    "shape": "ovoid-ellipsoid",
-                    "trait": "shape",
-                    "start": 35,
-                    "end": 50,
-                    "inflorescence": "pseudoraceme",
-                    "location": "terminal",
-                },
-                {
-                    "shape": "spheric",
-                    "trait": "shape",
-                    "start": 54,
-                    "end": 61,
-                    "inflorescence": "capitulum",
-                    "part_as_loc": "immersed in foliage",
-                },
-                {
-                    "inflorescence": "capitulum",
-                    "trait": "inflorescence",
-                    "start": 62,
-                    "end": 70,
-                    "part_as_loc": "immersed in foliage",
-                },
-                {
-                    "part_as_loc": "immersed in foliage",
-                    "trait": "part_as_loc",
-                    "start": 71,
-                    "end": 90,
-                },
+                PlantLocation(
+                    trait="location",
+                    start=10,
+                    end=18,
+                    location="terminal",
+                    type="part_location",
+                ),
+                Part(
+                    part="pseudoraceme",
+                    trait="part",
+                    type="inflorescence",
+                    start=19,
+                    end=31,
+                    location="terminal",
+                ),
+                Shape(
+                    shape="ovoid-ellipsoid",
+                    trait="shape",
+                    start=35,
+                    end=50,
+                    part="pseudoraceme",
+                    location="terminal",
+                ),
+                Shape(
+                    shape="spheric",
+                    trait="shape",
+                    start=54,
+                    end=61,
+                    part="capitulum",
+                    location="immersed in foliage",
+                ),
+                Part(
+                    part="capitulum",
+                    trait="part",
+                    type="inflorescence",
+                    start=62,
+                    end=70,
+                    location="immersed in foliage",
+                ),
+                PlantLocation(
+                    location="immersed in foliage",
+                    trait="location",
+                    type="part_as_location",
+                    start=71,
+                    end=90,
+                ),
+            ],
+        )
+
+    def test_part_location_06(self):
+        self.assertEqual(
+            test("""setose their whole length dorsally and the flowers are smaller"""),
+            [
+                Surface(
+                    surface="setose",
+                    trait="surface",
+                    start=0,
+                    end=6,
+                    part="flower",
+                    location="dorsal",
+                ),
+                PlantLocation(
+                    trait="location",
+                    type="part_location",
+                    location="dorsal",
+                    start=26,
+                    end=34,
+                ),
+                Part(
+                    part="flower",
+                    trait="part",
+                    start=43,
+                    end=50,
+                    location="dorsal",
+                    type="flower_part",
+                ),
             ],
         )

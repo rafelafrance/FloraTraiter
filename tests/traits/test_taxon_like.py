@@ -1,5 +1,8 @@
 import unittest
 
+from flora.pylib.traits.taxon import Taxon
+from flora.pylib.traits.taxon_like import TaxonLike
+from flora.pylib.traits.venation import Venation
 from tests.setup import test
 
 
@@ -8,14 +11,13 @@ class TestTaxonLike(unittest.TestCase):
         self.assertEqual(
             test("""it seems closer to the nearly sympatric M. sensitiva."""),
             [
-                {
-                    "rank": "species",
-                    "taxon_like": "Mimosa sensitiva",
-                    "trait": "taxon_like",
-                    "start": 30,
-                    "end": 52,
-                    "relation": "sympatric",
-                }
+                TaxonLike(
+                    taxon_like="Mimosa sensitiva",
+                    trait="taxon_like",
+                    start=30,
+                    end=52,
+                    relation="sympatric",
+                )
             ],
         )
 
@@ -23,14 +25,13 @@ class TestTaxonLike(unittest.TestCase):
         self.assertEqual(
             test("""it is similar to M. sensitiva."""),
             [
-                {
-                    "rank": "species",
-                    "taxon_like": "Mimosa sensitiva",
-                    "trait": "taxon_like",
-                    "start": 6,
-                    "end": 29,
-                    "relation": "similar",
-                }
+                TaxonLike(
+                    taxon_like="Mimosa sensitiva",
+                    trait="taxon_like",
+                    start=6,
+                    end=29,
+                    relation="similar",
+                )
             ],
         )
 
@@ -38,14 +39,13 @@ class TestTaxonLike(unittest.TestCase):
         self.assertEqual(
             test("""It resembles M. sensitiva in amplitude"""),
             [
-                {
-                    "rank": "species",
-                    "taxon_like": "Mimosa sensitiva",
-                    "trait": "taxon_like",
-                    "start": 3,
-                    "end": 25,
-                    "relation": "resembles",
-                }
+                TaxonLike(
+                    taxon_like="Mimosa sensitiva",
+                    trait="taxon_like",
+                    start=3,
+                    end=25,
+                    relation="resembles",
+                )
             ],
         )
 
@@ -53,15 +53,13 @@ class TestTaxonLike(unittest.TestCase):
         self.assertEqual(
             test("""sympatric pair of M. sensitiva Harms ex Glaziou"""),
             [
-                {
-                    "rank": "species",
-                    "authority": "Harms and Glaziou",
-                    "taxon_like": "Mimosa sensitiva",
-                    "trait": "taxon_like",
-                    "start": 0,
-                    "end": 47,
-                    "relation": "sympatric",
-                }
+                TaxonLike(
+                    taxon_like="Mimosa sensitiva",
+                    trait="taxon_like",
+                    start=0,
+                    end=47,
+                    relation="sympatric",
+                )
             ],
         )
 
@@ -69,14 +67,13 @@ class TestTaxonLike(unittest.TestCase):
         self.assertEqual(
             test("""vicinis M. sensitiva et A. pachyphloia"""),
             [
-                {
-                    "rank": "species",
-                    "taxon_like": ["Mimosa sensitiva", "Acacia pachyphloia"],
-                    "trait": "taxon_like",
-                    "start": 0,
-                    "end": 38,
-                    "relation": "vicinis",
-                }
+                TaxonLike(
+                    taxon_like=["Mimosa sensitiva", "Acacia pachyphloia"],
+                    trait="taxon_like",
+                    start=0,
+                    end=38,
+                    relation="vicinis",
+                )
             ],
         )
 
@@ -84,14 +81,13 @@ class TestTaxonLike(unittest.TestCase):
         self.assertEqual(
             test("""distinguished from var. pachyphloia"""),
             [
-                {
-                    "rank": "variety",
-                    "trait": "taxon_like",
-                    "start": 0,
-                    "end": 35,
-                    "taxon_like": "pachyphloia",
-                    "relation": "distinguished",
-                }
+                TaxonLike(
+                    trait="taxon_like",
+                    start=0,
+                    end=35,
+                    taxon_like="pachyphloia",
+                    relation="distinguished",
+                )
             ],
         )
 
@@ -99,22 +95,22 @@ class TestTaxonLike(unittest.TestCase):
         self.assertEqual(
             test("""The var. floridana resembles var. nuttallii in venation"""),
             [
-                {
-                    "rank": "variety",
-                    "taxon": "floridana",
-                    "trait": "taxon",
-                    "start": 4,
-                    "end": 18,
-                    "taxon_like": "nuttallii",
-                },
-                {
-                    "rank": "variety",
-                    "trait": "taxon_like",
-                    "start": 19,
-                    "end": 43,
-                    "taxon_like": "nuttallii",
-                    "relation": "resembles",
-                },
-                {"venation": "vein", "trait": "venation", "start": 47, "end": 55},
+                Taxon(
+                    rank="variety",
+                    taxon="floridana",
+                    trait="taxon",
+                    start=4,
+                    end=18,
+                    taxon_like="nuttallii",
+                    associated=True,
+                ),
+                TaxonLike(
+                    trait="taxon_like",
+                    start=19,
+                    end=43,
+                    taxon_like="nuttallii",
+                    relation="resembles",
+                ),
+                Venation(venation="vein", trait="venation", start=47, end=55),
             ],
         )

@@ -1,11 +1,11 @@
 import unittest
 
+from flora.pylib.traits.color import Color
 from flora.pylib.traits.count import Count
 from flora.pylib.traits.part import Part
 from flora.pylib.traits.sex import Sex
 from flora.pylib.traits.shape import Shape
 from flora.pylib.traits.surface import Surface
-from flora.pylib.traits.taxon import Taxon
 from flora.pylib.traits.woodiness import Woodiness
 from tests.setup import test
 
@@ -132,12 +132,24 @@ class TestPart(unittest.TestCase):
         self.assertEqual(
             test("Phyllodes glaucous"),
             [
-                Taxon(taxon="Phyllodes glaucous", start=0, end=9),
+                Part(
+                    trait="part",
+                    type="leaf_part",
+                    start=0,
+                    end=9,
+                    part="phyllode",
+                ),
+                Color(
+                    color="blue",
+                    trait="color",
+                    start=10,
+                    end=18,
+                    part="phyllode",
+                ),
             ],
         )
 
     def test_part_08(self):
-        self.maxDiff = None
         self.assertEqual(
             test("""stems and lf-axes hispid"""),
             [

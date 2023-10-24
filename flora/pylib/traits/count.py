@@ -199,9 +199,6 @@ class Count(Linkable):
 
     @classmethod
     def count_word_match(cls, ent):
-        for token in ent:
-            if token._.flag == "range_data":
-                print(token._.trait)
         return cls.from_ent(ent, low=int(cls.replace[ent[0].lower_]))
 
 

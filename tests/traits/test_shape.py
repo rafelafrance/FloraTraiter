@@ -1,5 +1,6 @@
 import unittest
 
+from flora.pylib.traits.color import Color
 from flora.pylib.traits.part import Part
 from flora.pylib.traits.shape import Shape
 from flora.pylib.traits.subpart import Subpart
@@ -472,6 +473,13 @@ class TestShape(unittest.TestCase):
             test("Petals purple; bilobate;"),
             [
                 Part(part="petal", trait="part", type="flower_part", start=0, end=6),
+                Color(
+                    color="purple",
+                    trait="color",
+                    start=7,
+                    end=13,
+                    part="petal",
+                ),
                 Shape(
                     start=15,
                     end=23,

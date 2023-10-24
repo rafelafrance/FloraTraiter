@@ -97,7 +97,7 @@ class Job(Base):
             overwrite=["other_collector", "extend_job_names"],
         )
 
-        delete = ["not_name", "name", "id_num"]
+        delete = ["not_name", "name", "id_num", "job_label"]
         add.cleanup_pipe(nlp, name="person_cleanup", delete=delete)
 
     @classmethod
@@ -350,7 +350,7 @@ def separated_collector(doc):
         elif ent.label_ == "id_num" and not id_num and name:
             id_num = Separated(i, ent)
 
-    if name and id_num and id_num.idx - name.idx <= 5:
+    if name and id_num and id_num.idx - name.idx < 5:
         t_trait.relabel_entity(name.ent, "job", relabel_tokens=True)
         t_trait.relabel_entity(id_num.ent, "job", relabel_tokens=True)
 
