@@ -26,6 +26,7 @@ class TaxonLike(Base):
     relation: str = None
 
     def to_dwc(self, dwc, ent):
+        dwc.new_rec()
         dwc.add_dyn(
             taxonLikeReference=self.taxon_like,
             taxonLikeRelationship=self.relation,

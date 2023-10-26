@@ -25,6 +25,7 @@ class Reproduction(Base):
     reproduction: str = None
 
     def to_dwc(self, dwc, ent):
+        dwc.new_rec()
         dwc.add_dyn(reproduction=self.reproduction)
 
     @classmethod

@@ -61,7 +61,9 @@ class Size(Linkable):
     # sex is in the parent class
 
     def to_dwc(self, dwc, ent):
-        dyn_props = {"uncertain": self.uncertain}
+        dwc.new_rec()
+        key = self.dwc_key("size", "uncertain")
+        dyn_props = {key: "uncertain" if self.uncertain else None}
         for dim in self.dims:
             key = self.dwc_key(dim.dim)
             dyn_props |= {

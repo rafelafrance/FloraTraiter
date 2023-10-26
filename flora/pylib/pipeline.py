@@ -17,14 +17,12 @@ from flora.pylib.traits.count import Count
 from flora.pylib.traits.duration import Duration
 from flora.pylib.traits.flower_location import FlowerLocation
 from flora.pylib.traits.flower_morphology import FlowerMorphology
-from flora.pylib.traits.formula import Formula
 from flora.pylib.traits.habit import Habit
 from flora.pylib.traits.id_number import IdNumber
 from flora.pylib.traits.job import Job
 from flora.pylib.traits.leaf_duration import LeafDuration
 from flora.pylib.traits.leaf_folding import LeafFolding
 from flora.pylib.traits.locality import Locality
-from flora.pylib.traits.location_linker import LocationLinker
 from flora.pylib.traits.margin import Margin
 from flora.pylib.traits.morphology import Morphology
 from flora.pylib.traits.name import Name
@@ -32,6 +30,7 @@ from flora.pylib.traits.odor import Odor
 from flora.pylib.traits.part import Part
 from flora.pylib.traits.part_linker import PartLinker
 from flora.pylib.traits.part_location import PartLocation
+from flora.pylib.traits.part_location_linker import PartLocationLinker
 from flora.pylib.traits.plant_duration import PlantDuration
 from flora.pylib.traits.range import Range
 from flora.pylib.traits.reproduction import Reproduction
@@ -77,7 +76,6 @@ def build():
     Duration.pipe(nlp)
     FlowerLocation.pipe(nlp)
     FlowerMorphology.pipe(nlp)
-    Formula.pipe(nlp)
     LeafDuration.pipe(nlp)
     LeafFolding.pipe(nlp)
     Morphology.pipe(nlp)
@@ -111,7 +109,7 @@ def build():
     PartLinker.pipe(nlp)
     SubpartLinker.pipe(nlp)
     SexLinker.pipe(nlp)
-    LocationLinker.pipe(nlp)
+    PartLocationLinker.pipe(nlp)
     TaxonLikeLinker.pipe(nlp)
 
     delete_missing.pipe(nlp)

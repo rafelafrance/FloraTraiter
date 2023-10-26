@@ -57,13 +57,14 @@ class Count(Linkable):
     per_count: str = None
 
     def to_dwc(self, dwc, ent):
+        dwc.new_rec()
         key = self.dwc_key("count")
         dwc.add_dyn(
             **{
-                key + "Min": self.min,
+                key + "Minimum": self.min,
                 key + "Low": self.low,
                 key + "High": self.high,
-                key + "Max": self.max,
+                key + "Maximum": self.max,
                 key + "Group": self.count_group,
                 key + "PerPart": self.per_part,
                 key + "PerCount": self.per_count,

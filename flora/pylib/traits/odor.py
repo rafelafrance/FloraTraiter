@@ -23,9 +23,9 @@ class Odor(Linkable):
     odor: str = None
 
     def to_dwc(self, dwc, ent):
+        dwc.new_rec()
         key = self.dwc_key("odor")
         dwc.add_dyn(**{key: self.odor})
-        self.add_loc(dwc, "odor")
 
     @classmethod
     def pipe(cls, nlp: Language):

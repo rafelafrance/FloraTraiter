@@ -9,14 +9,13 @@ from traiter.pylib import term_util as tu
 from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
 from traiter.pylib.traits import terms as t_terms
-from traiter.pylib.traits.base import Base
+
+from .linkable import Linkable
 
 
 @dataclass
-class PartLocation(Base):
+class PartLocation(Linkable):
     # Class vars ----------
-    location_ents: ClassVar[list[str]] = ["location"]
-
     location_csv: ClassVar[Path] = (
         Path(__file__).parent / "terms" / "location_terms.csv"
     )
@@ -29,11 +28,18 @@ class PartLocation(Base):
     )
     # ---------------------
 
-    location: str = None
+    part_location: str = None
     type: str = None
 
     def to_dwc(self, dwc, ent):
-        dwc.add_dyn(location=self.location)
+        dwc.new_rec()
+        words = self.type.split("_")
+
+        key = [k.title() for k in words]
+        key[0] = key[0].lower()
+        key = "".join(key)
+
+        dwc.add_dyn(**{key: self.part_location})
 
     @classmethod
     def pipe(cls, nlp: Language):
@@ -66,10 +72,10 @@ class PartLocation(Base):
         return [
             Compiler(
                 label="part_as_location",
-                id="location",
+                id="part_location",
                 on_match="part_as_location_match",
                 decoder=decoder,
-                keep="location",
+                keep="part_location",
                 patterns=[
                     "missing? joined?  leader prep? part",
                     "missing? location leader       part",
@@ -78,10 +84,10 @@ class PartLocation(Base):
             ),
             Compiler(
                 label="subpart_as_location",
-                id="location",
+                id="part_location",
                 on_match="subpart_as_location_match",
                 decoder=decoder,
-                keep="location",
+                keep="part_location",
                 patterns=[
                     "missing? joined?  leader subpart",
                     "missing? joined?  leader subpart sp? of adj? sp? subpart",
@@ -91,9 +97,9 @@ class PartLocation(Base):
             ),
             Compiler(
                 label="part_as_distance",
-                id="location",
+                id="part_location",
                 on_match="part_as_distance_match",
-                keep="location",
+                keep="part_location",
                 decoder=decoder,
                 patterns=[
                     "missing? joined?  leader prep? part prep? 9.9 -/to* 9.9? cm",
@@ -102,9 +108,9 @@ class PartLocation(Base):
             ),
             Compiler(
                 label="part_location",
-                id="location",
+                id="part_location",
                 on_match="part_location_match",
-                keep="location",
+                keep="part_location",
                 decoder=decoder,
                 patterns=[
                     "location+",
@@ -119,19 +125,19 @@ class PartLocation(Base):
 
     @classmethod
     def part_as_distance_match(cls, ent):
-        return cls.from_ent(ent, type="part_as_distance", location=cls.loc(ent))
+        return cls.from_ent(ent, type="part_as_distance", part_location=cls.loc(ent))
 
     @classmethod
     def part_as_location_match(cls, ent):
-        return cls.from_ent(ent, type="part_as_location", location=cls.loc(ent))
+        return cls.from_ent(ent, type="part_as_location", part_location=cls.loc(ent))
 
     @classmethod
     def subpart_as_location_match(cls, ent):
-        return cls.from_ent(ent, type="subpart_as_location", location=cls.loc(ent))
+        return cls.from_ent(ent, type="subpart_as_location", part_location=cls.loc(ent))
 
     @classmethod
     def part_location_match(cls, ent):
-        return cls.from_ent(ent, type="part_location", location=cls.loc(ent))
+        return cls.from_ent(ent, type="part_location", part_location=cls.loc(ent))
 
 
 @registry.misc("part_as_distance_match")

@@ -30,7 +30,8 @@ class Locality(Base):
     labeled: bool = None
 
     def to_dwc(self, dwc, ent):
-        return dwc.add_dyn(verbatimLocality=self.locality)
+        dwc.new_rec()
+        return dwc.add(verbatimLocality=self.locality)
 
     @classmethod
     def pipe(cls, nlp: Language):

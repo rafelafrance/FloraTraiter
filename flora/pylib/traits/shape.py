@@ -17,13 +17,14 @@ from .linkable import Linkable
 class Shape(Linkable):
     # Class vars ----------
     shape_csv: ClassVar[Path] = Path(__file__).parent / "terms" / "shape_terms.csv"
-    shape_loc: ClassVar[list[str]] = ["shape_term", "shape_leader", "location"]
+    shape_loc: ClassVar[list[str]] = ["shape_term", "shape_leader", "part_location"]
     replace: ClassVar[dict[str, str]] = term_util.term_data(shape_csv, "replace")
     # ---------------------
 
     shape: str = None
 
     def to_dwc(self, dwc, ent):
+        dwc.new_rec()
         key = self.dwc_key("shape")
         dwc.add_dyn(**{key: self.shape})
         self.add_loc(dwc, "shape")

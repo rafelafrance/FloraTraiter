@@ -23,10 +23,9 @@ class SexLinker(Linker):
         list[str]
     ] = """
         color count duration duration flower_location habit
-        joined leaf_duration leaf_folding location flower_morphology
-        margin multiple_parts part_as_loc part plant_morphology shape
-        size subpart subpart_as_loc subpart_suffix surface venation
-        woodiness
+        joined leaf_duration leaf_folding part_location flower_morphology
+        margin multiple_parts part_location part plant_morphology shape
+        size subpart surface venation woodiness
         """.split()
     # ---------------------
 

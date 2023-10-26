@@ -28,10 +28,11 @@ class Subpart(Linkable):
     missing: bool = None
 
     def to_dwc(self, dwc, ent):
+        dwc.new_rec()
         prepend = "missing" if self.missing else ""
-        key = self.dwc_key("subpart", prepend=prepend)
+        key = self.dwc_key(prepend=prepend)
         dwc.add_dyn(**{key: self.subpart})
-        self.add_loc(dwc, "subpart", prepend=prepend)
+        self.add_loc(dwc, prepend=prepend)
 
     @classmethod
     def pipe(cls, nlp: Language):

@@ -23,6 +23,7 @@ class Formula(Base):
     formula: str = None
 
     def to_dwc(self, dwc, ent):
+        dwc.new_rec()
         dwc.add_dyn(**{"formula": self.formula})
 
     @classmethod

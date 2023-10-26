@@ -24,6 +24,7 @@ class Habit(Base):
     habit: str = None
 
     def to_dwc(self, dwc, ent):
+        dwc.new_rec()
         dwc.add_dyn(habit=self.habit)
 
     @classmethod

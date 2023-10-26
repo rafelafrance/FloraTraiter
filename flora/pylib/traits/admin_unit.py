@@ -41,8 +41,9 @@ class AdminUnit(Base):
     us_county: str = None
 
     def to_dwc(self, dwc, ent):
+        dwc.new_rec()
         dwc.add(country=self.country)
-        dwc.add(stateProvince=self.us_state)
+        dwc.add(stateProvince=self.us_state if self.us_state else self.province)
         dwc.add(county=self.us_county)
 
     @classmethod
