@@ -24,8 +24,14 @@ class Subpart(Linkable):
     replace = term_util.term_data(all_csvs, "replace")
     # ---------------------
 
-    subpart: str = None
+    # subpart in base class
     missing: bool = None
+
+    def to_dwc(self, dwc, ent):
+        prepend = "missing" if self.missing else ""
+        key = self.dwc_key("subpart", prepend=prepend)
+        dwc.add_dyn(**{key: self.subpart})
+        self.add_loc(dwc, "subpart", prepend=prepend)
 
     @classmethod
     def pipe(cls, nlp: Language):

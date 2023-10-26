@@ -8,8 +8,7 @@ from pathlib import Path
 import regex as re
 from PIL import Image
 from PIL import UnidentifiedImageError
-
-# from traiter.pylib import util as t_util
+from traiter.pylib import util as t_util
 
 MAX_SIZE = 600.0  # pixels
 
@@ -45,10 +44,10 @@ class Label:
     def parse(self, nlp, image_paths, vocabulary):
         with open(self.path) as f:
             self.text = f.read()
-            # self.text = t_util.shorten(self.text)
+            self.text = t_util.compress(self.text)
 
         doc = nlp(self.text)
-        self.traits = [e._.data for e in doc.ents]
+        self.traits = [e._.trait for e in doc.ents]
 
         self.image_path = image_paths.get(self.path.stem)
         self.encoded_image = self.encode_image()

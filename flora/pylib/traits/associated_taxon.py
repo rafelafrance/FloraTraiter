@@ -22,6 +22,9 @@ class AssociatedTaxonLabel(Base):
 
     label: str = None
 
+    def to_dwc(self, dwc, ent):
+        pass
+
     @classmethod
     def pipe(cls, nlp: Language):
         add.term_pipe(nlp, name="assoc_taxon_terms", path=cls.assoc_csv)

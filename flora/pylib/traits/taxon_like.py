@@ -25,6 +25,12 @@ class TaxonLike(Base):
     taxon_like: str | list[str] = None
     relation: str = None
 
+    def to_dwc(self, dwc, ent):
+        dwc.add_dyn(
+            taxonLikeReference=self.taxon_like,
+            taxonLikeRelationship=self.relation,
+        )
+
     @classmethod
     def pipe(cls, nlp: Language):
         with nlp.select_pipes(enable="tokenizer"):

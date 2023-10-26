@@ -56,7 +56,7 @@ class MarkedReader(BaseReader):
                 distance = 0
 
             for ent in doc.ents:
-                trait = ent._.data
+                trait = ent._.trait
 
                 if state == State.SEARCH and trait["trait"] == "taxon":
                     try:

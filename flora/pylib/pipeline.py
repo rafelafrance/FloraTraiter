@@ -31,8 +31,8 @@ from flora.pylib.traits.name import Name
 from flora.pylib.traits.odor import Odor
 from flora.pylib.traits.part import Part
 from flora.pylib.traits.part_linker import PartLinker
+from flora.pylib.traits.part_location import PartLocation
 from flora.pylib.traits.plant_duration import PlantDuration
-from flora.pylib.traits.plant_location import PlantLocation
 from flora.pylib.traits.range import Range
 from flora.pylib.traits.reproduction import Reproduction
 from flora.pylib.traits.sex import Sex
@@ -105,7 +105,7 @@ def build():
 
     Taxon.pipe(nlp, extend=2, overwrite=["habitat", "color"], auth_keep=["not_name"])
 
-    PlantLocation.pipe(nlp)
+    PartLocation.pipe(nlp)
     TaxonLike.pipe(nlp)
 
     PartLinker.pipe(nlp)

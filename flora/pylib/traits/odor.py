@@ -22,6 +22,11 @@ class Odor(Linkable):
 
     odor: str = None
 
+    def to_dwc(self, dwc, ent):
+        key = self.dwc_key("odor")
+        dwc.add_dyn(**{key: self.odor})
+        self.add_loc(dwc, "odor")
+
     @classmethod
     def pipe(cls, nlp: Language):
         add.term_pipe(nlp, name="odor_terms", path=cls.odor_csv)

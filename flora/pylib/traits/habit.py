@@ -23,6 +23,9 @@ class Habit(Base):
 
     habit: str = None
 
+    def to_dwc(self, dwc, ent):
+        dwc.add_dyn(habit=self.habit)
+
     @classmethod
     def pipe(cls, nlp: Language):
         add.term_pipe(nlp, name="habit_terms", path=cls.all_csvs)

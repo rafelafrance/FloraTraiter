@@ -24,6 +24,9 @@ class Morphology(Base):
 
     morphology: str = None
 
+    def to_dwc(self, dwc, ent):
+        dwc.add_dyn(morphology=self.morphology)
+
     @classmethod
     def pipe(cls, nlp: Language):
         add.term_pipe(nlp, name="morphology_terms", path=cls.morphology_csv)

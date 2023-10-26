@@ -20,6 +20,11 @@ class Surface(Linkable):
 
     surface: str = None
 
+    def to_dwc(self, dwc, ent):
+        key = self.dwc_key("surface")
+        dwc.add_dyn(**{key: self.surface})
+        self.add_loc(dwc, "surface")
+
     @classmethod
     def pipe(cls, nlp: Language):
         add.term_pipe(nlp, name="surface_terms", path=cls.surface_csv)

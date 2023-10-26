@@ -24,6 +24,9 @@ class Reproduction(Base):
 
     reproduction: str = None
 
+    def to_dwc(self, dwc, ent):
+        dwc.add_dyn(reproduction=self.reproduction)
+
     @classmethod
     def pipe(cls, nlp: Language):
         add.term_pipe(nlp, name="reproduction_terms", path=cls.reproduction_csv)

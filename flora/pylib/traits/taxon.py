@@ -101,6 +101,24 @@ class Taxon(Base):
     taxon_like: str = None
     associated: bool = None
 
+    def to_dwc(self, dwc, ent):
+        auth = self.authority
+        if isinstance(self.authority, list):
+            auth = " ".join(self.authority)
+
+        dwc.add(
+            scientificName=self.taxon,
+            taxonRank=self.rank,
+            scientificNameAuthorship=auth,
+        )
+
+        assoc = "associated" if self.associated else "primary"
+
+        dwc.add_dyn(
+            primaryOrAssociatedTaxon=assoc,
+            taxonLike=self.taxon_like,
+        )
+
     @classmethod
     def pipe(
         cls,

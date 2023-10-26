@@ -23,6 +23,11 @@ class Shape(Linkable):
 
     shape: str = None
 
+    def to_dwc(self, dwc, ent):
+        key = self.dwc_key("shape")
+        dwc.add_dyn(**{key: self.shape})
+        self.add_loc(dwc, "shape")
+
     @classmethod
     def pipe(cls, nlp: Language):
         add.term_pipe(nlp, name="shape_terms", path=cls.shape_csv)

@@ -24,6 +24,9 @@ class Duration(Base):
 
     duration: str = None
 
+    def to_dwc(self, dwc, ent):
+        dwc.add_dyn(duration=self.duration)
+
     @classmethod
     def pipe(cls, nlp: Language):
         add.term_pipe(nlp, name="duration_terms", path=cls.duration_csv)
