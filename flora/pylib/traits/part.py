@@ -31,10 +31,15 @@ class Part(Linkable):
     missing: bool = None
 
     def to_dwc(self, dwc, ent):
+        dwc.new_rec()
         words = ["missing"] if self.missing else []
-        key = self.dwc_key(*words)
+        words += self.type.split("_")
+
+        key = [k.title() for k in words]
+        key[0] = key[0].lower()
+        key = "".join(key)
+
         dwc.add_dyn(**{key: self.part})
-        self.add_loc(dwc, *words)
 
     @classmethod
     def pipe(cls, nlp: Language):

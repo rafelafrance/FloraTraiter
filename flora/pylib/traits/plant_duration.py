@@ -27,6 +27,7 @@ class PlantDuration(Base):
     plant_duration: str = None
 
     def to_dwc(self, dwc, ent):
+        dwc.new_rec()
         dwc.add_dyn(plantDuration=self.plant_duration)
 
     @classmethod

@@ -102,20 +102,19 @@ class Taxon(Base):
     associated: bool = None
 
     def to_dwc(self, dwc, ent):
+        dwc.new_rec()
+
         auth = self.authority
-        if isinstance(self.authority, list):
-            auth = " ".join(self.authority)
+        if isinstance(auth, list):
+            auth = " ".join(auth)
 
         dwc.add(
             scientificName=self.taxon,
             taxonRank=self.rank,
             scientificNameAuthorship=auth,
         )
-
-        assoc = "associated" if self.associated else "primary"
-
         dwc.add_dyn(
-            primaryOrAssociatedTaxon=assoc,
+            primaryTaxon=1 if not self.associated else None,
             taxonLike=self.taxon_like,
         )
 

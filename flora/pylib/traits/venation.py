@@ -25,6 +25,7 @@ class Venation(Linkable):
     venation: str = None
 
     def to_dwc(self, dwc, ent):
+        dwc.new_rec()
         key = self.dwc_key("venation")
         dwc.add_dyn(**{key: self.venation})
         self.add_loc(dwc, "venation")

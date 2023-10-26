@@ -25,6 +25,7 @@ class Morphology(Base):
     morphology: str = None
 
     def to_dwc(self, dwc, ent):
+        dwc.new_rec()
         dwc.add_dyn(morphology=self.morphology)
 
     @classmethod

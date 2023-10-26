@@ -21,6 +21,7 @@ class Surface(Linkable):
     surface: str = None
 
     def to_dwc(self, dwc, ent):
+        dwc.new_rec()
         key = self.dwc_key("surface")
         dwc.add_dyn(**{key: self.surface})
         self.add_loc(dwc, "surface")

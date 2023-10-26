@@ -8,13 +8,13 @@ from traiter.pylib import const as t_const
 from traiter.pylib import term_util
 from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
+from traiter.pylib.traits.base import Base
 
 from ..trait_util import clean_trait
-from .linkable import Linkable
 
 
 @dataclass
-class Sex(Linkable):
+class Sex(Base):
     # Class vars ----------
     sex_csv: ClassVar[Path] = Path(__file__).parent / "terms" / "sex_terms.csv"
     replace: ClassVar[dict[str, str]] = term_util.term_data(sex_csv, "replace")
@@ -23,7 +23,8 @@ class Sex(Linkable):
     sex: str = None
 
     def to_dwc(self, dwc, ent):
-        dwc.add_dyn(sex=self.sex)
+        dwc.new_rec()
+        dwc.add(sex=self.sex)
 
     @classmethod
     def pipe(cls, nlp: Language):

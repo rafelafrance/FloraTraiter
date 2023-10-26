@@ -11,6 +11,7 @@ from .linkable import Linkable
 @dataclass
 class Color(t_color.Color, Linkable):
     def to_dwc(self, dwc, ent):
+        dwc.new_rec()
         prepend = "missing" if self.missing else None
         key = self.dwc_key("color", prepend=prepend)
         dwc.add_dyn(**{key: self.color})

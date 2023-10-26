@@ -9,7 +9,7 @@ class Linkable(t_base.Base):
     part: str | list[str] = None
     subpart: str = None
     sex: str = None
-    location: str = None
+    part_location: str = None
 
     @classmethod
     def pipe(cls, nlp: Language):
@@ -22,7 +22,8 @@ class Linkable(t_base.Base):
             if field is not None:
                 key += field.split()
         key += list(args)
-        key = " ".join(key).replace("-", " ").split()
+        dupe = {k: 1 for k in key}
+        key = " ".join(dupe.keys()).replace("-", " ").split()
         key = [k.title() for k in key]
         key[0] = key[0].lower()
         key = "".join(key)
@@ -30,7 +31,7 @@ class Linkable(t_base.Base):
 
     # Example: flowerShapeLocation
     def add_loc(self, dwc, *args, prepend: str = None) -> None:
-        if self.location:
-            args += ["location"]
+        if self.part_location:
+            args += ["part", "location"]
             key = self.dwc_key(*args, prepend=prepend)
-            dwc.add_dyn(**{key: self.location})
+            dwc.add_dyn(**{key: self.part_location})

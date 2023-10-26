@@ -25,10 +25,10 @@ class LeafFolding(Linkable):
     leaf_folding: str = None
 
     def to_dwc(self, dwc, ent):
+        dwc.new_rec()
         words = ["leaf", "folding"]
         key = self.dwc_key(*words)
         dwc.add_dyn(**{key: self.leaf_folding})
-        self.add_loc(dwc, *words)
 
     @classmethod
     def pipe(cls, nlp: Language):

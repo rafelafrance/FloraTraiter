@@ -27,10 +27,10 @@ class LeafDuration(Linkable):
     leaf_duration: str = None
 
     def to_dwc(self, dwc, ent):
+        dwc.new_rec()
         words = ["leaf", "duration"]
         key = self.dwc_key(*words)
         dwc.add_dyn(**{key: self.leaf_duration})
-        self.add_loc(dwc, *words)
 
     @classmethod
     def pipe(cls, nlp: Language):

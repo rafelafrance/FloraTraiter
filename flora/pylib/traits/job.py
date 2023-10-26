@@ -58,8 +58,10 @@ class Job(Base):
     id_num: str = None
 
     def to_dwc(self, dwc, ent):
-        key = dwc.key(self.job)
-        dwc.add_dyn(**{key: self.name, key + "IdNumber": self.id_num})
+        dwc.new_rec()
+        key = dwc.key(*self.job.split("_"))
+        name = self.name if isinstance(self.name, str) else ", ".join(self.name)
+        dwc.add_dyn(**{key: name, key + "IdNumber": self.id_num})
 
     @classmethod
     def pipe(cls, nlp: Language):
