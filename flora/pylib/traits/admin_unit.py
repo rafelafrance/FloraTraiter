@@ -40,6 +40,11 @@ class AdminUnit(Base):
     us_state: str = None
     us_county: str = None
 
+    def to_dwc(self, dwc, ent):
+        dwc.add(country=self.country)
+        dwc.add(stateProvince=self.us_state)
+        dwc.add(county=self.us_county)
+
     @classmethod
     def pipe(cls, nlp: Language, overwrite: Optional[list[str]] = None):
         add.term_pipe(nlp, name="admin_unit_terms", path=cls.all_csvs)

@@ -13,7 +13,7 @@ from traiter.pylib.traits.base import Base
 
 
 @dataclass
-class PlantLocation(Base):
+class PartLocation(Base):
     # Class vars ----------
     location_ents: ClassVar[list[str]] = ["location"]
 
@@ -31,6 +31,9 @@ class PlantLocation(Base):
 
     location: str = None
     type: str = None
+
+    def to_dwc(self, dwc, ent):
+        dwc.add_dyn(location=self.location)
 
     @classmethod
     def pipe(cls, nlp: Language):
@@ -133,19 +136,19 @@ class PlantLocation(Base):
 
 @registry.misc("part_as_distance_match")
 def part_as_distance_match(ent):
-    return PlantLocation.part_as_distance_match(ent)
+    return PartLocation.part_as_distance_match(ent)
 
 
 @registry.misc("part_as_location_match")
 def part_as_location_match(ent):
-    return PlantLocation.part_as_location_match(ent)
+    return PartLocation.part_as_location_match(ent)
 
 
 @registry.misc("subpart_as_location_match")
 def subpart_as_location_match(ent):
-    return PlantLocation.subpart_as_location_match(ent)
+    return PartLocation.subpart_as_location_match(ent)
 
 
 @registry.misc("part_location_match")
 def part_location_match(ent):
-    return PlantLocation.part_location_match(ent)
+    return PartLocation.part_location_match(ent)

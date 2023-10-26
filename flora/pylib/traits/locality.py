@@ -8,14 +8,13 @@ from spacy.language import Language
 from spacy.util import registry
 from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
-
-from .linkable import Linkable
+from traiter.pylib.traits.base import Base
 
 USE_MOCK_DATA = 0
 
 
 @dataclass
-class Locality(Linkable):
+class Locality(Base):
     # Class vars ----------
     # Traits at ends of locality phrases
     OUTER_TRAITS: ClassVar[list[str]] = " habitat admin_unit subpart count".split()
@@ -29,6 +28,9 @@ class Locality(Linkable):
 
     locality: str = None
     labeled: bool = None
+
+    def to_dwc(self, dwc, ent):
+        return dwc.add_dyn(verbatimLocality=self.locality)
 
     @classmethod
     def pipe(cls, nlp: Language):
@@ -220,10 +222,10 @@ def prune_localities(doc):
     ents = []
     add_locality = False
 
-    has_taxon = any(e._.data["trait"] == "taxon" for e in doc.ents)
+    has_taxon = any(e._.trait.trait == "taxon" for e in doc.ents)
 
     for i, ent in enumerate(doc.ents):
-        trait = ent._.data["trait"]
+        trait = ent._.trait.trait
 
         # Localities come after taxa
         if trait in ("taxon",):  # "admin_unit"):
@@ -239,7 +241,7 @@ def prune_localities(doc):
 
         elif trait == "locality":
             # Always keep labeled localities
-            if ent._.data.get("labeled", False):
+            if ent._.trait.labeled:
                 pass
 
             # At beginning or end of label

@@ -26,9 +26,15 @@ class Part(Linkable):
     type_: ClassVar[dict[str, str]] = term_util.term_data(part_csv, "type")
     # ---------------------
 
-    part: str | list[str] = None
+    # part in base class
     type: str = None
     missing: bool = None
+
+    def to_dwc(self, dwc, ent):
+        words = ["missing"] if self.missing else []
+        key = self.dwc_key(*words)
+        dwc.add_dyn(**{key: self.part})
+        self.add_loc(dwc, *words)
 
     @classmethod
     def pipe(cls, nlp: Language):

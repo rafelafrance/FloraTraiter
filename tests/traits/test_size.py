@@ -7,7 +7,7 @@ from flora.pylib.traits.color import Color
 from flora.pylib.traits.count import Count
 from flora.pylib.traits.margin import Margin
 from flora.pylib.traits.part import Part
-from flora.pylib.traits.plant_location import PlantLocation
+from flora.pylib.traits.part_location import PartLocation
 from flora.pylib.traits.sex import Sex
 from flora.pylib.traits.shape import Shape
 from flora.pylib.traits.size import Dimension
@@ -103,7 +103,7 @@ class TestSize(unittest.TestCase):
                     subpart="leaf sinus",
                     location="to base",
                 ),
-                PlantLocation(
+                PartLocation(
                     location="to base",
                     trait="location",
                     type="subpart_as_location",
@@ -257,7 +257,7 @@ class TestSize(unittest.TestCase):
         self.assertEqual(
             test("terminal leaflet 3–5 cm, blade petiolule 3–12 mm,"),
             [
-                PlantLocation(
+                PartLocation(
                     location="terminal",
                     trait="location",
                     type="part_location",
@@ -884,7 +884,7 @@ class TestSize(unittest.TestCase):
                     location="at base",
                     units="cm",
                 ),
-                PlantLocation(
+                PartLocation(
                     location="at base",
                     type="subpart_as_location",
                     trait="location",

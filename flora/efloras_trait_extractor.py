@@ -19,7 +19,7 @@ def main(args):
     nlp = pipeline.build()
     for row in rows:
         doc = nlp(row.text)
-        row.traits = [e._.data for e in doc.ents]
+        row.traits = [e._.trait for e in doc.ents]
 
     if args.out_csv:
         writer = CsvWriter(args.out_csv, args.csv_min)

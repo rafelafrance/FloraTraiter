@@ -22,6 +22,9 @@ class Sex(Linkable):
 
     sex: str = None
 
+    def to_dwc(self, dwc, ent):
+        dwc.add_dyn(sex=self.sex)
+
     @classmethod
     def pipe(cls, nlp: Language):
         add.term_pipe(nlp, name="sex_terms", path=cls.sex_csv)

@@ -21,6 +21,12 @@ class Margin(Linkable):
 
     margin: str = None
 
+    def to_dwc(self, dwc, ent):
+        words = []
+        key = self.dwc_key("margin")
+        dwc.add_dyn(**{key: self.margin})
+        self.add_loc(dwc, *words)
+
     @classmethod
     def pipe(cls, nlp: Language):
         add.term_pipe(nlp, name="margin_terms", path=cls.margin_csv)

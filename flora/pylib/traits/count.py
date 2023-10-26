@@ -56,6 +56,21 @@ class Count(Linkable):
     per_part: str = None
     per_count: str = None
 
+    def to_dwc(self, dwc, ent):
+        key = self.dwc_key("count")
+        dwc.add_dyn(
+            **{
+                key + "Min": self.min,
+                key + "Low": self.low,
+                key + "High": self.high,
+                key + "Max": self.max,
+                key + "Group": self.count_group,
+                key + "PerPart": self.per_part,
+                key + "PerCount": self.per_count,
+            }
+        )
+        self.add_loc(dwc, "count")
+
     @classmethod
     def pipe(cls, nlp: Language):
         add.term_pipe(nlp, name="count_terms", path=cls.all_csvs)

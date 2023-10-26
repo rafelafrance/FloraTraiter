@@ -5,7 +5,7 @@ from traiter.pylib.traits.lat_long import LatLong
 
 from flora.pylib.traits.count import Count
 from flora.pylib.traits.part import Part
-from flora.pylib.traits.plant_location import PlantLocation
+from flora.pylib.traits.part_location import PartLocation
 from flora.pylib.traits.sex import Sex
 from flora.pylib.traits.size import Dimension
 from flora.pylib.traits.size import Size
@@ -672,7 +672,7 @@ class TestCount(unittest.TestCase):
                     end=35,
                     part="flower",
                 ),
-                PlantLocation(
+                PartLocation(
                     trait="location",
                     location="at apex of hypanthial aculei",
                     type="subpart_as_location",

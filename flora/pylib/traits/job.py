@@ -57,6 +57,10 @@ class Job(Base):
     name: str | list[str] = None
     id_num: str = None
 
+    def to_dwc(self, dwc, ent):
+        key = dwc.key(self.job)
+        dwc.add_dyn(**{key: self.name, key + "IdNumber": self.id_num})
+
     @classmethod
     def pipe(cls, nlp: Language):
         add.term_pipe(nlp, name="job_terms", path=cls.all_csvs)

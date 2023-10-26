@@ -26,6 +26,12 @@ class FlowerMorphology(Linkable):
 
     flower_morphology: str = None
 
+    def to_dwc(self, dwc, ent):
+        words = ["flower", "morphology"]
+        key = self.dwc_key(*words)
+        dwc.add_dyn(**{key: self.flower_morphology})
+        self.add_loc(dwc, *words)
+
     @classmethod
     def pipe(cls, nlp: Language):
         add.term_pipe(

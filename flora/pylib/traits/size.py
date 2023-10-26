@@ -35,7 +35,7 @@ class Dimension:
     low: float = None
     high: float = None
     max: float = None
-    about: bool = None
+    uncertain: bool = None
     sex: str = None
 
 
@@ -58,7 +58,20 @@ class Size(Linkable):
     dims: list[Dimension] = field(default_factory=list)
     units: str = "cm"
     uncertain: bool = None
-    sex: str = None
+    # sex is in the parent class
+
+    def to_dwc(self, dwc, ent):
+        dyn_props = {"uncertain": self.uncertain}
+        for dim in self.dims:
+            key = self.dwc_key(dim.dim)
+            dyn_props |= {
+                key + "MinimumInCentimeters": dim.min,
+                key + "LowInCentimeters": dim.low,
+                key + "HighInCentimeters": dim.high,
+                key + "MaximumInCentimeters": dim.max,
+            }
+        dwc.add_dyn(**dyn_props)
+        self.add_loc(dwc, "size")
 
     @classmethod
     def pipe(cls, nlp: Language):
@@ -176,7 +189,7 @@ class Size(Linkable):
                     dims[-1].dim = cls.replace.get(dims[-1].dim, dims[-1].dim)
 
             elif token._.term in ("about", "quest"):
-                dims[-1].about = True
+                dims[-1].uncertain = True
 
             elif token._.term == "sex":
                 if word := cls.replace.get(token.lower_):
@@ -210,8 +223,7 @@ class Size(Linkable):
     @classmethod
     def fill_trait_data(cls, dims, ent):
         sex = next((d.sex for d in dims if d.sex), None)
-
-        uncertain = True if any(d.about for d in dims) else None
+        uncertain = next((d.uncertain for d in dims if d.uncertain), None)
 
         # Build the key and value for the range's: min, low, high, max
         for dim in dims:
@@ -227,11 +239,11 @@ class Size(Linkable):
                 setattr(dim, key, value)
 
             # Clear temp data
+            setattr(dim, "uncertain", None)
             setattr(dim, "units", None)
-            setattr(dim, "about", None)
             setattr(dim, "sex", None)
 
-        trait = cls.from_ent(ent, dims=dims, uncertain=uncertain, sex=sex)
+        trait = cls.from_ent(ent, dims=dims, sex=sex, uncertain=uncertain)
         return trait
 
     @classmethod

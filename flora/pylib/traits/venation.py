@@ -24,6 +24,11 @@ class Venation(Linkable):
 
     venation: str = None
 
+    def to_dwc(self, dwc, ent):
+        key = self.dwc_key("venation")
+        dwc.add_dyn(**{key: self.venation})
+        self.add_loc(dwc, "venation")
+
     @classmethod
     def pipe(cls, nlp: Language):
         add.term_pipe(nlp, name="venation_terms", path=cls.venation_csv)

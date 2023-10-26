@@ -1,7 +1,7 @@
 import unittest
 
 from flora.pylib.traits.part import Part
-from flora.pylib.traits.plant_location import PlantLocation
+from flora.pylib.traits.part_location import PartLocation
 from flora.pylib.traits.shape import Shape
 from flora.pylib.traits.size import Dimension
 from flora.pylib.traits.size import Size
@@ -30,7 +30,7 @@ class TestPartLocation(unittest.TestCase):
                     end=32,
                     part="stipule",
                 ),
-                PlantLocation(
+                PartLocation(
                     location="adnate to petiole for 1 - 2 mm",
                     trait="location",
                     type="part_as_distance",
@@ -52,7 +52,7 @@ class TestPartLocation(unittest.TestCase):
                     end=6,
                     location="embracing stem",
                 ),
-                PlantLocation(
+                PartLocation(
                     location="embracing stem",
                     trait="location",
                     type="part_as_location",
@@ -82,7 +82,7 @@ class TestPartLocation(unittest.TestCase):
                     end=24,
                     part="stipule",
                 ),
-                PlantLocation(
+                PartLocation(
                     location="at margin",
                     trait="location",
                     type="subpart_as_location",
@@ -104,7 +104,7 @@ class TestPartLocation(unittest.TestCase):
                     start=0,
                     end=8,
                 ),
-                PlantLocation(
+                PartLocation(
                     location="immersed in foliage",
                     trait="location",
                     type="part_as_location",
@@ -122,7 +122,7 @@ class TestPartLocation(unittest.TestCase):
                 "capitula immersed in foliage."
             ),
             [
-                PlantLocation(
+                PartLocation(
                     trait="location",
                     start=10,
                     end=18,
@@ -161,7 +161,7 @@ class TestPartLocation(unittest.TestCase):
                     end=70,
                     location="immersed in foliage",
                 ),
-                PlantLocation(
+                PartLocation(
                     location="immersed in foliage",
                     trait="location",
                     type="part_as_location",
@@ -183,7 +183,7 @@ class TestPartLocation(unittest.TestCase):
                     part="flower",
                     location="dorsal",
                 ),
-                PlantLocation(
+                PartLocation(
                     trait="location",
                     type="part_location",
                     location="dorsal",

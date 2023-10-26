@@ -23,7 +23,7 @@ class ProximityReader(BaseReader):
             traits = []
 
             for ent in doc.ents:
-                trait = ent._.data
+                trait = ent._.trait
 
                 if trait["trait"] == "taxon":
                     taxon = trait["taxon"]

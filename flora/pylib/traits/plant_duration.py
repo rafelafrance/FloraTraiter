@@ -26,6 +26,9 @@ class PlantDuration(Base):
 
     plant_duration: str = None
 
+    def to_dwc(self, dwc, ent):
+        dwc.add_dyn(plantDuration=self.plant_duration)
+
     @classmethod
     def pipe(cls, nlp: Language):
         add.term_pipe(nlp, name="plant_duration_terms", path=cls.plant_duration_csv)

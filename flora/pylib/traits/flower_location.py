@@ -26,6 +26,12 @@ class FlowerLocation(Linkable):
 
     flower_location: str = None
 
+    def to_dwc(self, dwc, ent):
+        words = ["flower", "location"]
+        key = self.dwc_key(*words)
+        dwc.add_dyn(**{key: self.flower_location})
+        self.add_loc(dwc, *words)
+
     @classmethod
     def pipe(cls, nlp: Language):
         add.term_pipe(nlp, name="flower_location_terms", path=cls.flower_location_csv)
