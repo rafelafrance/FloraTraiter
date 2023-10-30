@@ -24,7 +24,6 @@ class Surface(Linkable):
         dwc.new_rec()
         key = self.dwc_key("surface")
         dwc.add_dyn(**{key: self.surface})
-        self.add_loc(dwc, "surface")
 
     @classmethod
     def pipe(cls, nlp: Language):

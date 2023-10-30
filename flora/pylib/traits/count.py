@@ -70,7 +70,6 @@ class Count(Linkable):
                 key + "PerCount": self.per_count,
             }
         )
-        self.add_loc(dwc, "count")
 
     @classmethod
     def pipe(cls, nlp: Language):

@@ -73,7 +73,6 @@ class Size(Linkable):
                 key + "MaximumInCentimeters": dim.max,
             }
         dwc.add_dyn(**dyn_props)
-        self.add_loc(dwc, "size")
 
     @classmethod
     def pipe(cls, nlp: Language):

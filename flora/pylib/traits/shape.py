@@ -27,7 +27,6 @@ class Shape(Linkable):
         dwc.new_rec()
         key = self.dwc_key("shape")
         dwc.add_dyn(**{key: self.shape})
-        self.add_loc(dwc, "shape")
 
     @classmethod
     def pipe(cls, nlp: Language):

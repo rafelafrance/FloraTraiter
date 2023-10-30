@@ -28,7 +28,6 @@ class Woodiness(Linkable):
         dwc.new_rec()
         key = self.dwc_key("woodiness")
         dwc.add_dyn(**{key: self.woodiness})
-        self.add_loc(dwc, "woodiness")
 
     @classmethod
     def pipe(cls, nlp: Language):

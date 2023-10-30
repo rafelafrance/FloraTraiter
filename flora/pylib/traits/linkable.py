@@ -15,7 +15,7 @@ class Linkable(t_base.Base):
     def pipe(cls, nlp: Language):
         raise NotImplementedError
 
-    # Examples: femaleFlowerPistolShape or stemSizeInCentimeters
+    # Examples: femaleFlowerShape or stemLengthInCentimeters
     def dwc_key(self, *args, prepend: str = None) -> str:
         key = [prepend] if prepend else []
         for field in (self.sex, self.part, self.subpart):
@@ -28,10 +28,3 @@ class Linkable(t_base.Base):
         key[0] = key[0].lower()
         key = "".join(key)
         return key
-
-    # Example: flowerShapeLocation
-    def add_loc(self, dwc, *args, prepend: str = None) -> None:
-        if self.part_location:
-            args += ["part", "location"]
-            key = self.dwc_key(*args, prepend=prepend)
-            dwc.add_dyn(**{key: self.part_location})
