@@ -12,7 +12,7 @@ class TestTaxonLike(unittest.TestCase):
         self.assertEqual(
             dwc.to_dict(),
             {
-                "dynamicProperties": {
+                "dwc:dynamicProperties": {
                     "taxonLikeReference": "Mimosa sensitiva",
                     "taxonLikeRelationship": "similar",
                 },

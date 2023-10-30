@@ -82,7 +82,11 @@ class Count(Linkable):
             compiler=cls.count_patterns(),
             overwrite=["range", "part", "subpart", "per_count", "habitat"],
         )
-        add.cleanup_pipe(nlp, name="count_cleanup", delete=["range", "per_count"])
+        add.cleanup_pipe(
+            nlp,
+            name="count_cleanup",
+            delete=["range", "per_count", "num_label"],
+        )
 
     @classmethod
     def count_patterns(cls):

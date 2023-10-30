@@ -12,7 +12,7 @@ class TestSize(unittest.TestCase):
         self.assertEqual(
             dwc.to_dict(),
             {
-                "dynamicProperties": {
+                "dwc:dynamicProperties": {
                     "leafSizeUncertain": "uncertain",
                     "leafLengthMinimumInCentimeters": 12.0,
                     "leafLengthLowInCentimeters": 23.0,

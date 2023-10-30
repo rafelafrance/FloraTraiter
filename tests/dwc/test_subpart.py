@@ -10,7 +10,7 @@ class TestSubpart(unittest.TestCase):
         ent = to_ent(LABEL, "male leaf teeth")
         dwc = ent._.trait.to_dwc(ent)
         self.assertEqual(
-            dwc.to_dict(), {"dynamicProperties": {"maleLeafTeeth": "leaf teeth"}}
+            dwc.to_dict(), {"dwc:dynamicProperties": {"maleLeafTeeth": "leaf teeth"}}
         )
 
     def test_subpart_dwc_02(self):
@@ -18,5 +18,5 @@ class TestSubpart(unittest.TestCase):
         dwc = ent._.trait.to_dwc(ent)
         self.assertEqual(
             dwc.to_dict(),
-            {"dynamicProperties": {"missingLeafTeeth": "missing leaf teeth"}},
+            {"dwc:dynamicProperties": {"missingLeafTeeth": "missing leaf teeth"}},
         )

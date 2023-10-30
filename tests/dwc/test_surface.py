@@ -10,5 +10,5 @@ class TestSurface(unittest.TestCase):
         ent = to_ent(LABEL, "glabrous flowers")
         dwc = ent._.trait.to_dwc(ent)
         self.assertEqual(
-            dwc.to_dict(), {"dynamicProperties": {"flowerSurface": "glabrous"}}
+            dwc.to_dict(), {"dwc:dynamicProperties": {"flowerSurface": "glabrous"}}
         )

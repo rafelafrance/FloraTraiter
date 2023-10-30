@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 import argparse
+import json
+import os
 import textwrap
 from pathlib import Path
 
@@ -13,14 +15,25 @@ def main():
     log.started()
     args = parse_args()
 
-    labels = Labels(args)
+    labels: Labels = Labels(args)
     labels.parse()
 
     if args.out_html:
         writer = HtmlWriter(args.out_html, args.spotlight)
         writer.write(labels, args)
 
+    if args.json_dir:
+        os.makedirs(args.json_dir, exist_ok=True)
+        write_json(labels, args)
+
     log.finished()
+
+
+def write_json(labels, args):
+    for lb in labels.labels:
+        path = args.json_dir / f"{lb.path.stem}.json"
+        with open(path, "w") as f:
+            json.dump([t.to_dict() for t in lb.traits], f)
 
 
 def parse_args() -> argparse.Namespace:
@@ -89,13 +102,6 @@ def parse_args() -> argparse.Namespace:
     )
 
     arg_parser.add_argument(
-        "--darwin-core",
-        "--dwc",
-        action="store_true",
-        help="""Use Darwin Core formatted output.""",
-    )
-
-    arg_parser.add_argument(
         "--score-cutoff",
         type=float,
         default=0.7,
@@ -116,7 +122,7 @@ def parse_args() -> argparse.Namespace:
     arg_parser.add_argument(
         "--limit",
         type=int,
-        help="""Sample this many labels.""",
+        help="""Read this many labels for input.""",
     )
 
     arg_parser.add_argument(

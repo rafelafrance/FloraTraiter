@@ -10,5 +10,5 @@ class TestVenation(unittest.TestCase):
         ent = to_ent(LABEL, "leaf subflabellate")
         dwc = ent._.trait.to_dwc(ent)
         self.assertEqual(
-            dwc.to_dict(), {"dynamicProperties": {"leafVenation": "subflabellate"}}
+            dwc.to_dict(), {"dwc:dynamicProperties": {"leafVenation": "subflabellate"}}
         )

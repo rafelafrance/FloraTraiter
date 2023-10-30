@@ -26,6 +26,19 @@ class Label:
     formatted_text: str = ""
     formatted_traits: list[str] = field(default_factory=list)
 
+    def parse(self, nlp, image_paths, vocabulary):
+        with open(self.path) as f:
+            self.text = f.read()
+            self.text = t_util.compress(self.text)
+
+        doc = nlp(self.text)
+        self.traits = [e._.trait.to_dwc(e) for e in doc.ents]
+
+        self.image_path = image_paths.get(self.path.stem)
+        self.encoded_image = self.encode_image()
+
+        self.score_label(vocabulary)
+
     def score_label(self, vocabulary):
         """Score the label content.
 
@@ -40,19 +53,6 @@ class Label:
         self.score = 0.0
         if self.word_count > 0:
             self.score = round(self.valid_words / self.word_count, 2)
-
-    def parse(self, nlp, image_paths, vocabulary):
-        with open(self.path) as f:
-            self.text = f.read()
-            self.text = t_util.compress(self.text)
-
-        doc = nlp(self.text)
-        self.traits = [e._.trait for e in doc.ents]
-
-        self.image_path = image_paths.get(self.path.stem)
-        self.encoded_image = self.encode_image()
-
-        self.score_label(vocabulary)
 
     def encode_image(self) -> str:
         if not self.image_path:

@@ -10,4 +10,4 @@ class TestLocality(unittest.TestCase):
         verb = "5 miles North of Mason off Hwy 386."
         ent = to_ent(LABEL, verb)
         dwc = ent._.trait.to_dwc(ent)
-        self.assertEqual(dwc.to_dict(), {"verbatimLocality": verb})
+        self.assertEqual(dwc.to_dict(), {"dwc:verbatimLocality": verb})

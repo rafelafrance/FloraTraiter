@@ -10,5 +10,5 @@ class TestShape(unittest.TestCase):
         ent = to_ent(LABEL, "leaf suborbiculate")
         dwc = ent._.trait.to_dwc(ent)
         self.assertEqual(
-            dwc.to_dict(), {"dynamicProperties": {"leafShape": "orbicular"}}
+            dwc.to_dict(), {"dwc:dynamicProperties": {"leafShape": "orbicular"}}
         )

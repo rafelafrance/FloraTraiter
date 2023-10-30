@@ -10,5 +10,5 @@ class TestWoodiness(unittest.TestCase):
         ent = to_ent(LABEL, "Herbs perennial or subshrubs")
         dwc = ent._.trait.to_dwc(ent)
         self.assertEqual(
-            dwc.to_dict(), {"dynamicProperties": {"shrubWoodiness": "herb"}}
+            dwc.to_dict(), {"dwc:dynamicProperties": {"shrubWoodiness": "herb"}}
         )

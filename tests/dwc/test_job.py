@@ -12,7 +12,7 @@ class TestJob(unittest.TestCase):
         self.assertEqual(
             dwc.to_dict(),
             {
-                "dynamicProperties": {
+                "dwc:dynamicProperties": {
                     "collector": "Sarah Nunn, S. Jacobs, R. Mc Elderry",
                     "collectorIdNumber": "9480",
                 },
@@ -25,7 +25,7 @@ class TestJob(unittest.TestCase):
         self.assertEqual(
             dwc.to_dict(),
             {
-                "dynamicProperties": {
+                "dwc:dynamicProperties": {
                     "determiner": "N. H Russell",
                     "determinerIdNumber": "195",
                 },
@@ -36,7 +36,7 @@ class TestJob(unittest.TestCase):
         ent = to_ent(LABEL, "Verified by: John Kinsman:")
         dwc = ent._.trait.to_dwc(ent)
         self.assertEqual(
-            dwc.to_dict(), {"dynamicProperties": {"verifier": "John Kinsman"}}
+            dwc.to_dict(), {"dwc:dynamicProperties": {"verifier": "John Kinsman"}}
         )
 
     def test_job_04(self):
@@ -45,6 +45,8 @@ class TestJob(unittest.TestCase):
         self.assertEqual(
             dwc.to_dict(),
             {
-                "dynamicProperties": {"otherCollector": "Dawn Goldman, Army Prince"},
+                "dwc:dynamicProperties": {
+                    "otherCollector": "Dawn Goldman, Army Prince"
+                },
             },
         )
