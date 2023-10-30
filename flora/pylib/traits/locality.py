@@ -6,6 +6,7 @@ from typing import ClassVar
 import traiter.pylib.const as t_const
 from spacy.language import Language
 from spacy.util import registry
+from traiter.pylib.darwin_core import DarwinCore
 from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
 from traiter.pylib.traits.base import Base
@@ -29,9 +30,8 @@ class Locality(Base):
     locality: str = None
     labeled: bool = None
 
-    def to_dwc(self, dwc, ent):
-        dwc.new_rec()
-        return dwc.add(verbatimLocality=self.locality)
+    def to_dwc(self, ent) -> DarwinCore:
+        return DarwinCore().add(verbatimLocality=self.locality)
 
     @classmethod
     def pipe(cls, nlp: Language):

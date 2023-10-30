@@ -6,6 +6,7 @@ from spacy import Language
 from spacy import registry
 from traiter.pylib import const as t_const
 from traiter.pylib import term_util
+from traiter.pylib.darwin_core import DarwinCore
 from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
 from traiter.pylib.traits.base import Base
@@ -26,9 +27,8 @@ class PlantDuration(Base):
 
     plant_duration: str = None
 
-    def to_dwc(self, dwc, ent):
-        dwc.new_rec()
-        dwc.add_dyn(plantDuration=self.plant_duration)
+    def to_dwc(self, ent) -> DarwinCore:
+        return DarwinCore().add_dyn(plantDuration=self.plant_duration)
 
     @classmethod
     def pipe(cls, nlp: Language):

@@ -9,6 +9,7 @@ from spacy.language import Language
 from spacy.util import registry
 from traiter.pylib import const as t_const
 from traiter.pylib import term_util
+from traiter.pylib.darwin_core import DarwinCore
 from traiter.pylib.pattern_compiler import ACCUMULATOR
 from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
@@ -57,11 +58,12 @@ class Job(Base):
     name: str | list[str] = None
     id_num: str = None
 
-    def to_dwc(self, dwc, ent):
-        dwc.new_rec()
+    def to_dwc(self, ent) -> DarwinCore:
+        dwc = DarwinCore()
         key = dwc.key(*self.job.split("_"))
         name = self.name if isinstance(self.name, str) else ", ".join(self.name)
         dwc.add_dyn(**{key: name, key + "IdNumber": self.id_num})
+        return dwc
 
     @classmethod
     def pipe(cls, nlp: Language):
