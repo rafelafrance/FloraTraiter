@@ -4,6 +4,7 @@ from typing import ClassVar
 
 from spacy.language import Language
 from spacy.util import registry
+from traiter.pylib.darwin_core import DarwinCore
 from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
 from traiter.pylib.traits.base import Base
@@ -22,8 +23,8 @@ class AssociatedTaxonLabel(Base):
 
     label: str = None
 
-    def to_dwc(self, dwc, ent):
-        pass
+    def to_dwc(self, ent) -> DarwinCore:
+        return DarwinCore()
 
     @classmethod
     def pipe(cls, nlp: Language):

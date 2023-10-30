@@ -1,7 +1,5 @@
 import unittest
 
-from traiter.pylib.darwin_core import DarwinCore
-
 from tests.setup import to_ent
 
 LABEL = "taxon"
@@ -9,12 +7,10 @@ LABEL = "taxon"
 
 class TestTaxon(unittest.TestCase):
     def test_taxon_01(self):
-        dwc = DarwinCore()
         ent = to_ent(LABEL, "M. sensitiva")
-        ent._.trait.to_dwc(dwc, ent)
-        actual = dwc.to_dict()
+        dwc = ent._.trait.to_dwc(ent)
         self.assertEqual(
-            actual,
+            dwc.to_dict(),
             {
                 "scientificName": "Mimosa sensitiva",
                 "taxonRank": "species",
@@ -23,12 +19,10 @@ class TestTaxon(unittest.TestCase):
         )
 
     def test_taxon_02(self):
-        dwc = DarwinCore()
         ent = to_ent(LABEL, "A. pachyphloia subsp. brevipinnula")
-        ent._.trait.to_dwc(dwc, ent)
-        actual = dwc.to_dict()
+        dwc = ent._.trait.to_dwc(ent)
         self.assertEqual(
-            actual,
+            dwc.to_dict(),
             {
                 "scientificName": "Acacia pachyphloia subsp. brevipinnula",
                 "taxonRank": "subspecies",
@@ -37,12 +31,10 @@ class TestTaxon(unittest.TestCase):
         )
 
     def test_taxon_03(self):
-        dwc = DarwinCore()
         ent = to_ent(LABEL, "A. pachyphloia Britton & Rose")
-        ent._.trait.to_dwc(dwc, ent)
-        actual = dwc.to_dict()
+        dwc = ent._.trait.to_dwc(ent)
         self.assertEqual(
-            actual,
+            dwc.to_dict(),
             {
                 "scientificName": "Acacia pachyphloia",
                 "taxonRank": "species",

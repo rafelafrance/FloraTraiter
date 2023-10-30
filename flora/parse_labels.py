@@ -54,14 +54,16 @@ def parse_args() -> argparse.Namespace:
         "--text-glob",
         metavar="GLOB",
         default="*",
-        help="""Only include labels that match this pattern. (default: %(default)s)""",
+        help="""Only include label text files that match this pattern.
+            (default: %(default)s)""",
     )
 
     arg_parser.add_argument(
         "--image-dir",
         metavar="PATH",
         type=Path,
-        help="""Directory containing the images of labels or treatments.""",
+        help="""Directory containing the images of labels or treatments.
+            These images are for HTML output.""",
     )
 
     arg_parser.add_argument(
@@ -75,14 +77,22 @@ def parse_args() -> argparse.Namespace:
         "--json-dir",
         metavar="PATH",
         type=Path,
-        help="""JSON files holding traits for each text file go into this directory.""",
+        help="""Output JSON files holding traits, one for each input text file, in this
+            directory.""",
     )
 
     arg_parser.add_argument(
         "--out-html",
         type=Path,
         metavar="PATH",
-        help="""Output formatted results to this HTML file.""",
+        help="""Output HTML formatted results to this file.""",
+    )
+
+    arg_parser.add_argument(
+        "--darwin-core",
+        "--dwc",
+        action="store_true",
+        help="""Use Darwin Core formatted output.""",
     )
 
     arg_parser.add_argument(

@@ -1,7 +1,5 @@
 import unittest
 
-from traiter.pylib.darwin_core import DarwinCore
-
 from tests.setup import to_ent
 
 LABEL = "count"
@@ -9,12 +7,10 @@ LABEL = "count"
 
 class TestColor(unittest.TestCase):
     def test_count_dwc_01(self):
-        dwc = DarwinCore()
         ent = to_ent(LABEL, "Seeds [1–]3–12[–30].")
-        ent._.trait.to_dwc(dwc, ent)
-        actual = dwc.to_dict()
+        dwc = ent._.trait.to_dwc(ent)
         self.assertEqual(
-            actual,
+            dwc.to_dict(),
             {
                 "dynamicProperties": {
                     "seedCountMinimum": 1,
@@ -26,12 +22,10 @@ class TestColor(unittest.TestCase):
         )
 
     def test_count_dwc_02(self):
-        dwc = DarwinCore()
         ent = to_ent(LABEL, "Staminate flowers 5–10")
-        ent._.trait.to_dwc(dwc, ent)
-        actual = dwc.to_dict()
+        dwc = ent._.trait.to_dwc(ent)
         self.assertEqual(
-            actual,
+            dwc.to_dict(),
             {
                 "dynamicProperties": {
                     "staminateFlowerCountLow": 5,
@@ -41,12 +35,10 @@ class TestColor(unittest.TestCase):
         )
 
     def test_count_dwc_03(self):
-        dwc = DarwinCore()
         ent = to_ent(LABEL, "leaflets in 3 or 4 pairs")
-        ent._.trait.to_dwc(dwc, ent)
-        actual = dwc.to_dict()
+        dwc = ent._.trait.to_dwc(ent)
         self.assertEqual(
-            actual,
+            dwc.to_dict(),
             {
                 "dynamicProperties": {
                     "leafletCountGroup": "pairs",
@@ -57,12 +49,10 @@ class TestColor(unittest.TestCase):
         )
 
     def test_count_dwc_04(self):
-        dwc = DarwinCore()
         ent = to_ent(LABEL, "Seeds (1 or)2 or 3 per legume,")
-        ent._.trait.to_dwc(dwc, ent)
-        actual = dwc.to_dict()
+        dwc = ent._.trait.to_dwc(ent)
         self.assertEqual(
-            actual,
+            dwc.to_dict(),
             {
                 "dynamicProperties": {
                     "seedCountPerPart": "legume",

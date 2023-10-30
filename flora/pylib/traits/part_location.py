@@ -6,6 +6,7 @@ from spacy import Language
 from spacy import registry
 from traiter.pylib import const as t_const
 from traiter.pylib import term_util as tu
+from traiter.pylib.darwin_core import DarwinCore
 from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
 from traiter.pylib.traits import terms as t_terms
@@ -31,8 +32,8 @@ class PartLocation(Linkable):
     part_location: str = None
     type: str = None
 
-    def to_dwc(self, dwc, ent):
-        dwc.new_rec()
+    def to_dwc(self, ent) -> DarwinCore:
+        dwc = DarwinCore()
         words = self.type.split("_")
 
         key = [k.title() for k in words]
@@ -40,6 +41,7 @@ class PartLocation(Linkable):
         key = "".join(key)
 
         dwc.add_dyn(**{key: self.part_location})
+        return dwc
 
     @classmethod
     def pipe(cls, nlp: Language):

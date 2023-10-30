@@ -6,6 +6,7 @@ from spacy import Language
 from spacy import registry
 from traiter.pylib import const as t_const
 from traiter.pylib import term_util
+from traiter.pylib.darwin_core import DarwinCore
 from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
 from traiter.pylib.pipes.reject_match import REJECT_MATCH
@@ -30,8 +31,8 @@ class Part(Linkable):
     type: str = None
     missing: bool = None
 
-    def to_dwc(self, dwc, ent):
-        dwc.new_rec()
+    def to_dwc(self, ent) -> DarwinCore:
+        dwc = DarwinCore()
         words = ["missing"] if self.missing else []
         words += self.type.split("_")
 
@@ -40,6 +41,7 @@ class Part(Linkable):
         key = "".join(key)
 
         dwc.add_dyn(**{key: self.part})
+        return dwc
 
     @classmethod
     def pipe(cls, nlp: Language):

@@ -7,6 +7,7 @@ import regex as re
 from spacy.language import Language
 from spacy.util import registry
 from traiter.pylib import const as t_const
+from traiter.pylib.darwin_core import DarwinCore
 from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
 from traiter.pylib.pipes import reject_match
@@ -40,6 +41,9 @@ class Name(Base):
     # ---------------------
 
     name: str | list[str] = None
+
+    def to_dwc(self, ent) -> DarwinCore:
+        return DarwinCore().add_dyn(name=self.name)
 
     @classmethod
     def pipe(cls, nlp: Language, overwrite: Optional[list[str]] = None):

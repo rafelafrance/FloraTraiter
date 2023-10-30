@@ -7,6 +7,7 @@ from spacy.language import Language
 from traiter.pylib import const as t_const
 from traiter.pylib import term_util
 from traiter.pylib import util as t_util
+from traiter.pylib.darwin_core import DarwinCore
 from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
 from traiter.pylib.pipes import reject_match
@@ -56,8 +57,8 @@ class Count(Linkable):
     per_part: str = None
     per_count: str = None
 
-    def to_dwc(self, dwc, ent):
-        dwc.new_rec()
+    def to_dwc(self, ent) -> DarwinCore:
+        dwc = DarwinCore()
         key = self.dwc_key("count")
         dwc.add_dyn(
             **{
@@ -70,6 +71,7 @@ class Count(Linkable):
                 key + "PerCount": self.per_count,
             }
         )
+        return dwc
 
     @classmethod
     def pipe(cls, nlp: Language):

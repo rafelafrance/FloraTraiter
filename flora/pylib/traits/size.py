@@ -7,6 +7,7 @@ from spacy import registry
 from spacy.language import Language
 from traiter.pylib import const as t_const
 from traiter.pylib import term_util
+from traiter.pylib.darwin_core import DarwinCore
 from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
 from traiter.pylib.pipes import reject_match
@@ -60,8 +61,8 @@ class Size(Linkable):
     uncertain: bool = None
     # sex is in the parent class
 
-    def to_dwc(self, dwc, ent):
-        dwc.new_rec()
+    def to_dwc(self, ent) -> DarwinCore:
+        dwc = DarwinCore()
         key = self.dwc_key("size", "uncertain")
         dyn_props = {key: "uncertain" if self.uncertain else None}
         for dim in self.dims:
@@ -73,6 +74,7 @@ class Size(Linkable):
                 key + "MaximumInCentimeters": dim.max,
             }
         dwc.add_dyn(**dyn_props)
+        return dwc
 
     @classmethod
     def pipe(cls, nlp: Language):
