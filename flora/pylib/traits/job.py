@@ -21,7 +21,7 @@ from traiter.pylib.traits.base import Base
 Separated = namedtuple("Separated", "idx ent")
 
 
-@dataclass
+@dataclass(eq=False)
 class Job(Base):
     # Class vars ----------
     job_terms: ClassVar[Path] = Path(__file__).parent / "terms" / "job_terms.csv"
@@ -58,12 +58,15 @@ class Job(Base):
     name: str | list[str] = None
     id_num: str = None
 
-    def to_dwc(self, ent) -> DarwinCore:
+    def to_dwc(self) -> DarwinCore:
         dwc = DarwinCore()
-        key = dwc.key(*self.job.split("_"))
         name = self.name if isinstance(self.name, str) else ", ".join(self.name)
-        dwc.add_dyn(**{key: name, key + "IdNumber": self.id_num})
+        dwc.add_dyn(**{self.key: name, self.key + "IdNumber": self.id_num})
         return dwc
+
+    @property
+    def key(self):
+        return self.key_builder(*self.job.split("_"))
 
     @classmethod
     def pipe(cls, nlp: Language):

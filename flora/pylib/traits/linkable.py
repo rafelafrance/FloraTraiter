@@ -5,7 +5,7 @@ from traiter.pylib.darwin_core import DarwinCore
 from traiter.pylib.traits import base as t_base
 
 
-@dataclass
+@dataclass(eq=False)
 class Linkable(t_base.Base):
     part: str | list[str] = None
     subpart: str = None
@@ -16,17 +16,18 @@ class Linkable(t_base.Base):
     def pipe(cls, nlp: Language):
         raise NotImplementedError
 
-    def to_dwc(self, ent) -> DarwinCore:
+    def to_dwc(self) -> DarwinCore:
         raise NotImplementedError
 
     # Examples: femaleFlowerShape or stemLengthInCentimeters
-    def dwc_key(self, *args, prepend: str = None) -> str:
+    def key_builder(self, *args, prepend: str = None, add_data=True) -> str:
         key = [prepend] if prepend else []
-        for field in (self.sex, self.part, self.subpart):
-            if isinstance(field, str):
-                key += field.split()
-            elif isinstance(field, list):
-                key += self.trait.split()
+        if add_data:
+            for field in (self.sex, self.part, self.subpart):
+                if isinstance(field, str):
+                    key += field.split()
+                elif isinstance(field, list):
+                    key += self.trait.split()
         key += list(args)
         dupe = {k: 1 for k in key}
         key = " ".join(dupe.keys()).replace("-", " ").split()

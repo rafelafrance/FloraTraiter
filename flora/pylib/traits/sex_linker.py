@@ -15,7 +15,7 @@ from traiter.pylib.pipes import add
 from traiter.pylib.traits.linker import Linker
 
 
-@dataclass
+@dataclass(eq=False)
 class SexLinker(Linker):
     # Class vars ----------
     link_sex_parents: ClassVar[list[str]] = ["sex"]

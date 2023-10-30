@@ -14,7 +14,7 @@ from ..trait_util import clean_trait
 from .linkable import Linkable
 
 
-@dataclass
+@dataclass(eq=False)
 class Venation(Linkable):
     # Class vars ----------
     venation_csv: ClassVar[Path] = (
@@ -25,11 +25,12 @@ class Venation(Linkable):
 
     venation: str = None
 
-    def to_dwc(self, ent) -> DarwinCore:
-        dwc = DarwinCore()
-        key = self.dwc_key("venation")
-        dwc.add_dyn(**{key: self.venation})
-        return dwc
+    def to_dwc(self) -> DarwinCore:
+        return DarwinCore().add_dyn(**{self.key: self.venation})
+
+    @property
+    def key(self):
+        return self.key_builder("venation")
 
     @classmethod
     def pipe(cls, nlp: Language):

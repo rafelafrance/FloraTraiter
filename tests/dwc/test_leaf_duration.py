@@ -8,7 +8,7 @@ LABEL = "leaf_duration"
 class TestLeafDuration(unittest.TestCase):
     def test_leaf_duration_dwc_01(self):
         ent = to_ent(LABEL, "deciduous")
-        dwc = ent._.trait.to_dwc(ent)
+        dwc = ent._.trait.to_dwc()
         self.assertEqual(
             dwc.to_dict(), {"dwc:dynamicProperties": {"leafDuration": "deciduous"}}
         )

@@ -10,7 +10,7 @@ from traiter.pylib.pipes import add
 from traiter.pylib.traits.base import Base
 
 
-@dataclass
+@dataclass(eq=False)
 class AssociatedTaxonLabel(Base):
     # Class vars ----------
     assoc_csv: ClassVar[Path] = (
@@ -23,7 +23,7 @@ class AssociatedTaxonLabel(Base):
 
     label: str = None
 
-    def to_dwc(self, ent) -> DarwinCore:
+    def to_dwc(self) -> DarwinCore:
         return DarwinCore()
 
     @classmethod

@@ -14,7 +14,7 @@ from traiter.pylib.pipes.reject_match import REJECT_MATCH
 from .linkable import Linkable
 
 
-@dataclass
+@dataclass(eq=False)
 class Part(Linkable):
     # Class vars ----------
     part_csv: ClassVar[Path] = Path(__file__).parent / "terms" / "part_terms.csv"
@@ -31,17 +31,13 @@ class Part(Linkable):
     type: str = None
     missing: bool = None
 
-    def to_dwc(self, ent) -> DarwinCore:
-        dwc = DarwinCore()
-        words = ["missing"] if self.missing else []
-        words += self.type.split("_")
+    def to_dwc(self) -> DarwinCore:
+        return DarwinCore().add_dyn(**{self.key: self.part})
 
-        key = [k.title() for k in words]
-        key[0] = key[0].lower()
-        key = "".join(key)
-
-        dwc.add_dyn(**{key: self.part})
-        return dwc
+    @property
+    def key(self):
+        prepend = "missing" if self.missing else None
+        return self.key_builder(*self.type.split("_"), prepend=prepend, add_data=False)
 
     @classmethod
     def pipe(cls, nlp: Language):

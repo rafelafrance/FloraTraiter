@@ -14,7 +14,7 @@ from ..trait_util import clean_trait
 from .linkable import Linkable
 
 
-@dataclass
+@dataclass(eq=False)
 class FlowerLocation(Linkable):
     # Class vars ----------
     flower_location_csv: ClassVar[Path] = (
@@ -27,12 +27,12 @@ class FlowerLocation(Linkable):
 
     flower_location: str = None
 
-    def to_dwc(self, ent) -> DarwinCore:
-        dwc = DarwinCore()
-        words = ["flower", "location"]
-        key = self.dwc_key(*words)
-        dwc.add_dyn(**{key: self.flower_location})
-        return dwc
+    def to_dwc(self) -> DarwinCore:
+        return DarwinCore().add_dyn(**{self.key: self.flower_location})
+
+    @property
+    def key(self):
+        return self.key_builder("flower", "location")
 
     @classmethod
     def pipe(cls, nlp: Language):

@@ -14,7 +14,7 @@ from traiter.pylib.traits.base import Base
 from ..trait_util import clean_trait
 
 
-@dataclass
+@dataclass(eq=False)
 class Formula(Base):
     # Class vars ----------
     formula_csv: ClassVar[Path] = Path(__file__).parent / "terms" / "formula_terms.csv"
@@ -23,7 +23,7 @@ class Formula(Base):
 
     formula: str = None
 
-    def to_dwc(self, ent) -> DarwinCore:
+    def to_dwc(self) -> DarwinCore:
         return DarwinCore().add_dyn(formula=self.formula)
 
     @classmethod

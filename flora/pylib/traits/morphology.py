@@ -14,7 +14,7 @@ from traiter.pylib.traits.base import Base
 from ..trait_util import clean_trait
 
 
-@dataclass
+@dataclass(eq=False)
 class Morphology(Base):
     # Class vars ----------
     morphology_csv: ClassVar[Path] = (
@@ -25,8 +25,12 @@ class Morphology(Base):
 
     morphology: str = None
 
-    def to_dwc(self, ent) -> DarwinCore:
+    def to_dwc(self) -> DarwinCore:
         return DarwinCore().add_dyn(morphology=self.morphology)
+
+    @property
+    def key(self):
+        return "morphology"
 
     @classmethod
     def pipe(cls, nlp: Language):

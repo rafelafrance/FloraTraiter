@@ -14,7 +14,7 @@ from traiter.pylib.traits.base import Base
 from ..trait_util import clean_trait
 
 
-@dataclass
+@dataclass(eq=False)
 class Reproduction(Base):
     # Class vars ----------
     reproduction_csv: ClassVar[Path] = (
@@ -25,8 +25,12 @@ class Reproduction(Base):
 
     reproduction: str = None
 
-    def to_dwc(self, ent) -> DarwinCore:
+    def to_dwc(self) -> DarwinCore:
         return DarwinCore().add_dyn(reproduction=self.reproduction)
+
+    @property
+    def key(self):
+        return "reproduction"
 
     @classmethod
     def pipe(cls, nlp: Language):

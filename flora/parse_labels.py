@@ -24,14 +24,14 @@ def main():
 
     if args.json_dir:
         os.makedirs(args.json_dir, exist_ok=True)
-        write_json(labels, args)
+        write_json(labels, args.json_dir)
 
     log.finished()
 
 
-def write_json(labels, args):
+def write_json(labels, json_dir):
     for lb in labels.labels:
-        path = args.json_dir / f"{lb.path.stem}.json"
+        path = json_dir / f"{lb.path.stem}.json"
         with open(path, "w") as f:
             json.dump([t.to_dict() for t in lb.traits], f)
 

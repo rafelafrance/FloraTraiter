@@ -14,7 +14,7 @@ from traiter.pylib.traits import terms as t_terms
 from .linkable import Linkable
 
 
-@dataclass
+@dataclass(eq=False)
 class PartLocation(Linkable):
     # Class vars ----------
     location_csv: ClassVar[Path] = (
@@ -32,16 +32,12 @@ class PartLocation(Linkable):
     part_location: str = None
     type: str = None
 
-    def to_dwc(self, ent) -> DarwinCore:
-        dwc = DarwinCore()
-        words = self.type.split("_")
+    def to_dwc(self) -> DarwinCore:
+        return DarwinCore().add_dyn(**{self.key: self.part_location})
 
-        key = [k.title() for k in words]
-        key[0] = key[0].lower()
-        key = "".join(key)
-
-        dwc.add_dyn(**{key: self.part_location})
-        return dwc
+    @property
+    def key(self):
+        return self.key_builder(*self.type.split("_"))
 
     @classmethod
     def pipe(cls, nlp: Language):

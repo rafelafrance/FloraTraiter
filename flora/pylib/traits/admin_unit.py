@@ -15,7 +15,7 @@ from traiter.pylib.traits import terms as t_terms
 from traiter.pylib.traits.base import Base
 
 
-@dataclass
+@dataclass(eq=False)
 class AdminUnit(Base):
     # Class vars ----------
     all_csvs: ClassVar[list[Path]] = [
@@ -41,12 +41,16 @@ class AdminUnit(Base):
     us_state: str = None
     us_county: str = None
 
-    def to_dwc(self, ent) -> DarwinCore:
+    def to_dwc(self) -> DarwinCore:
         return DarwinCore().add(
             country=self.country,
             stateProvince=self.us_state if self.us_state else self.province,
             county=self.us_county,
         )
+
+    @property
+    def key(self):
+        return "administrativeUnit"
 
     @classmethod
     def pipe(cls, nlp: Language, overwrite: Optional[list[str]] = None):

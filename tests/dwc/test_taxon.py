@@ -8,7 +8,7 @@ LABEL = "taxon"
 class TestTaxon(unittest.TestCase):
     def test_taxon_01(self):
         ent = to_ent(LABEL, "M. sensitiva")
-        dwc = ent._.trait.to_dwc(ent)
+        dwc = ent._.trait.to_dwc()
         self.assertEqual(
             dwc.to_dict(),
             {
@@ -20,7 +20,7 @@ class TestTaxon(unittest.TestCase):
 
     def test_taxon_02(self):
         ent = to_ent(LABEL, "A. pachyphloia subsp. brevipinnula")
-        dwc = ent._.trait.to_dwc(ent)
+        dwc = ent._.trait.to_dwc()
         self.assertEqual(
             dwc.to_dict(),
             {
@@ -32,7 +32,7 @@ class TestTaxon(unittest.TestCase):
 
     def test_taxon_03(self):
         ent = to_ent(LABEL, "A. pachyphloia Britton & Rose")
-        dwc = ent._.trait.to_dwc(ent)
+        dwc = ent._.trait.to_dwc()
         self.assertEqual(
             dwc.to_dict(),
             {

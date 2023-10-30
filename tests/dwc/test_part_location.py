@@ -8,7 +8,7 @@ LABEL = "part_location"
 class TestPartLocation(unittest.TestCase):
     def test_part_location_dwc_01(self):
         ent = to_ent(LABEL, "adnate to petiole for 1-2 mm")
-        dwc = ent._.trait.to_dwc(ent)
+        dwc = ent._.trait.to_dwc()
         self.assertEqual(
             dwc.to_dict(),
             {

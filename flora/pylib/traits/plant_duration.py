@@ -14,7 +14,7 @@ from traiter.pylib.traits.base import Base
 from ..trait_util import clean_trait
 
 
-@dataclass
+@dataclass(eq=False)
 class PlantDuration(Base):
     # Class vars ----------
     plant_duration_csv: ClassVar[Path] = (
@@ -27,8 +27,12 @@ class PlantDuration(Base):
 
     plant_duration: str = None
 
-    def to_dwc(self, ent) -> DarwinCore:
+    def to_dwc(self) -> DarwinCore:
         return DarwinCore().add_dyn(plantDuration=self.plant_duration)
+
+    @property
+    def key(self):
+        return "plantDuration"
 
     @classmethod
     def pipe(cls, nlp: Language):

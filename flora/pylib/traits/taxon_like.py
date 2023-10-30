@@ -12,7 +12,7 @@ from traiter.pylib.pipes import add
 from traiter.pylib.traits.base import Base
 
 
-@dataclass
+@dataclass(eq=False)
 class TaxonLike(Base):
     # Class vars ----------
     taxon_like_csv: ClassVar[Path] = (
@@ -26,11 +26,15 @@ class TaxonLike(Base):
     taxon_like: str | list[str] = None
     relation: str = None
 
-    def to_dwc(self, ent) -> DarwinCore:
+    def to_dwc(self) -> DarwinCore:
         return DarwinCore().add_dyn(
             taxonLikeReference=self.taxon_like,
             taxonLikeRelationship=self.relation,
         )
+
+    @property
+    def key(self):
+        return "taxonLike"
 
     @classmethod
     def pipe(cls, nlp: Language):

@@ -28,7 +28,7 @@ ALL_CSVS = [
 ]
 
 
-@dataclass
+@dataclass(eq=False)
 class Dimension:
     dim: str = None
     units: str = None
@@ -40,7 +40,7 @@ class Dimension:
     sex: str = None
 
 
-@dataclass
+@dataclass(eq=False)
 class Size(Linkable):
     # Class vars ----------
     cross: ClassVar[list[str]] = t_const.CROSS + t_const.COMMA
@@ -61,20 +61,25 @@ class Size(Linkable):
     uncertain: bool = None
     # sex is in the parent class
 
-    def to_dwc(self, ent) -> DarwinCore:
+    def to_dwc(self) -> DarwinCore:
         dwc = DarwinCore()
-        key = self.dwc_key("size", "uncertain")
-        dyn_props = {key: "uncertain" if self.uncertain else None}
+        key = self.key_builder("size", "uncertain")
+        dwc.add_dyn(**{key: "uncertain" if self.uncertain else None})
         for dim in self.dims:
-            key = self.dwc_key(dim.dim)
-            dyn_props |= {
-                key + "MinimumInCentimeters": dim.min,
-                key + "LowInCentimeters": dim.low,
-                key + "HighInCentimeters": dim.high,
-                key + "MaximumInCentimeters": dim.max,
-            }
-        dwc.add_dyn(**dyn_props)
+            key = self.key_builder(dim.dim)
+            dwc.add_dyn(
+                **{
+                    key + "MinimumInCentimeters": dim.min,
+                    key + "LowInCentimeters": dim.low,
+                    key + "HighInCentimeters": dim.high,
+                    key + "MaximumInCentimeters": dim.max,
+                }
+            )
         return dwc
+
+    @property
+    def key(self):
+        return self.key_builder("size")
 
     @classmethod
     def pipe(cls, nlp: Language):

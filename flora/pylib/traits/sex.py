@@ -14,7 +14,7 @@ from traiter.pylib.traits.base import Base
 from ..trait_util import clean_trait
 
 
-@dataclass
+@dataclass(eq=False)
 class Sex(Base):
     # Class vars ----------
     sex_csv: ClassVar[Path] = Path(__file__).parent / "terms" / "sex_terms.csv"
@@ -23,8 +23,12 @@ class Sex(Base):
 
     sex: str = None
 
-    def to_dwc(self, ent) -> DarwinCore:
+    def to_dwc(self) -> DarwinCore:
         return DarwinCore().add(sex=self.sex)
+
+    @property
+    def key(self):
+        return "sex"
 
     @classmethod
     def pipe(cls, nlp: Language):

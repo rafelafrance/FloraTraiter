@@ -15,7 +15,7 @@ from traiter.pylib.traits import terms as t_terms
 from traiter.pylib.traits.base import Base
 
 
-@dataclass
+@dataclass(eq=False)
 class Name(Base):
     # Class vars ----------
     all_csvs: ClassVar[list[Path]] = [
@@ -42,8 +42,12 @@ class Name(Base):
 
     name: str | list[str] = None
 
-    def to_dwc(self, ent) -> DarwinCore:
+    def to_dwc(self) -> DarwinCore:
         return DarwinCore().add_dyn(name=self.name)
+
+    @property
+    def key(self):
+        return "name"
 
     @classmethod
     def pipe(cls, nlp: Language, overwrite: Optional[list[str]] = None):

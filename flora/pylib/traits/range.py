@@ -15,7 +15,7 @@ from traiter.pylib.traits import terms as t_terms
 from .linkable import Linkable
 
 
-@dataclass
+@dataclass(eq=False)
 class Range(Linkable):
     # Class vars ----------
     all_csvs: ClassVar[list[Path]] = [
@@ -47,10 +47,9 @@ class Range(Linkable):
     high: float = None
     max: float = None
 
-    def to_dwc(self, ent) -> DarwinCore:
-        dwc = DarwinCore()
-        key = self.dwc_key("range")
-        dwc.add_dyn(
+    def to_dwc(self) -> DarwinCore:
+        key = self.key
+        return DarwinCore().add_dyn(
             **{
                 key + "Minimum": self.min,
                 key + "Low": self.low,
@@ -58,7 +57,10 @@ class Range(Linkable):
                 key + "Maximum": self.max,
             }
         )
-        return dwc
+
+    @property
+    def key(self):
+        return self.key_builder("range")
 
     @classmethod
     def pipe(cls, nlp: Language, overwrite=None):
