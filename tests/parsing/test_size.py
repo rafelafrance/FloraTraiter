@@ -92,6 +92,7 @@ class TestSize(unittest.TestCase):
         )
 
     def test_size_06(self):
+        self.maxDiff = None
         self.assertEqual(
             parse("leaf sinuses 1/5–1/4 to base"),
             [

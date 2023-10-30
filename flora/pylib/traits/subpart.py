@@ -42,7 +42,7 @@ class Subpart(Linkable):
             nlp,
             name="subpart_patterns",
             compiler=cls.subpart_patterns(),
-            overwrite=["part", "part_leader", "missing", "subpart"],
+            overwrite=["part", "part_term", "part_leader", "missing", "subpart_term"],
         )
         add.cleanup_pipe(nlp, name="subpart_cleanup")
 
@@ -58,8 +58,8 @@ class Subpart(Linkable):
                     "-": {"TEXT": {"IN": t_const.DASH}, "OP": "+"},
                     "leader": {"ENT_TYPE": "part_leader"},
                     "missing": {"ENT_TYPE": "missing"},
-                    "part": {"ENT_TYPE": "part"},
-                    "subpart": {"ENT_TYPE": "subpart"},
+                    "part": {"ENT_TYPE": {"IN": ["part", "part_term"]}},
+                    "subpart": {"ENT_TYPE": "subpart_term"},
                 },
                 patterns=[
                     "leader* ,? leader* subpart+",
@@ -78,7 +78,7 @@ class Subpart(Linkable):
         missing = None
 
         for token in ent:
-            if token._.term in ("subpart", "part"):
+            if token._.term in ("subpart_term", "part", "part_term"):
                 frag = cls.replace.get(token.lower_, token.lower_)
                 frags[frag] = 1
 

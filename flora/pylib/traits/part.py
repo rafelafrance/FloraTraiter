@@ -50,7 +50,7 @@ class Part(Linkable):
             nlp,
             name="part_patterns",
             compiler=cls.part_patterns(),
-            overwrite=""" part part_and part_leader missing """.split(),
+            overwrite=""" part_term part_and part_leader missing """.split(),
         )
         add.cleanup_pipe(nlp, name="part_cleanup")
 
@@ -62,7 +62,7 @@ class Part(Linkable):
             "bad_part": {"ENT_TYPE": "bad_part"},
             "leader": {"ENT_TYPE": "part_leader"},
             "missing": {"ENT_TYPE": "missing"},
-            "part": {"ENT_TYPE": "part"},
+            "part": {"ENT_TYPE": "part_term"},
         }
 
         return [
@@ -85,6 +85,7 @@ class Part(Linkable):
                 decoder=decoder,
                 patterns=[
                     "- part+",
+                    "- part -",
                     "bad_part",
                 ],
             ),
@@ -102,15 +103,15 @@ class Part(Linkable):
         frags = [[]]
         missing = None
 
-        for sub_ent in [e for e in ent.ents if e.label_ == "part"]:
-            text = [t.lower_ for t in sub_ent if t._.term == "part"]
+        for sub_ent in [e for e in ent.ents if e.label_ == "part_term"]:
+            text = [t.lower_ for t in sub_ent if t._.term == "part_term"]
             text = " ".join(text).replace(r" - ", "-")
             types.append(cls.type_.get(text, "plant_part"))
 
         for token in ent:
             token._.flag = "part"
 
-            if token._.term == "part":
+            if token._.term == "part_term":
                 cls.append_frag(token, frags)
 
             elif token._.term == "missing":
