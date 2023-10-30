@@ -12,7 +12,7 @@ class TestColor(unittest.TestCase):
         self.assertEqual(
             dwc.to_dict(),
             {
-                "dynamicProperties": {
+                "dwc:dynamicProperties": {
                     "seedCountMinimum": 1,
                     "seedCountLow": 3,
                     "seedCountHigh": 12,
@@ -27,7 +27,7 @@ class TestColor(unittest.TestCase):
         self.assertEqual(
             dwc.to_dict(),
             {
-                "dynamicProperties": {
+                "dwc:dynamicProperties": {
                     "staminateFlowerCountLow": 5,
                     "staminateFlowerCountHigh": 10,
                 }
@@ -40,7 +40,7 @@ class TestColor(unittest.TestCase):
         self.assertEqual(
             dwc.to_dict(),
             {
-                "dynamicProperties": {
+                "dwc:dynamicProperties": {
                     "leafletCountGroup": "pairs",
                     "leafletCountLow": 3,
                     "leafletCountHigh": 4,
@@ -54,7 +54,7 @@ class TestColor(unittest.TestCase):
         self.assertEqual(
             dwc.to_dict(),
             {
-                "dynamicProperties": {
+                "dwc:dynamicProperties": {
                     "seedCountPerPart": "legume",
                     "seedCountMinimum": 1,
                     "seedCountLow": 2,

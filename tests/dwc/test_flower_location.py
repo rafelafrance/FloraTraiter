@@ -10,5 +10,5 @@ class TestFlowerLocation(unittest.TestCase):
         ent = to_ent(LABEL, "epigynous")
         dwc = ent._.trait.to_dwc(ent)
         self.assertEqual(
-            dwc.to_dict(), {"dynamicProperties": {"flowerLocation": "inferior"}}
+            dwc.to_dict(), {"dwc:dynamicProperties": {"flowerLocation": "inferior"}}
         )

@@ -10,5 +10,5 @@ class TestMorphology(unittest.TestCase):
         ent = to_ent(LABEL, "homomorphic")
         dwc = ent._.trait.to_dwc(ent)
         self.assertEqual(
-            dwc.to_dict(), {"dynamicProperties": {"morphology": "homomorphic"}}
+            dwc.to_dict(), {"dwc:dynamicProperties": {"morphology": "homomorphic"}}
         )

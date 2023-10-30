@@ -10,5 +10,5 @@ class TestMargin(unittest.TestCase):
         ent = to_ent(LABEL, "leaf margin shallowly undulate-crenate")
         dwc = ent._.trait.to_dwc(ent)
         self.assertEqual(
-            dwc.to_dict(), {"dynamicProperties": {"leafMargin": "undulate-crenate"}}
+            dwc.to_dict(), {"dwc:dynamicProperties": {"leafMargin": "undulate-crenate"}}
         )

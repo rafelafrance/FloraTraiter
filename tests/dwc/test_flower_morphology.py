@@ -10,5 +10,5 @@ class TestFlowerMorphology(unittest.TestCase):
         ent = to_ent(LABEL, "accrescent")
         dwc = ent._.trait.to_dwc(ent)
         self.assertEqual(
-            dwc.to_dict(), {"dynamicProperties": {"flowerMorphology": "accrescent"}}
+            dwc.to_dict(), {"dwc:dynamicProperties": {"flowerMorphology": "accrescent"}}
         )

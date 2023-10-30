@@ -18,7 +18,7 @@ from .linkable import Linkable
 class PartLocation(Linkable):
     # Class vars ----------
     location_csv: ClassVar[Path] = (
-        Path(__file__).parent / "terms" / "location_terms.csv"
+        Path(__file__).parent / "terms" / "part_location_terms.csv"
     )
     units_csv: ClassVar[Path] = Path(t_terms.__file__).parent / "unit_length_terms.csv"
     all_csvs: ClassVar[list[Path]] = [location_csv, units_csv]

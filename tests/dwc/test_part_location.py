@@ -11,5 +11,9 @@ class TestPartLocation(unittest.TestCase):
         dwc = ent._.trait.to_dwc(ent)
         self.assertEqual(
             dwc.to_dict(),
-            {"dynamicProperties": {"partAsDistance": "adnate to petiole for 1 - 2 mm"}},
+            {
+                "dwc:dynamicProperties": {
+                    "partAsDistance": "adnate to petiole for 1 - 2 mm"
+                }
+            },
         )

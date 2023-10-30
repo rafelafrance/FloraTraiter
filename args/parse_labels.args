@@ -1,0 +1,3 @@
+--text-dir=./data/sernec_2023-05-18_ocr
+--image-dir=./data/sernec_2023-05-18_labels
+--json-dir=./data/sernec_2023-05-18_json

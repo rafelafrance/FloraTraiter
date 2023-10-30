@@ -10,5 +10,5 @@ class TestLeafFolding(unittest.TestCase):
         ent = to_ent(LABEL, "cucullate")
         dwc = ent._.trait.to_dwc(ent)
         self.assertEqual(
-            dwc.to_dict(), {"dynamicProperties": {"leafFolding": "cucullate"}}
+            dwc.to_dict(), {"dwc:dynamicProperties": {"leafFolding": "cucullate"}}
         )

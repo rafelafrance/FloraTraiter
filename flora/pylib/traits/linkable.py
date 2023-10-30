@@ -23,8 +23,10 @@ class Linkable(t_base.Base):
     def dwc_key(self, *args, prepend: str = None) -> str:
         key = [prepend] if prepend else []
         for field in (self.sex, self.part, self.subpart):
-            if field is not None:
+            if isinstance(field, str):
                 key += field.split()
+            elif isinstance(field, list):
+                key += self.trait.split()
         key += list(args)
         dupe = {k: 1 for k in key}
         key = " ".join(dupe.keys()).replace("-", " ").split()

@@ -12,9 +12,9 @@ class TestTaxon(unittest.TestCase):
         self.assertEqual(
             dwc.to_dict(),
             {
-                "scientificName": "Mimosa sensitiva",
-                "taxonRank": "species",
-                "dynamicProperties": {"primaryTaxon": 1},
+                "dwc:scientificName": "Mimosa sensitiva",
+                "dwc:taxonRank": "species",
+                "dwc:dynamicProperties": {"primaryTaxon": 1},
             },
         )
 
@@ -24,9 +24,9 @@ class TestTaxon(unittest.TestCase):
         self.assertEqual(
             dwc.to_dict(),
             {
-                "scientificName": "Acacia pachyphloia subsp. brevipinnula",
-                "taxonRank": "subspecies",
-                "dynamicProperties": {"primaryTaxon": 1},
+                "dwc:scientificName": "Acacia pachyphloia subsp. brevipinnula",
+                "dwc:taxonRank": "subspecies",
+                "dwc:dynamicProperties": {"primaryTaxon": 1},
             },
         )
 
@@ -36,9 +36,9 @@ class TestTaxon(unittest.TestCase):
         self.assertEqual(
             dwc.to_dict(),
             {
-                "scientificName": "Acacia pachyphloia",
-                "taxonRank": "species",
-                "scientificNameAuthorship": "Britton and Rose",
-                "dynamicProperties": {"primaryTaxon": 1},
+                "dwc:scientificName": "Acacia pachyphloia",
+                "dwc:taxonRank": "species",
+                "dwc:scientificNameAuthorship": "Britton and Rose",
+                "dwc:dynamicProperties": {"primaryTaxon": 1},
             },
         )

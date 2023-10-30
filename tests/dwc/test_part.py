@@ -10,5 +10,5 @@ class TestPart(unittest.TestCase):
         ent = to_ent(LABEL, "with thick, woody rootstock.")
         dwc = ent._.trait.to_dwc(ent)
         self.assertEqual(
-            dwc.to_dict(), {"dynamicProperties": {"plantPart": "rootstock"}}
+            dwc.to_dict(), {"dwc:dynamicProperties": {"plantPart": "rootstock"}}
         )

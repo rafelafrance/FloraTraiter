@@ -10,5 +10,5 @@ class TestDuration(unittest.TestCase):
         ent = to_ent(LABEL, "juvenile leaves persistent for a long period.")
         dwc = ent._.trait.to_dwc(ent)
         self.assertEqual(
-            dwc.to_dict(), {"dynamicProperties": {"leafDuration": "persistent"}}
+            dwc.to_dict(), {"dwc:dynamicProperties": {"leafDuration": "persistent"}}
         )

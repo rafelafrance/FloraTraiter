@@ -10,7 +10,7 @@ class TestColor(unittest.TestCase):
         ent = to_ent(LABEL, "male leaf margin green")
         dwc = ent._.trait.to_dwc(ent)
         self.assertEqual(
-            dwc.to_dict(), {"dynamicProperties": {"maleLeafMarginColor": "green"}}
+            dwc.to_dict(), {"dwc:dynamicProperties": {"maleLeafMarginColor": "green"}}
         )
 
     def test_color_dwc_02(self):
@@ -18,5 +18,5 @@ class TestColor(unittest.TestCase):
         dwc = ent._.trait.to_dwc(ent)
         self.assertEqual(
             dwc.to_dict(),
-            {"dynamicProperties": {"missingFlowerPetalColor": "purple-spotted"}},
+            {"dwc:dynamicProperties": {"missingFlowerPetalColor": "purple-spotted"}},
         )
