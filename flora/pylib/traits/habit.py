@@ -12,7 +12,7 @@ from traiter.pylib.pipes import add
 from traiter.pylib.traits.base import Base
 
 
-@dataclass
+@dataclass(eq=False)
 class Habit(Base):
     # Class vars ----------
     all_csvs: ClassVar[list[Path]] = [
@@ -24,7 +24,7 @@ class Habit(Base):
 
     habit: str = None
 
-    def to_dwc(self, ent) -> DarwinCore:
+    def to_dwc(self) -> DarwinCore:
         return DarwinCore().add_dyn(habit=self.habit)
 
     @classmethod

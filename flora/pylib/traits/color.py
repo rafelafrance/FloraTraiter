@@ -9,14 +9,15 @@ from .linkable import Linkable
 
 # Do what the traiter.Color does but add fields (via Linkable),
 # so we can link parts etc. to it.
-@dataclass
+@dataclass(eq=False)
 class Color(t_color.Color, Linkable):
-    def to_dwc(self, ent) -> DarwinCore:
-        dwc = DarwinCore()
+    def to_dwc(self) -> DarwinCore:
+        return DarwinCore().add_dyn(**{self.key: self.color})
+
+    @property
+    def key(self):
         prepend = "missing" if self.missing else None
-        key = self.dwc_key("color", prepend=prepend)
-        dwc.add_dyn(**{key: self.color})
-        return dwc
+        return self.key_builder("color", prepend=prepend)
 
     @classmethod
     def color_trait(cls, ent):

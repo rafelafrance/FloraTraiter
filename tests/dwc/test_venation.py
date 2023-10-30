@@ -8,7 +8,7 @@ LABEL = "venation"
 class TestVenation(unittest.TestCase):
     def test_venation_01(self):
         ent = to_ent(LABEL, "leaf subflabellate")
-        dwc = ent._.trait.to_dwc(ent)
+        dwc = ent._.trait.to_dwc()
         self.assertEqual(
             dwc.to_dict(), {"dwc:dynamicProperties": {"leafVenation": "subflabellate"}}
         )

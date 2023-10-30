@@ -9,6 +9,8 @@ import regex as re
 from PIL import Image
 from PIL import UnidentifiedImageError
 from traiter.pylib import util as t_util
+from traiter.pylib.traits.base import Base
+from traits.linkable import Linkable
 
 MAX_SIZE = 600.0  # pixels
 
@@ -17,7 +19,7 @@ MAX_SIZE = 600.0  # pixels
 class Label:
     path: Path
     text: str = ""
-    traits: list[dict] = field(default_factory=list)
+    traits: list[Base | Linkable] = field(default_factory=list)
     image_path: Path | None = None
     encoded_image: str = ""
     word_count: int = 0

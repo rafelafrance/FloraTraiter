@@ -13,7 +13,7 @@ from traiter.pylib.pipes import add
 from .linkable import Linkable
 
 
-@dataclass
+@dataclass(eq=False)
 class Subpart(Linkable):
     # Class vars ----------
     all_csvs: ClassVar[list[Path]] = [
@@ -28,12 +28,13 @@ class Subpart(Linkable):
     # subpart in base class
     missing: bool = None
 
-    def to_dwc(self, ent) -> DarwinCore:
-        dwc = DarwinCore()
-        prepend = "missing" if self.missing else ""
-        key = self.dwc_key(prepend=prepend)
-        dwc.add_dyn(**{key: self.subpart})
-        return dwc
+    def to_dwc(self) -> DarwinCore:
+        return DarwinCore().add_dyn(**{self.key: self.subpart})
+
+    @property
+    def key(self):
+        prepend = "missing" if self.missing else None
+        return self.key_builder(prepend=prepend)
 
     @classmethod
     def pipe(cls, nlp: Language):

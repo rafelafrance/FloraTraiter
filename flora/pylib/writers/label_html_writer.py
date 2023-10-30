@@ -6,6 +6,8 @@ from flora.pylib import const
 from flora.pylib.writers.base_html_writer import BaseHtmlWriter
 from flora.pylib.writers.base_html_writer import BaseHtmlWriterRow
 
+from ..labels import Labels
+
 
 @dataclass(kw_only=True)
 class HtmlWriterRow(BaseHtmlWriterRow):
@@ -25,7 +27,7 @@ class HtmlWriter(BaseHtmlWriter):
             spotlight=spotlight,
         )
 
-    def write(self, labels, args=None):
+    def write(self, labels: Labels, args=None):
         length_cutoff, score_cutoff = 0, 0
 
         for lb in tqdm(labels.labels, desc="write"):

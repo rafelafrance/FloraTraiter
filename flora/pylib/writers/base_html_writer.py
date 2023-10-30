@@ -7,14 +7,14 @@ from datetime import datetime
 
 import jinja2
 
-from . import writer_utils as w_utils
+from ..label import Label
+from ..labels import Labels
 
 COLOR_COUNT = 14
 BACKGROUNDS = itertools.cycle([f"cc{i}" for i in range(COLOR_COUNT)])
 
 TraitRow = collections.namedtuple("TraitRow", "label data")
 SortableTrait = collections.namedtuple("SortableTrait", "label start trait title")
-FormattedTrait = collections.namedtuple("FormattedTrait", "text traits raw")
 
 
 @dataclass(kw_only=True)
@@ -24,16 +24,14 @@ class BaseHtmlWriterRow:
 
 
 class CssClasses:
-    def __init__(self, spotlight=""):
+    def __init__(self, spotlight: str = ""):
         self.classes = {}
         self.spotlight = spotlight
 
     def __getitem__(self, label):
         if self.spotlight and label.find(self.spotlight) > -1:
             return "ccx"
-        if label not in self.classes:
-            self.classes[label] = next(BACKGROUNDS)
-        return self.classes[label]
+        return self.classes.get(label, next(BACKGROUNDS))
 
 
 class BaseHtmlWriter:
@@ -44,33 +42,30 @@ class BaseHtmlWriter:
         self.css_classes = CssClasses(spotlight)
         self.formatted = []
 
-    def write(self, rows, args=None):
+    def write(self, rows: Labels, args=None):
         raise NotImplementedError
 
-    def format_text(self, row, exclude=None):
+    def format_text(self, row: Label, exclude=None):
         """Wrap traits in the text with <spans> that can be formatted with CSS."""
         exclude = exclude if exclude else []
         frags = []
         prev = 0
 
         for trait in row.traits:
-            if trait["trait"] in exclude:
+            if trait.trait in exclude:
                 continue
 
-            start = trait["start"]
-            end = trait["end"]
+            start = trait.start
+            end = trait.end
 
             if prev < start:
                 frags.append(html.escape(row.text[prev:start]))
 
-            label = w_utils.html_label(trait)
-            cls = self.css_classes[label]
+            cls = self.css_classes[trait.trait]
 
-            title = ", ".join(
-                f"{k}:&nbsp;{v}"
-                for k, v in trait.items()
-                if k not in w_utils.TITLE_SKIPS
-            )
+            dwc = trait.to_dwc()
+
+            title = ", ".join(f"{k}:&nbsp;{v}" for k, v in dwc.to_dict().items())
 
             frags.append(f'<span class="{cls}" title="{title}">')
             frags.append(html.escape(row.text[start:end]))
@@ -85,33 +80,33 @@ class BaseHtmlWriter:
 
     def format_traits(self, row):
         """Group traits for display in their own table."""
-        traits = []
+        # traits = []
 
-        sortable = []
-        for trait in row.traits:
-            label = w_utils.html_label(trait)
-            title = row.text[trait["start"] : trait["end"]]
-            sortable.append(SortableTrait(label, trait["start"], trait, title))
+        # sortable = []
+        # for trait in row.traits:
+        #     dwc = trait.to_dwc()
+        #     title = row.text[trait.start : trait.end]
+        #     sortable.append(SortableTrait(label, trait.start, dwc, title))
+        #
+        # sortable = sorted(sortable)
+        #
+        # for label, grouped in itertools.groupby(sortable, key=lambda x: x.label):
+        #     cls = self.css_classes[label]
+        #     label = f'<span class="{cls}">{label}</span>'
+        #     trait_list = []
+        #     for trait in grouped:
+        #         fields = ", ".join(
+        #             f'<span title="{trait.title}">{k}:&nbsp;{v}</span>'
+        #             for k, v in trait.trait.items()
+        #             if k not in w_utils.FIELD_SKIPS
+        #         )
+        #         if fields:
+        #             trait_list.append(fields)
+        #
+        #     if trait_list:
+        #         traits.append(TraitRow(label, "<br/>".join(trait_list)))
 
-        sortable = sorted(sortable)
-
-        for label, grouped in itertools.groupby(sortable, key=lambda x: x.label):
-            cls = self.css_classes[label]
-            label = f'<span class="{cls}">{label}</span>'
-            trait_list = []
-            for trait in grouped:
-                fields = ", ".join(
-                    f'<span title="{trait.title}">{k}:&nbsp;{v}</span>'
-                    for k, v in trait.trait.items()
-                    if k not in w_utils.FIELD_SKIPS
-                )
-                if fields:
-                    trait_list.append(fields)
-
-            if trait_list:
-                traits.append(TraitRow(label, "<br/>".join(trait_list)))
-
-        return traits
+        # return traits
 
     def write_template(self, in_file_name="", image_dir="", summary=None):
         summary = summary if summary else {}

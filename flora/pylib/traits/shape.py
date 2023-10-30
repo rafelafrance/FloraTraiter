@@ -14,7 +14,7 @@ from traiter.pylib.pipes import add
 from .linkable import Linkable
 
 
-@dataclass
+@dataclass(eq=False)
 class Shape(Linkable):
     # Class vars ----------
     shape_csv: ClassVar[Path] = Path(__file__).parent / "terms" / "shape_terms.csv"
@@ -24,11 +24,12 @@ class Shape(Linkable):
 
     shape: str = None
 
-    def to_dwc(self, ent) -> DarwinCore:
-        dwc = DarwinCore()
-        key = self.dwc_key("shape")
-        dwc.add_dyn(**{key: self.shape})
-        return dwc
+    def to_dwc(self) -> DarwinCore:
+        return DarwinCore().add_dyn(**{self.key: self.shape})
+
+    @property
+    def key(self):
+        return self.key_builder("shape")
 
     @classmethod
     def pipe(cls, nlp: Language):

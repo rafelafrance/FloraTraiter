@@ -13,7 +13,7 @@ from traiter.pylib.pipes import add
 from .linkable import Linkable
 
 
-@dataclass
+@dataclass(eq=False)
 class Margin(Linkable):
     # Class vars ----------
     margin_csv: ClassVar[Path] = Path(__file__).parent / "terms" / "margin_terms.csv"
@@ -22,11 +22,12 @@ class Margin(Linkable):
 
     margin: str = None
 
-    def to_dwc(self, ent) -> DarwinCore:
-        dwc = DarwinCore()
-        key = self.dwc_key("margin")
-        dwc.add_dyn(**{key: self.margin})
-        return dwc
+    def to_dwc(self) -> DarwinCore:
+        return DarwinCore().add_dyn(**{self.key: self.margin})
+
+    @property
+    def key(self):
+        return self.key_builder("margin")
 
     @classmethod
     def pipe(cls, nlp: Language):

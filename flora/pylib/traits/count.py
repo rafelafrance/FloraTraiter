@@ -16,7 +16,7 @@ from traiter.pylib.traits import terms as t_terms
 from .linkable import Linkable
 
 
-@dataclass
+@dataclass(eq=False)
 class Count(Linkable):
     # Class vars ----------
     all_csvs: ClassVar[list[Path]] = [
@@ -57,9 +57,9 @@ class Count(Linkable):
     per_part: str = None
     per_count: str = None
 
-    def to_dwc(self, ent) -> DarwinCore:
+    def to_dwc(self) -> DarwinCore:
         dwc = DarwinCore()
-        key = self.dwc_key("count")
+        key = self.key
         dwc.add_dyn(
             **{
                 key + "Minimum": self.min,
@@ -72,6 +72,10 @@ class Count(Linkable):
             }
         )
         return dwc
+
+    @property
+    def key(self):
+        return self.key_builder("count")
 
     @classmethod
     def pipe(cls, nlp: Language):

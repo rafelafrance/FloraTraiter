@@ -14,7 +14,7 @@ from traiter.pylib.traits.base import Base
 USE_MOCK_DATA = 0
 
 
-@dataclass
+@dataclass(eq=False)
 class Locality(Base):
     # Class vars ----------
     # Traits at ends of locality phrases
@@ -30,8 +30,12 @@ class Locality(Base):
     locality: str = None
     labeled: bool = None
 
-    def to_dwc(self, ent) -> DarwinCore:
+    def to_dwc(self) -> DarwinCore:
         return DarwinCore().add(verbatimLocality=self.locality)
+
+    @property
+    def key(self):
+        return "verbatimLocality"
 
     @classmethod
     def pipe(cls, nlp: Language):

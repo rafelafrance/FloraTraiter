@@ -12,7 +12,7 @@ from traiter.pylib.pipes import add
 from .linkable import Linkable
 
 
-@dataclass
+@dataclass(eq=False)
 class Surface(Linkable):
     # Class vars ----------
     surface_csv = Path(__file__).parent / "terms" / "surface_terms.csv"
@@ -21,11 +21,12 @@ class Surface(Linkable):
 
     surface: str = None
 
-    def to_dwc(self, ent) -> DarwinCore:
-        dwc = DarwinCore()
-        key = self.dwc_key("surface")
-        dwc.add_dyn(**{key: self.surface})
-        return dwc
+    def to_dwc(self) -> DarwinCore:
+        return DarwinCore().add_dyn(**{self.key: self.surface})
+
+    @property
+    def key(self):
+        return self.key_builder("surface")
 
     @classmethod
     def pipe(cls, nlp: Language):

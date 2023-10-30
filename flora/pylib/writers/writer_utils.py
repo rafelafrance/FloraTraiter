@@ -45,15 +45,3 @@ def html_label(trait):
     parts = parts.removesuffix("_part")
 
     return parts
-
-
-def dwc_label(trait):
-    parts = label_parts(trait)
-
-    parts = " ".join(parts)
-    parts = parts.removesuffix("part")
-    parts = parts.replace("-", " ")
-    parts = parts.title()
-    parts = "".join(parts.split())
-
-    return parts

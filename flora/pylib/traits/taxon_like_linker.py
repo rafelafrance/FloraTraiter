@@ -8,7 +8,7 @@ from traiter.pylib.pipes import add
 from traiter.pylib.traits.linker import Linker
 
 
-@dataclass
+@dataclass(eq=False)
 class TaxonLikeLinker(Linker):
     # Class vars ----------
     taxon_like_parents: ClassVar[list[str]] = ["taxon_like"]

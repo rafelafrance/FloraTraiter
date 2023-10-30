@@ -6,9 +6,10 @@ LABEL = "size"
 
 
 class TestSize(unittest.TestCase):
-    def test_shape_dwc_01(self):
+    def test_size_dwc_01(self):
+        self.maxDiff = None
         ent = to_ent(LABEL, "Leaf ca. (12-)23-34 × 45-56 cm")
-        dwc = ent._.trait.to_dwc(ent)
+        dwc = ent._.trait.to_dwc()
         self.assertEqual(
             dwc.to_dict(),
             {

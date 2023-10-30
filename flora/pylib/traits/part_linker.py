@@ -14,7 +14,7 @@ from traiter.pylib.pipes import add
 from traiter.pylib.traits.linker import Linker
 
 
-@dataclass
+@dataclass(eq=False)
 class PartLinker(Linker):
     # Class vars ----------
     children_part_subpart: ClassVar[

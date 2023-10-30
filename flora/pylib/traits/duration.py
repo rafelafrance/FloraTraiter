@@ -14,7 +14,7 @@ from ..trait_util import clean_trait
 from .linkable import Linkable
 
 
-@dataclass
+@dataclass(eq=False)
 class Duration(Linkable):
     # Class vars ----------
     duration_csv: ClassVar[Path] = (
@@ -25,11 +25,13 @@ class Duration(Linkable):
 
     duration: str = None
 
-    def to_dwc(self, ent) -> DarwinCore:
+    def to_dwc(self) -> DarwinCore:
         dwc = DarwinCore()
-        key = self.dwc_key("duration")
-        dwc.add_dyn(**{key: self.duration})
+        dwc.add_dyn(**{self.key(): self.duration})
         return dwc
+
+    def key(self):
+        return self.key_builder("duration")
 
     @classmethod
     def pipe(cls, nlp: Language):

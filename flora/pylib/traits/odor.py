@@ -14,7 +14,7 @@ from ..trait_util import clean_trait
 from .linkable import Linkable
 
 
-@dataclass
+@dataclass(eq=False)
 class Odor(Linkable):
     # Class vars ----------
     odor_csv: ClassVar[Path] = Path(__file__).parent / "terms" / "odor_terms.csv"
@@ -23,11 +23,12 @@ class Odor(Linkable):
 
     odor: str = None
 
-    def to_dwc(self, ent) -> DarwinCore:
-        dwc = DarwinCore()
-        key = self.dwc_key("odor")
-        dwc.add_dyn(**{key: self.odor})
-        return dwc
+    def to_dwc(self) -> DarwinCore:
+        return DarwinCore().add_dyn(**{self.key: self.odor})
+
+    @property
+    def key(self):
+        return self.key_builder("odor")
 
     @classmethod
     def pipe(cls, nlp: Language):

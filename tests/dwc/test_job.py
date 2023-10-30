@@ -8,7 +8,7 @@ LABEL = "job"
 class TestJob(unittest.TestCase):
     def test_job_01(self):
         ent = to_ent(LABEL, "Sarah Nunn and S. Jacobs and R. Mc Elderry 9480")
-        dwc = ent._.trait.to_dwc(ent)
+        dwc = ent._.trait.to_dwc()
         self.assertEqual(
             dwc.to_dict(),
             {
@@ -21,7 +21,7 @@ class TestJob(unittest.TestCase):
 
     def test_job_02(self):
         ent = to_ent(LABEL, "Det;; N. H Russell 195")
-        dwc = ent._.trait.to_dwc(ent)
+        dwc = ent._.trait.to_dwc()
         self.assertEqual(
             dwc.to_dict(),
             {
@@ -34,14 +34,14 @@ class TestJob(unittest.TestCase):
 
     def test_job_03(self):
         ent = to_ent(LABEL, "Verified by: John Kinsman:")
-        dwc = ent._.trait.to_dwc(ent)
+        dwc = ent._.trait.to_dwc()
         self.assertEqual(
             dwc.to_dict(), {"dwc:dynamicProperties": {"verifier": "John Kinsman"}}
         )
 
     def test_job_04(self):
         ent = to_ent(LABEL, "With: Dawn Goldman, Army Prince")
-        dwc = ent._.trait.to_dwc(ent)
+        dwc = ent._.trait.to_dwc()
         self.assertEqual(
             dwc.to_dict(),
             {

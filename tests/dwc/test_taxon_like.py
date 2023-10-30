@@ -8,7 +8,7 @@ LABEL = "taxon_like"
 class TestTaxonLike(unittest.TestCase):
     def test_taxon_like_01(self):
         ent = to_ent(LABEL, "it is similar to M. sensitiva.")
-        dwc = ent._.trait.to_dwc(ent)
+        dwc = ent._.trait.to_dwc()
         self.assertEqual(
             dwc.to_dict(),
             {

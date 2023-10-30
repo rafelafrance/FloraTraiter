@@ -11,7 +11,7 @@ from traiter.pylib.pipes import add
 from traiter.pylib.traits.base import Base
 
 
-@dataclass
+@dataclass(eq=False)
 class IdNumber(Base):
     # Class vars ----------
     id_num_csv: ClassVar[Path] = Path(__file__).parent / "terms" / "id_num_terms.csv"
@@ -20,7 +20,7 @@ class IdNumber(Base):
 
     id_num: str = None
 
-    def to_dwc(self, ent) -> DarwinCore:
+    def to_dwc(self) -> DarwinCore:
         return DarwinCore().add_dyn(id_number=self.id_num)
 
     @classmethod

@@ -47,7 +47,7 @@ def get_csvs() -> dict[str, Path]:
     return csvs
 
 
-@dataclass
+@dataclass(eq=False)
 class Taxon(Base):
     # Class vars ----------
     all_csvs: ClassVar[dict[str, Path]] = get_csvs()
@@ -102,7 +102,7 @@ class Taxon(Base):
     taxon_like: str = None
     associated: bool = None
 
-    def to_dwc(self, ent) -> DarwinCore:
+    def to_dwc(self) -> DarwinCore:
         dwc = DarwinCore()
 
         auth = self.authority
@@ -119,6 +119,10 @@ class Taxon(Base):
             taxonLike=self.taxon_like,
         )
         return dwc
+
+    @property
+    def key(self):
+        return "scientificName"
 
     @classmethod
     def pipe(

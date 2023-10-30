@@ -9,7 +9,7 @@ from traiter.pylib.pipes import add
 from traiter.pylib.traits.linker import Linker
 
 
-@dataclass
+@dataclass(eq=False)
 class SubpartLinker(Linker):
     # Class vars ----------
     link_subpart_parents: ClassVar[list[str]] = ["subpart"]

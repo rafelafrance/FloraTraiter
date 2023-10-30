@@ -8,7 +8,7 @@ from traiter.pylib.pipes import add
 from traiter.pylib.traits.linker import Linker
 
 
-@dataclass
+@dataclass(eq=False)
 class PartLocationLinker(Linker):
     # Class vars ----------
     link_location_parents: ClassVar[list[str]] = ["part_location"]
