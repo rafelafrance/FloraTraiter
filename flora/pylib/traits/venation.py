@@ -28,7 +28,6 @@ class Venation(Linkable):
         dwc.new_rec()
         key = self.dwc_key("venation")
         dwc.add_dyn(**{key: self.venation})
-        self.add_loc(dwc, "venation")
 
     @classmethod
     def pipe(cls, nlp: Language):

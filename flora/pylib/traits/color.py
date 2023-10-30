@@ -15,7 +15,6 @@ class Color(t_color.Color, Linkable):
         prepend = "missing" if self.missing else None
         key = self.dwc_key("color", prepend=prepend)
         dwc.add_dyn(**{key: self.color})
-        self.add_loc(dwc, "color", prepend=prepend)
 
     @classmethod
     def color_trait(cls, ent):
