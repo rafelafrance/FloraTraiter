@@ -100,7 +100,7 @@ class Size(Linkable):
             "99.9": {"TEXT": {"REGEX": t_const.FLOAT_TOKEN_RE}},
             "99-99": {"ENT_TYPE": "range"},
             ",": {"TEXT": {"IN": t_const.COMMA}},
-            "about": {"ENT_TYPE": "about"},
+            "about": {"ENT_TYPE": "about_term"},
             "any": {},
             "and": {"LOWER": "and"},
             "cm": {"ENT_TYPE": {"IN": cls.lengths}},
@@ -191,7 +191,7 @@ class Size(Linkable):
                         dims[-1].dim += token.lower_
                     dims[-1].dim = cls.replace.get(dims[-1].dim, dims[-1].dim)
 
-            elif token._.term in ("about", "quest"):
+            elif token._.term in ("about_term", "quest"):
                 dims[-1].uncertain = True
 
             elif token._.term == "sex":
