@@ -23,6 +23,10 @@ class IdNumber(Base):
     def to_dwc(self) -> DarwinCore:
         return DarwinCore().add_dyn(id_number=self.id_num)
 
+    @property
+    def key(self):
+        return self.key_builder("id_number")
+
     @classmethod
     def pipe(cls, nlp: Language = None):
         add.term_pipe(nlp, name="id_num_terms", path=cls.id_num_csv)

@@ -20,12 +20,12 @@ def main():
         reader = MarkedReader(args)
     traits_in_text, traits_by_taxon = reader.read()
 
-    if args.out_csv:
-        writer = CsvWriter(args.out_csv, args.csv_min)
+    if args.csv_file:
+        writer = CsvWriter(args.csv_file, args.csv_min)
         writer.write(traits_by_taxon)
 
-    if args.out_html:
-        writer = HtmlWriter(args.out_html)
+    if args.html_file:
+        writer = HtmlWriter(args.html_file)
         writer.write(traits_in_text, args.in_text.stem)
 
     log.finished()
@@ -54,14 +54,14 @@ def parse_args():
     )
 
     arg_parser.add_argument(
-        "--out-html",
+        "--html-file",
         type=Path,
         metavar="PATH",
         help="""Output the results to this HTML file.""",
     )
 
     arg_parser.add_argument(
-        "--out-csv",
+        "--csv-file",
         type=Path,
         metavar="PATH",
         help="""Output the results to this CSV file.""",

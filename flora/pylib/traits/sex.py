@@ -28,7 +28,7 @@ class Sex(Base):
 
     @property
     def key(self):
-        return "sex"
+        return DarwinCore.ns("sex")
 
     @classmethod
     def pipe(cls, nlp: Language):

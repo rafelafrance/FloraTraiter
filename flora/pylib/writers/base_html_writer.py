@@ -14,7 +14,7 @@ COLOR_COUNT = 14
 BACKGROUNDS = itertools.cycle([f"cc{i}" for i in range(COLOR_COUNT)])
 
 TraitRow = collections.namedtuple("TraitRow", "label data")
-SortableTrait = collections.namedtuple("SortableTrait", "label start trait title")
+Sortable = collections.namedtuple("SortableTrait", "key start dwc title")
 
 
 @dataclass(kw_only=True)
@@ -28,17 +28,17 @@ class CssClasses:
         self.classes = {}
         self.spotlight = spotlight
 
-    def __getitem__(self, label):
-        if self.spotlight and label.find(self.spotlight) > -1:
+    def __getitem__(self, key):
+        if self.spotlight and key.find(self.spotlight) > -1:
             return "ccx"
-        return self.classes.get(label, next(BACKGROUNDS))
+        return self.classes.get(key, next(BACKGROUNDS))
 
 
 class BaseHtmlWriter:
-    def __init__(self, template_dir, template, out_html, spotlight=""):
+    def __init__(self, template_dir, template, html_file, spotlight=""):
         self.template_dir = template_dir
         self.template = template
-        self.out_html = out_html
+        self.html_file = html_file
         self.css_classes = CssClasses(spotlight)
         self.formatted = []
 
@@ -80,33 +80,31 @@ class BaseHtmlWriter:
 
     def format_traits(self, row):
         """Group traits for display in their own table."""
-        # traits = []
+        traits = []
 
-        # sortable = []
-        # for trait in row.traits:
-        #     dwc = trait.to_dwc()
-        #     title = row.text[trait.start : trait.end]
-        #     sortable.append(SortableTrait(label, trait.start, dwc, title))
-        #
-        # sortable = sorted(sortable)
-        #
-        # for label, grouped in itertools.groupby(sortable, key=lambda x: x.label):
-        #     cls = self.css_classes[label]
-        #     label = f'<span class="{cls}">{label}</span>'
-        #     trait_list = []
-        #     for trait in grouped:
-        #         fields = ", ".join(
-        #             f'<span title="{trait.title}">{k}:&nbsp;{v}</span>'
-        #             for k, v in trait.trait.items()
-        #             if k not in w_utils.FIELD_SKIPS
-        #         )
-        #         if fields:
-        #             trait_list.append(fields)
-        #
-        #     if trait_list:
-        #         traits.append(TraitRow(label, "<br/>".join(trait_list)))
+        sortable = [
+            Sortable(t.key, t.start, t.to_dwc(), row.text[t.start : t.end])
+            for t in row.traits
+        ]
 
-        # return traits
+        sortable = sorted(sortable)
+
+        for key, grouped in itertools.groupby(sortable, key=lambda x: x.key):
+            cls = self.css_classes[key]
+            label = f'<span class="{cls}">{key}</span>'
+            trait_list = []
+            for trait in grouped:
+                fields = ", ".join(
+                    f'<span title="{trait.title}">{k}:&nbsp;{v}</span>'
+                    for k, v in trait.dwc.items()
+                )
+                if fields:
+                    trait_list.append(fields)
+
+            if trait_list:
+                traits.append(TraitRow(label, "<br/>".join(trait_list)))
+
+        return traits
 
     def write_template(self, in_file_name="", image_dir="", summary=None):
         summary = summary if summary else {}
@@ -123,5 +121,5 @@ class BaseHtmlWriter:
             summary=summary,
         )
 
-        with open(self.out_html, "w") as html_file:
+        with open(self.html_file, "w") as html_file:
             html_file.write(template)

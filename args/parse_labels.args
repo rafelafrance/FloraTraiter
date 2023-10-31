@@ -1,3 +1,4 @@
 --text-dir=./data/sernec_2023-05-18_ocr
 --image-dir=./data/sernec_2023-05-18_labels
 --json-dir=./data/sernec_2023-05-18_json
+--html-file=./data/sernec_2023-05-18_on_2023-10-31a.html

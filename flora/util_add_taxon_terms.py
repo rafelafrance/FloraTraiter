@@ -222,8 +222,8 @@ def write_csv(rows):
     monomial_zip = Path(terms.__file__).parent / "monomial_terms.zip"
     binomial_zip = Path(terms.__file__).parent / "binomial_terms.zip"
 
-    with open(monomial_csv, "w") as out_csv:
-        writer = csv.writer(out_csv)
+    with open(monomial_csv, "w") as csv_file:
+        writer = csv.writer(csv_file)
         writer.writerow(""" pattern ranks """.split())
         for r in rows:
             if r.label == "monomial":
@@ -231,8 +231,8 @@ def write_csv(rows):
     with ZipFile(monomial_zip, "w", ZIP_DEFLATED, compresslevel=9) as zippy:
         zippy.write(monomial_csv, arcname=monomial_csv.name)
 
-    with open(binomial_csv, "w") as out_csv:
-        writer = csv.writer(out_csv)
+    with open(binomial_csv, "w") as csv_file:
+        writer = csv.writer(csv_file)
         writer.writerow(""" pattern """.split())
         for r in rows:
             if r.label == "binomial":

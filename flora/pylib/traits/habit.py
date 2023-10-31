@@ -27,6 +27,10 @@ class Habit(Base):
     def to_dwc(self) -> DarwinCore:
         return DarwinCore().add_dyn(habit=self.habit)
 
+    @property
+    def key(self):
+        return self.key_builder("habit")
+
     @classmethod
     def pipe(cls, nlp: Language):
         add.term_pipe(nlp, name="habit_terms", path=cls.all_csvs)
