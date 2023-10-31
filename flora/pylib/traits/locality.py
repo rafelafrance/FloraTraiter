@@ -227,9 +227,12 @@ def prune_localities(doc):
     ents = []
     add_locality = False
 
-    has_taxon = any(e._.trait.trait == "taxon" for e in doc.ents)
+    has_taxon = any(e._.trait and e._.trait.trait == "taxon" for e in doc.ents)
 
     for i, ent in enumerate(doc.ents):
+        if not ent._.trait:
+            continue
+
         trait = ent._.trait.trait
 
         # Localities come after taxa

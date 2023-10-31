@@ -743,7 +743,7 @@ class Taxon(Base):
                 else:
                     auth.append(token.text)
 
-        data["authority"] = ["Linnaeus", " ".join(auth)] if auth else "Linnaeus"
+        data["authority"] = ", ".join(["Linnaeus"] + auth)
         trait = cls.from_ent(ent, **data)
 
         ent[0]._.trait = trait
