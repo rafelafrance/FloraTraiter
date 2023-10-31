@@ -359,7 +359,7 @@ class TestTaxon(unittest.TestCase):
             parse("""Mimosa sensitiva (L.) Fox, Trans."""),
             [
                 Taxon(
-                    authority=["Linnaeus", "Fox"],
+                    authority="Linnaeus, Fox",
                     rank="species",
                     taxon="Mimosa sensitiva",
                     trait="taxon",
@@ -593,7 +593,7 @@ class TestTaxon(unittest.TestCase):
                     trait="taxon",
                     start=0,
                     end=28,
-                    authority=["Linnaeus", "Pers"],
+                    authority="Linnaeus, Pers",
                 )
             ],
         )

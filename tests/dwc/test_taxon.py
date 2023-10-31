@@ -42,3 +42,16 @@ class TestTaxon(unittest.TestCase):
                 "dwc:dynamicProperties": {"primaryTaxon": 1},
             },
         )
+
+    def test_taxon_04(self):
+        ent = to_ent(LABEL, "Acacia pachyphloia (L.) Moench. ssp. brevipinnula")
+        dwc = ent._.trait.to_dwc()
+        self.assertEqual(
+            dwc.to_dict(),
+            {
+                "dwc:scientificName": "Acacia pachyphloia subsp. brevipinnula",
+                "dwc:taxonRank": "subspecies",
+                "dwc:scientificNameAuthorship": "Linnaeus, Moench",
+                "dwc:dynamicProperties": {"primaryTaxon": 1},
+            },
+        )

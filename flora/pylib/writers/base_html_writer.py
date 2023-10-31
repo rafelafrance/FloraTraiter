@@ -31,7 +31,9 @@ class CssClasses:
     def __getitem__(self, key):
         if self.spotlight and key.find(self.spotlight) > -1:
             return "ccx"
-        return self.classes.get(key, next(BACKGROUNDS))
+        if key not in self.classes:
+            self.classes[key] = next(BACKGROUNDS)
+        return self.classes[key]
 
 
 class BaseHtmlWriter:
@@ -61,7 +63,7 @@ class BaseHtmlWriter:
             if prev < start:
                 frags.append(html.escape(row.text[prev:start]))
 
-            cls = self.css_classes[trait.trait]
+            cls = self.css_classes[trait.key]
 
             dwc = trait.to_dwc()
 
