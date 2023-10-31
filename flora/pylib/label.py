@@ -10,7 +10,8 @@ from PIL import Image
 from PIL import UnidentifiedImageError
 from traiter.pylib import util as t_util
 from traiter.pylib.traits.base import Base
-from traits.linkable import Linkable
+
+from .traits.linkable import Linkable
 
 MAX_SIZE = 600.0  # pixels
 
@@ -34,7 +35,7 @@ class Label:
             self.text = t_util.compress(self.text)
 
         doc = nlp(self.text)
-        self.traits = [e._.trait.to_dwc(e) for e in doc.ents]
+        self.traits = [e._.trait for e in doc.ents]
 
         self.image_path = image_paths.get(self.path.stem)
         self.encoded_image = self.encode_image()

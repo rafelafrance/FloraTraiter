@@ -18,8 +18,8 @@ def main():
     labels: Labels = Labels(args)
     labels.parse()
 
-    if args.out_html:
-        writer = HtmlWriter(args.out_html, args.spotlight)
+    if args.html_file:
+        writer = HtmlWriter(args.html_file, args.spotlight)
         writer.write(labels, args)
 
     if args.json_dir:
@@ -95,7 +95,7 @@ def parse_args() -> argparse.Namespace:
     )
 
     arg_parser.add_argument(
-        "--out-html",
+        "--html-file",
         type=Path,
         metavar="PATH",
         help="""Output HTML formatted results to this file.""",

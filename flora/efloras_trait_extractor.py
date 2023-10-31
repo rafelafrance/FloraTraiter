@@ -21,12 +21,12 @@ def main(args):
         doc = nlp(row.text)
         row.traits = [e._.trait for e in doc.ents]
 
-    if args.out_csv:
-        writer = CsvWriter(args.out_csv, args.csv_min)
+    if args.csv_file:
+        writer = CsvWriter(args.csv_file, args.csv_min)
         writer.write(rows)
 
-    if args.out_html:
-        writer = HtmlWriter(args.out_html)
+    if args.html_file:
+        writer = HtmlWriter(args.html_file)
         writer.write(rows)
 
 
@@ -129,14 +129,14 @@ def parse_args():
     )
 
     arg_parser.add_argument(
-        "--out-html",
+        "--html-file",
         "-H",
         type=Path,
         help="""Output the results to this HTML file.""",
     )
 
     arg_parser.add_argument(
-        "--out-csv",
+        "--csv-file",
         "-C",
         type=Path,
         metavar="PATH",

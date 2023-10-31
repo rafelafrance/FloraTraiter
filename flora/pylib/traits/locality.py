@@ -35,7 +35,7 @@ class Locality(Base):
 
     @property
     def key(self):
-        return "verbatimLocality"
+        return DarwinCore.ns("verbatimLocality")
 
     @classmethod
     def pipe(cls, nlp: Language):

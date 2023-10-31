@@ -19,11 +19,11 @@ class HtmlWriterRow(BaseHtmlWriterRow):
 
 
 class HtmlWriter(BaseHtmlWriter):
-    def __init__(self, out_html, spotlight=""):
+    def __init__(self, html_file, spotlight=""):
         super().__init__(
             template_dir=f"{const.ROOT_DIR}/flora/pylib/writers/templates",
             template="label_html_writer.html",
-            out_html=out_html,
+            html_file=html_file,
             spotlight=spotlight,
         )
 
@@ -48,14 +48,15 @@ class HtmlWriter(BaseHtmlWriter):
                     word_count=lb.word_count,
                     valid_words=lb.valid_words,
                     score=lb.score,
-                ),
+                )
             )
 
         total = len(labels.labels)
+        total_removed = length_cutoff + score_cutoff
         summary = {
             "Total labels:": total,
-            "Kept:": total - length_cutoff - score_cutoff,
-            "Total removed:": length_cutoff + score_cutoff,
+            "Kept:": total - total_removed,
+            "Total removed:": total_removed,
             "Too short:": length_cutoff,
             "Score too low:": score_cutoff,
             "Length cutoff:": args.length_cutoff,

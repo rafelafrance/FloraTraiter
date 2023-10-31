@@ -50,7 +50,7 @@ class AdminUnit(Base):
 
     @property
     def key(self):
-        return "administrativeUnit"
+        return DarwinCore.ns("administrativeUnit")
 
     @classmethod
     def pipe(cls, nlp: Language, overwrite: Optional[list[str]] = None):

@@ -11,8 +11,8 @@ PARTS_SET = set(PART_LABELS + ["multiple_parts"])
 class BaseCsvWriter:
     first = []
 
-    def __init__(self, out_csv, csv_min=0):
-        self.out_csv = out_csv
+    def __init__(self, csv_file, csv_min=0):
+        self.csv_file = csv_file
         self.csv_min = csv_min
         self.csv_rows = []
 
@@ -21,7 +21,7 @@ class BaseCsvWriter:
         df = pd.DataFrame(csv_rows)
         df = self.sort_df(df)
 
-        with open(self.out_csv, "w") as out_file:
+        with open(self.csv_file, "w") as out_file:
             out_file.write("** All sizes are given in centimeters. **\n")
             df.to_csv(out_file, index=False)
 

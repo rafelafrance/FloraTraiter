@@ -12,11 +12,11 @@ class HtmlWriterRow(BaseHtmlWriterRow):
 
 
 class HtmlWriter(BaseHtmlWriter):
-    def __init__(self, out_html):
+    def __init__(self, html_file):
         super().__init__(
             template_dir=f"{const.ROOT_DIR}/pylib/writers/templates",
             template="mimosa_html_writer.html",
-            out_html=out_html,
+            html_file=html_file,
         )
 
     def write(self, mimosa_rows, in_file_name=""):

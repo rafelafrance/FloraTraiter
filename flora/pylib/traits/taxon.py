@@ -122,7 +122,7 @@ class Taxon(Base):
 
     @property
     def key(self):
-        return "scientificName"
+        return DarwinCore.ns("scientificName")
 
     @classmethod
     def pipe(

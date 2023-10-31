@@ -26,10 +26,9 @@ class Duration(Linkable):
     duration: str = None
 
     def to_dwc(self) -> DarwinCore:
-        dwc = DarwinCore()
-        dwc.add_dyn(**{self.key(): self.duration})
-        return dwc
+        return DarwinCore().add_dyn(**{self.key: self.duration})
 
+    @property
     def key(self):
         return self.key_builder("duration")
 
