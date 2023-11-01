@@ -25,6 +25,7 @@ class AdminUnit(Base):
     ]
     replace: ClassVar[dict[str, str]] = term_util.term_data(all_csvs, "replace")
     county_in: ClassVar[dict[str, str]] = term_util.term_data(all_csvs, "inside")
+    county_in |= {k.lower(): v for k, v in county_in.items()}
     postal: ClassVar[dict[str, str]] = term_util.term_data(all_csvs, "postal")
     state_ents: ClassVar[list[str]] = ["us_state", "us_state-us_county", "us_territory"]
     county_ents: ClassVar[list[str]] = ["us_county", "us_state-us_county"]

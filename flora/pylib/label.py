@@ -16,7 +16,7 @@ from .traits.linkable import Linkable
 MAX_SIZE = 600.0  # pixels
 
 
-@dataclass()
+@dataclass
 class Label:
     path: Path
     text: str = ""

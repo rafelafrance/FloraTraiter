@@ -238,3 +238,18 @@ class TestAdminUnit(unittest.TestCase):
                 )
             ],
         )
+
+    def test_admin_unit_18(self):
+        """It handles capitalization issues."""
+        self.assertEqual(
+            parse("""St. Louis, Missouri,"""),
+            [
+                AdminUnit(
+                    us_state="Missouri",
+                    us_county="St. Louis",
+                    trait="admin_unit",
+                    start=0,
+                    end=19,
+                )
+            ],
+        )

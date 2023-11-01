@@ -17,7 +17,7 @@ TAXON_TITLE = "Accepted Name"
 PARTS_SET = set(PART_LABELS)
 
 
-@dataclass()
+@dataclass
 class LabelTreatment:
     path: str | Path
     text: str = ""

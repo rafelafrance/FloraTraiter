@@ -1,4 +1,4 @@
---text-dir=./data/sernec_2023-05-18_ocr
---image-dir=./data/sernec_2023-05-18_labels
---json-dir=./data/sernec_2023-05-18_json
---html-file=./data/sernec_2023-05-18_on_2023-10-31a.html
+--text-dir=./data/dl_random_2023-09-14/dl_random_2023-09-14_typewritten_ocr
+--image-dir=./data/dl_random_2023-09-14/dl_random_2023-09-14_typewritten_labels
+--json-dir=./data/dl_random_2023-09-14/dl_random_2023-09-14_typewritten_json
+--html-file=./data/dl_random_2023-09-14/dl_random_2023-09-14_typewritten.html
