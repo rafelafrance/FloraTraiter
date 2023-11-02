@@ -73,15 +73,7 @@ class Taxon(Base):
     level: ClassVar[dict[str, str]] = term_util.term_data(
         all_csvs["rank_terms"], "level"
     )
-    linnaeus: ClassVar[list[str]] = [
-        "l",
-        "l.",
-        "lin",
-        "lin.",
-        "linn",
-        "linn.",
-        "linnaeus",
-    ]
+    linnaeus: ClassVar[list[str]] = "l l. lin lin. linn linn. linnaeus".split()
     lower_rank: ClassVar[list[str]] = sorted(
         {r["label"] for r in rank_terms if r["level"] == "lower"}
     )
@@ -103,20 +95,17 @@ class Taxon(Base):
     associated: bool = None
 
     def to_dwc(self, dwc) -> None:
-        auth = self.authority
-        if isinstance(auth, list):
-            auth = ", ".join(auth)
-
-        key = "associatedTaxa" if self.associated else "scientificName"
-
-        dwc.add(
-            **{
-                key: self.taxon,
-                "taxonRank": self.rank,
-                "scientificNameAuthorship": auth,
-            }
-        )
-        dwc.add_dyn(taxonLike=self.taxon_like)
+        if self.associated:
+            dwc.add(associatedTaxa=("associated", self.taxon))
+        else:
+            auth = self.authority
+            if isinstance(auth, list):
+                auth = t_dwc.SEP.join(auth)
+            dwc.add(
+                scientificName=self.taxon,
+                taxonRank=self.rank,
+                scientificNameAuthorship=auth,
+            )
 
     @property
     def key(self) -> str:

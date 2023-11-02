@@ -1,6 +1,6 @@
 import unittest
 
-from flora.pylib.traits.associated_taxon import AssociatedTaxonLabel
+from flora.pylib.traits.associated_taxon_label import AssociatedTaxonLabel
 from flora.pylib.traits.taxon import Taxon
 from tests.setup import parse
 

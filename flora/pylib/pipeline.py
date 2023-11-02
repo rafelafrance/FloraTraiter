@@ -11,7 +11,7 @@ from traiter.pylib.traits.utm import UTM
 
 from flora.pylib.traits import delete_missing
 from flora.pylib.traits.admin_unit import AdminUnit
-from flora.pylib.traits.associated_taxon import AssociatedTaxonLabel
+from flora.pylib.traits.associated_taxon_label import AssociatedTaxonLabel
 from flora.pylib.traits.color import Color
 from flora.pylib.traits.count import Count
 from flora.pylib.traits.duration import Duration

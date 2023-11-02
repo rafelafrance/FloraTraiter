@@ -47,8 +47,5 @@ class TestTaxon(unittest.TestCase):
     def test_taxon_05(self):
         self.assertEqual(
             to_dwc(LABEL, "Associated species: Cornus obliqua"),
-            {
-                "dwc:associatedTaxa": "Cornus obliqua",
-                "dwc:taxonRank": "species",
-            },
+            {"dwc:associatedTaxa": '"associated":"Cornus obliqua"'},
         )

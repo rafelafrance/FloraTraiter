@@ -4,7 +4,7 @@ from traiter.pylib.traits.date_ import Date
 from traiter.pylib.traits.elevation import Elevation
 from traiter.pylib.traits.habitat import Habitat
 
-from flora.pylib.traits.associated_taxon import AssociatedTaxonLabel
+from flora.pylib.traits.associated_taxon_label import AssociatedTaxonLabel
 from flora.pylib.traits.job import Job
 from flora.pylib.traits.taxon import Taxon
 from tests.setup import parse
