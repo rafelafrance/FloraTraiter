@@ -6,7 +6,6 @@ from typing import ClassVar
 from spacy import registry
 from spacy.language import Language
 from traiter.pylib import const as t_const
-from traiter.pylib.darwin_core import DarwinCore
 from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
 from traiter.pylib.pipes import reject_match
@@ -47,9 +46,9 @@ class Range(Linkable):
     high: float = None
     max: float = None
 
-    def to_dwc(self) -> DarwinCore:
+    def to_dwc(self, dwc) -> None:
         key = self.key
-        return DarwinCore().add_dyn(
+        dwc.add_dyn(
             **{
                 key + "Minimum": self.min,
                 key + "Low": self.low,

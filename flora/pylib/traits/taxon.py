@@ -10,13 +10,14 @@ from spacy import registry
 from traiter.pylib import const as t_const
 from traiter.pylib import taxon_util
 from traiter.pylib import term_util
-from traiter.pylib.darwin_core import DarwinCore
 from traiter.pylib.pattern_compiler import ACCUMULATOR
 from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
 from traiter.pylib.pipes import reject_match
 from traiter.pylib.traits import terms as t_terms
 from traiter.pylib.traits.base import Base
+
+from flora.pylib.darwin_core import DarwinCore
 
 from .. import const
 
@@ -102,9 +103,7 @@ class Taxon(Base):
     taxon_like: str = None
     associated: bool = None
 
-    def to_dwc(self) -> DarwinCore:
-        dwc = DarwinCore()
-
+    def to_dwc(self, dwc) -> None:
         auth = self.authority
         if isinstance(auth, list):
             auth = ", ".join(auth)
@@ -119,7 +118,6 @@ class Taxon(Base):
             }
         )
         dwc.add_dyn(taxonLike=self.taxon_like)
-        return dwc
 
     @property
     def key(self):

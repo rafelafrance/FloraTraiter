@@ -6,7 +6,6 @@ from spacy import Language
 from spacy import registry
 from traiter.pylib import const as t_const
 from traiter.pylib import term_util
-from traiter.pylib.darwin_core import DarwinCore
 from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
 from traiter.pylib.traits.base import Base
@@ -25,8 +24,8 @@ class Reproduction(Base):
 
     reproduction: str = None
 
-    def to_dwc(self) -> DarwinCore:
-        return DarwinCore().add_dyn(reproduction=self.reproduction)
+    def to_dwc(self, dwc) -> None:
+        dwc.add_dyn(reproduction=self.reproduction)
 
     @property
     def key(self):

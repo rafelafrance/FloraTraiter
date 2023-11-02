@@ -6,10 +6,11 @@ from typing import ClassVar
 import traiter.pylib.const as t_const
 from spacy.language import Language
 from spacy.util import registry
-from traiter.pylib.darwin_core import DarwinCore
 from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
 from traiter.pylib.traits.base import Base
+
+from flora.pylib.darwin_core import DarwinCore
 
 USE_MOCK_DATA = 0
 
@@ -30,8 +31,8 @@ class Locality(Base):
     locality: str = None
     labeled: bool = None
 
-    def to_dwc(self) -> DarwinCore:
-        return DarwinCore().add(verbatimLocality=self.locality)
+    def to_dwc(self, dwc) -> None:
+        dwc.add(verbatimLocality=self.locality)
 
     @property
     def key(self):

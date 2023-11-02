@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 
 from spacy.language import Language
-from traiter.pylib.darwin_core import DarwinCore
 from traiter.pylib.traits import base as t_base
 
 
@@ -16,7 +15,7 @@ class Linkable(t_base.Base):
     def pipe(cls, nlp: Language):
         raise NotImplementedError
 
-    def to_dwc(self) -> DarwinCore:
+    def to_dwc(self, dwc) -> None:
         raise NotImplementedError
 
     # Examples: femaleFlowerShape or stemLengthInCentimeters

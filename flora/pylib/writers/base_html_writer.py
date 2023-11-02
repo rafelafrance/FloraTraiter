@@ -65,9 +65,9 @@ class BaseHtmlWriter:
 
             cls = self.css_classes[trait.key]
 
-            dwc = trait.to_dwc()
+            dwc = trait.to_dwc().to_dict()
 
-            title = ", ".join(f"{k}:&nbsp;{v}" for k, v in dwc.to_dict().items())
+            title = ", ".join(f"{k}:&nbsp;{v}" for k, v in dwc.items())
 
             frags.append(f'<span class="{cls}" title="{title}">')
             frags.append(html.escape(row.text[start:end]))
