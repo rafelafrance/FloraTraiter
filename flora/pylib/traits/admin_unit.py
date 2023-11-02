@@ -7,12 +7,13 @@ from spacy.language import Language
 from spacy.util import registry
 from traiter.pylib import const as t_const
 from traiter.pylib import term_util
-from traiter.pylib.darwin_core import DarwinCore
 from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
 from traiter.pylib.pipes import reject_match
 from traiter.pylib.traits import terms as t_terms
 from traiter.pylib.traits.base import Base
+
+from flora.pylib.darwin_core import DarwinCore
 
 
 @dataclass(eq=False)
@@ -42,8 +43,8 @@ class AdminUnit(Base):
     us_state: str = None
     us_county: str = None
 
-    def to_dwc(self) -> DarwinCore:
-        return DarwinCore().add(
+    def to_dwc(self, dwc) -> None:
+        dwc.add(
             country=self.country,
             stateProvince=self.us_state if self.us_state else self.province,
             county=self.us_county,
