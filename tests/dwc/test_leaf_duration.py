@@ -1,14 +1,13 @@
 import unittest
 
-from tests.setup import to_ent
+from tests.setup import to_dwc
 
 LABEL = "leaf_duration"
 
 
 class TestLeafDuration(unittest.TestCase):
     def test_leaf_duration_dwc_01(self):
-        ent = to_ent(LABEL, "deciduous")
-        dwc = ent._.trait.to_dwc()
         self.assertEqual(
-            dwc.to_dict(), {"dwc:dynamicProperties": {"leafDuration": "deciduous"}}
+            to_dwc(LABEL, "deciduous"),
+            {"dwc:dynamicProperties": {"leafDuration": "deciduous"}},
         )

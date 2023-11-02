@@ -1,14 +1,13 @@
 import unittest
 
-from tests.setup import to_ent
+from tests.setup import to_dwc
 
 LABEL = "part"
 
 
 class TestPart(unittest.TestCase):
     def test_part_dwc_01(self):
-        ent = to_ent(LABEL, "with thick, woody rootstock.")
-        dwc = ent._.trait.to_dwc()
         self.assertEqual(
-            dwc.to_dict(), {"dwc:dynamicProperties": {"plantPart": "rootstock"}}
+            to_dwc(LABEL, "with thick, woody rootstock."),
+            {"dwc:dynamicProperties": {"plantPart": "rootstock"}},
         )

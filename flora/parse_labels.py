@@ -22,16 +22,19 @@ def main():
         writer = HtmlWriter(args.html_file, args.spotlight)
         writer.write(labels, args)
 
-    if args.json_dir:
-        os.makedirs(args.json_dir, exist_ok=True)
-        write_json(labels, args.json_dir)
+    if args.traiter_dir:
+        os.makedirs(args.traiter_dir, exist_ok=True)
+        write_json(args, labels, args.traiter_dir)
 
     log.finished()
 
 
-def write_json(labels, json_dir):
+def write_json(args, labels, traiter_dir):
     for lb in labels.labels:
-        path = json_dir / f"{lb.path.stem}.json"
+        if lb.too_short(args.length_cutoff) or lb.bad_score(args.score_cutoff):
+            continue
+
+        path = traiter_dir / f"{lb.path.stem}.json"
         with open(path, "w") as f:
             json.dump([t.to_dict() for t in lb.traits], f)
 
@@ -64,14 +67,6 @@ def parse_args() -> argparse.Namespace:
     )
 
     arg_parser.add_argument(
-        "--text-glob",
-        metavar="GLOB",
-        default="*",
-        help="""Only include label text files that match this pattern.
-            (default: %(default)s)""",
-    )
-
-    arg_parser.add_argument(
         "--image-dir",
         metavar="PATH",
         type=Path,
@@ -80,14 +75,7 @@ def parse_args() -> argparse.Namespace:
     )
 
     arg_parser.add_argument(
-        "--image-glob",
-        metavar="GLOB",
-        default="*",
-        help="""Only include images that match this pattern. (default: %(default)s)""",
-    )
-
-    arg_parser.add_argument(
-        "--json-dir",
+        "--traiter-dir",
         metavar="PATH",
         type=Path,
         help="""Output JSON files holding traits, one for each input text file, in this

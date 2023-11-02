@@ -16,7 +16,8 @@ def parse(text: str) -> list:
     return traits
 
 
-def to_ent(label: str, text: str):
+def to_dwc(label: str, text: str):
     doc = PIPELINE(text)
     ent = next(e for e in doc.ents if e.label_ == label)
-    return ent
+    dwc = ent._.trait.to_dwc()
+    return dwc.to_dict()

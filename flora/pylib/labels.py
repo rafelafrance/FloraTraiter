@@ -13,29 +13,24 @@ from . import pipeline
 class Labels:
     def __init__(self, args):
         self.labels: list[Label] = self.get_labels(args)
-
-        self.length_cutoff: int = 0
-        self.score_cutoff: int = 0
-
         self.nlp = pipeline.build()
-
         self.image_paths = self.get_image_paths(args)
-
         self.vocabulary: set = self.get_vocabulary()
 
     @staticmethod
     def get_labels(args):
-        labels = [Label(p) for p in sorted(args.text_dir.glob(args.text_glob))]
+        labels = [Label(p) for p in sorted(args.text_dir.glob("*"))]
 
         if args.limit:
             labels = labels[args.offset : args.limit + args.offset]
+
         return labels
 
     @staticmethod
     def get_image_paths(args):
         images = {}
         if args.image_dir:
-            images = {p.stem: p for p in args.image_dir.glob(args.image_glob)}
+            images = {p.stem: p for p in args.image_dir.glob("*")}
         return images
 
     @staticmethod
