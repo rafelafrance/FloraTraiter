@@ -1,7 +1,7 @@
 import unittest
 
 from flora.pylib.traits.admin_unit import AdminUnit
-from flora.pylib.traits.associated_taxon import AssociatedTaxonLabel
+from flora.pylib.traits.associated_taxon_label import AssociatedTaxonLabel
 from flora.pylib.traits.job import Job
 from flora.pylib.traits.part import Part
 from flora.pylib.traits.taxon import Taxon

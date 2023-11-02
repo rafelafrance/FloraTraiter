@@ -26,14 +26,14 @@ class TaxonLike(Base):
     relation: str = None
 
     def to_dwc(self, dwc) -> None:
-        dwc.add_dyn(
-            taxonLikeReference=self.taxon_like,
-            taxonLikeRelationship=self.relation,
-        )
+        likes = self.taxon_like
+        likes = likes if isinstance(likes, list) else [likes]
+        for like in likes:
+            dwc.add(**{self.key: (self.relation, like)})
 
     @property
     def key(self) -> str:
-        return "taxonLike"
+        return "associatedTaxa"
 
     @classmethod
     def pipe(cls, nlp: Language):

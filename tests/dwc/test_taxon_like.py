@@ -9,10 +9,5 @@ class TestTaxonLike(unittest.TestCase):
     def test_taxon_like_01(self):
         self.assertEqual(
             to_dwc(LABEL, "it is similar to M. sensitiva."),
-            {
-                "dwc:dynamicProperties": {
-                    "taxonLikeReference": "Mimosa sensitiva",
-                    "taxonLikeRelationship": "similar",
-                },
-            },
+            {"dwc:associatedTaxa": '"similar":"Mimosa sensitiva"'},
         )

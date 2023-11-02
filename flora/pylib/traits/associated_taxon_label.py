@@ -59,7 +59,6 @@ class AssociatedTaxonLabel(Base):
 
     @classmethod
     def label_assoc_taxon(cls, doc):
-        """Mark taxa in the document as either primary or associated."""
         primary_ok = True
 
         for ent in doc.ents:
