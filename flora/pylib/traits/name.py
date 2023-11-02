@@ -45,7 +45,7 @@ class Name(Base):
         dwc.add_dyn(name=self.name)
 
     @property
-    def key(self):
+    def key(self) -> str:
         return "name"
 
     @classmethod

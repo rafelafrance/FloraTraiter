@@ -31,7 +31,7 @@ class Subpart(Linkable):
         dwc.add_dyn(**{self.key: self.subpart})
 
     @property
-    def key(self):
+    def key(self) -> str:
         prepend = "missing" if self.missing else None
         return self.key_builder(prepend=prepend)
 

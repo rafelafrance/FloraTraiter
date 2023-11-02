@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import ClassVar
 
+import traiter.pylib.darwin_core as t_dwc
 from spacy import Language
 from spacy import registry
 from traiter.pylib import const as t_const
@@ -16,8 +17,6 @@ from traiter.pylib.pipes import add
 from traiter.pylib.pipes import reject_match
 from traiter.pylib.traits import terms as t_terms
 from traiter.pylib.traits.base import Base
-
-from flora.pylib.darwin_core import DarwinCore
 
 from .. import const
 
@@ -120,8 +119,10 @@ class Taxon(Base):
         dwc.add_dyn(taxonLike=self.taxon_like)
 
     @property
-    def key(self):
-        return DarwinCore.ns("associatedTaxa" if self.associated else "scientificName")
+    def key(self) -> str:
+        return t_dwc.DarwinCore.ns(
+            "associatedTaxa" if self.associated else "scientificName"
+        )
 
     @classmethod
     def pipe(

@@ -32,7 +32,7 @@ class TaxonLike(Base):
         )
 
     @property
-    def key(self):
+    def key(self) -> str:
         return "taxonLike"
 
     @classmethod

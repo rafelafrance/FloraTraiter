@@ -14,7 +14,7 @@ class Color(t_color.Color, Linkable):
         dwc.add_dyn(**{self.key: self.color})
 
     @property
-    def key(self):
+    def key(self) -> str:
         prepend = "missing" if self.missing else None
         return self.key_builder("color", prepend=prepend)
 

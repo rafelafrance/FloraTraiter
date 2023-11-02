@@ -35,7 +35,7 @@ class PartLocation(Linkable):
         dwc.add_dyn(**{self.key: self.part_location})
 
     @property
-    def key(self):
+    def key(self) -> str:
         return self.key_builder(*self.type.split("_"))
 
     @classmethod

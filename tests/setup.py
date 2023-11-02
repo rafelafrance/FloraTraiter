@@ -1,7 +1,7 @@
+import traiter.pylib.darwin_core as t_dwc
 from traiter.pylib.util import compress
 
 from flora.pylib import pipeline
-from flora.pylib.darwin_core import DarwinCore
 
 PIPELINE = pipeline.build()
 
@@ -23,7 +23,7 @@ def to_dwc(label: str, text: str):
     # Isolate the trait being tested
     for ent in doc.ents:
         if ent.label_ == label:
-            dwc = DarwinCore()
+            dwc = t_dwc.DarwinCore()
             ent._.trait.to_dwc(dwc)
             return dwc.to_dict()
 

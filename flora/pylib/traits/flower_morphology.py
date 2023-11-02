@@ -30,7 +30,7 @@ class FlowerMorphology(Linkable):
         dwc.add_dyn(**{self.key: self.flower_morphology})
 
     @property
-    def key(self):
+    def key(self) -> str:
         return self.key_builder("flower", "morphology")
 
     @classmethod

@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import ClassVar
 from typing import Optional
 
+import traiter.pylib.darwin_core as t_dwc
 from spacy.language import Language
 from spacy.util import registry
 from traiter.pylib import const as t_const
@@ -12,8 +13,6 @@ from traiter.pylib.pipes import add
 from traiter.pylib.pipes import reject_match
 from traiter.pylib.traits import terms as t_terms
 from traiter.pylib.traits.base import Base
-
-from flora.pylib.darwin_core import DarwinCore
 
 
 @dataclass(eq=False)
@@ -51,8 +50,8 @@ class AdminUnit(Base):
         )
 
     @property
-    def key(self):
-        return DarwinCore.ns("administrativeUnit")
+    def key(self) -> str:
+        return t_dwc.DarwinCore.ns("administrativeUnit")
 
     @classmethod
     def pipe(cls, nlp: Language, overwrite: Optional[list[str]] = None):

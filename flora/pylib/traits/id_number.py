@@ -23,7 +23,7 @@ class IdNumber(Base):
         dwc.add_dyn(id_number=self.id_num)
 
     @property
-    def key(self):
+    def key(self) -> str:
         return self.key_builder("id_number")
 
     @classmethod

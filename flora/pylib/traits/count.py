@@ -71,7 +71,7 @@ class Count(Linkable):
         )
 
     @property
-    def key(self):
+    def key(self) -> str:
         return self.key_builder("count")
 
     @classmethod

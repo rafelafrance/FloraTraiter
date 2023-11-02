@@ -28,7 +28,7 @@ class Morphology(Base):
         dwc.add_dyn(morphology=self.morphology)
 
     @property
-    def key(self):
+    def key(self) -> str:
         return "morphology"
 
     @classmethod
