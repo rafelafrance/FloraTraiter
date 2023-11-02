@@ -1,16 +1,14 @@
 import unittest
 
-from tests.setup import to_ent
+from tests.setup import to_dwc
 
 LABEL = "job"
 
 
 class TestJob(unittest.TestCase):
     def test_job_01(self):
-        ent = to_ent(LABEL, "Sarah Nunn and S. Jacobs and R. Mc Elderry 9480")
-        dwc = ent._.trait.to_dwc()
         self.assertEqual(
-            dwc.to_dict(),
+            to_dwc(LABEL, "Sarah Nunn and S. Jacobs and R. Mc Elderry 9480"),
             {
                 "dwc:dynamicProperties": {
                     "collector": "Sarah Nunn, S. Jacobs, R. Mc Elderry",
@@ -20,10 +18,8 @@ class TestJob(unittest.TestCase):
         )
 
     def test_job_02(self):
-        ent = to_ent(LABEL, "Det;; N. H Russell 195")
-        dwc = ent._.trait.to_dwc()
         self.assertEqual(
-            dwc.to_dict(),
+            to_dwc(LABEL, "Det;; N. H Russell 195"),
             {
                 "dwc:dynamicProperties": {
                     "determiner": "N. H Russell",
@@ -33,17 +29,14 @@ class TestJob(unittest.TestCase):
         )
 
     def test_job_03(self):
-        ent = to_ent(LABEL, "Verified by: John Kinsman:")
-        dwc = ent._.trait.to_dwc()
         self.assertEqual(
-            dwc.to_dict(), {"dwc:dynamicProperties": {"verifier": "John Kinsman"}}
+            to_dwc(LABEL, "Verified by: John Kinsman:"),
+            {"dwc:dynamicProperties": {"verifier": "John Kinsman"}},
         )
 
     def test_job_04(self):
-        ent = to_ent(LABEL, "With: Dawn Goldman, Army Prince")
-        dwc = ent._.trait.to_dwc()
         self.assertEqual(
-            dwc.to_dict(),
+            to_dwc(LABEL, "With: Dawn Goldman, Army Prince"),
             {
                 "dwc:dynamicProperties": {
                     "otherCollector": "Dawn Goldman, Army Prince"

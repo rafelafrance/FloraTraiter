@@ -1,16 +1,14 @@
 import unittest
 
-from tests.setup import to_ent
+from tests.setup import to_dwc
 
 LABEL = "part_location"
 
 
 class TestPartLocation(unittest.TestCase):
     def test_part_location_dwc_01(self):
-        ent = to_ent(LABEL, "adnate to petiole for 1-2 mm")
-        dwc = ent._.trait.to_dwc()
         self.assertEqual(
-            dwc.to_dict(),
+            to_dwc(LABEL, "adnate to petiole for 1-2 mm"),
             {
                 "dwc:dynamicProperties": {
                     "partAsDistance": "adnate to petiole for 1 - 2 mm"

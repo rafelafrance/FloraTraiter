@@ -107,22 +107,23 @@ class Taxon(Base):
 
         auth = self.authority
         if isinstance(auth, list):
-            auth = " ".join(auth)
+            auth = ", ".join(auth)
+
+        key = "associatedTaxa" if self.associated else "scientificName"
 
         dwc.add(
-            scientificName=self.taxon,
-            taxonRank=self.rank,
-            scientificNameAuthorship=auth,
+            **{
+                key: self.taxon,
+                "taxonRank": self.rank,
+                "scientificNameAuthorship": auth,
+            }
         )
-        dwc.add_dyn(
-            primaryTaxon=1 if not self.associated else None,
-            taxonLike=self.taxon_like,
-        )
+        dwc.add_dyn(taxonLike=self.taxon_like)
         return dwc
 
     @property
     def key(self):
-        return DarwinCore.ns("scientificName")
+        return DarwinCore.ns("associatedTaxa" if self.associated else "scientificName")
 
     @classmethod
     def pipe(

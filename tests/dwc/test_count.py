@@ -1,16 +1,14 @@
 import unittest
 
-from tests.setup import to_ent
+from tests.setup import to_dwc
 
 LABEL = "count"
 
 
 class TestColor(unittest.TestCase):
     def test_count_dwc_01(self):
-        ent = to_ent(LABEL, "Seeds [1–]3–12[–30].")
-        dwc = ent._.trait.to_dwc()
         self.assertEqual(
-            dwc.to_dict(),
+            to_dwc(LABEL, "Seeds [1–]3–12[–30]."),
             {
                 "dwc:dynamicProperties": {
                     "seedCountMinimum": 1,
@@ -22,10 +20,8 @@ class TestColor(unittest.TestCase):
         )
 
     def test_count_dwc_02(self):
-        ent = to_ent(LABEL, "Staminate flowers 5–10")
-        dwc = ent._.trait.to_dwc()
         self.assertEqual(
-            dwc.to_dict(),
+            to_dwc(LABEL, "Staminate flowers 5–10"),
             {
                 "dwc:dynamicProperties": {
                     "staminateFlowerCountLow": 5,
@@ -35,10 +31,8 @@ class TestColor(unittest.TestCase):
         )
 
     def test_count_dwc_03(self):
-        ent = to_ent(LABEL, "leaflets in 3 or 4 pairs")
-        dwc = ent._.trait.to_dwc()
         self.assertEqual(
-            dwc.to_dict(),
+            to_dwc(LABEL, "leaflets in 3 or 4 pairs"),
             {
                 "dwc:dynamicProperties": {
                     "leafletCountGroup": "pairs",
@@ -49,10 +43,8 @@ class TestColor(unittest.TestCase):
         )
 
     def test_count_dwc_04(self):
-        ent = to_ent(LABEL, "Seeds (1 or)2 or 3 per legume,")
-        dwc = ent._.trait.to_dwc()
         self.assertEqual(
-            dwc.to_dict(),
+            to_dwc(LABEL, "Seeds (1 or)2 or 3 per legume,"),
             {
                 "dwc:dynamicProperties": {
                     "seedCountPerPart": "legume",

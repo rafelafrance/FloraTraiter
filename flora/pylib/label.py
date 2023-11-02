@@ -81,3 +81,9 @@ class Label:
 
         string = base64.b64encode(image_bytes).decode()
         return string
+
+    def too_short(self, length_cutoff):
+        return self.word_count < length_cutoff
+
+    def bad_score(self, score_cutoff):
+        return self.score < score_cutoff

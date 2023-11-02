@@ -31,11 +31,11 @@ class HtmlWriter(BaseHtmlWriter):
         length_cutoff, score_cutoff = 0, 0
 
         for lb in tqdm(labels.labels, desc="write"):
-            if lb.word_count < args.length_cutoff:
+            if lb.too_short(args.length_cutoff):
                 length_cutoff += 1
                 continue
 
-            if lb.score < args.score_cutoff:
+            if lb.bad_score(args.score_cutoff):
                 score_cutoff += 1
                 continue
 
