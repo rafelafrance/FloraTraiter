@@ -27,7 +27,7 @@ class Shape(Linkable):
         dwc.add_dyn(**{self.key: self.shape})
 
     @property
-    def key(self):
+    def key(self) -> str:
         return self.key_builder("shape")
 
     @classmethod

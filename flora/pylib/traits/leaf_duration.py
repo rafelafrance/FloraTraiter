@@ -30,7 +30,7 @@ class LeafDuration(Linkable):
         dwc.add_dyn(**{self.key: self.leaf_duration})
 
     @property
-    def key(self):
+    def key(self) -> str:
         return self.key_builder("leaf", "duration")
 
     @classmethod

@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import ClassVar
 
+import traiter.pylib.darwin_core as t_dwc
 from spacy import Language
 from spacy import registry
 from traiter.pylib import const as t_const
@@ -9,8 +10,6 @@ from traiter.pylib import term_util
 from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
 from traiter.pylib.traits.base import Base
-
-from flora.pylib.darwin_core import DarwinCore
 
 from ..trait_util import clean_trait
 
@@ -28,8 +27,8 @@ class Sex(Base):
         dwc.add(sex=self.sex)
 
     @property
-    def key(self):
-        return DarwinCore.ns("sex")
+    def key(self) -> str:
+        return t_dwc.DarwinCore.ns("sex")
 
     @classmethod
     def pipe(cls, nlp: Language):

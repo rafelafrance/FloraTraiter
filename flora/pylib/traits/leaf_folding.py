@@ -28,7 +28,7 @@ class LeafFolding(Linkable):
         dwc.add_dyn(**{self.key: self.leaf_folding})
 
     @property
-    def key(self):
+    def key(self) -> str:
         return self.key_builder("leaf", "folding")
 
     @classmethod

@@ -30,7 +30,7 @@ class PlantDuration(Base):
         dwc.add_dyn(plantDuration=self.plant_duration)
 
     @property
-    def key(self):
+    def key(self) -> str:
         return "plantDuration"
 
     @classmethod

@@ -58,7 +58,7 @@ class Range(Linkable):
         )
 
     @property
-    def key(self):
+    def key(self) -> str:
         return self.key_builder("range")
 
     @classmethod

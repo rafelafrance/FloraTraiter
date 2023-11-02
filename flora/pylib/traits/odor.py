@@ -26,7 +26,7 @@ class Odor(Linkable):
         dwc.add_dyn(**{self.key: self.odor})
 
     @property
-    def key(self):
+    def key(self) -> str:
         return self.key_builder("odor")
 
     @classmethod

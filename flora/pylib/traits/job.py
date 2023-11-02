@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import ClassVar
 
 import regex as re
+import traiter.pylib.darwin_core as t_dwc
 from spacy.language import Language
 from spacy.util import registry
 from traiter.pylib import const as t_const
@@ -58,12 +59,24 @@ class Job(Base):
     id_num: str = None
 
     def to_dwc(self, dwc) -> None:
-        name = self.name if isinstance(self.name, str) else ", ".join(self.name)
-        dwc.add_dyn(**{self.key: name, self.key + "IdNumber": self.id_num})
+        name = self.name if isinstance(self.name, str) else t_dwc.SEP.join(self.name)
+        key = self.key
+        kwargs = {key: name, self.key + "ID": self.id_num}
+        if key in ("recordedBy", "identifiedBy"):
+            dwc.add(**kwargs)
+        else:
+            dwc.add_dyn(**kwargs)
 
     @property
-    def key(self):
-        return self.key_builder(*self.job.split("_"))
+    def key(self) -> str:
+        match self.job:
+            case "collector" | "other_collector":
+                key = "recordedBy"
+            case "determiner":
+                key = "identifiedBy"
+            case _:
+                key = self.key_builder(*self.job.split("_"))
+        return key
 
     @classmethod
     def pipe(cls, nlp: Language):

@@ -27,7 +27,7 @@ class Habit(Base):
         dwc.add_dyn(habit=self.habit)
 
     @property
-    def key(self):
+    def key(self) -> str:
         return self.key_builder("habit")
 
     @classmethod

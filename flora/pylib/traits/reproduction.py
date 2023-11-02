@@ -28,7 +28,7 @@ class Reproduction(Base):
         dwc.add_dyn(reproduction=self.reproduction)
 
     @property
-    def key(self):
+    def key(self) -> str:
         return "reproduction"
 
     @classmethod
