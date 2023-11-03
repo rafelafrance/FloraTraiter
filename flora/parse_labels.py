@@ -7,6 +7,7 @@ from pathlib import Path
 
 from pylib.writers.label_html_writer import HtmlWriter
 from traiter.pylib import log
+from traiter.pylib.darwin_core import DarwinCore
 
 from flora.pylib.labels import Labels
 
@@ -34,9 +35,12 @@ def write_json(args, labels, traiter_dir):
         if lb.too_short(args.length_cutoff) or lb.bad_score(args.score_cutoff):
             continue
 
+        dwc = DarwinCore()
+
         path = traiter_dir / f"{lb.path.stem}.json"
         with open(path, "w") as f:
-            json.dump([t.to_dwc().to_dict() for t in lb.traits], f)
+            _ = [t.to_dwc(dwc) for t in lb.traits]
+            json.dump(dwc.to_dict(), f)
 
 
 def parse_args() -> argparse.Namespace:

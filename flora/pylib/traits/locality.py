@@ -7,6 +7,7 @@ import traiter.pylib.const as t_const
 import traiter.pylib.darwin_core as t_dwc
 from spacy.language import Language
 from spacy.util import registry
+from traiter.pylib.darwin_core import DarwinCore
 from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
 from traiter.pylib.traits.base import Base
@@ -30,8 +31,8 @@ class Locality(Base):
     locality: str = None
     labeled: bool = None
 
-    def to_dwc(self, dwc) -> None:
-        dwc.add(verbatimLocality=self.locality)
+    def to_dwc(self, dwc) -> DarwinCore:
+        return dwc.add(verbatimLocality=self.locality)
 
     @property
     def key(self) -> str:

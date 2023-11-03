@@ -11,6 +11,7 @@ from spacy import registry
 from traiter.pylib import const as t_const
 from traiter.pylib import taxon_util
 from traiter.pylib import term_util
+from traiter.pylib.darwin_core import DarwinCore
 from traiter.pylib.pattern_compiler import ACCUMULATOR
 from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
@@ -94,18 +95,18 @@ class Taxon(Base):
     taxon_like: str = None
     associated: bool = None
 
-    def to_dwc(self, dwc) -> None:
+    def to_dwc(self, dwc) -> DarwinCore:
         if self.associated:
-            dwc.add(associatedTaxa=("associated", self.taxon))
-        else:
-            auth = self.authority
-            if isinstance(auth, list):
-                auth = t_dwc.SEP.join(auth)
-            dwc.add(
-                scientificName=self.taxon,
-                taxonRank=self.rank,
-                scientificNameAuthorship=auth,
-            )
+            return dwc.add(associatedTaxa=("associated", self.taxon))
+
+        auth = self.authority
+        if isinstance(auth, list):
+            auth = t_dwc.SEP.join(auth)
+        dwc.add(
+            scientificName=self.taxon,
+            taxonRank=self.rank,
+            scientificNameAuthorship=auth,
+        )
 
     @property
     def key(self) -> str:
