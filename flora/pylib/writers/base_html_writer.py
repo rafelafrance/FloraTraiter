@@ -67,8 +67,7 @@ class BaseHtmlWriter:
             cls = self.css_classes[trait.key]
 
             dwc = DarwinCore()
-            trait.to_dwc(dwc)
-            dwc = dwc.to_dict()
+            dwc = trait.to_dwc(dwc).to_dict()
 
             title = ", ".join(f"{k}:&nbsp;{v}" for k, v in dwc.items())
 
