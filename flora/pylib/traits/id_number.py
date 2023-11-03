@@ -5,6 +5,7 @@ from typing import ClassVar
 import regex as re
 from spacy.language import Language
 from spacy.util import registry
+from traiter.pylib.darwin_core import DarwinCore
 from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
 from traiter.pylib.traits.base import Base
@@ -19,8 +20,8 @@ class IdNumber(Base):
 
     id_num: str = None
 
-    def to_dwc(self, dwc) -> None:
-        dwc.add_dyn(id_number=self.id_num)
+    def to_dwc(self, dwc) -> DarwinCore:
+        return dwc.add_dyn(id_number=self.id_num)
 
     @property
     def key(self) -> str:

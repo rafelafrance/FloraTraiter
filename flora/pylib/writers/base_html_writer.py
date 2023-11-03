@@ -6,6 +6,7 @@ from dataclasses import field
 from datetime import datetime
 
 import jinja2
+from traiter.pylib.darwin_core import DarwinCore
 
 from ..label import Label
 from ..labels import Labels
@@ -65,7 +66,9 @@ class BaseHtmlWriter:
 
             cls = self.css_classes[trait.key]
 
-            dwc = trait.to_dwc().to_dict()
+            dwc = DarwinCore()
+            trait.to_dwc(dwc)
+            dwc = dwc.to_dict()
 
             title = ", ".join(f"{k}:&nbsp;{v}" for k, v in dwc.items())
 
@@ -83,9 +86,10 @@ class BaseHtmlWriter:
     def format_traits(self, row):
         """Group traits for display in their own table."""
         traits = []
+        dwc = DarwinCore()
 
         sortable = [
-            Sortable(t.key, t.start, t.to_dwc(), row.text[t.start : t.end])
+            Sortable(t.key, t.start, t.to_dwc(dwc), row.text[t.start : t.end])
             for t in row.traits
         ]
 
@@ -95,10 +99,11 @@ class BaseHtmlWriter:
             cls = self.css_classes[key]
             label = f'<span class="{cls}">{key}</span>'
             trait_list = []
+            dwc = DarwinCore()
             for trait in grouped:
                 fields = ", ".join(
                     f'<span title="{trait.title}">{k}:&nbsp;{v}</span>'
-                    for k, v in trait.dwc.items()
+                    for k, v in trait.to_dwc(dwc).to_dict().items()
                 )
                 if fields:
                     trait_list.append(fields)

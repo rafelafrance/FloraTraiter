@@ -6,6 +6,7 @@ from spacy import Language
 from spacy import registry
 from traiter.pylib import const as t_const
 from traiter.pylib import term_util
+from traiter.pylib.darwin_core import DarwinCore
 from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
 
@@ -22,8 +23,8 @@ class Odor(Linkable):
 
     odor: str = None
 
-    def to_dwc(self, dwc) -> None:
-        dwc.add_dyn(**{self.key: self.odor})
+    def to_dwc(self, dwc) -> DarwinCore:
+        return dwc.add_dyn(**{self.key: self.odor})
 
     @property
     def key(self) -> str:
