@@ -33,7 +33,7 @@
   </thead>
   <tbody>
   {% for row in rows %}
-    <tr>
+    <tr class="first">
       <td>
         <button class="toggle closed" title="Show or hide the extractions"
             data-text-id="{{ row.label_id }}">
@@ -61,7 +61,7 @@
     <tr class="term closed" data-text-id="{{ row.label_id }}">
       <td></td>
       <td>{{ trait.label | safe }}</td>
-      <td>{{ trait.data | safe }}</td>
+      <td class="data">{{ trait.data | safe }}</td>
     </tr>
     {% endfor %}
   {% endfor %}

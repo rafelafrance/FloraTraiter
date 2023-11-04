@@ -97,7 +97,7 @@ class Taxon(Base):
 
     def to_dwc(self, dwc) -> DarwinCore:
         if self.associated:
-            return dwc.add(associatedTaxa=("associated", self.taxon))
+            return dwc.add(associatedTaxa={"associated": self.taxon})
 
         auth = self.authority
         if isinstance(auth, list):

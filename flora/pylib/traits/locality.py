@@ -10,6 +10,7 @@ from spacy.util import registry
 from traiter.pylib.darwin_core import DarwinCore
 from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
+from traiter.pylib.pipes import reject_match
 from traiter.pylib.traits.base import Base
 
 USE_MOCK_DATA = 0
@@ -19,13 +20,15 @@ USE_MOCK_DATA = 0
 class Locality(Base):
     # Class vars ----------
     # Traits at ends of locality phrases
-    OUTER_TRAITS: ClassVar[list[str]] = " habitat admin_unit subpart count".split()
+    outer_traits: ClassVar[list[str]] = " habitat admin_unit subpart count".split()
 
-    ALL_TRAITS: ClassVar[list[str]] = [*OUTER_TRAITS, "color"]
+    all_traits: ClassVar[list[str]] = [*outer_traits, "color"]
 
-    PUNCT: ClassVar[list[str]] = (
+    punct: ClassVar[list[str]] = (
         t_const.COLON + t_const.COMMA + t_const.DASH + t_const.SLASH
     )
+
+    min_len: ClassVar[int] = 4
     # ---------------------
 
     locality: str = None
@@ -60,14 +63,14 @@ class Locality(Base):
                 nlp,
                 name=f"extend_locality{i}",
                 compiler=cls.extend_locality(),
-                overwrite=["locality", *cls.ALL_TRAITS],
+                overwrite=["locality", *cls.all_traits],
             )
 
         add.trait_pipe(
             nlp,
             name="end_locality",
             compiler=cls.end_locality(),
-            overwrite=["locality", *cls.ALL_TRAITS],
+            overwrite=["locality", *cls.all_traits],
         )
 
         add.cleanup_pipe(nlp, name="locality_cleanup")
@@ -75,13 +78,14 @@ class Locality(Base):
     @classmethod
     def locality_patterns(cls):
         decoder = {
-            ",": {"TEXT": {"IN": cls.PUNCT}},
+            ",": {"TEXT": {"IN": cls.punct}},
             "'s": {"POS": "PART"},
             "9": {"LIKE_NUM": True},
             "and": {"POS": {"IN": "ADP AUX CCONJ DET NUM SCONJ SPACE".split()}},
+            "label": {"ENT_TYPE": "loc_label"},
             "loc": {"ENT_TYPE": "loc"},
             "sp": {"IS_SPACE": True},
-            "trait": {"ENT_TYPE": {"IN": cls.ALL_TRAITS}},
+            "trait": {"ENT_TYPE": {"IN": cls.all_traits}},
             "word": {"IS_ALPHA": True},
         }
         return [
@@ -111,14 +115,14 @@ class Locality(Base):
                 on_match="locality_match",
                 keep="locality",
                 decoder={
-                    ",": {"TEXT": {"IN": cls.PUNCT}},
+                    ",": {"TEXT": {"IN": cls.punct}},
                     "9": {"LIKE_NUM": True},
                     "and": {"POS": {"IN": "ADP AUX CCONJ DET NUM SCONJ SPACE".split()}},
                     "loc": {"ENT_TYPE": "loc"},
                     "locality": {"ENT_TYPE": "locality"},
                     "rt": {"LOWER": {"REGEX": r"^\w[\w.]{,2}$"}},
                     "sent_start": {"IS_SENT_START": True},
-                    "trait": {"ENT_TYPE": {"IN": cls.ALL_TRAITS}},
+                    "trait": {"ENT_TYPE": {"IN": cls.all_traits}},
                     "word": {"IS_ALPHA": True},
                 },
                 patterns=[
@@ -136,8 +140,8 @@ class Locality(Base):
     @classmethod
     def end_locality(cls):
         decoder = {
-            ",": {"TEXT": {"IN": cls.PUNCT}},
-            ".": {"TEXT": {"IN": t_const.DOT + t_const.SEMICOLON}},
+            ",": {"TEXT": {"IN": cls.punct}},
+            ".": {"TEXT": {"IN": t_const.DOT + t_const.SEMICOLON + t_const.Q_MARK}},
             "9": {"LIKE_NUM": True},
             "not_eol": {"LOWER": {"REGEX": r"^[^\n\r;.]+$"}},
             "label": {"ENT_TYPE": "loc_label"},
@@ -145,7 +149,7 @@ class Locality(Base):
             "in_sent": {"IS_SENT_START": False},
             "sent_start": {"IS_SENT_START": True},
             "sp": {"IS_SPACE": True},
-            "trait": {"ENT_TYPE": {"IN": cls.OUTER_TRAITS}},
+            "trait": {"ENT_TYPE": {"IN": cls.outer_traits}},
             "word": {"IS_ALPHA": True},
         }
         return [
@@ -167,7 +171,7 @@ class Locality(Base):
                 decoder=decoder,
                 keep="locality",
                 patterns=[
-                    "label+ in_sent+ .",
+                    "label+ ,? in_sent+ .",
                 ],
             ),
         ]
@@ -197,6 +201,9 @@ class Locality(Base):
 
     @classmethod
     def locality_match(cls, ent):
+        if all(len(t.text) < cls.min_len for t in ent):
+            raise reject_match.RejectMatch
+
         loc = ent.text.lstrip("(")
         loc = " ".join(loc.split())
         return cls.from_ent(ent, locality=loc)
