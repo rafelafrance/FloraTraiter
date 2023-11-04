@@ -62,19 +62,15 @@ class Size(Linkable):
     # sex is in the parent class
 
     def to_dwc(self, dwc) -> DarwinCore:
-        key = self.key_builder("size", "uncertain")
-        dwc.add_dyn(**{key: "uncertain" if self.uncertain else None})
+        value = {"uncertain": self.uncertain}
         for dim in self.dims:
-            key = self.key_builder(dim.dim)
-            dwc.add_dyn(
-                **{
-                    key + "MinimumInCentimeters": dim.min,
-                    key + "LowInCentimeters": dim.low,
-                    key + "HighInCentimeters": dim.high,
-                    key + "MaximumInCentimeters": dim.max,
-                }
-            )
-        return dwc
+            value |= {
+                dim.dim + "MinimumInCentimeters": dim.min,
+                dim.dim + "LowInCentimeters": dim.low,
+                dim.dim + "HighInCentimeters": dim.high,
+                dim.dim + "MaximumInCentimeters": dim.max,
+            }
+        return dwc.add_dyn(**{self.key: DarwinCore.format_dict(value)})
 
     @property
     def key(self) -> str:

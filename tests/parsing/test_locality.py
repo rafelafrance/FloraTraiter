@@ -263,3 +263,23 @@ class TestLocality(unittest.TestCase):
                 ),
             ],
         )
+
+    def test_locality_15(self):
+        self.assertEqual(
+            parse("""Location: Emory and Henry Campus Ebor Data ?: M a fo C1"""),
+            [
+                Locality(
+                    trait="locality",
+                    start=0,
+                    end=44,
+                    locality="Emory and Henry Campus Ebor Data ?",
+                    labeled=True,
+                )
+            ],
+        )
+
+    def test_locality_16(self):
+        self.assertEqual(
+            parse("""M a fo C1 Vi 1"""),
+            [],
+        )

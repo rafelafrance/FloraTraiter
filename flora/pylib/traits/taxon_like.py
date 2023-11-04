@@ -30,7 +30,7 @@ class TaxonLike(Base):
         likes = self.taxon_like
         likes = likes if isinstance(likes, list) else [likes]
         for like in likes:
-            dwc.add(**{self.key: (self.relation, like)})
+            dwc.add(**{self.key: {self.relation: like}})
         return dwc
 
     @property

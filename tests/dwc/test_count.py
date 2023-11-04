@@ -11,23 +11,15 @@ class TestColor(unittest.TestCase):
             to_dwc(LABEL, "Seeds [1–]3–12[–30]."),
             {
                 "dwc:dynamicProperties": {
-                    "seedCountMinimum": 1,
-                    "seedCountLow": 3,
-                    "seedCountHigh": 12,
-                    "seedCountMaximum": 30,
-                },
+                    "seedCount": "minimum: 1 ~ low: 3 ~ high: 12 ~ maximum: 30"
+                }
             },
         )
 
     def test_count_dwc_02(self):
         self.assertEqual(
             to_dwc(LABEL, "Staminate flowers 5–10"),
-            {
-                "dwc:dynamicProperties": {
-                    "staminateFlowerCountLow": 5,
-                    "staminateFlowerCountHigh": 10,
-                }
-            },
+            {"dwc:dynamicProperties": {"staminateFlowerCount": "low: 5 ~ high: 10"}},
         )
 
     def test_count_dwc_03(self):
@@ -35,9 +27,7 @@ class TestColor(unittest.TestCase):
             to_dwc(LABEL, "leaflets in 3 or 4 pairs"),
             {
                 "dwc:dynamicProperties": {
-                    "leafletCountGroup": "pairs",
-                    "leafletCountLow": 3,
-                    "leafletCountHigh": 4,
+                    "leafletCount": "low: 3 ~ high: 4 ~ group: pairs"
                 }
             },
         )
@@ -47,10 +37,7 @@ class TestColor(unittest.TestCase):
             to_dwc(LABEL, "Seeds (1 or)2 or 3 per legume,"),
             {
                 "dwc:dynamicProperties": {
-                    "seedCountPerPart": "legume",
-                    "seedCountMinimum": 1,
-                    "seedCountLow": 2,
-                    "seedCountHigh": 3,
+                    "seedCount": "minimum: 1 ~ low: 2 ~ high: 3 ~ perPart: legume"
                 }
             },
         )

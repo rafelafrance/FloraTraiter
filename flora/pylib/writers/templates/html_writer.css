@@ -62,7 +62,7 @@ td, th {
 }
 
 .sub-header {
-  background-color: #eeeeee;
+  background-color: #f2f2f2;
   font-weight: 500;
 }
 
@@ -84,6 +84,14 @@ header div label, section div label {
 
 header div span {
   float: right;
+}
+
+hr.sep {
+  color: #fafafa;
+}
+
+td.data {
+  border-bottom: 1px solid black;
 }
 
 section div span {

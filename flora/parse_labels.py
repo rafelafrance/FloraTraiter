@@ -36,10 +36,10 @@ def write_json(args, labels, traiter_dir):
             continue
 
         dwc = DarwinCore()
+        _ = [t.to_dwc(dwc) for t in lb.traits]
 
         path = traiter_dir / f"{lb.path.stem}.json"
         with open(path, "w") as f:
-            _ = [t.to_dwc(dwc) for t in lb.traits]
             json.dump(dwc.to_dict(), f)
 
 

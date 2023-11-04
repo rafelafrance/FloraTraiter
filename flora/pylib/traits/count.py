@@ -58,16 +58,19 @@ class Count(Linkable):
     per_count: str = None
 
     def to_dwc(self, dwc) -> DarwinCore:
-        key = self.key
         return dwc.add_dyn(
             **{
-                key + "Minimum": self.min,
-                key + "Low": self.low,
-                key + "High": self.high,
-                key + "Maximum": self.max,
-                key + "Group": self.count_group,
-                key + "PerPart": self.per_part,
-                key + "PerCount": self.per_count,
+                self.key: DarwinCore.format_dict(
+                    {
+                        "minimum": self.min,
+                        "low": self.low,
+                        "high": self.high,
+                        "maximum": self.max,
+                        "group": self.count_group,
+                        "perPart": self.per_part,
+                        "perCount": self.per_count,
+                    }
+                )
             }
         )
 

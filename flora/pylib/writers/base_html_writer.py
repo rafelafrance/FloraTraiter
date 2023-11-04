@@ -6,6 +6,7 @@ from dataclasses import field
 from datetime import datetime
 
 import jinja2
+from traiter.pylib.darwin_core import DYN
 from traiter.pylib.darwin_core import DarwinCore
 
 from ..label import Label
@@ -15,7 +16,7 @@ COLOR_COUNT = 14
 BACKGROUNDS = itertools.cycle([f"cc{i}" for i in range(COLOR_COUNT)])
 
 TraitRow = collections.namedtuple("TraitRow", "label data")
-Sortable = collections.namedtuple("SortableTrait", "key start dwc title")
+Sortable = collections.namedtuple("Sortable", "key start dwc title")
 
 
 @dataclass(kw_only=True)
@@ -85,12 +86,18 @@ class BaseHtmlWriter:
     def format_traits(self, row):
         """Group traits for display in their own table."""
         traits = []
-        dwc = DarwinCore()
 
-        sortable = [
-            Sortable(t.key, t.start, t.to_dwc(dwc), row.text[t.start : t.end])
-            for t in row.traits
-        ]
+        sortable = []
+        for trait in row.traits:
+            dwc = DarwinCore()
+            sortable.append(
+                Sortable(
+                    trait.key,
+                    trait.start,
+                    trait.to_dwc(dwc),
+                    row.text[trait.start : trait.end],
+                )
+            )
 
         sortable = sorted(sortable)
 
@@ -98,17 +105,25 @@ class BaseHtmlWriter:
             cls = self.css_classes[key]
             label = f'<span class="{cls}">{key}</span>'
             trait_list = []
-            dwc = DarwinCore()
             for trait in grouped:
+                fields = {}
+                dwc_dict = trait.dwc.to_dict()
+                for k, v in dwc_dict.items():
+                    if k == DYN:
+                        fields = v
+                    else:
+                        fields = dwc_dict
                 fields = ", ".join(
                     f'<span title="{trait.title}">{k}:&nbsp;{v}</span>'
-                    for k, v in trait.to_dwc(dwc).to_dict().items()
+                    for k, v in fields.items()
                 )
                 if fields:
                     trait_list.append(fields)
 
             if trait_list:
-                traits.append(TraitRow(label, "<br/>".join(trait_list)))
+                traits.append(
+                    TraitRow(label, '<br/><hr class="sep"/>'.join(trait_list))
+                )
 
         return traits
 

@@ -46,6 +46,7 @@ class IdNumber(Base):
             "-": {"TEXT": {"REGEX": r"^[._-]+$"}},
             ":": {"LOWER": {"REGEX": rf"^(by|{cls.punct}+)$"}},
             "acc_label": {"ENT_TYPE": "acc_label"},
+            "dir": {"LOWER": {"REGEX": r"^[\d.]*[nsew]$"}},
             "id1": {"LOWER": {"REGEX": r"^(\w*\d+\w*)$"}},
             "id2": {"LOWER": {"REGEX": r"^(\w*\d+\w*|[A-Za-z])$"}},
             "num_label": {"ENT_TYPE": "num_label"},
@@ -72,6 +73,7 @@ class IdNumber(Base):
                     "acc_label+ id1+ no_space+ id1",
                     "acc_label+ id1+ no_space+ id2",
                     "acc_label+ id1",
+                    # "dir",
                 ],
             ),
         ]

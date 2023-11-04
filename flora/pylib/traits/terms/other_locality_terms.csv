@@ -11,6 +11,7 @@ loc_label,locations:
 not_loc,accession number
 not_loc,and densely
 not_loc,coarsely wrinkled
+not_loc,common
 not_loc,common name
 not_loc,couple of times
 not_loc,elev :
@@ -32,6 +33,8 @@ not_loc,local erecta
 not_loc,locally abundant
 not_loc,locally common
 not_loc,locally frequent
+not_loc,misc
+not_loc,misc.
 not_loc,no odor
 not_loc,not blooming
 not_loc,not yet in
@@ -44,6 +47,8 @@ not_loc,populations
 not_loc,putative parents
 not_loc,sandy soil
 not_loc,sandy wash
+not_loc,scientific name
+not_loc,scientific wash
 not_loc,second collection made
 not_loc,sheet
 not_loc,source :

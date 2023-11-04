@@ -7,16 +7,19 @@ LABEL = "size"
 
 class TestSize(unittest.TestCase):
     def test_size_dwc_01(self):
+        self.maxDiff = None
         self.assertEqual(
             to_dwc(LABEL, "Leaf ca. (12-)23-34 × 45-56 cm"),
             {
                 "dwc:dynamicProperties": {
-                    "leafSizeUncertain": "uncertain",
-                    "leafLengthMinimumInCentimeters": 12.0,
-                    "leafLengthLowInCentimeters": 23.0,
-                    "leafLengthHighInCentimeters": 34.0,
-                    "leafWidthLowInCentimeters": 45.0,
-                    "leafWidthHighInCentimeters": 56.0,
+                    "leafSize": (
+                        "uncertain: True ~ "
+                        "lengthMinimumInCentimeters: 12.0 ~ "
+                        "lengthLowInCentimeters: 23.0 ~ "
+                        "lengthHighInCentimeters: 34.0 ~ "
+                        "widthLowInCentimeters: 45.0 ~ "
+                        "widthHighInCentimeters: 56.0"
+                    )
                 }
             },
         )
