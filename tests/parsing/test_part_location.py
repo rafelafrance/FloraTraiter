@@ -143,8 +143,8 @@ class TestPartLocation(unittest.TestCase):
                     trait="shape",
                     start=35,
                     end=50,
-                    part="pseudoraceme",
-                    part_location="terminal",
+                    part="capitulum",
+                    part_location="immersed in foliage",
                 ),
                 Shape(
                     shape="spheric",

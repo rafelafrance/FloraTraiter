@@ -87,7 +87,8 @@ header div span {
 }
 
 hr.sep {
-  color: #fafafa;
+  color: #fefefe;
+  margin-right: 3rem;
 }
 
 td.data {

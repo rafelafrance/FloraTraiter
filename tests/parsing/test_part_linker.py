@@ -42,7 +42,7 @@ class TestPartLinker(unittest.TestCase):
                     start=59,
                     end=74,
                     units="cm",
-                    part="trunk",
+                    part="tree",
                 ),
                 Part(part="trunk", trait="part", type="plant_part", start=80, end=85),
             ],
