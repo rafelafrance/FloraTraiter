@@ -654,3 +654,18 @@ class TestTaxon(unittest.TestCase):
                 )
             ],
         )
+
+    def test_taxon_37(self):
+        self.assertEqual(
+            parse("""Neptunia gracilis var. varia (A. Gray) N.H. Holmgren,"""),
+            [
+                Taxon(
+                    taxon="Neptunia gracilis var. varia",
+                    rank="variety",
+                    trait="taxon",
+                    start=0,
+                    end=38,
+                    authority="A. Gray",
+                )
+            ],
+        )
