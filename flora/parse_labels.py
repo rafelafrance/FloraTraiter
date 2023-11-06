@@ -40,7 +40,7 @@ def write_json(args, labels, traiter_dir):
 
         path = traiter_dir / f"{lb.path.stem}.json"
         with open(path, "w") as f:
-            json.dump(dwc.to_dict(), f)
+            json.dump(dwc.to_dict(), f, indent=4)
 
 
 def parse_args() -> argparse.Namespace:
