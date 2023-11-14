@@ -21,8 +21,8 @@ class Range(Linkable):
     all_csvs: ClassVar[list[Path]] = [
         Path(__file__).parent / "terms" / "about_terms.csv",
         Path(__file__).parent / "terms" / "numeric_terms.csv",
-        Path(__file__).parent / "terms" / "missing_terms.csv",
         Path(__file__).parent / "terms" / "sex_terms.csv",
+        Path(t_terms.__file__).parent / "missing_terms.csv",
         Path(t_terms.__file__).parent / "numeric_terms.csv",
         Path(t_terms.__file__).parent / "month_terms.csv",
     ]

@@ -17,9 +17,9 @@ from .linkable import Linkable
 
 ALL_CSVS = [
     Path(__file__).parent / "terms" / "numeric_terms.csv",
-    Path(__file__).parent / "terms" / "missing_terms.csv",
     Path(__file__).parent / "terms" / "sex_terms.csv",
     Path(__file__).parent / "terms" / "dimension_terms.csv",
+    Path(t_terms.__file__).parent / "missing_terms.csv",
     Path(t_terms.__file__).parent / "unit_distance_terms.csv",
     Path(t_terms.__file__).parent / "unit_length_terms.csv",
     Path(t_terms.__file__).parent / "unit_mass_terms.csv",
