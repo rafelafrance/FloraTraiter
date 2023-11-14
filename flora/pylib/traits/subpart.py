@@ -9,6 +9,7 @@ from traiter.pylib import term_util
 from traiter.pylib.darwin_core import DarwinCore
 from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
+from traiter.pylib.traits import terms as t_terms
 
 from .linkable import Linkable
 
@@ -19,7 +20,7 @@ class Subpart(Linkable):
     all_csvs: ClassVar[list[Path]] = [
         Path(__file__).parent / "terms" / "subpart_terms.csv",
         Path(__file__).parent / "terms" / "part_terms.csv",
-        Path(__file__).parent / "terms" / "missing_terms.csv",
+        Path(t_terms.__file__).parent / "missing_terms.csv",
     ]
 
     replace = term_util.term_data(all_csvs, "replace")

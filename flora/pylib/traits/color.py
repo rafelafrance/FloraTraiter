@@ -20,10 +20,10 @@ class Color(t_color.Color, Linkable):
         return self.key_builder("color", prepend=prepend)
 
     @classmethod
-    def color_trait(cls, ent):
-        return super().color_trait(ent)
+    def color_match(cls, ent):
+        return super().color_match(ent)
 
 
-@registry.misc("color_trait")
-def color_trait(ent):
-    return Color.color_trait(ent)
+@registry.misc("color_match")
+def color_match(ent):
+    return Color.color_match(ent)
