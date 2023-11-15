@@ -11,8 +11,8 @@ from traiter.pylib.traits.linker import Linker
 @dataclass(eq=False)
 class TaxonLikeLinker(Linker):
     # Class vars ----------
-    taxon_like_parents: ClassVar[list[str]] = ["taxon_like"]
-    taxon_like_children: ClassVar[list[str]] = ["taxon"]
+    parents: ClassVar[list[str]] = ["taxon_like"]
+    children: ClassVar[list[str]] = ["taxon"]
     # ---------------------
 
     @classmethod
@@ -21,8 +21,8 @@ class TaxonLikeLinker(Linker):
             nlp,
             name="link_taxon_like_patterns",
             compiler=cls.link_taxon_like_patterns(),
-            parents=cls.taxon_like_parents,
-            children=cls.taxon_like_children,
+            parents=cls.parents,
+            children=cls.children,
             weights=t_const.TOKEN_WEIGHTS,
         )
 
@@ -32,8 +32,8 @@ class TaxonLikeLinker(Linker):
             label="link_taxon_like",
             decoder={
                 "any": {},
-                "taxon_like": {"ENT_TYPE": {"IN": cls.taxon_like_parents}},
-                "taxon": {"ENT_TYPE": {"IN": cls.taxon_like_children}},
+                "taxon_like": {"ENT_TYPE": {"IN": cls.parents}},
+                "taxon": {"ENT_TYPE": {"IN": cls.children}},
             },
             patterns=[
                 "taxon      any* taxon_like",

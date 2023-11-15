@@ -19,13 +19,11 @@ class PartLinker(Linker):
     # Class vars ----------
     children_part_subpart: ClassVar[
         list[str]
-    ] = """
-        color duration duration margin shape surface venation woodiness
-        """.split()
+    ] = """ color duration duration margin shape surface venation woodiness """.split()
 
-    link_part_parents: ClassVar[list[str]] = ["part", "multiple_parts"]
-    link_part_children: ClassVar[list[str]] = [*children_part_subpart, "subpart"]
-    link_part_once_children: ClassVar[list[str]] = ["size", "count"]
+    parents: ClassVar[list[str]] = ["part", "multiple_parts"]
+    children: ClassVar[list[str]] = [*children_part_subpart, "subpart"]
+    child_once: ClassVar[list[str]] = ["size", "count"]
 
     decoder: ClassVar[dict[str, dict]] = {
         "any": {},
@@ -39,8 +37,8 @@ class PartLinker(Linker):
             nlp,
             name="link_part",
             compiler=cls.link_part_patterns(),
-            parents=cls.link_part_parents,
-            children=cls.link_part_children,
+            parents=cls.parents,
+            children=cls.children,
             weights=t_const.TOKEN_WEIGHTS,
             reverse_weights=t_const.REVERSE_WEIGHTS,
         )
@@ -49,8 +47,8 @@ class PartLinker(Linker):
             nlp,
             name="link_part_once",
             compiler=cls.link_part_once_patterns(),
-            parents=cls.link_part_parents,
-            children=cls.link_part_once_children,
+            parents=cls.parents,
+            children=cls.child_once,
             weights=t_const.TOKEN_WEIGHTS,
             max_links=1,
             differ=["sex", "dimensions"],
@@ -62,8 +60,8 @@ class PartLinker(Linker):
             label="link_part",
             decoder=cls.decoder
             | {
-                "part": {"ENT_TYPE": {"IN": cls.link_part_parents}},
-                "trait": {"ENT_TYPE": {"IN": cls.link_part_children}},
+                "part": {"ENT_TYPE": {"IN": cls.parents}},
+                "trait": {"ENT_TYPE": {"IN": cls.children}},
             },
             patterns=[
                 "trait+ any* part+",
@@ -77,8 +75,8 @@ class PartLinker(Linker):
             label="link_part_once",
             decoder=cls.decoder
             | {
-                "part": {"ENT_TYPE": {"IN": cls.link_part_parents}},
-                "trait": {"ENT_TYPE": {"IN": cls.link_part_once_children}},
+                "part": {"ENT_TYPE": {"IN": cls.parents}},
+                "trait": {"ENT_TYPE": {"IN": cls.child_once}},
             },
             patterns=[
                 "trait+ any* part+",
