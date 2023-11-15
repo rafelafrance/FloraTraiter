@@ -12,13 +12,13 @@ from traiter.pylib.traits.linker import Linker
 @dataclass(eq=False)
 class SubpartLinker(Linker):
     # Class vars ----------
-    link_subpart_parents: ClassVar[list[str]] = ["subpart"]
-    link_subpart_children: ClassVar[
+    parents: ClassVar[list[str]] = ["subpart"]
+    children: ClassVar[
         list[str]
     ] = """
         color duration duration margin shape surface venation woodiness
         """.split()
-    link_subpart_once_children: ClassVar[list[str]] = ["size", "count"]
+    child_once: ClassVar[list[str]] = ["size", "count"]
 
     decoder: ClassVar[dict[str, dict]] = {
         "any": {},
@@ -32,8 +32,8 @@ class SubpartLinker(Linker):
             nlp,
             name="link_subpart",
             compiler=cls.link_subpart_patterns(),
-            parents=cls.link_subpart_parents,
-            children=cls.link_subpart_children,
+            parents=cls.parents,
+            children=cls.children,
             weights=t_const.TOKEN_WEIGHTS,
         )
 
@@ -41,8 +41,8 @@ class SubpartLinker(Linker):
             nlp,
             name="link_subpart_once",
             compiler=cls.link_subpart_once_patterns(),
-            parents=cls.link_subpart_parents,
-            children=cls.link_subpart_once_children,
+            parents=cls.parents,
+            children=cls.child_once,
             weights=t_const.TOKEN_WEIGHTS,
             max_links=1,
             differ=["sex", "dimensions"],
@@ -54,8 +54,8 @@ class SubpartLinker(Linker):
             label="link_subpart",
             decoder=cls.decoder
             | {
-                "subpart": {"ENT_TYPE": {"IN": cls.link_subpart_parents}},
-                "trait": {"ENT_TYPE": {"IN": cls.link_subpart_children}},
+                "subpart": {"ENT_TYPE": {"IN": cls.parents}},
+                "trait": {"ENT_TYPE": {"IN": cls.children}},
             },
             patterns=[
                 "trait+   clause* subpart+",
@@ -69,8 +69,8 @@ class SubpartLinker(Linker):
             label="link_subpart_once",
             decoder=cls.decoder
             | {
-                "subpart": {"ENT_TYPE": {"IN": cls.link_subpart_parents}},
-                "trait": {"ENT_TYPE": {"IN": cls.link_subpart_once_children}},
+                "subpart": {"ENT_TYPE": {"IN": cls.parents}},
+                "trait": {"ENT_TYPE": {"IN": cls.child_once}},
             },
             patterns=[
                 "trait+    any* subpart+",

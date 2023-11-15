@@ -18,8 +18,8 @@ from traiter.pylib.traits.linker import Linker
 @dataclass(eq=False)
 class SexLinker(Linker):
     # Class vars ----------
-    link_sex_parents: ClassVar[list[str]] = ["sex"]
-    link_sex_children: ClassVar[
+    parents: ClassVar[list[str]] = ["sex"]
+    children: ClassVar[
         list[str]
     ] = """
         color count duration duration flower_location habit
@@ -35,8 +35,8 @@ class SexLinker(Linker):
             nlp,
             name="link_sex",
             compiler=cls.link_sex_patterns(),
-            parents=cls.link_sex_parents,
-            children=cls.link_sex_children,
+            parents=cls.parents,
+            children=cls.children,
             weights=t_const.TOKEN_WEIGHTS,
         )
 
@@ -45,8 +45,8 @@ class SexLinker(Linker):
         return Compiler(
             label="link_sex",
             decoder={
-                "sex": {"ENT_TYPE": {"IN": cls.link_sex_parents}},
-                "trait": {"ENT_TYPE": {"IN": cls.link_sex_children}},
+                "sex": {"ENT_TYPE": {"IN": cls.parents}},
+                "trait": {"ENT_TYPE": {"IN": cls.children}},
                 "phrase": {"TEXT": {"NOT_IN": list(".;:")}},
             },
             patterns=[

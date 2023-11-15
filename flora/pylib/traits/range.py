@@ -20,9 +20,6 @@ class Range(Linkable):
     # Class vars ----------
     all_csvs: ClassVar[list[Path]] = [
         Path(__file__).parent / "terms" / "about_terms.csv",
-        Path(__file__).parent / "terms" / "numeric_terms.csv",
-        Path(__file__).parent / "terms" / "sex_terms.csv",
-        Path(t_terms.__file__).parent / "missing_terms.csv",
         Path(t_terms.__file__).parent / "numeric_terms.csv",
         Path(t_terms.__file__).parent / "month_terms.csv",
     ]
@@ -30,9 +27,6 @@ class Range(Linkable):
     and_: ClassVar[list[str]] = ["&", "and", "et"]
     conj: ClassVar[list[str]] = and_ + ["or"]
     min_or: ClassVar[list[str]] = t_const.FLOAT_RE + f"(or|{'|'.join(and_)})"
-    not_count_prefix: ClassVar[
-        list[str]
-    ] = """ chapter figure fig nos no # sec sec. """.split()
     not_count_symbol: ClassVar[list[str]] = t_const.CROSS + t_const.SLASH
     not_numeric: ClassVar[
         list[str]
@@ -243,12 +237,12 @@ class Range(Linkable):
             token._.flag = "range"
             nums += re.findall(r"\d*\.?\d+", token.text)
 
-        # Cache the values in the first token
         keys = ent.label_.split(".")[1:]
         kwargs = {k: v for k, v in zip(keys, nums)}
 
         trait = cls.from_ent(ent, **kwargs)
 
+        # Cache the values in the first token
         ent[0]._.trait = trait
         ent[0]._.flag = "range_data"
 
