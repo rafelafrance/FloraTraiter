@@ -57,12 +57,14 @@ class Name(Base):
 
         add.trait_pipe(nlp, name="not_name_patterns", compiler=cls.not_name_patterns())
 
+        # add.debug_tokens(nlp)  # ################################################
         add.trait_pipe(
             nlp,
             name="name_patterns",
             compiler=cls.name_patterns(),
             overwrite=overwrite + "name_prefix name_suffix".split(),
         )
+        # add.debug_tokens(nlp)  # ################################################
 
         add.trait_pipe(
             nlp,
@@ -110,7 +112,7 @@ class Name(Base):
             "-": {"TEXT": {"REGEX": r"^[._-]+$"}},
             "..": {"TEXT": {"REGEX": r"^[.]+$"}},
             ":": {"LOWER": {"REGEX": rf"^(by|{cls.punct}+)$"}},
-            "A": {"TEXT": {"REGEX": r"^[A-Z][A-Z]?[._,]?$"}},
+            "A": {"TEXT": {"REGEX": r"^[A-Z][._,]?[A-Z]?[._,]?$"}},
             "_": {"TEXT": {"REGEX": r"^[._,]+$"}},
             "ambig": {"ENT_TYPE": {"IN": ["us_county", "color"]}},
             "and": {"LOWER": {"IN": cls.and_}},
@@ -146,6 +148,7 @@ class Name(Base):
                     "       mix ( mix )        mix4",
                     "       mix ( mix )        mix4   _? jr+",
                     "       mix ( mix )        mix4",
+                    "       mix ( mix ) A A? A? mix4",
                     "dr+ _? mix  -? mix? -?    mix4",
                     "dr+ _? mix  -? mix? -?    mix4   _? jr+",
                     "dr+ _? mix  -? mix? -?    ambig",
@@ -161,6 +164,7 @@ class Name(Base):
                     "dr+ _? mix ( mix )        mix4",
                     "dr+ _? mix ( mix )        mix4   _? jr+",
                     "dr+ _? mix ( mix )        mix4",
+                    "dr+ _? mix ( mix ) A A? A? mix4",
                     "       upper  -? upper? -? pre? pre?   upper4",
                     "       upper  -? upper? -? pre? pre?   upper4   _? jr+",
                     "       upper  -? upper? -?   ambig",

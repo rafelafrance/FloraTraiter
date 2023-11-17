@@ -103,7 +103,7 @@ def build():
 
     AdminUnit.pipe(nlp, overwrite=["color"])
 
-    Taxon.pipe(nlp, extend=2, overwrite=["habitat", "color"], auth_keep=["not_name"])
+    Taxon.pipe(nlp, extend=2, overwrite=["habitat", "color"])
 
     PartLocation.pipe(nlp)
     TaxonLike.pipe(nlp)

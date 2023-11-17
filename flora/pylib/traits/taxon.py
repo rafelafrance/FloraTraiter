@@ -55,7 +55,7 @@ class Taxon(Base):
 
     rank_terms: ClassVar[list[dict]] = term_util.read_terms(all_csvs["rank_terms"])
 
-    abbrev_re: ClassVar[str] = r"^[A-Z][.,_]$"
+    abbrev_re: ClassVar[str] = r"^[A-Z]?[.,_]?[A-Z][.,_]$"
     and_: ClassVar[list[str]] = ["&", "and", "et", "ex"]
     any_rank: ClassVar[list[str]] = sorted({r["label"] for r in rank_terms})
     auth3: ClassVar[list[str]] = [
@@ -120,10 +120,8 @@ class Taxon(Base):
         nlp: Language,
         extend=1,
         overwrite: list[str] = None,
-        auth_keep: list[str] = None,
     ):
         overwrite = overwrite if overwrite else []
-        auth_keep = auth_keep if auth_keep else []
 
         default_labels = {
             "binomial_terms": "binomial",
@@ -155,7 +153,8 @@ class Taxon(Base):
             overwrite=["taxon"],
         )
 
-        auth_keep = auth_keep + ACCUMULATOR.keep + ["single", "not_name"]
+        # add.debug_tokens(nlp)  # ################################################
+        auth_keep = ACCUMULATOR.keep + ["single", "not_name"]
         add.trait_pipe(
             nlp,
             name="taxon_auth_patterns",
@@ -164,6 +163,7 @@ class Taxon(Base):
             keep=auth_keep,
             overwrite=["taxon", *overwrite],
         )
+        # add.debug_tokens(nlp)  # ################################################
 
         for i in range(1, extend + 1):
             name = f"taxon_extend_{i}"
@@ -700,7 +700,9 @@ class Taxon(Base):
             elif auth and token.lower_ in cls.and_:
                 auth.append("and")
 
-            elif token.shape_ in t_const.NAME_SHAPES:
+            elif token.shape_ in t_const.NAME_SHAPES or re.match(
+                cls.abbrev_re, token.text
+            ):
                 if len(token) == 1:
                     auth.append(token.text + ".")
                 else:

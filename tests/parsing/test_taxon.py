@@ -677,8 +677,8 @@ class TestTaxon(unittest.TestCase):
                     rank="variety",
                     trait="taxon",
                     start=0,
-                    end=38,
-                    authority="A. Gray",
+                    end=53,
+                    authority="A. Gray N.H. Holmgren",
                 )
             ],
         )
