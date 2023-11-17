@@ -5,6 +5,7 @@ from traiter.pylib.traits.elevation import Elevation
 from traiter.pylib.traits.habitat import Habitat
 
 from flora.pylib.traits.associated_taxon_label import AssociatedTaxonLabel
+from flora.pylib.traits.id_number import IdNumber
 from flora.pylib.traits.job import Job
 from flora.pylib.traits.taxon import Taxon
 from tests.setup import parse
@@ -18,12 +19,18 @@ class TestCollector(unittest.TestCase):
             [
                 Job(
                     trait="job",
-                    id_num="9480",
-                    name=["Sarah Nunn", "S. Jacobs", "R. Mc Elderry"],
-                    job="collector",
                     start=0,
+                    end=42,
+                    job="collector",
+                    name=["Sarah Nunn", "S. Jacobs", "R. Mc Elderry"],
+                ),
+                IdNumber(
+                    trait="id_number",
+                    start=43,
                     end=47,
-                )
+                    number="9480",
+                    type="record_number",
+                ),
             ],
         )
 
@@ -38,19 +45,28 @@ class TestCollector(unittest.TestCase):
             ),
             [
                 Job(
-                    name="Edwin B. Smith",
                     trait="job",
-                    job="determiner",
                     start=0,
                     end=19,
+                    job="determiner",
+                    name="Edwin B. Smith",
+                    has_label=True,
                 ),
                 Job(
                     trait="job",
-                    id_num="5595",
-                    name="Marie P. Locke",
-                    job="collector",
                     start=20,
+                    end=40,
+                    job="collector",
+                    name="Marie P. Locke",
+                    has_label=True,
+                ),
+                IdNumber(
+                    trait="id_number",
+                    start=41,
                     end=49,
+                    number="5595",
+                    type="record_number",
+                    has_label=True,
                 ),
             ],
         )
@@ -66,6 +82,7 @@ class TestCollector(unittest.TestCase):
                     job="collector",
                     start=0,
                     end=30,
+                    has_label=True,
                 ),
             ],
         )
@@ -77,34 +94,44 @@ class TestCollector(unittest.TestCase):
             [
                 Job(
                     trait="job",
-                    id_num="6061",
-                    name="E. E. Dale, Jr.",
-                    job="collector",
                     start=0,
+                    end=21,
+                    job="collector",
+                    name="E. E. Dale, Jr.",
+                    has_label=True,
+                ),
+                IdNumber(
+                    trait="id_number",
+                    start=22,
                     end=30,
+                    number="6061",
+                    type="record_number",
+                    has_label=True,
                 ),
             ],
         )
 
     def test_collector_05(self):
         """It parses collectors separated by 'with'."""
+        self.maxDiff = None
         self.assertEqual(
             parse("Sarah Nunn with Angela Brown 7529 20 October 2002 of"),
             [
                 Job(
                     trait="job",
-                    id_num="7529",
-                    name=["Sarah Nunn", "Angela Brown"],
-                    job="collector",
                     start=0,
+                    end=28,
+                    job="collector",
+                    name=["Sarah Nunn", "Angela Brown"],
+                ),
+                IdNumber(
+                    trait="id_number",
+                    start=29,
                     end=33,
+                    number="7529",
+                    type="record_number",
                 ),
-                Date(
-                    date="2002-10-20",
-                    trait="date",
-                    start=34,
-                    end=49,
-                ),
+                Date(trait="date", start=34, end=49, date="2002-10-20"),
             ],
         )
 
@@ -115,11 +142,18 @@ class TestCollector(unittest.TestCase):
             [
                 Job(
                     trait="job",
-                    id_num="2018",
-                    name=["Christopher Reid", "Sarah Nunn"],
-                    job="collector",
                     start=0,
+                    end=40,
+                    job="collector",
+                    name=["Christopher Reid", "Sarah Nunn"],
+                    has_label=True,
+                ),
+                IdNumber(
+                    trait="id_number",
+                    start=41,
                     end=45,
+                    number="2018",
+                    type="record_number",
                 ),
             ],
         )
@@ -131,12 +165,19 @@ class TestCollector(unittest.TestCase):
             [
                 Job(
                     trait="job",
-                    id_num="5689",
-                    name="George P. Johnson",
-                    job="collector",
                     start=0,
+                    end=17,
+                    job="collector",
+                    name="George P. Johnson",
+                ),
+                IdNumber(
+                    trait="id_number",
+                    start=18,
                     end=23,
-                )
+                    number="5689",
+                    type="record_number",
+                    has_label=True,
+                ),
             ],
         )
 
@@ -147,12 +188,20 @@ class TestCollector(unittest.TestCase):
             [
                 Job(
                     trait="job",
-                    id_num="736",
-                    name="Mrs. Jim Miller",
-                    job="collector",
                     start=0,
+                    end=19,
+                    job="collector",
+                    name="Mrs. Jim Miller",
+                    has_label=True,
+                ),
+                IdNumber(
+                    trait="id_number",
+                    start=20,
                     end=27,
-                )
+                    number="736",
+                    type="record_number",
+                    has_label=True,
+                ),
             ],
         )
 
@@ -166,6 +215,7 @@ class TestCollector(unittest.TestCase):
                     job="collector",
                     start=0,
                     end=27,
+                    has_label=True,
                 )
             ],
         )
@@ -182,18 +232,27 @@ class TestCollector(unittest.TestCase):
             [
                 Job(
                     trait="job",
-                    name="JANET WINGATE",
-                    id_num="4937",
-                    job="collector",
                     start=0,
+                    end=27,
+                    job="collector",
+                    name="JANET WINGATE",
+                    has_label=True,
+                ),
+                IdNumber(
+                    trait="id_number",
+                    start=28,
                     end=36,
+                    number="4937",
+                    type="record_number",
+                    has_label=True,
                 ),
                 Job(
                     trait="job",
-                    job="verifier",
-                    name="H A Heber",
                     start=37,
                     end=56,
+                    has_label=True,
+                    job="verifier",
+                    name="H A Heber",
                 ),
             ],
         )
@@ -219,6 +278,7 @@ class TestCollector(unittest.TestCase):
         )
 
     def test_collector_14(self):
+        self.maxDiff = None
         self.assertEqual(
             parse(
                 """
@@ -229,13 +289,21 @@ class TestCollector(unittest.TestCase):
             [
                 Job(
                     trait="job",
-                    id_num="1388",
-                    name="Timothy J. S. Whitfield",
-                    job="collector",
                     start=34,
-                    end=94,
+                    end=71,
+                    job="collector",
+                    name="Timothy J. S. Whitfield",
+                    has_label=True,
                 ),
-                Date(date="2016-08-11", trait="date", start=95, end=112),
+                IdNumber(
+                    trait="id_number",
+                    start=72,
+                    end=94,
+                    number="1388",
+                    type="collector_id",
+                    has_label=True,
+                ),
+                Date(trait="date", start=95, end=112, date="2016-08-11"),
             ],
         )
 
@@ -261,6 +329,7 @@ class TestCollector(unittest.TestCase):
                     job="other_collector",
                     start=0,
                     end=82,
+                    has_label=True,
                 ),
             ],
         )
@@ -271,11 +340,18 @@ class TestCollector(unittest.TestCase):
             [
                 Job(
                     trait="job",
-                    id_num="F15GLEN55-B",
-                    name="Williams (Rocky) Gleason",
-                    job="collector",
                     start=0,
+                    end=24,
+                    job="collector",
+                    name="Williams (Rocky) Gleason",
+                ),
+                IdNumber(
+                    trait="id_number",
+                    start=25,
                     end=37,
+                    number="F15GLEN55-B",
+                    type="record_number",
+                    has_label=True,
                 ),
             ],
         )
@@ -298,6 +374,7 @@ class TestCollector(unittest.TestCase):
                     job="other_collector",
                     start=0,
                     end=59,
+                    has_label=True,
                 ),
             ],
         )
@@ -308,11 +385,17 @@ class TestCollector(unittest.TestCase):
             [
                 Job(
                     trait="job",
-                    id_num="91-1178",
-                    name="Frederick H. Utech",
-                    job="collector",
                     start=0,
+                    end=18,
+                    job="collector",
+                    name="Frederick H. Utech",
+                ),
+                IdNumber(
+                    trait="id_number",
+                    start=19,
                     end=26,
+                    number="91-1178",
+                    type="record_number",
                 ),
             ],
         )
@@ -323,11 +406,17 @@ class TestCollector(unittest.TestCase):
             [
                 Job(
                     trait="job",
-                    id_num="39141",
-                    name="A A.C. Saunders",
-                    job="collector",
                     start=0,
+                    end=15,
+                    job="collector",
+                    name="A A.C. Saunders",
+                ),
+                IdNumber(
+                    trait="id_number",
+                    start=16,
                     end=21,
+                    number="39141",
+                    type="record_number",
                 ),
             ],
         )
@@ -338,13 +427,19 @@ class TestCollector(unittest.TestCase):
             [
                 Job(
                     trait="job",
-                    id_num="39141",
-                    name="A A.C. Saunders",
-                    job="collector",
                     start=8,
-                    end=29,
+                    end=23,
+                    job="collector",
+                    name="A A.C. Saunders",
                 ),
-                Date(date="2011-04-14", end=41, start=30, trait="date"),
+                IdNumber(
+                    trait="id_number",
+                    start=24,
+                    end=29,
+                    number="39141",
+                    type="record_number",
+                ),
+                Date(trait="date", start=30, end=41, date="2011-04-14"),
             ],
         )
 
@@ -354,12 +449,14 @@ class TestCollector(unittest.TestCase):
             parse("""Wendy McClure 2018-2"""),
             [
                 Job(
-                    trait="job",
-                    id_num="2018-2",
-                    name="Wendy McClure",
-                    job="collector",
-                    start=0,
+                    trait="job", start=0, end=13, job="collector", name="Wendy McClure"
+                ),
+                IdNumber(
+                    trait="id_number",
+                    start=14,
                     end=20,
+                    number="2018-2",
+                    type="record_number",
                 ),
             ],
         )
@@ -370,26 +467,26 @@ class TestCollector(unittest.TestCase):
             parse("""Associated species: Neptunia gracilis G. Rink 7075"""),
             [
                 AssociatedTaxonLabel(
-                    label="associated species",
                     trait="assoc_taxon_label",
                     start=0,
                     end=18,
+                    label="associated species",
                 ),
                 Taxon(
-                    rank="species",
                     trait="taxon",
                     start=20,
                     end=37,
                     taxon="Neptunia gracilis",
+                    rank="species",
                     associated=True,
                 ),
-                Job(
-                    trait="job",
-                    name="G. Rink",
-                    id_num="7075",
-                    job="collector",
-                    start=38,
+                Job(trait="job", start=38, end=45, job="collector", name="G. Rink"),
+                IdNumber(
+                    trait="id_number",
+                    start=46,
                     end=50,
+                    number="7075",
+                    type="record_number",
                 ),
             ],
         )
@@ -403,6 +500,7 @@ class TestCollector(unittest.TestCase):
                     trait="job",
                     name="Merle Dortmond",
                     job="collector",
+                    has_label=True,
                     start=0,
                     end=27,
                 ),
@@ -417,39 +515,39 @@ class TestCollector(unittest.TestCase):
             ),
             [
                 AssociatedTaxonLabel(
-                    label="associated species",
                     trait="assoc_taxon_label",
                     start=0,
                     end=18,
+                    label="associated species",
                 ),
                 Taxon(
-                    rank="species",
                     trait="taxon",
                     start=20,
                     end=45,
                     taxon="Cephalanthus occidentalis",
+                    rank="species",
                     associated=True,
                 ),
                 Job(
-                    trait="job",
-                    name="Cass Blodgett",
-                    id_num="829",
-                    job="collector",
-                    start=46,
+                    trait="job", start=46, end=59, job="collector", name="Cass Blodgett"
+                ),
+                IdNumber(
+                    trait="id_number",
+                    start=60,
                     end=63,
+                    number="829",
+                    type="record_number",
                 ),
             ],
         )
 
     def test_collector_25(self):
-        """It handles a person after a taxon."""
         self.assertEqual(
             parse("""NCI Code 0GDK0132-Z"""),
             [],
         )
 
     def test_collector_26(self):
-        """It handles a person after a taxon."""
         self.assertEqual(
             parse(
                 """NCI Code 0GDK0132-Z
@@ -461,6 +559,7 @@ class TestCollector(unittest.TestCase):
                     trait="job",
                     name=["W. Hess", "K. Allen", "K. Weise", "S. Peterson"],
                     job="collector",
+                    has_label=True,
                     start=20,
                     end=73,
                 )
@@ -476,51 +575,49 @@ class TestCollector(unittest.TestCase):
             ),
             [
                 Job(
-                    trait="job",
-                    job="collector",
-                    start=22,
-                    end=35,
-                    name="J.B. Scammons",
-                    id_num="105",
+                    trait="job", start=22, end=35, job="collector", name="J.B. Scammons"
                 ),
                 Elevation(
-                    elevation=1767.84,
-                    units="m",
-                    trait="elevation",
-                    start=36,
-                    end=54,
+                    trait="elevation", start=36, end=54, elevation=1767.84, units="m"
                 ),
-                Job(
-                    trait="job",
-                    name="J.B. Scammons",
-                    job="collector",
+                IdNumber(
+                    trait="id_number",
                     start=56,
                     end=63,
-                    id_num="105",
+                    number=",105",
+                    type="record_number",
+                    has_label=True,
                 ),
-                Date(date="1956-07-06", trait="date", start=64, end=76),
+                Date(trait="date", start=64, end=76, date="1956-07-06"),
             ],
         )
 
     def test_collector_28(self):
-        """It handles a name with number and a other collectors."""
+        """It handles a name with number and other collectors."""
         self.assertEqual(
             parse("""Joshua R. Campbell 327 w/ S. Dickman"""),
             [
                 Job(
                     trait="job",
-                    name="Joshua R. Campbell",
-                    job="collector",
                     start=0,
+                    end=18,
+                    job="collector",
+                    name="Joshua R. Campbell",
+                ),
+                IdNumber(
+                    trait="id_number",
+                    start=19,
                     end=22,
-                    id_num="327",
+                    number="327",
+                    type="record_number",
                 ),
                 Job(
                     trait="job",
-                    name="S. Dickman",
-                    job="other_collector",
                     start=23,
                     end=36,
+                    job="other_collector",
+                    name="S. Dickman",
+                    has_label=True,
                 ),
             ],
         )
@@ -534,6 +631,7 @@ class TestCollector(unittest.TestCase):
                     trait="job",
                     name=["Bob Simmons", "Dana Griffin", "Tom Morris"],
                     job="other_collector",
+                    has_label=True,
                     start=0,
                     end=43,
                 ),
@@ -548,6 +646,7 @@ class TestCollector(unittest.TestCase):
                     trait="job",
                     name=["Cindy Smith", "Scott Rowan"],
                     job="other_collector",
+                    has_label=True,
                     start=0,
                     end=30,
                 ),
@@ -558,13 +657,13 @@ class TestCollector(unittest.TestCase):
         self.assertEqual(
             parse("""Joni Ward 866-a"""),
             [
-                Job(
-                    trait="job",
-                    name="Joni Ward",
-                    job="collector",
-                    id_num="866-a",
-                    start=0,
+                Job(trait="job", start=0, end=9, job="collector", name="Joni Ward"),
+                IdNumber(
+                    trait="id_number",
+                    start=10,
                     end=15,
+                    number="866-a",
+                    type="record_number",
                 ),
             ],
         )
@@ -575,11 +674,17 @@ class TestCollector(unittest.TestCase):
             [
                 Job(
                     trait="job",
-                    name="Cole Larsson-Whittaker",
-                    job="collector",
-                    id_num="866-a",
                     start=0,
+                    end=22,
+                    job="collector",
+                    name="Cole Larsson-Whittaker",
+                ),
+                IdNumber(
+                    trait="id_number",
+                    start=23,
                     end=28,
+                    number="866-a",
+                    type="record_number",
                 ),
             ],
         )
@@ -592,6 +697,7 @@ class TestCollector(unittest.TestCase):
                     trait="job",
                     name=["Avena Nelson", "Elias Nelson"],
                     job="collector",
+                    has_label=True,
                     start=0,
                     end=38,
                 ),
@@ -611,7 +717,16 @@ class TestCollector(unittest.TestCase):
                 accession number 0075
                 """
             ),
-            [],
+            [
+                IdNumber(
+                    trait="id_number",
+                    start=45,
+                    end=66,
+                    number="0075",
+                    type="accession_number",
+                    has_label=True,
+                )
+            ],
         )
 
     def test_collector_36(self):
@@ -625,7 +740,14 @@ class TestCollector(unittest.TestCase):
                     start=0,
                     end=16,
                 ),
-                Job(trait="job", name="E. Mohr", job="collector", start=17, end=38),
+                Job(
+                    trait="job",
+                    name="E. Mohr",
+                    job="collector",
+                    has_label=True,
+                    start=17,
+                    end=38,
+                ),
             ],
         )
 
@@ -640,6 +762,7 @@ class TestCollector(unittest.TestCase):
                     trait="job",
                     name=["Juan Kaplan", "Helena Walker"],
                     job="other_collector",
+                    has_label=True,
                     start=0,
                     end=31,
                 )
@@ -650,25 +773,13 @@ class TestCollector(unittest.TestCase):
         self.assertEqual(
             parse("""4 September 2008 J. Johnson with M. King Herbarium"""),
             [
-                Date(
-                    date="2008-09-04",
-                    trait="date",
-                    start=0,
-                    end=16,
-                ),
+                Date(trait="date", start=0, end=16, date="2008-09-04"),
                 Job(
                     trait="job",
-                    name="J. Johnson",
-                    job="collector",
                     start=17,
-                    end=27,
-                ),
-                Job(
-                    trait="job",
-                    name="M. King",
-                    job="other_collector",
-                    start=28,
                     end=40,
+                    job="collector",
+                    name=["J. Johnson", "M. King"],
                 ),
             ],
         )
@@ -682,14 +793,14 @@ class TestCollector(unittest.TestCase):
                 """
             ),
             [
-                Job(
-                    trait="job",
-                    name="H. Richey",
-                    job="collector",
-                    id_num="HR1998-01",
+                IdNumber(
+                    trait="id_number",
                     start=0,
-                    end=19,
+                    end=9,
+                    number="HR1998-01",
+                    type="record_number",
                 ),
+                Job(trait="job", start=10, end=19, job="collector", name="H. Richey"),
             ],
         )
 
@@ -697,13 +808,13 @@ class TestCollector(unittest.TestCase):
         self.assertEqual(
             parse("""AC Saunders 34380 OS"""),
             [
-                Job(
-                    trait="job",
-                    name="AC Saunders",
-                    job="collector",
-                    id_num="34380",
-                    start=0,
+                Job(trait="job", start=0, end=11, job="collector", name="AC Saunders"),
+                IdNumber(
+                    trait="id_number",
+                    start=12,
                     end=17,
+                    number="34380",
+                    type="record_number",
                 ),
             ],
         )
@@ -721,6 +832,7 @@ class TestCollector(unittest.TestCase):
                     trait="job",
                     name=["Lytle McGill", "Roy Brown"],
                     job="collector",
+                    has_label=True,
                     start=9,
                     end=42,
                 ),
@@ -744,6 +856,7 @@ class TestCollector(unittest.TestCase):
                         "Janet",
                     ],
                     job="other_collector",
+                    has_label=True,
                     start=0,
                     end=51,
                 )
@@ -758,6 +871,7 @@ class TestCollector(unittest.TestCase):
                     trait="job",
                     name=["Mark A. Elvin", "Tim Thomas"],
                     job="other_collector",
+                    has_label=True,
                     start=0,
                     end=28,
                 )

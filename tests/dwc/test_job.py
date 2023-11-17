@@ -11,7 +11,6 @@ class TestJob(unittest.TestCase):
             to_dwc(LABEL, "Sarah Nunn and S. Jacobs and R. Mc Elderry 9480"),
             {
                 "dwc:recordedBy": "Sarah Nunn | S. Jacobs | R. Mc Elderry",
-                "dwc:recordedByID": "9480",
             },
         )
 
@@ -20,7 +19,6 @@ class TestJob(unittest.TestCase):
             to_dwc(LABEL, "Det;; N. H Russell 195"),
             {
                 "dwc:identifiedBy": "N. H Russell",
-                "dwc:identifiedByID": "195",
             },
         )
 

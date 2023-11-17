@@ -70,18 +70,15 @@ class Name(Base):
             compiler=cls.double_name_patterns(),
             overwrite=overwrite + "name name_prefix name_suffix".split(),
         )
+        # add.debug_tokens(nlp)  # ################################################
 
         add.cleanup_pipe(nlp, name="name_cleanup", delete=["not_name"])
 
     @classmethod
     def not_name_patterns(cls):
         decoder = {
-            "acc_label": {"ENT_TYPE": "acc_label"},
-            "id1": {"LOWER": {"REGEX": r"^(\w*\d+\w*)$"}},
-            "id2": {"LOWER": {"REGEX": r"^(\w*\d+\w*|[A-Za-z])$"}},
             "job_label": {"ENT_TYPE": "job_label"},
             "no_space": {"SPACY": False},
-            "num_label": {"ENT_TYPE": "num_label"},
             "bad_name": {"ENT_TYPE": "not_name"},
             "bad_prefix": {"ENT_TYPE": "not_name_prefix"},
             "bad_suffix": {"ENT_TYPE": "not_name_suffix"},
@@ -99,23 +96,6 @@ class Name(Base):
                     " bad_suffix+ ",
                     " shape+ bad_suffix+ ",
                     " bad_prefix+ shape+ ",
-                ],
-            ),
-            Compiler(
-                label="num_label",
-                keep="num_label",
-                on_match="not_name_match",
-                decoder=decoder,
-                patterns=[
-                    " num_label+ ",
-                ],
-            ),
-            Compiler(
-                label="job_label",
-                keep="job_label",
-                on_match="not_name_match",
-                decoder=decoder,
-                patterns=[
                     " job_label+ ",
                 ],
             ),
@@ -135,8 +115,6 @@ class Name(Base):
             "ambig": {"ENT_TYPE": {"IN": ["us_county", "color"]}},
             "and": {"LOWER": {"IN": cls.and_}},
             "dr": {"ENT_TYPE": "name_prefix"},
-            "id1": {"LOWER": {"REGEX": r"^(\w*\d+\w*)$"}},
-            "id2": {"LOWER": {"REGEX": r"^(\w*\d+\w*|[A-Za-z])$"}},
             "jr": {"ENT_TYPE": "name_suffix"},
             "mix": {"SHAPE": {"IN": t_const.NAME_SHAPES}},
             "mix4": {"SHAPE": {"IN": cls.name4}},

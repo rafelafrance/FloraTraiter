@@ -2,6 +2,8 @@ from spacy.language import Language
 from spacy.tokens import Doc
 from traiter.pylib.pipes import add
 
+from .. import trait_util as tu
+
 
 def pipe(nlp: Language):
     config = {
@@ -32,24 +34,17 @@ class DeleteMissing:
 
         for ent in doc.ents:
             if ent._.delete:
-                self.clear_tokens(ent)
+                tu.clear_tokens(ent)
                 continue
 
             if ent.label_ in self.check:
                 data = ent._.trait.to_dict()
                 is_missing = set(data.keys()) & self.missing_set
                 if not is_missing:
-                    self.clear_tokens(ent)
+                    tu.clear_tokens(ent)
                     continue
 
             entities.append(ent)
 
         doc.ents = entities
         return doc
-
-    @staticmethod
-    def clear_tokens(ent):
-        for token in ent:
-            token._.trait = None
-            token._.flag = ""
-            token._.term = ""

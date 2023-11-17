@@ -12,7 +12,7 @@ def parse(text: str) -> list:
     traits = [e._.trait for e in doc.ents]
 
     # from pprint import pp
-    # pp(traits, compact=True)
+    # pp(traits)
 
     return traits
 

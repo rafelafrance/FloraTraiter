@@ -2,6 +2,7 @@ import unittest
 
 from flora.pylib.traits.admin_unit import AdminUnit
 from flora.pylib.traits.associated_taxon_label import AssociatedTaxonLabel
+from flora.pylib.traits.id_number import IdNumber
 from flora.pylib.traits.job import Job
 from flora.pylib.traits.part import Part
 from flora.pylib.traits.taxon import Taxon
@@ -450,30 +451,41 @@ class TestTaxon(unittest.TestCase):
 
     def test_taxon_26(self):
         """It handles a taxon next to a name with a trailing ID number."""
+        self.maxDiff = None
         self.assertEqual(
             parse("""Associated species: Neptunia gracilis G. Rink 7075"""),
             [
                 AssociatedTaxonLabel(
                     trait="assoc_taxon_label",
-                    label="associated species",
                     start=0,
                     end=18,
+                    _text="Associated species",
+                    label="associated species",
                 ),
                 Taxon(
                     trait="taxon",
-                    taxon="Neptunia gracilis",
-                    rank="species",
                     start=20,
                     end=37,
+                    _text="Neptunia gracilis",
+                    taxon="Neptunia gracilis",
+                    rank="species",
                     associated=True,
                 ),
                 Job(
                     trait="job",
+                    start=38,
+                    end=45,
+                    _text="G. Rink",
                     job="collector",
                     name="G. Rink",
-                    id_num="7075",
-                    start=38,
+                ),
+                IdNumber(
+                    trait="id_number",
+                    start=46,
                     end=50,
+                    _text="7075",
+                    number="7075",
+                    type="record_number",
                 ),
             ],
         )
@@ -614,6 +626,7 @@ class TestTaxon(unittest.TestCase):
         )
 
     def test_taxon_35(self):
+        self.maxDiff = None
         self.assertEqual(
             parse(
                 "Neptunia gracilis (Torr. & A. Gray ex A. Gray) W.A. Weber & A. Love"

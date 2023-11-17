@@ -10,6 +10,7 @@ from traiter.pylib.traits.trs import TRS
 from traiter.pylib.traits.utm import UTM
 
 from flora.pylib.traits import delete_missing
+from flora.pylib.traits import job_id
 from flora.pylib.traits.admin_unit import AdminUnit
 from flora.pylib.traits.associated_taxon_label import AssociatedTaxonLabel
 from flora.pylib.traits.color import Color
@@ -86,9 +87,10 @@ def build():
     Venation.pipe(nlp)
     Woodiness.pipe(nlp)
 
-    Name.pipe(nlp, overwrite=["subpart", "color", "admin_unit"])
     IdNumber.pipe(nlp)
+    Name.pipe(nlp, overwrite=["subpart", "color", "admin_unit"])
     Job.pipe(nlp)
+    job_id.pipe(nlp)
 
     Range.pipe(nlp)
     Size.pipe(nlp)
