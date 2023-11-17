@@ -1,5 +1,6 @@
 import unittest
 
+from flora.pylib.traits.id_number import IdNumber
 from flora.pylib.traits.job import Job
 from tests.setup import parse
 
@@ -12,12 +13,19 @@ class TestDeterminer(unittest.TestCase):
             [
                 Job(
                     trait="job",
-                    id_num="195",
-                    name="N. H Russell",
-                    job="determiner",
                     start=0,
+                    end=18,
+                    job="determiner",
+                    name="N. H Russell",
+                    has_label=True,
+                ),
+                IdNumber(
+                    trait="id_number",
+                    start=19,
                     end=22,
-                )
+                    number="195",
+                    type="record_number",
+                ),
             ],
         )
 
@@ -32,6 +40,7 @@ class TestDeterminer(unittest.TestCase):
                     job="determiner",
                     start=0,
                     end=34,
+                    has_label=True,
                 )
             ],
         )
@@ -47,6 +56,7 @@ class TestDeterminer(unittest.TestCase):
                     job="determiner",
                     start=0,
                     end=36,
+                    has_label=True,
                 )
             ],
         )
@@ -62,11 +72,11 @@ class TestDeterminer(unittest.TestCase):
             [
                 Job(
                     trait="job",
-                    name="James L. Reveal",
-                    id_num="1971",
-                    job="determiner",
                     start=7,
-                    end=32,
+                    end=27,
+                    job="determiner",
+                    name="James L. Reveal",
+                    has_label=True,
                 )
             ],
         )

@@ -16,6 +16,7 @@ class TestOtherJob(unittest.TestCase):
                     trait="job",
                     start=0,
                     end=25,
+                    has_label=True,
                 )
             ],
         )

@@ -173,6 +173,7 @@ class TestLocality(unittest.TestCase):
         )
 
     def test_locality_10(self):
+        self.maxDiff = None
         self.assertEqual(
             parse(
                 """
