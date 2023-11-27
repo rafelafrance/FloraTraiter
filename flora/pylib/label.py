@@ -9,9 +9,9 @@ import regex as re
 from PIL import Image
 from PIL import UnidentifiedImageError
 from traiter.pylib import util as t_util
-from traiter.pylib.traits.base import Base
+from traiter.pylib.rules.base import Base
 
-from .traits.linkable import Linkable
+from .rules.linkable import Linkable
 
 MAX_SIZE = 600.0  # pixels
 

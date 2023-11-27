@@ -2,7 +2,7 @@ from pathlib import Path
 
 from traiter.pylib import term_util
 
-from ..traits import terms
+from ..rules import terms
 
 LOCATION_CSV = Path(terms.__file__).parent / "part_location_terms.csv"
 LOCATION_ENTS = term_util.get_labels(LOCATION_CSV)

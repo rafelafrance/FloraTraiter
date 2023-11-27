@@ -21,11 +21,11 @@ from zipfile import ZipFile
 
 import regex
 from pylib import const
-from pylib.traits import terms
+from pylib.rules import terms
 from tqdm import tqdm
 from traiter.pylib import log
 from traiter.pylib import term_util as tu
-from traiter.pylib.traits import terms as t_terms
+from traiter.pylib.rules import terms as t_terms
 
 ITIS_SPECIES_ID = 220
 
