@@ -70,7 +70,7 @@ A taxon database is included with the source code, but it may be out of date. I 
 1. [ITIS sqlite database](https://www.itis.gov/downloads/index.html)
 2. [The WFO Plant List](https://wfoplantlist.org/plant-list/classifications)
 3. [Plant of the World Online](http://sftp.kew.org/pub/data-repositories/WCVP/)
-4. [Some miscellaneous taxa not found in the other sources.](./flora/pylib/traits/terms/other_taxa.csv)
+4. [Some miscellaneous taxa not found in the other sources.](flora/pylib/rules/terms/other_taxa.csv)
 
 Download the first 3 sources and then use the `util_add_taxa.py` script to extract the taxa and put them into a form the parsers can use.
 

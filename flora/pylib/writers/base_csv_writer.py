@@ -2,7 +2,7 @@ from collections import defaultdict
 
 import pandas as pd
 
-from ..traits.part import PART_LABELS
+from ..rules.part import PART_LABELS
 from . import writer_utils as w_utils
 
 PARTS_SET = set(PART_LABELS + ["multiple_parts"])

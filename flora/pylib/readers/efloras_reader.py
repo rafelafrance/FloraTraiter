@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup
 from tqdm import tqdm
 
 from .. import const
-from ..traits.part import PART_LABELS
+from ..rules.part import PART_LABELS
 
 TAXON_TITLE = "Accepted Name"
 
