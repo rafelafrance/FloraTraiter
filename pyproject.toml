@@ -5,6 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "FloraTraiter"
 version = "1.2.0"
+readme = "README.md"
 description = ""
 license = {file = "LICENSE"}
 authors = [{name="Raphael LaFrance", email="raphael.lafrance@gmail.com"}]
