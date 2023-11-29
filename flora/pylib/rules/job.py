@@ -9,7 +9,7 @@ from spacy.language import Language
 from spacy.util import registry
 from traiter.pylib import const as t_const
 from traiter.pylib import term_util
-from traiter.pylib.darwin_core import NS
+from traiter.pylib.darwin_core import DWC
 from traiter.pylib.darwin_core import DarwinCore
 from traiter.pylib.pattern_compiler import ACCUMULATOR
 from traiter.pylib.pattern_compiler import Compiler
@@ -59,7 +59,7 @@ class Job(Base):
     def to_dwc(self, dwc) -> DarwinCore:
         name = self.name if isinstance(self.name, str) else t_dwc.SEP.join(self.name)
         kwargs = {self.key: name}
-        if self.key.startswith(NS):
+        if self.key.startswith(DWC):
             return dwc.add(**kwargs)
         return dwc.add_dyn(**kwargs)
 
