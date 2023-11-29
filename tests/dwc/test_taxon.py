@@ -12,7 +12,6 @@ class TestTaxon(unittest.TestCase):
             {
                 "dwc:scientificName": "M. sensitiva",
                 "dwc:taxonRank": "species",
-                "dwc:species": "Mimosa sensitiva",
             },
         )
 
@@ -21,7 +20,6 @@ class TestTaxon(unittest.TestCase):
             to_dwc(LABEL, "A. pachyphloia subsp. brevipinnula"),
             {
                 "dwc:scientificName": "A. pachyphloia subsp. brevipinnula",
-                "dwc:subspecies": "Acacia pachyphloia subsp. brevipinnula",
                 "dwc:taxonRank": "subspecies",
             },
         )
@@ -31,7 +29,6 @@ class TestTaxon(unittest.TestCase):
             to_dwc(LABEL, "A. pachyphloia Britton & Rose"),
             {
                 "dwc:scientificName": "A. pachyphloia Britton & Rose",
-                "dwc:species": "Acacia pachyphloia",
                 "dwc:taxonRank": "species",
                 "dwc:scientificNameAuthorship": "Britton and Rose",
             },
@@ -42,7 +39,6 @@ class TestTaxon(unittest.TestCase):
             to_dwc(LABEL, "Acacia pachyphloia (L.) Moench. ssp. brevipinnula"),
             {
                 "dwc:scientificName": "Acacia pachyphloia (L.) Moench. ssp. brevipinnula",
-                "dwc:subspecies": "Acacia pachyphloia subsp. brevipinnula",
                 "dwc:taxonRank": "subspecies",
                 "dwc:scientificNameAuthorship": "Linnaeus, Moench",
             },
@@ -51,5 +47,13 @@ class TestTaxon(unittest.TestCase):
     def test_taxon_05(self):
         self.assertEqual(
             to_dwc(LABEL, "Associated species: Cornus obliqua"),
-            {"dwc:associatedTaxa": "associated: Cornus obliqua"},
+            {
+                "dwc:associatedTaxa": "associated: Cornus obliqua",
+            },
+        )
+
+    def test_taxon_06(self):
+        self.assertEqual(
+            to_dwc(LABEL, "Cornaceae"),
+            {"dwc:family": "Cornaceae"},
         )
