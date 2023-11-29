@@ -5,7 +5,7 @@ from typing import ClassVar
 from spacy.language import Language
 from spacy.util import registry
 from traiter.pylib import term_util as tu
-from traiter.pylib.darwin_core import NS
+from traiter.pylib.darwin_core import DWC
 from traiter.pylib.darwin_core import DarwinCore
 from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add
@@ -26,7 +26,7 @@ class IdNumber(Base):
     has_label: bool = None
 
     def to_dwc(self, dwc) -> DarwinCore:
-        if self.key.startswith(NS):
+        if self.key.startswith(DWC):
             return dwc.add(**{self.key: self.number})
         return dwc.add_dyn(**{self.key: self.number})
 
