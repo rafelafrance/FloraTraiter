@@ -102,8 +102,11 @@ class Taxon(Base):
         auth = self.authority
         if isinstance(auth, list):
             auth = t_dwc.SEP.join(auth)
+
+        dwc.add(**{self.rank: self.taxon})
+
         return dwc.add(
-            scientificName=self.taxon,
+            scientificName=self._text,
             taxonRank=self.rank,
             scientificNameAuthorship=auth,
         )
