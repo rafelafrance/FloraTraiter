@@ -96,6 +96,9 @@ class Taxon(Base):
     associated: bool = None
 
     def to_dwc(self, dwc) -> DarwinCore:
+        if self.level.get(self.rank) == "higher":
+            return dwc.add(**{self.key: self.taxon})
+
         if self.associated:
             return dwc.add(associatedTaxa={"associated": self.taxon})
 
@@ -103,16 +106,19 @@ class Taxon(Base):
         if isinstance(auth, list):
             auth = t_dwc.SEP.join(auth)
 
-        dwc.add(**{self.rank: self.taxon})
-
         return dwc.add(
-            scientificName=self._text,
-            taxonRank=self.rank,
-            scientificNameAuthorship=auth,
+            **{
+                self.key: self._text,
+                "taxonRank": self.rank,
+                "scientificNameAuthorship": auth,
+            }
         )
 
     @property
     def key(self) -> str:
+        if self.level.get(self.rank) == "higher":
+            return t_dwc.DarwinCore.ns(self.rank)
+
         return t_dwc.DarwinCore.ns(
             "associatedTaxa" if self.associated else "scientificName"
         )
