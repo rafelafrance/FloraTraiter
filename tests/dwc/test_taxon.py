@@ -10,8 +10,9 @@ class TestTaxon(unittest.TestCase):
         self.assertEqual(
             to_dwc(LABEL, "M. sensitiva"),
             {
-                "dwc:scientificName": "Mimosa sensitiva",
+                "dwc:scientificName": "M. sensitiva",
                 "dwc:taxonRank": "species",
+                "dwc:species": "Mimosa sensitiva",
             },
         )
 
@@ -19,7 +20,8 @@ class TestTaxon(unittest.TestCase):
         self.assertEqual(
             to_dwc(LABEL, "A. pachyphloia subsp. brevipinnula"),
             {
-                "dwc:scientificName": "Acacia pachyphloia subsp. brevipinnula",
+                "dwc:scientificName": "A. pachyphloia subsp. brevipinnula",
+                "dwc:subspecies": "Acacia pachyphloia subsp. brevipinnula",
                 "dwc:taxonRank": "subspecies",
             },
         )
@@ -28,7 +30,8 @@ class TestTaxon(unittest.TestCase):
         self.assertEqual(
             to_dwc(LABEL, "A. pachyphloia Britton & Rose"),
             {
-                "dwc:scientificName": "Acacia pachyphloia",
+                "dwc:scientificName": "A. pachyphloia Britton & Rose",
+                "dwc:species": "Acacia pachyphloia",
                 "dwc:taxonRank": "species",
                 "dwc:scientificNameAuthorship": "Britton and Rose",
             },
@@ -38,7 +41,8 @@ class TestTaxon(unittest.TestCase):
         self.assertEqual(
             to_dwc(LABEL, "Acacia pachyphloia (L.) Moench. ssp. brevipinnula"),
             {
-                "dwc:scientificName": "Acacia pachyphloia subsp. brevipinnula",
+                "dwc:scientificName": "Acacia pachyphloia (L.) Moench. ssp. brevipinnula",
+                "dwc:subspecies": "Acacia pachyphloia subsp. brevipinnula",
                 "dwc:taxonRank": "subspecies",
                 "dwc:scientificNameAuthorship": "Linnaeus, Moench",
             },
