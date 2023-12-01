@@ -240,7 +240,6 @@ class TestAdminUnit(unittest.TestCase):
         )
 
     def test_admin_unit_18(self):
-        """It handles capitalization issues."""
         self.assertEqual(
             parse("""St. Louis, Missouri,"""),
             [
@@ -250,6 +249,20 @@ class TestAdminUnit(unittest.TestCase):
                     trait="admin_unit",
                     start=0,
                     end=19,
+                )
+            ],
+        )
+
+    def test_admin_unit_19(self):
+        self.assertEqual(
+            parse("""N. C. Mecklenburg Co;"""),
+            [
+                AdminUnit(
+                    us_state="North Carolina",
+                    us_county="Mecklenburg",
+                    trait="admin_unit",
+                    start=0,
+                    end=20,
                 )
             ],
         )
