@@ -237,6 +237,8 @@ class Size(Linkable):
                 value = float(value)
                 if dim.units == "m" and value > 100.0:
                     raise reject_match.RejectMatch
+                if value <= 0.0:
+                    raise reject_match.RejectMatch
                 factor = cls.factors_cm[dim.units]
                 value = round(value * factor, 3)
                 setattr(dim, key, value)
