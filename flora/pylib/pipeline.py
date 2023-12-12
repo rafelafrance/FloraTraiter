@@ -11,6 +11,7 @@ from traiter.pylib.rules.utm import UTM
 
 from flora.pylib.rules import delete_missing
 from flora.pylib.rules import job_id
+from flora.pylib.rules import post_process
 from flora.pylib.rules.admin_unit import AdminUnit
 from flora.pylib.rules.associated_taxon_label import AssociatedTaxonLabel
 from flora.pylib.rules.color import Color
@@ -119,5 +120,7 @@ def build():
     AssociatedTaxonLabel.pipe(nlp)
 
     Locality.pipe(nlp)
+
+    post_process.pipe(nlp)
 
     return nlp
