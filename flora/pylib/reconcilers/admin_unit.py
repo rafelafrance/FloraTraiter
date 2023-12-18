@@ -17,7 +17,9 @@ class AdminUnit(Base):
     muni_match = Base.get_aliases(muni_lb)
 
     @classmethod
-    def reconcile(cls, _: dict[str, Any], other: dict[str, Any]) -> dict[str, str]:
+    def reconcile(
+        cls, traiter: dict[str, Any], other: dict[str, Any], text: str
+    ) -> dict[str, str]:
         obj = {}
 
         if val := cls.search(other, cls.country_match):

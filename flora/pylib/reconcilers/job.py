@@ -10,7 +10,9 @@ class Job(Base):
     id_match = Base.get_aliases(id_lb)
 
     @classmethod
-    def reconcile(cls, _: dict[str, Any], other: dict[str, Any]) -> dict[str, Any]:
+    def reconcile(
+        cls, traiter: dict[str, Any], other: dict[str, Any], text: str
+    ) -> dict[str, Any]:
         o_rec = cls.search(other, cls.rec_match)
         o_id = cls.search(other, cls.id_match)
 

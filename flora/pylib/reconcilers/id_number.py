@@ -11,7 +11,9 @@ class IdNumber(Base):
     id_match = Base.get_aliases(id_lb, "dwc:recordedById")
 
     @classmethod
-    def reconcile(cls, _: dict[str, Any], other: dict[str, Any]) -> dict[str, str]:
+    def reconcile(
+        cls, traiter: dict[str, Any], other: dict[str, Any], text: str
+    ) -> dict[str, str]:
         obj = {}
 
         if val := cls.search(other, cls.acc_match):
