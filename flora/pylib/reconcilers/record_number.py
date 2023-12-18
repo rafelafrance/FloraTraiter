@@ -10,20 +10,25 @@ class RecordNumber(Base):
 
     @classmethod
     def reconcile(
-        cls, traiter: dict[str, Any], other: dict[str, Any]
+        cls, traiter: dict[str, Any], other: dict[str, Any], text: str
     ) -> dict[str, str]:
         # Default to the GPT version
         if val := cls.search(other, cls.aliases):
             return {cls.label: val}
 
-        val = traiter.get(cls.label)
+        vals = traiter.get(cls.label)
 
         # Handle case where it's missing in both
-        if not val:
+        if not vals:
             return {}
 
-        # Split the values and take the last one that's reasonable, size-wize
+        # Split the values and take the last one
         # The record number is most often at the end of the label
-        vals = [v for v in val.split(SEP) if len(v) > 2]
+        vals = vals.split(SEP)
+
+        longest = max(len(v) for v in vals)
+        threshold = 2 if longest > 2 else 1
+
+        vals = [v for v in vals if len(v) > threshold]
 
         return {cls.label: vals[-1]} if vals else {}

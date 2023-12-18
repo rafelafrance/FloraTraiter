@@ -16,7 +16,7 @@ class TaxonAssociation(Base):
 
     @classmethod
     def reconcile(
-        cls, traiter: dict[str, Any], other: dict[str, Any]
+        cls, traiter: dict[str, Any], other: dict[str, Any], text: str
     ) -> dict[str, str]:
         t_val = traiter.get(cls.label, "")
         t_vals = [v for v in t_val.split(SEP) if v]

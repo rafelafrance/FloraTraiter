@@ -66,7 +66,7 @@ class TaxonName(Base):
 
     @classmethod
     def reconcile(
-        cls, traiter: dict[str, Any], other: dict[str, Any]
+        cls, traiter: dict[str, Any], other: dict[str, Any], text: str
     ) -> dict[str, Any]:
         obj = {}
 

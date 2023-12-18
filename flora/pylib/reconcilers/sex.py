@@ -9,7 +9,7 @@ class Sex(Base):
 
     @classmethod
     def reconcile(
-        cls, traiter: dict[str, Any], other: dict[str, Any]
+        cls, traiter: dict[str, Any], other: dict[str, Any], text: str
     ) -> dict[str, Any]:
         o_sex = cls.search(other, cls.aliases)
         t_sex = traiter.get(cls.label)

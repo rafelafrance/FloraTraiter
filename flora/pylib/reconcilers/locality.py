@@ -1,5 +1,6 @@
 from typing import Any
 
+from traiter.pylib.darwin_core import SEP
 from traiter.pylib.reconcilers.base import Base
 
 
@@ -9,25 +10,55 @@ class Locality(Base):
     loc_match = Base.get_aliases(
         loc_lb,
         """
-        dwc:locality dwc:localityDescription dwc:localityDetails dwc:localityRemarks
-        dwc:Location dc:Location dwc:locationCity dwc:physicalLocation dwc:city
+        dwc:locality dwc:localityDescription dwc:localityDetails
+        dwc:Location dc:Location dwc:physicalLocation dwc:specificLocality
         dwc:recordedLocation dwc:specificLocality dwc:exactLocation
+        dwc:locationCity dwc:city
         """,
     )
-    rem_match = Base.get_aliases(rem_lb, "dwc:locationNotes")
+    rem_match = Base.get_aliases(rem_lb, "dwc:localityRemarks dwc:locationNotes")
+
+    sub_match = loc_match + [loc.removeprefix("dwc:") for loc in loc_match]
 
     @classmethod
-    def reconcile(cls, _: dict[str, Any], other: dict[str, Any]) -> dict[str, Any]:
-        o_loc = cls.search(other, cls.loc_match)
-        o_rem = cls.search(other, cls.rem_match)
+    def reconcile(
+        cls, traiter: dict[str, Any], other: dict[str, Any], text: str
+    ) -> dict[str, Any]:
+        o_locality = cls.search(other, cls.loc_match)
+        o_remarks = cls.search(other, cls.rem_match)
+        t_locality = traiter.get(cls.loc_lb)
+
+        # Merge the traiter localities if they're separated by only whitespace
+        t_parts = t_locality.split(SEP)
+        if len(t_parts) > 1:
+            text = " ".join(text.split())
+            t_parts = " ".join(t_parts)
+            if text.find(t_parts) > -1:
+                t_locality = t_parts
 
         obj = {}
 
-        # Just use whatever is in the OpenAI output
-        if o_loc:
-            obj[cls.loc_lb] = o_loc
+        # Get verbatim locality
+        locality = ""
 
-        if o_rem:
-            obj[cls.rem_lb] = o_rem
+        if isinstance(o_locality, dict):
+            if o_locality := cls.search(o_locality, cls.sub_match):
+                locality = o_locality
+
+            elif t_locality:
+                locality = t_locality
+
+        elif o_locality:
+            locality = o_locality
+
+        elif t_locality:
+            locality = t_locality
+
+        # Extend locality
+        obj[cls.loc_lb] = t_locality if locality in t_locality else o_locality
+
+        # Get location remarks
+        if o_remarks:
+            obj[cls.rem_lb] = o_remarks
 
         return obj
