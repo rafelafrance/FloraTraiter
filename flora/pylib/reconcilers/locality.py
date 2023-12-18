@@ -26,15 +26,14 @@ class Locality(Base):
     ) -> dict[str, Any]:
         o_locality = cls.search(other, cls.loc_match)
         o_remarks = cls.search(other, cls.rem_match)
-        t_locality = traiter.get(cls.loc_lb)
+        t_locality = traiter.get(cls.loc_lb, "")
 
         # Merge the traiter localities if they're separated by only whitespace
+        text = " ".join(text.split())
         t_parts = t_locality.split(SEP)
-        if len(t_parts) > 1:
-            text = " ".join(text.split())
-            t_parts = " ".join(t_parts)
-            if text.find(t_parts) > -1:
-                t_locality = t_parts
+        t_parts = " ".join(t_parts)
+        if text.find(t_parts) > -1:
+            t_locality = t_parts
 
         obj = {}
 
@@ -55,7 +54,10 @@ class Locality(Base):
             locality = t_locality
 
         # Extend locality
-        obj[cls.loc_lb] = t_locality if locality in t_locality else o_locality
+        if t_locality and locality in t_locality:
+            obj[cls.loc_lb] = t_locality
+        else:
+            obj[cls.loc_lb] = locality
 
         # Get location remarks
         if o_remarks:
