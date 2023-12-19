@@ -1,0 +1,315 @@
+label,pattern,replace,category
+bad_habitat,botanical,,
+bad_habitat,by,,
+bad_habitat,co,,
+bad_habitat,co.,,
+bad_habitat,county,,
+bad_habitat,falls,,
+bad_habitat,long,,
+bad_habitat,national,,
+bad_habitat,road,,
+bad_habitat,sec,,
+bad_habitat,sec.,,
+bad_habitat,street,,
+bad_habitat,villa,,
+habitat_label,habitat,,
+habitat_label,habitat description,,
+habitat_label,habitat description:,,
+habitat_label,habitat:,,
+habitat_prefix,afro-alpine,,
+habitat_prefix,alluvial,,
+habitat_prefix,alpine,,
+habitat_prefix,altimontane,,
+habitat_prefix,arid,,
+habitat_prefix,benthic,,
+habitat_prefix,boggy,,
+habitat_prefix,boreal,,
+habitat_prefix,broadleaf,,
+habitat_prefix,brush,,
+habitat_prefix,calcareous,,
+habitat_prefix,cloud,,
+habitat_prefix,coniferous,,
+habitat_prefix,costal,,
+habitat_prefix,creosote,,
+habitat_prefix,deciduous,,
+habitat_prefix,dry,,
+habitat_prefix,elfin,,
+habitat_prefix,ephemeral,,
+habitat_prefix,equitorial,,
+habitat_prefix,eulittoral,,
+habitat_prefix,flooded,,
+habitat_prefix,fog,,
+habitat_prefix,foothill,,
+habitat_prefix,fresh water,,
+habitat_prefix,fresh-water,,
+habitat_prefix,giant,,
+habitat_prefix,hardwood,,
+habitat_prefix,intertidal,,
+habitat_prefix,joshua tree,,
+habitat_prefix,litoral,littoral,
+habitat_prefix,littoral,littoral,
+habitat_prefix,lowland,,
+habitat_prefix,madrean,,
+habitat_prefix,mediolittoral,,
+habitat_prefix,mediterranean,,
+habitat_prefix,mesic,,
+habitat_prefix,mid-Montane,,
+habitat_prefix,midlittoral,,
+habitat_prefix,mixed,,
+habitat_prefix,montane,,
+habitat_prefix,nearartic,,
+habitat_prefix,nearshore,,
+habitat_prefix,nemoral,,
+habitat_prefix,neotropical,,
+habitat_prefix,neritic,,
+habitat_prefix,nival,,
+habitat_prefix,open hardwood,,
+habitat_prefix,peat,,
+habitat_prefix,pelagic,,
+habitat_prefix,pine,,
+habitat_prefix,planar,,
+habitat_prefix,polar,,
+habitat_prefix,riparian,,
+habitat_prefix,rocky,,
+habitat_prefix,sandy,,
+habitat_prefix,seasonal,,
+habitat_prefix,semi-arid,,
+habitat_prefix,semideciduous,,
+habitat_prefix,shaded,,
+habitat_prefix,shady,,
+habitat_prefix,sonoran,,
+habitat_prefix,subalpine,,
+habitat_prefix,subartic,,
+habitat_prefix,sublitoral,sublittoral,
+habitat_prefix,sublittoral,sublittoral,
+habitat_prefix,submontane,,
+habitat_prefix,subpoar,,
+habitat_prefix,subtropical,,
+habitat_prefix,supralittoral,,
+habitat_prefix,supratidal,,
+habitat_prefix,temperate,,
+habitat_prefix,terrestrial,,
+habitat_prefix,tropical,,
+habitat_prefix,upland,,
+habitat_prefix,uppland,,
+habitat_prefix,urban,,
+habitat_prefix,vernal,,
+habitat_prefix,volcanic,,
+habitat_prefix,wet,,
+habitat_prefix,xeric,,
+habitat_suffix,corridor,,
+habitat_suffix,ecosystem,,
+habitat_suffix,ecosystems,ecosystem,
+habitat_suffix,flat,,
+habitat_suffix,flats,,
+habitat_suffix,landscape,,
+habitat_suffix,landscapes,landscape,
+habitat_suffix,slope,,
+habitat_suffix,slopes,slope,
+habitat_suffix,zone,,
+habitat_suffix,zones,zone,
+habitat_term,afrotropic,,
+habitat_term,alvar,,
+habitat_term,anabranch,river,lotic
+habitat_term,anabranchs,river,lotic
+habitat_term,bajada,,
+habitat_term,bayou,lake,lentic
+habitat_term,bayous,lake,lentic
+habitat_term,beck,creek,lotic
+habitat_term,becks,creek,lotic
+habitat_term,billabong,rivulet,lotic
+habitat_term,billabongs,rivulet,lotic
+habitat_term,bog,pond,lentic
+habitat_term,bogs,bog,
+habitat_term,bogs,pond,lentic
+habitat_term,bosque,,
+habitat_term,brook,,lotic
+habitat_term,brooks,,lotic
+habitat_term,brush,,
+habitat_term,burn,,lotic
+habitat_term,burns,,lotic
+habitat_term,bush,,
+habitat_term,canal,,lotic
+habitat_term,canals,,lotic
+habitat_term,canebrake,,
+habitat_term,canebreak,canebrake,
+habitat_term,canyon,,
+habitat_term,canyons,canyon,
+habitat_term,channel,,lotic
+habitat_term,channels,,lotic
+habitat_term,chaparral,,
+habitat_term,chihuahua desert,,
+habitat_term,chihuahuan desert,chihuahua desert,
+habitat_term,clay,,
+habitat_term,clearing,,forest
+habitat_term,clearings,,forest
+habitat_term,cloud forest,,
+habitat_term,cloudforest,cloud forest,
+habitat_term,coast,,
+habitat_term,creek,,lotic
+habitat_term,creeks,,lotic
+habitat_term,desert,,
+habitat_term,deserts,desert,
+habitat_term,dry wash,,
+habitat_term,ecotone,,
+habitat_term,edge of forest,,
+habitat_term,fell field,fellfield,
+habitat_term,fell fields,fellfield,
+habitat_term,fellfield,,
+habitat_term,fellfields,fellfield,
+habitat_term,fen,fen,lentic
+habitat_term,fens,fen,
+habitat_term,fens,fen,lentic
+habitat_term,field,,
+habitat_term,fields,field,
+habitat_term,floodplain,,
+habitat_term,floodplains,floodplain,
+habitat_term,forest,,
+habitat_term,forest margin,forest,
+habitat_term,forest margins,forest,
+habitat_term,forests,forest,
+habitat_term,forests margin,forest,
+habitat_term,forests margins,forest,
+habitat_term,freshet,,lotic
+habitat_term,freshets,,lotic
+habitat_term,gap,,open
+habitat_term,gaps,,open
+habitat_term,glade,,open
+habitat_term,glades,glade,open
+habitat_term,grassland,,
+habitat_term,grasslands,grassland,
+habitat_term,hammock,,
+habitat_term,heath,,
+habitat_term,heathland,,
+habitat_term,heathlands,heathland,
+habitat_term,hemiboreal,,
+habitat_term,herbfield,,
+habitat_term,herbfields,herbfield,
+habitat_term,inlet,,lotic
+habitat_term,inlets,,lotic
+habitat_term,jungle,,forest
+habitat_term,jungles,,forest
+habitat_term,lagoon,phytotelmata,lentic
+habitat_term,lagoons,phytotelmata,lentic
+habitat_term,lake,,lentic
+habitat_term,lakes,lake,
+habitat_term,lakes,lake,lentic
+habitat_term,loch,,lentic
+habitat_term,lochan,,lentic
+habitat_term,lochans,,lentic
+habitat_term,lochs,,lentic
+habitat_term,lough,,lentic
+habitat_term,loughs,,lentic
+habitat_term,madrean oak,,
+habitat_term,mangrove swamp,,
+habitat_term,mangrove swamps,mangrove swamp,
+habitat_term,marsh,,lentic
+habitat_term,marshes,marsh,lentic
+habitat_term,marshy,,lentic
+habitat_term,meadow,,
+habitat_term,meadows,meadow,
+habitat_term,mire,,
+habitat_term,mires,mire,
+habitat_term,moana,,lentic
+habitat_term,moor,,
+habitat_term,moorland,,
+habitat_term,moors,moor,
+habitat_term,nearctic,,
+habitat_term,open grassland,,
+habitat_term,open grasslands,,
+habitat_term,open woodland,,
+habitat_term,open woodlands,,
+habitat_term,out of the forest,open,open
+habitat_term,paleartic,,
+habitat_term,phytotelma,phytotelmata,lentic
+habitat_term,phytotelmata,,lentic
+habitat_term,pinyon - juniper,pinyon-juniper,
+habitat_term,pinyon-juniper,pinyon-juniper,
+habitat_term,plain,,
+habitat_term,plains,plain,
+habitat_term,plantation,,forest
+habitat_term,plantations,plantation,forest
+habitat_term,pond,,lentic
+habitat_term,ponds,pond,lentic
+habitat_term,pool,,lentic
+habitat_term,pools,pool,lentic
+habitat_term,pothole,,lentic
+habitat_term,potholes,,lentic
+habitat_term,puddle,,lentic
+habitat_term,puddles,,lentic
+habitat_term,rain forest,,
+habitat_term,rain forests,rain forest,
+habitat_term,rain-forest,rain forest,
+habitat_term,rain-forests,rain forest,
+habitat_term,rainforest,rain forest,
+habitat_term,rainforests,rain forest,
+habitat_term,reservoir,,lentic
+habitat_term,reservoirs,,lentic
+habitat_term,riffle,,lotic
+habitat_term,riffles,,lotic
+habitat_term,rill,,lotic
+habitat_term,rills,,lotic
+habitat_term,river,,lotic
+habitat_term,rivers,river,lotic
+habitat_term,rivulet,,lotic
+habitat_term,rivulets,,lotic
+habitat_term,runnel,,lotic
+habitat_term,runnels,,lotic
+habitat_term,sagar,,lentic
+habitat_term,sagebrush,,
+habitat_term,salt flat,,
+habitat_term,salt flats,salt flat,
+habitat_term,salt marsh,,
+habitat_term,salt marshes,salt marsh,
+habitat_term,savanna,,
+habitat_term,savannas,savanna,
+habitat_term,scrub,,
+habitat_term,scrubland,,
+habitat_term,scrublands,scrubland,
+habitat_term,seep,,lotic
+habitat_term,seeps,,lotic
+habitat_term,shrub swamp,,
+habitat_term,shrub swamps,shrub swamp,
+habitat_term,shrubland,,
+habitat_term,shrublands,shrubland,
+habitat_term,soil,,
+habitat_term,steppe,,
+habitat_term,steppes,steppe,
+habitat_term,stew,,lentic
+habitat_term,stews,,lentic
+habitat_term,stream,,lotic
+habitat_term,streamlet,,lotic
+habitat_term,streamlets,,lotic
+habitat_term,streams,stream,lotic
+habitat_term,swamp,,lentic
+habitat_term,swamps,swamp,lentic
+habitat_term,swim,,lentic
+habitat_term,swims,,lentic
+habitat_term,taiga,,
+habitat_term,tank,,lentic
+habitat_term,tanks,,lentic
+habitat_term,tarn,,lentic
+habitat_term,tarns,,lentic
+habitat_term,timberline,,
+habitat_term,tree line,,
+habitat_term,trees,,forest
+habitat_term,tributaries,,lotic
+habitat_term,tributary,,lotic
+habitat_term,tugay,,
+habitat_term,tundra,,
+habitat_term,urban,,
+habitat_term,watercourse,,lotic
+habitat_term,watercourses,,lotic
+habitat_term,waterhole,,lentic
+habitat_term,waterholes,,lentic
+habitat_term,waterway,,lotic
+habitat_term,waterways,,lotic
+habitat_term,wetland,,
+habitat_term,wetlands,wetland,
+habitat_term,wildwood,,
+habitat_term,wildwoods,,
+habitat_term,winterbourne,,lotic
+habitat_term,winterbournes,,lotic
+habitat_term,woodland,,forest
+habitat_term,woodlands,woodland,forest
+habitat_term,woods,woodlands,forest

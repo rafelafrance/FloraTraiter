@@ -1,0 +1,37 @@
+label,pattern,replace
+dir,e,E
+dir,n,N
+dir,s,S
+dir,w,W
+dir,ne,NE
+dir,nw,NW
+dir,se,SE
+dir,sw,SW
+dir,e.,E
+dir,n.,N
+dir,s.,S
+dir,w.,W
+dir,n.e.,NE
+dir,n.w.,NW
+dir,s.e.,SE
+dir,s.w.,SW
+dir,n. e.,NE
+dir,n. w.,NW
+dir,s. e.,SE
+dir,s. w.,SW
+dir,ene,ENE
+dir,ese,ESE
+dir,nne,NNE
+dir,nnw,NNW
+dir,sse,SSE
+dir,ssw,SSW
+dir,wnw,WNW
+dir,wsw,WSW
+dir,east,East
+dir,north,North
+dir,south,South
+dir,west,West
+dir,northeast,Northeast
+dir,northwest,Northwest
+dir,southeast,Southeast
+dir,southwest,Southwest
