@@ -1,7 +1,7 @@
 import unittest
 
 from tests.setup import PIPELINE
-from traiter.pylib.pipes import tokenizer
+from traiter.traiter.pylib.pipes import tokenizer
 
 
 class TestTokenizer(unittest.TestCase):

@@ -9,12 +9,17 @@ import string
 from pathlib import Path
 from typing import Union
 
-from spacy.lang.char_classes import ALPHA, LIST_HYPHENS, LIST_PUNCT, LIST_QUOTES
+from spacy.lang.char_classes import ALPHA
+from spacy.lang.char_classes import LIST_HYPHENS
+from spacy.lang.char_classes import LIST_PUNCT
+from spacy.lang.char_classes import LIST_QUOTES
 from spacy.language import Language
 from spacy.symbols import ORTH
-from spacy.util import compile_infix_regex, compile_prefix_regex, compile_suffix_regex
+from spacy.util import compile_infix_regex
+from spacy.util import compile_prefix_regex
+from spacy.util import compile_suffix_regex
 
-from traiter.pylib.rules import terms
+from traiter.traiter.pylib.rules import terms
 
 BREAKING = LIST_QUOTES + LIST_PUNCT + [r"[:\\/˂˃×.+’()\[\]±_]"]
 

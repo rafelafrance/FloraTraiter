@@ -7,7 +7,7 @@ from collections.abc import Iterable
 from pathlib import Path
 from typing import Union
 
-from traiter.pylib import term_util
+from traiter.traiter.pylib import term_util
 
 
 def abbreviate_binomials(binomials: list[dict], single_expanded_name=True):

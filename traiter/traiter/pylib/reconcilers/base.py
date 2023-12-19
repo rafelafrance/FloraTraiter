@@ -1,7 +1,8 @@
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
+from typing import Callable
 
-from traiter.pylib import term_util
+from traiter.traiter.pylib import term_util
 
 from ..rules import terms
 

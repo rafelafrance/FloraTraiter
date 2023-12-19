@@ -1,8 +1,5 @@
 import unittest
 
-from traiter.pylib.rules.elevation import Elevation
-from traiter.pylib.rules.habitat import Habitat
-
 from flora.pylib.rules.color import Color
 from flora.pylib.rules.count import Count
 from flora.pylib.rules.margin import Margin
@@ -14,6 +11,8 @@ from flora.pylib.rules.size import Dimension
 from flora.pylib.rules.size import Size
 from flora.pylib.rules.subpart import Subpart
 from tests.setup import parse
+from traiter.traiter.pylib.rules.elevation import Elevation
+from traiter.traiter.pylib.rules.habitat import Habitat
 
 
 class TestSize(unittest.TestCase):

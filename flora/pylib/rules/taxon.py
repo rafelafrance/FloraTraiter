@@ -5,19 +5,20 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import ClassVar
 
-import traiter.pylib.darwin_core as t_dwc
 from spacy import Language
 from spacy import registry
-from traiter.pylib import const as t_const
-from traiter.pylib import taxon_util
-from traiter.pylib import term_util
-from traiter.pylib.darwin_core import DarwinCore
-from traiter.pylib.pattern_compiler import ACCUMULATOR
-from traiter.pylib.pattern_compiler import Compiler
-from traiter.pylib.pipes import add
-from traiter.pylib.pipes import reject_match
-from traiter.pylib.rules import terms as t_terms
-from traiter.pylib.rules.base import Base
+
+import traiter.traiter.pylib.darwin_core as t_dwc
+from traiter.traiter.pylib import const as t_const
+from traiter.traiter.pylib import taxon_util
+from traiter.traiter.pylib import term_util
+from traiter.traiter.pylib.darwin_core import DarwinCore
+from traiter.traiter.pylib.pattern_compiler import ACCUMULATOR
+from traiter.traiter.pylib.pattern_compiler import Compiler
+from traiter.traiter.pylib.pipes import add
+from traiter.traiter.pylib.pipes import reject_match
+from traiter.traiter.pylib.rules import terms as t_terms
+from traiter.traiter.pylib.rules.base import Base
 
 from .. import const
 

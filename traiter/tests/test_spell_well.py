@@ -1,7 +1,7 @@
 """Test the spell checker."""
 import unittest
 
-from traiter.pylib.spell_well import SpellWell
+from traiter.traiter.pylib.spell_well import SpellWell
 
 
 class TestSpellWell(unittest.TestCase):

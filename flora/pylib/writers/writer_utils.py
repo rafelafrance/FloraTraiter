@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from traiter.pylib import term_util
+from traiter.traiter.pylib import term_util
 
 from ..rules import terms
 

@@ -1,7 +1,7 @@
 import unittest
 
 from tests.setup import parse
-from traiter.pylib.rules.utm import UTM
+from traiter.traiter.pylib.rules.utm import UTM
 
 
 class TestUTMPatterns(unittest.TestCase):

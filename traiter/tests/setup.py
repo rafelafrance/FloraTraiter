@@ -1,6 +1,6 @@
-from traiter.pylib import pipeline
-from traiter.pylib.darwin_core import DarwinCore
-from traiter.pylib.util import compress
+from traiter.traiter.pylib import pipeline
+from traiter.traiter.pylib.darwin_core import DarwinCore
+from traiter.traiter.pylib.util import compress
 
 PIPELINE = pipeline.build()
 

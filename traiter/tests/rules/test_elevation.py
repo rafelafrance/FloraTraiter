@@ -1,7 +1,7 @@
 import unittest
 
 from tests.setup import parse
-from traiter.pylib.rules.elevation import Elevation
+from traiter.traiter.pylib.rules.elevation import Elevation
 
 
 class TestElevation(unittest.TestCase):

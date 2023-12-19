@@ -6,10 +6,10 @@ import textwrap
 from pathlib import Path
 
 from pylib.writers.label_html_writer import HtmlWriter
-from traiter.pylib import log
-from traiter.pylib.darwin_core import DarwinCore
 
 from flora.pylib.labels import Labels
+from traiter.traiter.pylib import log
+from traiter.traiter.pylib.darwin_core import DarwinCore
 
 
 def main():

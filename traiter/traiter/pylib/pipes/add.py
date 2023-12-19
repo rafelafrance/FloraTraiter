@@ -5,9 +5,15 @@ from typing import Union
 
 from spacy.language import Language
 
-from traiter.pylib import term_util
-from traiter.pylib.pattern_compiler import ACCUMULATOR, Compiler
-from traiter.pylib.pipes import cleanup, debug, link, merge_selected, phrase, trait
+from traiter.traiter.pylib import term_util
+from traiter.traiter.pylib.pattern_compiler import ACCUMULATOR
+from traiter.traiter.pylib.pattern_compiler import Compiler
+from traiter.traiter.pylib.pipes import cleanup
+from traiter.traiter.pylib.pipes import debug
+from traiter.traiter.pylib.pipes import link
+from traiter.traiter.pylib.pipes import merge_selected
+from traiter.traiter.pylib.pipes import phrase
+from traiter.traiter.pylib.pipes import trait
 
 
 def term_pipe(

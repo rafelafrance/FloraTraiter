@@ -1,6 +1,6 @@
 from typing import Any
 
-from traiter.pylib.reconcilers.base import Base
+from traiter.traiter.pylib.reconcilers.base import Base
 
 
 class TaxonRank(Base):

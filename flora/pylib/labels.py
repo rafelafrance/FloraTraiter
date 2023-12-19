@@ -1,11 +1,11 @@
 from pathlib import Path
 
 from tqdm import tqdm
-from traiter.pylib import term_util
-from traiter.pylib.spell_well import SpellWell
 
 from flora.pylib.label import Label
 from flora.pylib.rules import terms as p_terms
+from traiter.traiter.pylib import term_util
+from traiter.traiter.pylib.spell_well import SpellWell
 
 from . import pipeline
 

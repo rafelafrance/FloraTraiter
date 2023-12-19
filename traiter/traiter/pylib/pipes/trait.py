@@ -1,11 +1,12 @@
-from typing import Any, Optional
+from typing import Any
+from typing import Optional
 
 from spacy import util
 from spacy.language import Language
 from spacy.matcher import Matcher
 from spacy.tokens import Doc
 
-from traiter.pylib.pipes.reject_match import RejectMatch
+from traiter.traiter.pylib.pipes.reject_match import RejectMatch
 
 ADD_TRAITS = "add_traits"
 
