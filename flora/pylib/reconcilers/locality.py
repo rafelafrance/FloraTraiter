@@ -5,10 +5,9 @@ from traiter.pylib.reconcilers.base import Base
 
 
 class Locality(Base):
-    loc_lb = "dwc:verbatimLocality"
-    rem_lb = "dwc:locationRemarks"
+    label = "dwc:verbatimLocality"
     loc_match = Base.get_aliases(
-        loc_lb,
+        label,
         """
         dwc:locality dwc:localityDescription dwc:localityDetails
         dwc:Location dc:Location dwc:physicalLocation dwc:specificLocality
@@ -16,7 +15,9 @@ class Locality(Base):
         dwc:locationCity dwc:city
         """,
     )
-    rem_match = Base.get_aliases(rem_lb, "dwc:localityRemarks dwc:locationNotes")
+    rem_match = Base.get_aliases(
+        "dwc:locationRemarks dwc:localityRemarks dwc:locationNotes"
+    )
 
     sub_match = loc_match + [loc.removeprefix("dwc:") for loc in loc_match]
 
@@ -26,7 +27,7 @@ class Locality(Base):
     ) -> dict[str, Any]:
         o_locality = cls.search(other, cls.loc_match)
         o_remarks = cls.search(other, cls.rem_match)
-        t_locality = traiter.get(cls.loc_lb, "")
+        t_locality = traiter.get(cls.label, "")
 
         # Merge the traiter localities if they're separated by only whitespace
         text = " ".join(text.split())
@@ -55,12 +56,16 @@ class Locality(Base):
 
         # Extend locality
         if t_locality and locality in t_locality:
-            obj[cls.loc_lb] = t_locality
-        else:
-            obj[cls.loc_lb] = locality
+            locality = t_locality
 
         # Get location remarks
-        if o_remarks:
-            obj[cls.rem_lb] = o_remarks
+        if o_remarks and isinstance(o_remarks, str) and o_remarks not in locality:
+            if locality + " " + o_remarks in text:
+                locality += " " + o_remarks
+            elif o_remarks + " " + locality in text:
+                locality = o_remarks + " " + locality
+            else:
+                locality += locality + SEP + o_remarks
 
+        obj[cls.label] = locality
         return obj
