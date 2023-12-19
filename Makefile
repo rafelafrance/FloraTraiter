@@ -14,14 +14,12 @@ install: venv
 	source $(VENV)/bin/activate
 	$(PIP_INSTALL) -U pip setuptools wheel
 	$(PIP_INSTALL) .
-	$(PIP_INSTALL) git+https://github.com/rafelafrance/traiter.git@master#egg=traiter
 	$(SPACY_MODEL)
 
 dev: venv
 	source $(VENV)/bin/activate
 	$(PIP_INSTALL) -U pip setuptools wheel
 	$(PIP_INSTALL) -e .[dev]
-	$(PIP_INSTALL) -e ../traiter
 	$(SPACY_MODEL)
 	pre-commit install
 

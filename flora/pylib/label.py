@@ -8,8 +8,9 @@ from pathlib import Path
 import regex as re
 from PIL import Image
 from PIL import UnidentifiedImageError
-from traiter.pylib import util as t_util
-from traiter.pylib.rules.base import Base
+
+from traiter.traiter.pylib import util as t_util
+from traiter.traiter.pylib.rules.base import Base
 
 from .rules.linkable import Linkable
 

@@ -7,7 +7,8 @@
 
 from spacy.language import Language
 from spacy.tokens import Doc
-from traiter.pylib.pipes import add
+
+from traiter.traiter.pylib.pipes import add
 
 from .. import trait_util as tu
 

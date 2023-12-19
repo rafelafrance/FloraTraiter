@@ -1,14 +1,13 @@
 import unittest
 
-from traiter.pylib.rules.date_ import Date
-from traiter.pylib.rules.elevation import Elevation
-from traiter.pylib.rules.habitat import Habitat
-
 from flora.pylib.rules.associated_taxon_label import AssociatedTaxonLabel
 from flora.pylib.rules.id_number import IdNumber
 from flora.pylib.rules.job import Job
 from flora.pylib.rules.taxon import Taxon
 from tests.setup import parse
+from traiter.traiter.pylib.rules.date_ import Date
+from traiter.traiter.pylib.rules.elevation import Elevation
+from traiter.traiter.pylib.rules.habitat import Habitat
 
 
 class TestCollector(unittest.TestCase):

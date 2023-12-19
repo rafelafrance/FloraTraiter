@@ -6,8 +6,9 @@ from dataclasses import field
 from datetime import datetime
 
 import jinja2
-from traiter.pylib.darwin_core import DYN
-from traiter.pylib.darwin_core import DarwinCore
+
+from traiter.traiter.pylib.darwin_core import DYN
+from traiter.traiter.pylib.darwin_core import DarwinCore
 
 from ..label import Label
 from ..labels import Labels

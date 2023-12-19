@@ -2,10 +2,11 @@ from dataclasses import dataclass
 from typing import ClassVar
 
 from spacy.language import Language
-from traiter.pylib import const as t_const
-from traiter.pylib.pattern_compiler import Compiler
-from traiter.pylib.pipes import add
-from traiter.pylib.rules.linker import Linker
+
+from traiter.traiter.pylib import const as t_const
+from traiter.traiter.pylib.pattern_compiler import Compiler
+from traiter.traiter.pylib.pipes import add
+from traiter.traiter.pylib.rules.linker import Linker
 
 
 @dataclass(eq=False)

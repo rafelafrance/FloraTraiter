@@ -22,7 +22,6 @@ jobs:
         python -m pip install --upgrade pip setuptools wheel
         python -m pip install .
         python -m spacy download en_core_web_md
-        pip install git+https://github.com/rafelafrance/traiter.git@master#egg=traiter
     - name: Test with unittest
       run: |
         export MOCK_DATA=1; python -m unittest discover
