@@ -120,13 +120,13 @@ def insert_misspellings(freq, spell_well_db, deletes):
             batch.append((word, word, 0, count))
             hits.add(word)
 
-        for delete in [w for w in spell_well.deletes1(word) if keep(word, w)]:
+        for delete in (w for w in spell_well.deletes1(word) if keep(word, w)):
             if delete not in hits:
                 batch.append((delete, word, 1, count))
                 hits.add(delete)
 
         if deletes > 1:
-            for delete in [w for w in spell_well.deletes2(word) if keep(word, w)]:
+            for delete in (w for w in spell_well.deletes2(word) if keep(word, w)):
                 if delete not in hits:
                     batch.append((delete, word, 2, count))
                     hits.add(delete)

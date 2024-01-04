@@ -29,7 +29,7 @@ Some literature mined:
 1. Have experts identify relevant terms and target traits.
 2. We use expert identified terms to label terms using spaCy's phrase matchers. These are sometimes traits themselves but are more often used as anchors for more complex patterns of traits.
 3. We then build up more complex terms from simpler terms using spaCy's rule-based matchers repeatedly until there is a recognizable trait. See the image below.
-4. We may then link traits to each other (entity relationships) using spaCy's dependency matchers.
+4. We may then link traits to each other (entity relationships) also using spaCy rules.
    1. Typically, a trait gets linked to a higher level entity like SPECIES <--- FLOWER <--- {COLOR, SIZE, etc.} and not peer to peer like PERSON <---> ORG.
    2. Also note that sometimes the highest level entity is assumed by its context. For instance, if a web page is a description of a newly found species then I don't need to parse the species name in the document.
 
