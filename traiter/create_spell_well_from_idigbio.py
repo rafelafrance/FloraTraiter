@@ -187,14 +187,14 @@ def explore(idigbio_zip):
 
         with zippy.open("occurrence.csv") as in_file:
             headers = in_file.readline()
-        headers = [h.decode().strip() for h in sorted(headers.split(b","))]
+        headers = (h.decode().strip() for h in sorted(headers.split(b",")))
         print("=" * 80)
         for header in headers:
             print(header)
 
         with zippy.open("occurrence_raw.csv") as in_file:
             headers = in_file.readline()
-        headers = [h.decode().strip() for h in sorted(headers.split(b","))]
+        headers = (h.decode().strip() for h in sorted(headers.split(b",")))
         print("=" * 80)
         for header in headers:
             print(header)
@@ -205,7 +205,8 @@ def parse_args() -> argparse.Namespace:
         This is for building a spell checker for iDigBio terms."""
 
     arg_parser = argparse.ArgumentParser(
-        description=textwrap.dedent(description), fromfile_prefix_chars="@"
+        description=textwrap.dedent(description),
+        fromfile_prefix_chars="@",
     )
 
     arg_parser.add_argument(

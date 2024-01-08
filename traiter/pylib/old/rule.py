@@ -1,15 +1,9 @@
 """RuleList for parsing and rule builders."""
+from collections.abc import Callable
 from dataclasses import dataclass
 from enum import IntEnum
 from typing import Any
-from typing import Callable
-from typing import Dict
-from typing import List
-from typing import Optional
-from typing import Pattern
-from typing import Union
 
-import regex
 import regex as re
 
 RE_FLAGS = re.VERBOSE | re.IGNORECASE
@@ -19,18 +13,18 @@ SIZE = 4
 
 # Find tokens in the regex. Look for words that are not part of a group
 # name or a metacharacter. So, "word" not "<word>". Neither "(?P" nor "\b".
-WORD = regex.compile(
+WORD = re.compile(
     r"""
     (?<! \(\?P< ) (?<! \(\? ) (?<! [\\] )
     \b (?P<word> [a-z]\w* ) \b """,
     RE_FLAGS,
 )
 
-Rules = List["Rule"]
-RuleDict = Dict[str, "Rule"]
-Groups = Dict[str, Union[str, List[str]]]
+Rules = list["Rule"]
+RuleDict = dict[str, "Rule"]
+Groups = dict[str, str | list[str]]
 Action = Callable[[Any], Any]  # "Any" squashes linter
-InRegexp = Union[str, List[str]]
+InRegexp = str | list[str]
 
 FIRST = -9999
 SECOND = -9990
@@ -54,8 +48,8 @@ class Rule:  # pylint: disable=too-many-instance-attributes
     pattern: str  # The regex before it is manipulated
     type: RuleType
     token: str
-    action: Optional[Action] = None  # What to do when there is a match
-    regexp: Optional[Pattern] = None  # The compiled regexp
+    action: Action | None = None  # What to do when there is a match
+    regexp: re.Pattern | None = None  # The compiled regexp
     capture: bool = True  # Will the rule create an outer capture group?
     priority: int = 0  # When should the rule be triggered: FIRST? LAST?
 
@@ -93,7 +87,7 @@ class Rule:  # pylint: disable=too-many-instance-attributes
     def compile(self, rules: RuleDict):
         """Build and compile a rule."""
         pattern = self.build(rules)
-        self.regexp = regex.compile(pattern, RE_FLAGS)
+        self.regexp = re.compile(pattern, RE_FLAGS)
 
 
 def next_token() -> str:
@@ -105,7 +99,7 @@ def next_token() -> str:
 
 def join(regexp: InRegexp) -> str:
     """Build a single regexp from multiple strings."""
-    if isinstance(regexp, (list, tuple, set)):
+    if isinstance(regexp, list | tuple | set):
         regexp = " | ".join(regexp)
     return " ".join(regexp.split())
 
@@ -114,13 +108,14 @@ def part(
     name: str,
     regexp: InRegexp,
     action: Action = None,
+    *,
     capture: bool = True,
     priority: int = 0,
 ) -> Rule:
     """Build a regular expression with a named group."""
     pattern = join(regexp)
     reg_ = f"(?P<{name}> {pattern} )" if capture else f"(?: {pattern} )"
-    reg = regex.compile(reg_, RE_FLAGS)
+    reg = re.compile(reg_, RE_FLAGS)
     return Rule(
         name=name,
         pattern=pattern,
@@ -136,13 +131,14 @@ def term(
     name: str,
     regexp: InRegexp,
     action: Action = None,
+    *,
     capture: bool = True,
     priority: int = 0,
 ) -> Rule:
     r"""Wrap a regular expression in \b character classes."""
     pattern = join(regexp)
     reg_ = f"(?P<{name}> {pattern} )" if capture else f"(?: {pattern} )"
-    reg = regex.compile(rf"\b {reg_} \b", RE_FLAGS)
+    reg = re.compile(rf"\b {reg_} \b", RE_FLAGS)
     return Rule(
         name=name,
         pattern=pattern,
@@ -158,6 +154,7 @@ def grouper(
     name: str,
     regexp: InRegexp,
     action: Action = None,
+    *,
     capture: bool = True,
     priority: int = 0,
 ) -> Rule:
@@ -177,6 +174,7 @@ def replacer(
     name: str,
     regexp: InRegexp,
     action: Action = None,
+    *,
     capture: bool = True,
     priority: int = 0,
 ) -> Rule:
@@ -195,7 +193,8 @@ def replacer(
 def producer(
     action: Action,
     regexp: InRegexp,
-    name: str = None,
+    name: str | None = None,
+    *,
     capture: bool = False,
     priority: int = 0,
 ) -> Rule:

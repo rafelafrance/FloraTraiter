@@ -11,10 +11,10 @@ from spacy.language import Language
 from spacy.util import registry
 
 from traiter.pylib import term_util
+from traiter.pylib.darwin_core import DarwinCore
 from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add, reject_match
 
-from ..darwin_core import DarwinCore
 from .base import Base
 
 
@@ -114,7 +114,8 @@ class Date(Base):
             # Get a month name
             elif token._.term in ("month", "roman"):
                 month = cls.replace.get(
-                    token.text, cls.replace.get(token.lower_, token.lower_)
+                    token.text,
+                    cls.replace.get(token.lower_, token.lower_),
                 )
                 frags.append(month)
 
@@ -123,7 +124,7 @@ class Date(Base):
         try:
             date_ = parser.parse(text).date()
         except (parser.ParserError, IllegalMonthError):
-            raise reject_match.RejectMatch
+            raise reject_match.RejectMatch from None
 
         # Handle missing centuries like: May 22, 08
         if date_ > dt.today():
@@ -136,7 +137,10 @@ class Date(Base):
         date_ = date_.isoformat()[:10]
 
         return super().from_ent(
-            ent, date=date_, century_adjust=century_adjust, missing_day=None
+            ent,
+            date=date_,
+            century_adjust=century_adjust,
+            missing_day=None,
         )
 
     @classmethod

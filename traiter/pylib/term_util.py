@@ -7,7 +7,9 @@ from zipfile import ZipFile
 
 
 def term_data(
-    csv_path: Path | Iterable[Path], field: str, type_=None
+    csv_path: Path | Iterable[Path],
+    field: str,
+    type_=None,
 ) -> dict[str, Any]:
     paths = csv_path if isinstance(csv_path, Iterable) else [csv_path]
     type_ = type_ if type_ else str
@@ -59,7 +61,7 @@ def read_terms(csv_path: Path | Iterable[Path]) -> list[dict]:
                 reader = csv.DictReader(TextIOWrapper(in_csv, "utf-8"))
                 terms += list(reader)
         else:
-            with open(path) as term_file:
+            with path.open() as term_file:
                 reader = csv.DictReader(term_file)
                 terms += list(reader)
     return terms

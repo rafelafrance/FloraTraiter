@@ -1,4 +1,5 @@
-"""Update the tokenizer.
+"""
+Update the tokenizer.
 
 The default Spacy tokenizer works great for model-based parsing but sometimes causes
 complications for rule-based parsers.
@@ -7,7 +8,6 @@ import csv
 import re
 import string
 from pathlib import Path
-from typing import Union
 
 from spacy.lang.char_classes import ALPHA, LIST_HYPHENS, LIST_PUNCT, LIST_QUOTES
 from spacy.language import Language
@@ -71,21 +71,21 @@ ABBREVS = """
 ABBREVS += [f"{c}." for c in string.ascii_uppercase]
 
 
-def append_prefix_regex(nlp: Language, prefixes: Union[list[str], None] = None):
+def append_prefix_regex(nlp: Language, prefixes: list[str] | None = None):
     prefixes = prefixes if prefixes else []
     prefixes += nlp.Defaults.prefixes
     prefix_re = compile_prefix_regex(prefixes)
     nlp.tokenizer.prefix_search = prefix_re.search
 
 
-def append_suffix_regex(nlp: Language, suffixes: Union[list[str], None] = None):
+def append_suffix_regex(nlp: Language, suffixes: list[str] | None = None):
     suffixes = suffixes if suffixes else []
     suffixes += nlp.Defaults.suffixes
     suffix_re = compile_suffix_regex(suffixes)
     nlp.tokenizer.suffix_search = suffix_re.search
 
 
-def append_infix_regex(nlp: Language, infixes: Union[list[str], None] = None):
+def append_infix_regex(nlp: Language, infixes: list[str] | None = None):
     infixes = infixes if infixes else []
     infixes += nlp.Defaults.infixes
     infix_re = compile_infix_regex(infixes)
@@ -98,7 +98,8 @@ def append_abbrevs(nlp: Language, abbrevs: list[str]):
 
 
 def remove_special_case(nlp: Language, remove: list[str]):
-    """Remove special rules from the tokenizer.
+    """
+    Remove special rules from the tokenizer.
 
     This is a workaround for when these special cases interfere with matcher rules.
     """
@@ -109,10 +110,10 @@ def remove_special_case(nlp: Language, remove: list[str]):
 
 
 def get_states():
-    with open(Path(terms.__file__).parent / "us_location_terms.csv") as in_file:
+    path = Path(terms.__file__).parent / "us_location_terms.csv"
+    with path.open() as in_file:
         reader = csv.DictReader(in_file)
-        states = {t["pattern"] for t in reader if t["label"] == "us_state"}
-    return states
+        return {t["pattern"] for t in reader if t["label"] == "us_state"}
 
 
 def setup_tokenizer(nlp):

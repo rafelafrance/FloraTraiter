@@ -1,19 +1,11 @@
 """Extract information for further analysis."""
 from collections import deque
-from typing import List
-from typing import Tuple
-from typing import Union
 
-from .rule import Groups
-from .rule import RuleDict
-from .rule import Rules
-from .rule import RuleType
-from .rule import SIZE
-from .token import Token
-from .token import Tokens
+from .rule import SIZE, Groups, RuleDict, Rules, RuleType
+from .token import Token, Tokens
 from .util import flatten
 
-RulesInput = Union[Rules, List[Rules]]
+RulesInput = Rules | list[Rules]
 
 
 class Parser:
@@ -27,13 +19,14 @@ class Parser:
         self.producers: Rules = []
         self.__add__(rules)
 
-    def __add__(self, rule_list: List[Rules]) -> None:
+    def __add__(self, rule_list: list[Rules]) -> None:
         """Add rules to the parser."""
         self._built = False
         for rule in sorted(flatten(rule_list)):
             if rule.name in self.rules:
                 if rule != self.rules[rule.name]:
-                    raise ValueError(f'Redefining "{rule.name}"')
+                    msg = f'Redefining "{rule.name}"'
+                    raise ValueError(msg)
             else:
                 self.rules[rule.name] = rule
 
@@ -107,10 +100,9 @@ class Parser:
     def sort_matches(self, tokens: Tokens) -> deque:
         """Sort the matches by starting span and when and then by longest."""
         matches = deque(
-            sorted(tokens, key=lambda m: (m.span[0], m.rule.priority, -m.span[1]))
+            sorted(tokens, key=lambda m: (m.span[0], m.rule.priority, -m.span[1])),
         )
-        matches = self.remove_overlapping(matches)
-        return matches
+        return self.remove_overlapping(matches)
 
     def match_tokens(self, rules: Rules, text: str) -> deque:
         """Get all the token matches for the rules sorted by position."""
@@ -139,8 +131,11 @@ class Parser:
         groups[key] = values[0] if len(values) == 1 else values
 
     def merge_tokens(
-        self, match: Token, tokens: Tokens, text: str
-    ) -> Tuple[Token, int, int]:
+        self,
+        match: Token,
+        tokens: Tokens,
+        text: str,
+    ) -> tuple[Token, int, int]:
         """Merge all matched tokens into one token."""
         # Get tokens in match
         first_idx = match.start // SIZE
@@ -155,17 +150,19 @@ class Parser:
 
         # Add groups from current token with real (not tokenized) text
         for key in match.match.capturesdict():
-            for i, value in enumerate(match.match.captures(key)):
+            for i, _ in enumerate(match.match.captures(key)):
                 idx1 = match.match.starts(key)[i] // SIZE
                 idx2 = match.match.ends(key)[i] // SIZE - 1
                 self.append_group(
-                    groups, key, text[tokens[idx1].start : tokens[idx2].end]
+                    groups,
+                    key,
+                    text[tokens[idx1].start : tokens[idx2].end],
                 )
 
         token = Token(match.rule, span=span, group=groups)
         return token, first_idx, last_idx
 
-    def replace(self, tokens: Tokens, text: str) -> Tuple[Tokens, bool]:
+    def replace(self, tokens: Tokens, text: str) -> tuple[Tokens, bool]:
         """Replace token combinations with another token."""
         replaced = []
         token_text = "".join([t.rule.token for t in tokens])

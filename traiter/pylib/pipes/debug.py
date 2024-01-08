@@ -39,7 +39,7 @@ class DebugTokens:
         for token in doc:
             print(
                 f"{token.ent_type_:<20} {token._.flag:10} {token.pos_:6} "
-                f"{token._.term:<20} {token}"
+                f"{token._.term:<20} {token}",
             )
         print()
         return doc

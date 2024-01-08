@@ -1,8 +1,7 @@
 import unittest
 
+from tests.setup import parse
 from traiter.pylib.rules.habitat import Habitat
-
-from ..setup import parse
 
 
 class TestHabitat(unittest.TestCase):
@@ -28,7 +27,7 @@ class TestHabitat(unittest.TestCase):
                     habitat="subalpine zone",
                     start=0,
                     end=14,
-                )
+                ),
             ],
         )
 
@@ -44,7 +43,7 @@ class TestHabitat(unittest.TestCase):
                 """
                 park. Habitat: Boggy woodland with a sparce canopy dominated by
                 blackgum and larch, and nice herbaceous openings. With:
-                """
+                """,
             ),
             [
                 Habitat(

@@ -9,9 +9,7 @@ def parse(text: str) -> list:
     text = compress(text)
     doc = PIPELINE(text)
 
-    traits = [e._.trait for e in doc.ents]
-
-    return traits
+    return [e._.trait for e in doc.ents]
 
 
 def to_dwc(label: str, text: str):

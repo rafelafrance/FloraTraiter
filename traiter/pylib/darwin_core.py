@@ -17,7 +17,7 @@ def read_dwc_terms():
     core, dublin = {}, {}
 
     path = Path(__file__).parent / "rules" / "terms" / "dwc_terms.csv"
-    with open(path) as f:
+    with path.open() as f:
         for row in csv.DictReader(f):
             name = row["term_localName"]
             name = name[0].lower() + name[1:]
@@ -81,7 +81,8 @@ class DarwinCore:
                 new_list.append(new)
             return SEP.join(new_list)
 
-        raise ValueError(f"Field: {key} has mixed value types: {values=}")
+        err = f"Field: {key} has mixed value types: {values=}"
+        raise ValueError(err)
 
     def add(self, **kwargs) -> "DarwinCore":
         for key, value in kwargs.items():
@@ -111,11 +112,10 @@ class DarwinCore:
             yield from self.props[DYN].items()
 
     @staticmethod
-    def key(*args, prepend: str = None) -> str:
+    def key(*args, prepend: str | None = None) -> str:
         key = [prepend] if prepend else []
         key += list(args)
         key = " ".join(key).replace("-", " ").split()
         key = [k.title() for k in key]
         key[0] = key[0].lower()
-        key = "".join(key)
-        return key
+        return "".join(key)

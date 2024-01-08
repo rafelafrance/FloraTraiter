@@ -31,7 +31,9 @@ class LatLong(Base):
     all_csvs: ClassVar[list[Path]] = [lat_long_csv, unit_csv, datum_csv]
     replace: ClassVar[dict[str, str]] = term_util.term_data(all_csvs, "replace")
     factors_cm: ClassVar[dict[str, float]] = term_util.term_data(
-        unit_csv, "factor_cm", float
+        unit_csv,
+        "factor_cm",
+        float,
     )
     factors_m: ClassVar[dict[str, float]] = {
         k: v / 100.0 for k, v in factors_cm.items()
@@ -176,9 +178,12 @@ class LatLong(Base):
                 keep=["lat_long"],
                 decoder=decoder,
                 patterns=[
-                    "lat_long+                              datum_label+ ,* (? datum+ )?",
-                    "lat_long+ ,? uncert? ,?     +99.0 m ,* datum_label* ,* (? datum* )?",
-                    "lat_long+ ,? uncert? ,? [+]* 99.0 m ,* datum_label* ,* (? datum* )?",
+                    "lat_long+                            datum_label+ ,* (? datum+ )?",
+                    "lat_long+ ,? uncert? ,?   +99.0 m ,* datum_label* ,* (? datum* )?",
+                    (
+                        "lat_long+ ,? uncert? ,? [+]* 99.0 m ,* "
+                        "datum_label* ,* (? datum* )?"
+                    ),
                     (
                         "lat_long+ ,? uncert? ,? [+]* 99.0 - 99.0 m ,* "
                         "datum_label* ,* (? datum* )?"
@@ -194,8 +199,7 @@ class LatLong(Base):
         coords = re.sub(r"\s(:)", r"\1", coords)
         coords = re.sub(r"(?<=\d)([NESWnesw])", r" \1", coords)
         coords = re.sub(r"-\s(?=\d)", r"-", coords)
-        coords = " ".join(coords.split())
-        return coords
+        return " ".join(coords.split())
 
     @classmethod
     def lat_long_match(cls, ent):

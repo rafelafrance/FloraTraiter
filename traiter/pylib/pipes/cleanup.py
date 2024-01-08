@@ -1,5 +1,3 @@
-from typing import Optional
-
 from spacy.language import Language
 from spacy.tokens import Doc
 
@@ -12,7 +10,8 @@ class CleanupTraits:
         self,
         nlp: Language,
         name: str,
-        keep: Optional[list[str]] = None,  # List of trait labels to keep
+        keep: list[str] | None = None,  # List of trait labels to keep
+        *,
         clear: bool = True,
     ):
         super().__init__()

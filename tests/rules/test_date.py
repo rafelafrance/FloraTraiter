@@ -180,7 +180,7 @@ class TestDate(unittest.TestCase):
                     trait="date",
                     start=0,
                     end=14,
-                )
+                ),
             ],
         )
 

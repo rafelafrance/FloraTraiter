@@ -1,4 +1,5 @@
-"""Utilities for working with vocabularies.
+"""
+Utilities for working with vocabularies.
 
 Based off of symmetric deletes method from SeekStorm. MIT license.
 https://seekstorm.com/blog/1000x-spelling-correction/
@@ -35,8 +36,8 @@ class SpellWell:
             """
         try:
             self.cxn.executescript(indexes)
-        except sqlite3.OperationalError as err:
-            logging.error(err)
+        except sqlite3.OperationalError:
+            logging.exception("Could not create SpellWell database")
 
     def correct(self, word: str, dist=1) -> str:
         if not word:
@@ -61,7 +62,7 @@ class SpellWell:
                     from spells
                    where miss in ({q_marks})
                      and dist <= ?
-                order by freq desc"""
+                order by freq desc"""  # noqa: S608 hardcoded-sql-expression
         hit = self.cxn.execute(sql, args).fetchone()
         return hit[0] if hit else ""
 
@@ -88,7 +89,8 @@ class SpellWell:
         return {r[0] for r in self.cxn.execute("select word from vocab") if r[0]}
 
     def hits(self, text: str) -> int:
-        """Count the number of words in the text that are in our corpus.
+        """
+        Count the number of words in the text that are in our corpus.
 
         A hit is:
         - A direct match in the vocabularies

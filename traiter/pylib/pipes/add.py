@@ -1,7 +1,6 @@
 from collections import defaultdict
 from collections.abc import Iterable
 from pathlib import Path
-from typing import Union
 
 from spacy.language import Language
 
@@ -14,8 +13,8 @@ def term_pipe(
     nlp,
     *,
     name: str,
-    path: Union[Path, list[Path]],
-    default_labels: Union[dict[str, str], None] = None,
+    path: Path | list[Path],
+    default_labels: dict[str, str] | None = None,
 ):
     default_labels = default_labels if default_labels else {}
     paths = path if isinstance(path, Iterable) else [path]
@@ -50,10 +49,10 @@ def trait_pipe(
     nlp,
     *,
     name: str,
-    compiler: Union[list[Compiler], Compiler],
-    keep: Union[list[str], None] = None,
-    overwrite: Union[list[str], None] = None,
-    merge: Union[list[str], None] = None,
+    compiler: list[Compiler] | Compiler,
+    keep: list[str] | None = None,
+    overwrite: list[str] | None = None,
+    merge: list[str] | None = None,
 ):
     keep = keep if keep is not None else ACCUMULATOR.keep
     compilers = compiler if isinstance(compiler, Iterable) else [compiler]
@@ -97,7 +96,10 @@ def cleanup_pipe(nlp: Language, *, name: str, delete=None):
 
 
 def custom_pipe(
-    nlp: Language, registered: str, name: str = "", config: Union[dict, None] = None
+    nlp: Language,
+    registered: str,
+    name: str = "",
+    config: dict | None = None,
 ):
     config = config if config else {}
     name = name if name else registered
@@ -126,10 +128,10 @@ def link_pipe(
 ):
     patterns = []
     compiler.compile()
-    for pattern in compiler.patterns:
-        patterns.append(
-            {"label": compiler.label, "pattern": pattern, "id": compiler.id}
-        )
+    patterns = [
+        {"label": compiler.label, "pattern": p, "id": compiler.id}
+        for p in compiler.patterns
+    ]
     config = {
         "patterns": patterns,
         "parents": parents,

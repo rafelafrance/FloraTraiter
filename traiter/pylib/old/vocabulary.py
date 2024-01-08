@@ -2,15 +2,7 @@
 from itertools import groupby
 
 from . import rule as re_rule
-from .rule import Action
-from .rule import grouper
-from .rule import InRegexp
-from .rule import part
-from .rule import producer
-from .rule import replacer
-from .rule import Rule
-from .rule import Rules
-from .rule import term
+from .rule import Action, InRegexp, Rule, Rules, grouper, part, producer, replacer, term
 from .util import flatten
 
 FIRST = re_rule.FIRST
@@ -51,21 +43,36 @@ class Vocabulary:
         return rule
 
     def part(
-        self, name: str, regexp: InRegexp, capture: bool = True, priority: int = 0
+        self,
+        name: str,
+        regexp: InRegexp,
+        *,
+        capture: bool = True,
+        priority: int = 0,
     ) -> Rules:
         """Add a partial term rule."""
         self.rules[name] = part(name, regexp, capture=capture, priority=priority)
         return self.rules[name]
 
     def term(
-        self, name: str, regexp: InRegexp, capture: bool = True, priority: int = 0
+        self,
+        name: str,
+        regexp: InRegexp,
+        *,
+        capture: bool = True,
+        priority: int = 0,
     ) -> Rules:
         """Add a vocabulary term."""
         self.rules[name] = term(name, regexp, capture=capture, priority=priority)
         return self.rules[name]
 
     def grouper(
-        self, name: str, regexp: InRegexp, capture: bool = True, priority: int = 0
+        self,
+        name: str,
+        regexp: InRegexp,
+        *,
+        capture: bool = True,
+        priority: int = 0,
     ) -> Rules:
         """Add a grouper rule."""
         rule = grouper(name, regexp, capture=capture, priority=priority)
@@ -73,7 +80,12 @@ class Vocabulary:
         return self.rules[name]
 
     def replacer(
-        self, name: str, regexp: InRegexp, capture: bool = True, priority: int = 0
+        self,
+        name: str,
+        regexp: InRegexp,
+        *,
+        capture: bool = True,
+        priority: int = 0,
     ) -> Rules:
         """Add a replacer rule."""
         rule = replacer(name, regexp, capture=capture, priority=priority)
@@ -85,7 +97,8 @@ class Vocabulary:
         self,
         action: Action,
         regexp: InRegexp,
-        name: str = None,
+        name: str | None = None,
+        *,
         capture: bool = True,
         priority: int = 0,
     ) -> Rules:
@@ -99,4 +112,4 @@ class Vocabulary:
         rules = flatten(rules)
         rules = sorted(rules)
         rules.append(rule)
-        return [list(g)[0] for _, g in groupby(rules, key=lambda r: r.name)]
+        return [next(iter(g)) for _, g in groupby(rules, key=lambda r: r.name)]
