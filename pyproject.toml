@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "traiter"
-version = "2.2.0"
+version = "2.2.1"
 description = "Rule-based parsers for mining text from research papers"
 readme = "README.md"
 license = {file = "LICENSE"}
@@ -19,85 +19,94 @@ dependencies = [
     "tqdm",
 ]
 optional-dependencies.dev = [
-    "autopep8",
-    "bandit",
-    "black",
     "ipython",
-    "isort",
     "neovim",
     "pre-commit",
     "pre-commit-hooks",
-    "pydocstyle",
-    "pylint",
     "python-lsp-server[all]",
-    "yapf",
+    "ruff",
 ]
 
 [tool.setuptools]
 py-modules = []
 
-[tool.pycodestyle]
-ignore = "E402"
+[tool.ruff]
 
-[tool.isort]
-profile = "black"
+target-version = "py311"
 
-[tool.black]
-line-length = 88
-target_version = ["py310"]
-include = '\.pyi?$'
-exclude = '''(
-      \.git
-    | \.mypy_cache
-    | \.venv
-    | build
-    | dist
-)'''
+show-fixes = true
 
-[tool.pylint]
-max-line-length = 88
-ignore = ["CVS"]
-good-names = [
-    "i",
-    "j",
-    "k",
-    "x",
-    "y",
-    "_",
-    "x0",
-    "x1",
-    "x2",
-    "y0",
-    "y1",
-    "y2",
-    "lb",
-    "ln",
-    "df",
-    "lr",
+select = [
+    "F",
+    "E",
+    "W",
+    "C90",
+    "I",
+    "N",
+    "D",
+    "UP",
+    "S",
+    "BLE",
+    "FBT",
+    "B",
+#    "A",
+    "COM",
+    "C4",
+    "T10",
+    "EM",
+    "EXE",
+    "FA",
+    "ISC",
+    "ICN",
+    "G",
+    "INP",
+    "PIE",
+    "T20",
+    "PYI",
+    "PT",
+    "Q",
+    "RSE",
+    "RET",
+    "SLF",
+    "SLOT",
+    "SIM",
+    "TID",
+    "TCH",
+    "INT",
+#    "ARG",
+    "PTH",
+    "TD",
+    "FIX",
+    "PD",
+    "PGH",
+    "PL",
+    "TRY",
+    "FLY",
+    "NPY",
+    "PERF",
+#    "FURB",
+#    "LOG",
+    "RUF",
 ]
-design.max-args = 5                     # Maximum number of arguments for function / method.
-design.max-attributes = 7               # Maximum number of attributes for a class (see R0902).
-design.max-bool-expr = 5                # Maximum number of boolean expressions in an if statement (see R0916).
-design.max-branches = 12                # Maximum number of branch for function / method body.
-design.max-locals = 15                  # Maximum number of locals for function / method body.
-design.max-parents = 7                  # Maximum number of parents for a class (see R0901).
-design.max-public-methods = 20          # Maximum number of public methods for a class (see R0904).
-design.max-returns = 6                  # Maximum number of return / yield for function / method body.
-design.max-statements = 50              # Maximum number of statements in function / method body.
-design.min-public-methods = 2           # Minimum number of public methods for a class (see R0903).
-format.max-line-length = 79             # Maximum number of characters on a single line.
-format.max-module-lines = 1000          # Maximum number of lines in a module.
-logging.logging-format-style = "new"    # The type of string formatting that logging methods do. `old` means using % formatting, `new` is for `{}` formatting.
-logging.logging-modules = ["logging"]   # Logging modules to check that the string format arguments are in logging function parameter format.
-refactoring.max-nested-blocks = 5       # Maximum number of nested blocks for function / method body
-reports.output-format = "parseable"     # Set the output format. Available formats are text, parseable, colorized, json, and msvs (visual studio)
-reports.reports = true                  # Tells whether to display a full report or only the messages.
-reports.score = true                    # Activate the evaluation score.
-similarities.min-similarity-lines = 4   # Minimum lines number of a similarity.
-disable = [
-    "missing-module-docstring",         # "C0114"
-    "missing-class-docstring",          # "C0115"
-    "missing-function-docstring",       # "C0116"
-    "too-few-public-methods",           # "R0903"
-    "too-many-arguments",               # "R0913"
+
+ignore = [
+    "D100",
+    "D101",
+    "D102",
+    "D103",
+    "D104",
+    "D105",
+    "D107",
+    "D203",
+    "D212",
+    "N818",
+    "PD901",
+    "PLR0913",
+    "PLW2901",
+    "PLW0603",
+    "PT009",
+    "RUF001",
+    "SIM117",
+    "SLF001",
+    "T201",
 ]
