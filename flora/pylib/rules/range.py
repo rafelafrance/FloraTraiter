@@ -9,8 +9,7 @@ from spacy.language import Language
 from traiter.traiter.pylib import const as t_const
 from traiter.traiter.pylib.darwin_core import DarwinCore
 from traiter.traiter.pylib.pattern_compiler import Compiler
-from traiter.traiter.pylib.pipes import add
-from traiter.traiter.pylib.pipes import reject_match
+from traiter.traiter.pylib.pipes import add, reject_match
 from traiter.traiter.pylib.rules import terms as t_terms
 
 from .linkable import Linkable
@@ -26,12 +25,10 @@ class Range(Linkable):
     ]
 
     and_: ClassVar[list[str]] = ["&", "and", "et"]
-    conj: ClassVar[list[str]] = and_ + ["or"]
+    conj: ClassVar[list[str]] = [*and_, "or"]
     min_or: ClassVar[list[str]] = t_const.FLOAT_RE + f"(or|{'|'.join(and_)})"
     not_count_symbol: ClassVar[list[str]] = t_const.CROSS + t_const.SLASH
-    not_numeric: ClassVar[
-        list[str]
-    ] = """
+    not_numeric: ClassVar[list[str]] = """
         not_numeric metric_mass imperial_mass metric_dist imperial_dist
         """.split()
     to: ClassVar[list[str]] = ["to"]
@@ -50,7 +47,7 @@ class Range(Linkable):
                 key + "Low": self.low,
                 key + "High": self.high,
                 key + "Maximum": self.max,
-            }
+            },
         )
 
     @property
@@ -239,7 +236,7 @@ class Range(Linkable):
             nums += re.findall(r"\d*\.?\d+", token.text)
 
         keys = ent.label_.split(".")[1:]
-        kwargs = {k: v for k, v in zip(keys, nums)}
+        kwargs = dict(zip(keys, nums, strict=False))
 
         trait = cls.from_ent(ent, **kwargs)
 

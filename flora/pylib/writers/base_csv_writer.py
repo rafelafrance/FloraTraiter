@@ -1,15 +1,17 @@
 from collections import defaultdict
+from typing import ClassVar
 
 import pandas as pd
 
-from ..rules.part import PART_LABELS
+from flora.pylib.rules.part import PART_LABELS
+
 from . import writer_utils as w_utils
 
-PARTS_SET = set(PART_LABELS + ["multiple_parts"])
+PARTS_SET = {*PART_LABELS, "multiple_parts"}
 
 
 class BaseCsvWriter:
-    first = []
+    first: ClassVar[list] = []
 
     def __init__(self, csv_file, csv_min=0):
         self.csv_file = csv_file
@@ -21,7 +23,7 @@ class BaseCsvWriter:
         df = pd.DataFrame(csv_rows)
         df = self.sort_df(df)
 
-        with open(self.csv_file, "w") as out_file:
+        with self.csv_file.open("w") as out_file:
             out_file.write("** All sizes are given in centimeters. **\n")
             df.to_csv(out_file, index=False)
 

@@ -1,4 +1,5 @@
-"""Link traits to a plant's sex.
+"""
+Link traits to a plant's sex.
 
 We want to handle sexual dimorphism by linking traits to a plant's sex.
 For example: "petals (1–)3–10(–12) mm (pistillate) or 5–8(–10) mm (staminate):
@@ -20,9 +21,7 @@ from traiter.traiter.pylib.rules.linker import Linker
 class SexLinker(Linker):
     # Class vars ----------
     parents: ClassVar[list[str]] = ["sex"]
-    children: ClassVar[
-        list[str]
-    ] = """
+    children: ClassVar[list[str]] = """
         color count duration duration flower_location habit
         joined leaf_duration leaf_folding part_location flower_morphology
         margin multiple_parts part_location part plant_morphology shape

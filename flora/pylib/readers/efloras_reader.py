@@ -1,7 +1,6 @@
 import csv
 import re
-from dataclasses import dataclass
-from dataclasses import field
+from dataclasses import dataclass, field
 from datetime import datetime
 from itertools import product
 from pathlib import Path
@@ -9,8 +8,8 @@ from pathlib import Path
 from bs4 import BeautifulSoup
 from tqdm import tqdm
 
-from .. import const
-from ..rules.part import PART_LABELS
+from flora.pylib import const
+from flora.pylib.rules.part import PART_LABELS
 
 TAXON_TITLE = "Accepted Name"
 
@@ -99,7 +98,7 @@ def get_family_tree(family):
     taxa = {}
     dir_ = tree_dir(family["flora_id"], family["family"])
     for path in dir_.glob("*.html"):
-        with open(path) as in_file:
+        with path.open() as in_file:
             page = in_file.read()
 
         soup = BeautifulSoup(page, features="lxml")
@@ -114,7 +113,7 @@ def get_family_tree(family):
 
 def get_treatment(path):
     """Get the taxon description page."""
-    with open(path) as in_file:
+    with path.open() as in_file:
         page = in_file.read()
     soup = BeautifulSoup(page, features="lxml")
     return soup.find(id="panelTaxonTreatment")

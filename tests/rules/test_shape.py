@@ -96,7 +96,7 @@ class TestShape(unittest.TestCase):
             parse(
                 """
                 Leaves: blade ovate or elongate-ovate to
-                lanceolate-ovate or ovate-triangular,"""
+                lanceolate-ovate or ovate-triangular,""",
             ),
             [
                 Part(part="leaf", trait="part", type="leaf_part", start=0, end=6),
@@ -153,7 +153,7 @@ class TestShape(unittest.TestCase):
             parse(
                 """
                 ; blade abaxially, suborbiculate to
-                broadly ovate, depressed-ovate, or reniform,"""
+                broadly ovate, depressed-ovate, or reniform,""",
             ),
             [
                 Part(part="leaf", trait="part", type="leaf_part", start=2, end=7),
@@ -193,7 +193,7 @@ class TestShape(unittest.TestCase):
             parse(
                 """
                 blade broadly ovate-cordate to triangular-cordate or
-                reniform, shallowly to deeply palmately"""
+                reniform, shallowly to deeply palmately""",
             ),
             [
                 Part(part="leaf", trait="part", type="leaf_part", start=0, end=5),
@@ -268,7 +268,7 @@ class TestShape(unittest.TestCase):
             parse(
                 """
                 Leaves: petiole blade pentagonal-angulate to
-                reniform-angulate or shallowly 5-angulate."""
+                reniform-angulate or shallowly 5-angulate.""",
             ),
             [
                 Part(part="leaf", trait="part", type="leaf_part", start=0, end=6),
@@ -308,7 +308,7 @@ class TestShape(unittest.TestCase):
             parse(
                 """
                 blade lanceolate to narrowly or broadly lanceolate
-                or elliptic-lanceolate,"""
+                or elliptic-lanceolate,""",
             ),
             [
                 Part(part="leaf", trait="part", type="leaf_part", start=0, end=5),

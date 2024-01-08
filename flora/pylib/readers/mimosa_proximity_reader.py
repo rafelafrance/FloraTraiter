@@ -1,4 +1,5 @@
-"""The algorithms for linking traits to the taxon they describe can get involved.
+"""
+The algorithms for linking traits to the taxon they describe can get involved.
 This simple-minded reader associates traits with a taxon by proximity to the nearest
 trait mentioned. That is, it will link a trait to the nearest taxon that precedes it
 in the text. There is a radius parameter that will stop linking traits and assign the

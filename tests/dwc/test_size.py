@@ -19,7 +19,7 @@ class TestSize(unittest.TestCase):
                         "lengthHighInCentimeters: 34.0 ~ "
                         "widthLowInCentimeters: 45.0 ~ "
                         "widthHighInCentimeters: 56.0"
-                    )
-                }
+                    ),
+                },
             },
         )

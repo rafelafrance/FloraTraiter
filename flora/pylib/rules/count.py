@@ -10,8 +10,7 @@ from traiter.traiter.pylib import term_util
 from traiter.traiter.pylib import util as t_util
 from traiter.traiter.pylib.darwin_core import DarwinCore
 from traiter.traiter.pylib.pattern_compiler import Compiler
-from traiter.traiter.pylib.pipes import add
-from traiter.traiter.pylib.pipes import reject_match
+from traiter.traiter.pylib.pipes import add, reject_match
 from traiter.traiter.pylib.rules import terms as t_terms
 
 from .linkable import Linkable
@@ -42,9 +41,7 @@ class Count(Linkable):
     not_count_symbol: ClassVar[list[str]] = t_const.CROSS + t_const.SLASH
     replace: ClassVar[dict[str, str]] = term_util.term_data(all_csvs, "replace")
     suffix_term: ClassVar[dict[str, str]] = term_util.term_data(all_csvs, "suffix_term")
-    not_numeric: ClassVar[
-        list[str]
-    ] = """
+    not_numeric: ClassVar[list[str]] = """
         not_numeric metric_mass imperial_mass metric_dist imperial_dist
         """.split()
     # ---------------------
@@ -70,9 +67,9 @@ class Count(Linkable):
                         "group": self.count_group,
                         "perPart": self.per_part,
                         "perCount": self.per_count,
-                    }
-                )
-            }
+                    },
+                ),
+            },
         )
 
     @property

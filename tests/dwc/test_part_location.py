@@ -11,7 +11,7 @@ class TestPartLocation(unittest.TestCase):
             to_dwc(LABEL, "adnate to petiole for 1-2 mm"),
             {
                 "dwc:dynamicProperties": {
-                    "partAsDistance": "adnate to petiole for 1 - 2 mm"
-                }
+                    "partAsDistance": "adnate to petiole for 1 - 2 mm",
+                },
             },
         )

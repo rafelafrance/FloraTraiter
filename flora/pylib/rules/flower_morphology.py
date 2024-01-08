@@ -2,16 +2,15 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import ClassVar
 
-from spacy import Language
-from spacy import registry
+from spacy import Language, registry
 
+from flora.pylib.trait_util import clean_trait
 from traiter.traiter.pylib import const as t_const
 from traiter.traiter.pylib import term_util
 from traiter.traiter.pylib.darwin_core import DarwinCore
 from traiter.traiter.pylib.pattern_compiler import Compiler
 from traiter.traiter.pylib.pipes import add
 
-from ..trait_util import clean_trait
 from .linkable import Linkable
 
 
@@ -22,7 +21,8 @@ class FlowerMorphology(Linkable):
         Path(__file__).parent / "terms" / "flower_morphology_terms.csv"
     )
     replace: ClassVar[dict[str, str]] = term_util.term_data(
-        flower_morphology_csv, "replace"
+        flower_morphology_csv,
+        "replace",
     )
     # ---------------------
 
@@ -38,7 +38,9 @@ class FlowerMorphology(Linkable):
     @classmethod
     def pipe(cls, nlp: Language):
         add.term_pipe(
-            nlp, name="flower_morphology_terms", path=cls.flower_morphology_csv
+            nlp,
+            name="flower_morphology_terms",
+            path=cls.flower_morphology_csv,
         )
         add.trait_pipe(
             nlp,

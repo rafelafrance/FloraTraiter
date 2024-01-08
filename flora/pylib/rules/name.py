@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from pathlib import Path
 from typing import ClassVar
-from typing import Optional
 
 import regex as re
 from spacy.language import Language
@@ -10,8 +9,7 @@ from spacy.util import registry
 from traiter.traiter.pylib import const as t_const
 from traiter.traiter.pylib.darwin_core import DarwinCore
 from traiter.traiter.pylib.pattern_compiler import Compiler
-from traiter.traiter.pylib.pipes import add
-from traiter.traiter.pylib.pipes import reject_match
+from traiter.traiter.pylib.pipes import add, reject_match
 from traiter.traiter.pylib.rules import terms as t_terms
 from traiter.traiter.pylib.rules.base import Base
 
@@ -51,7 +49,7 @@ class Name(Base):
         return "name"
 
     @classmethod
-    def pipe(cls, nlp: Language, overwrite: Optional[list[str]] = None):
+    def pipe(cls, nlp: Language, overwrite: list[str] | None = None):
         add.term_pipe(nlp, name="name_terms", path=cls.all_csvs)
 
         overwrite = overwrite if overwrite else []

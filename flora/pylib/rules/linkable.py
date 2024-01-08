@@ -21,7 +21,7 @@ class Linkable(t_base.Base):
         raise NotImplementedError
 
     # Examples: femaleFlowerShape or stemLengthInCentimeters
-    def key_builder(self, *args, prepend: str = None, add_data=True) -> str:
+    def key_builder(self, *args, prepend: str | None = None, add_data=True) -> str:
         key = [prepend] if prepend else []
         if add_data:
             for field in (self.sex, self.part, self.subpart):

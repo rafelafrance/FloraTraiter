@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""This builds taxon terms from downloaded data.
+"""
+Build taxon terms from downloaded data.
 
 1. [ITIS sqlite database](https://www.itis.gov/downloads/index.html)
 2. [The WFO Plant List](https://wfoplantlist.org/plant-list/classifications)
@@ -16,8 +17,7 @@ import textwrap
 from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
-from zipfile import ZIP_DEFLATED
-from zipfile import ZipFile
+from zipfile import ZIP_DEFLATED, ZipFile
 
 import regex
 from pylib import const
@@ -41,7 +41,7 @@ class Record:
 class Ranks:
     def __init__(self):
         rank_csv = Path(terms.__file__).parent / "rank_terms.csv"
-        with open(rank_csv) as term_file:
+        with rank_csv.open() as term_file:
             reader = csv.DictReader(term_file)
             self.ranks = list(reader)
         self.id2rank = {int(r["rank_id"]): r["replace"] for r in self.ranks}
@@ -66,13 +66,14 @@ class Taxa:
         if rank not in self.ranks.rank_names:
             return
 
+        binomial = 2
+
         if len(words) == 1:
             self.taxon[pattern.lower()].add(rank)
 
-        elif len(words) >= 2:
+        elif len(words) >= binomial:
             self.add_binomial(words)
-            rank = rank
-            for word in words[2:]:
+            for word in words[binomial:]:
                 if new_rank := self.ranks.rank_names.get(word):
                     rank = new_rank
                 else:
@@ -91,7 +92,7 @@ class Taxa:
             self.add_taxon_and_rank(pattern, rank)
 
     def remove_problem_taxa(self, show_rejected):
-        """Some taxa interfere with other parses."""
+        """Remove taxa that interfere with other parses."""
         new = {}
 
         all_csvs = [
@@ -111,7 +112,7 @@ class Taxa:
         rows = tu.read_terms(all_csvs)
 
         problem_taxa = set(
-            """end erica flora floral harms lake major may minor phoenix side""".split(),
+            "end erica flora floral harms lake major may minor phoenix side".split(),
         )
         problem_taxa |= {t["pattern"].lower() for t in rows}
 
@@ -197,12 +198,13 @@ def sort_ranks(counts, records, taxa):
 
 def build_records(taxa):
     logging.info("Building records")
+    binomial = 2
 
     records = []
 
     for taxon_, ranks in taxa.taxon.items():
         word_count = len(taxon_.split())
-        if word_count < 3:
+        if word_count <= binomial:
             records.append(
                 Record(
                     label="monomial" if word_count == 1 else "binomial",
@@ -211,7 +213,8 @@ def build_records(taxa):
                 ),
             )
         else:
-            logging.error(f"Parse error: {taxon_}")
+            msg = f"Parse error: {taxon_}"
+            logging.error(msg)
             sys.exit(1)
 
     return records
@@ -223,7 +226,7 @@ def write_csv(rows):
     monomial_zip = Path(terms.__file__).parent / "monomial_terms.zip"
     binomial_zip = Path(terms.__file__).parent / "binomial_terms.zip"
 
-    with open(monomial_csv, "w") as csv_file:
+    with monomial_csv.open("w") as csv_file:
         writer = csv.writer(csv_file)
         writer.writerow(""" pattern ranks """.split())
         for r in rows:
@@ -232,7 +235,7 @@ def write_csv(rows):
     with ZipFile(monomial_zip, "w", ZIP_DEFLATED, compresslevel=9) as zippy:
         zippy.write(monomial_csv, arcname=monomial_csv.name)
 
-    with open(binomial_csv, "w") as csv_file:
+    with binomial_csv.open("w") as csv_file:
         writer = csv.writer(csv_file)
         writer.writerow(""" pattern """.split())
         for r in rows:
@@ -257,7 +260,7 @@ def read_taxa(args, taxa):
 
 
 def read_other_taxa(other_taxa_csv, taxa):
-    with open(other_taxa_csv) as in_file:
+    with other_taxa_csv.open() as in_file:
         reader = csv.DictReader(in_file)
         for row in reader:
             for rank in set(row["ranks"].split()):
@@ -265,7 +268,7 @@ def read_other_taxa(other_taxa_csv, taxa):
 
 
 def read_wfot_taxa(wfot_tsv, taxa):
-    with open(wfot_tsv) as in_file:
+    with wfot_tsv.open() as in_file:
         reader = csv.DictReader(in_file, delimiter="\t")
         for row in tqdm(reader, desc="wfot"):
             rank = taxa.ranks.normalize_rank(row["taxonRank"])
@@ -274,7 +277,7 @@ def read_wfot_taxa(wfot_tsv, taxa):
 
 
 def read_wcvp_taxa(wcvp_file, taxa):
-    with open(wcvp_file) as in_file:
+    with wcvp_file.open() as in_file:
         reader = csv.DictReader(in_file, delimiter="|")
         for row in tqdm(reader, desc="wcvp"):
             rank = taxa.ranks.normalize_rank(row["taxonrank"])
@@ -288,7 +291,7 @@ def read_itis_taxa(itis_db, taxa):
     with sqlite3.connect(itis_db) as cxn:
         cxn.row_factory = sqlite3.Row
         sql = "select complete_name, rank_id from taxonomic_units where kingdom_id = ?"
-        rows = [t for t in tqdm(cxn.execute(sql, (itis_kingdom_id,)), desc="itis")]
+        rows = list(tqdm(cxn.execute(sql, (itis_kingdom_id,)), desc="itis"))
 
     for row in rows:
         rank, pattern = taxa.ranks.id2rank[row["rank_id"]], row["complete_name"]

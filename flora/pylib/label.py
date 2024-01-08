@@ -1,13 +1,11 @@
 import base64
 import io
 import warnings
-from dataclasses import dataclass
-from dataclasses import field
+from dataclasses import dataclass, field
 from pathlib import Path
 
 import regex as re
-from PIL import Image
-from PIL import UnidentifiedImageError
+from PIL import Image, UnidentifiedImageError
 
 from traiter.traiter.pylib import util as t_util
 from traiter.traiter.pylib.rules.base import Base
@@ -44,7 +42,8 @@ class Label:
         self.score_label(vocabulary)
 
     def score_label(self, vocabulary):
-        """Score the label content.
+        """
+        Score the label content.
 
         score = number of words in the label (words = all chars are letters)
                 divided by the number of those words in the vocabulary

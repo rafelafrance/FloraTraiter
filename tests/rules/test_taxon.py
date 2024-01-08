@@ -20,7 +20,7 @@ class TestTaxon(unittest.TestCase):
                     trait="taxon",
                     start=0,
                     end=12,
-                )
+                ),
             ],
         )
 
@@ -34,7 +34,7 @@ class TestTaxon(unittest.TestCase):
                     trait="taxon",
                     start=0,
                     end=16,
-                )
+                ),
             ],
         )
 
@@ -48,7 +48,7 @@ class TestTaxon(unittest.TestCase):
                     trait="taxon",
                     start=0,
                     end=29,
-                )
+                ),
             ],
         )
 
@@ -62,7 +62,7 @@ class TestTaxon(unittest.TestCase):
                     trait="taxon",
                     start=0,
                     end=34,
-                )
+                ),
             ],
         )
 
@@ -77,7 +77,7 @@ class TestTaxon(unittest.TestCase):
                     authority="Bamehy",
                     start=0,
                     end=21,
-                )
+                ),
             ],
         )
 
@@ -92,7 +92,7 @@ class TestTaxon(unittest.TestCase):
                     trait="taxon",
                     start=0,
                     end=29,
-                )
+                ),
             ],
         )
 
@@ -107,7 +107,7 @@ class TestTaxon(unittest.TestCase):
                     start=0,
                     end=13,
                     associated=True,
-                )
+                ),
             ],
         )
 
@@ -156,7 +156,7 @@ class TestTaxon(unittest.TestCase):
                     trait="taxon",
                     start=0,
                     end=31,
-                )
+                ),
             ],
         )
 
@@ -165,7 +165,7 @@ class TestTaxon(unittest.TestCase):
             parse(
                 """
                 Neptunia gracilis f. gracilis Neptunia gracilis var. villosula Benth.,
-                """
+                """,
             ),
             [
                 Taxon(
@@ -193,7 +193,7 @@ class TestTaxon(unittest.TestCase):
             parse(
                 """
                 F. gracilis Neptunia gracilis var. villosula Benth.,
-                """
+                """,
             ),
             [
                 Taxon(
@@ -225,7 +225,7 @@ class TestTaxon(unittest.TestCase):
                     trait="taxon",
                     start=0,
                     end=19,
-                )
+                ),
             ],
         )
 
@@ -236,7 +236,7 @@ class TestTaxon(unittest.TestCase):
                 """
                 Cornaceae
                 Cornus obliqua Raf.
-                """
+                """,
             ),
             [
                 Taxon(
@@ -266,7 +266,7 @@ class TestTaxon(unittest.TestCase):
                 Crowley's Ridge
                 Fabaceae
                 Vicia villosa Roth ssp. varia (Khan)
-                """
+                """,
             ),
             [
                 Taxon(
@@ -300,7 +300,7 @@ class TestTaxon(unittest.TestCase):
                     trait="taxon",
                     start=0,
                     end=38,
-                )
+                ),
             ],
         )
 
@@ -315,7 +315,7 @@ class TestTaxon(unittest.TestCase):
                     trait="taxon",
                     start=0,
                     end=30,
-                )
+                ),
             ],
         )
 
@@ -324,7 +324,7 @@ class TestTaxon(unittest.TestCase):
         self.assertEqual(
             parse(
                 """Cornus obliqua Willd.
-                In Fraijanes Recreation Park"""
+                In Fraijanes Recreation Park""",
             ),
             [
                 Taxon(
@@ -334,7 +334,7 @@ class TestTaxon(unittest.TestCase):
                     trait="taxon",
                     start=0,
                     end=21,
-                )
+                ),
             ],
         )
 
@@ -366,7 +366,7 @@ class TestTaxon(unittest.TestCase):
                     trait="taxon",
                     start=0,
                     end=26,
-                )
+                ),
             ],
         )
 
@@ -376,7 +376,7 @@ class TestTaxon(unittest.TestCase):
                 """
                 Cephalanthus occidentalis L. Rubiaceas
                 Associated species: Cornus obliqua
-                """
+                """,
             ),
             [
                 Taxon(
@@ -415,7 +415,7 @@ class TestTaxon(unittest.TestCase):
                     trait="taxon",
                     start=0,
                     end=39,
-                )
+                ),
             ],
         )
 
@@ -430,7 +430,7 @@ class TestTaxon(unittest.TestCase):
                     trait="taxon",
                     start=0,
                     end=46,
-                )
+                ),
             ],
         )
 
@@ -445,7 +445,7 @@ class TestTaxon(unittest.TestCase):
                     trait="taxon",
                     start=0,
                     end=46,
-                )
+                ),
             ],
         )
 
@@ -530,7 +530,7 @@ class TestTaxon(unittest.TestCase):
                     trait="multi_taxon",
                     start=0,
                     end=36,
-                )
+                ),
             ],
         )
 
@@ -545,7 +545,7 @@ class TestTaxon(unittest.TestCase):
                     trait="taxon",
                     start=0,
                     end=37,
-                )
+                ),
             ],
         )
 
@@ -591,7 +591,7 @@ class TestTaxon(unittest.TestCase):
                     start=0,
                     end=59,
                     authority=["Muhl and Willd", "Nutt", "Brewer"],
-                )
+                ),
             ],
         )
 
@@ -606,7 +606,7 @@ class TestTaxon(unittest.TestCase):
                     start=0,
                     end=28,
                     authority="Linnaeus, Pers",
-                )
+                ),
             ],
         )
 
@@ -629,7 +629,7 @@ class TestTaxon(unittest.TestCase):
         self.maxDiff = None
         self.assertEqual(
             parse(
-                "Neptunia gracilis (Torr. & A. Gray ex A. Gray) W.A. Weber & A. Love"
+                "Neptunia gracilis (Torr. & A. Gray ex A. Gray) W.A. Weber & A. Love",
             ),
             [
                 Taxon(
@@ -649,7 +649,7 @@ class TestTaxon(unittest.TestCase):
                 """
                 Neptunia gracilis (Heller) Chuang & Heckard
                 ssp. varia (Heller) Chuang & Heckard
-                """
+                """,
             ),
             [
                 Taxon(
@@ -664,7 +664,7 @@ class TestTaxon(unittest.TestCase):
                         "Chuang",
                         "Heckard",
                     ],
-                )
+                ),
             ],
         )
 
@@ -679,6 +679,6 @@ class TestTaxon(unittest.TestCase):
                     start=0,
                     end=53,
                     authority="A. Gray N.H. Holmgren",
-                )
+                ),
             ],
         )

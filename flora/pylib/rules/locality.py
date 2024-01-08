@@ -10,8 +10,7 @@ import traiter.traiter.pylib.const as t_const
 import traiter.traiter.pylib.darwin_core as t_dwc
 from traiter.traiter.pylib.darwin_core import DarwinCore
 from traiter.traiter.pylib.pattern_compiler import Compiler
-from traiter.traiter.pylib.pipes import add
-from traiter.traiter.pylib.pipes import reject_match
+from traiter.traiter.pylib.pipes import add, reject_match
 from traiter.traiter.pylib.rules.base import Base
 
 USE_MOCK_DATA = 0

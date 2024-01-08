@@ -1,5 +1,4 @@
-from dataclasses import dataclass
-from dataclasses import field
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import ClassVar
 
@@ -10,8 +9,7 @@ from traiter.traiter.pylib import const as t_const
 from traiter.traiter.pylib import term_util
 from traiter.traiter.pylib.darwin_core import DarwinCore
 from traiter.traiter.pylib.pattern_compiler import Compiler
-from traiter.traiter.pylib.pipes import add
-from traiter.traiter.pylib.pipes import reject_match
+from traiter.traiter.pylib.pipes import add, reject_match
 from traiter.traiter.pylib.rules import terms as t_terms
 
 from .linkable import Linkable
@@ -46,11 +44,11 @@ class Size(Linkable):
     # Class vars ----------
     cross: ClassVar[list[str]] = t_const.CROSS + t_const.COMMA
     factors_cm: ClassVar[dict[str, float]] = term_util.term_data(
-        ALL_CSVS, "factor_cm", float
+        ALL_CSVS,
+        "factor_cm",
+        float,
     )
-    not_numeric: ClassVar[
-        list[str]
-    ] = """
+    not_numeric: ClassVar[list[str]] = """
         not_numeric metric_mass imperial_mass metric_dist imperial_dist
         """.split()
     replace: ClassVar[dict[str, str]] = term_util.term_data(ALL_CSVS, "replace")
@@ -245,9 +243,9 @@ class Size(Linkable):
                 setattr(dim, key, value)
 
             # Clear temp data
-            setattr(dim, "uncertain", None)
-            setattr(dim, "units", None)
-            setattr(dim, "sex", None)
+            dim.uncertain = None
+            dim.units = None
+            dim.sex = None
 
         trait = cls.from_ent(ent, dims=dims, sex=sex, uncertain=uncertain)
         return trait
@@ -282,7 +280,7 @@ class Size(Linkable):
             if token._.term == "dim":
                 reals.append(cls.replace.get(token.lower_, token.lower_))
 
-        for real, dim in zip(reals, dims):
+        for real, dim in zip(reals, dims, strict=False):
             dim.dim = real
 
         return trait

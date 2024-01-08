@@ -1,4 +1,5 @@
-"""Link traits to plant subparts.
+"""
+Link traits to plant subparts.
 
 We are linking parts like "petal" or "leaf" to traits like color or size.
 For example: "with thick, woody rootstock" should link the "rootstock" part with

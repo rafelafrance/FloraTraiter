@@ -2,8 +2,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import ClassVar
 
-from spacy import Language
-from spacy import registry
+from spacy import Language, registry
 
 from traiter.traiter.pylib import const as t_const
 from traiter.traiter.pylib import term_util

@@ -3,9 +3,8 @@
 from spacy.language import Language
 from spacy.tokens import Doc
 
+from flora.pylib import trait_util as tu
 from traiter.traiter.pylib.pipes import add
-
-from .. import trait_util as tu
 
 
 def pipe(nlp: Language):

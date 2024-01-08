@@ -20,5 +20,6 @@ class TestAdminUnit(unittest.TestCase):
 
     def test_admin_unit_dwc_03(self):
         self.assertEqual(
-            to_dwc(LABEL, "Province of Panama"), {"dwc:stateProvince": "panama"}
+            to_dwc(LABEL, "Province of Panama"),
+            {"dwc:stateProvince": "panama"},
         )

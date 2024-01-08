@@ -1,17 +1,16 @@
 from pathlib import Path
 
+from flora.pylib.rules import terms
 from traiter.traiter.pylib import term_util
-
-from ..rules import terms
 
 LOCATION_CSV = Path(terms.__file__).parent / "part_location_terms.csv"
 LOCATION_ENTS = term_util.get_labels(LOCATION_CSV)
 
 TITLE_SKIPS = ["start", "end"]
-FIELD_SKIPS = TITLE_SKIPS + ["trait", "dimensions"]
+FIELD_SKIPS = [*TITLE_SKIPS, "trait", "dimensions"]
 FIELD_SKIPS += ["part", "subpart"]
-COLUMN_SKIPS = FIELD_SKIPS + ["taxon"]
-TRAIT_SKIPS = LOCATION_ENTS + ["part", "subpart", "sex"]
+COLUMN_SKIPS = [*FIELD_SKIPS, "taxon"]
+TRAIT_SKIPS = [*LOCATION_ENTS, "part", "subpart", "sex"]
 
 SUBPART_SET = {"subpart"}
 

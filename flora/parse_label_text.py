@@ -39,7 +39,7 @@ def write_json(args, labels, traiter_dir):
         _ = [t.to_dwc(dwc) for t in lb.traits]
 
         path = traiter_dir / f"{lb.path.stem}.json"
-        with open(path, "w") as f:
+        with path.open("w") as f:
             json.dump(dwc.to_dict(), f, indent=4)
 
 

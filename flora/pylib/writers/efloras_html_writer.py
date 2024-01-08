@@ -2,9 +2,9 @@ from dataclasses import dataclass
 
 from tqdm import tqdm
 
-from .. import const
-from .base_html_writer import BaseHtmlWriter
-from .base_html_writer import BaseHtmlWriterRow
+from flora.pylib import const
+
+from .base_html_writer import BaseHtmlWriter, BaseHtmlWriterRow
 
 
 # @dataclass(kw_only=True)

@@ -1,5 +1,4 @@
-from dataclasses import asdict
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import ClassVar
 
@@ -10,12 +9,9 @@ from spacy.util import registry
 import traiter.traiter.pylib.darwin_core as t_dwc
 from traiter.traiter.pylib import const as t_const
 from traiter.traiter.pylib import term_util
-from traiter.traiter.pylib.darwin_core import DWC
-from traiter.traiter.pylib.darwin_core import DarwinCore
-from traiter.traiter.pylib.pattern_compiler import ACCUMULATOR
-from traiter.traiter.pylib.pattern_compiler import Compiler
-from traiter.traiter.pylib.pipes import add
-from traiter.traiter.pylib.pipes import reject_match
+from traiter.traiter.pylib.darwin_core import DWC, DarwinCore
+from traiter.traiter.pylib.pattern_compiler import ACCUMULATOR, Compiler
+from traiter.traiter.pylib.pipes import add, reject_match
 from traiter.traiter.pylib.rules import terms as t_terms
 from traiter.traiter.pylib.rules.base import Base
 
@@ -48,7 +44,7 @@ class Job(Base):
     ]
 
     temp: ClassVar[str] = "".join(
-        t_const.OPEN + t_const.CLOSE + t_const.QUOTE + list(".,'&")
+        t_const.OPEN + t_const.CLOSE + t_const.QUOTE + list(".,'&"),
     )
     name_re: ClassVar[str] = re.compile(rf"^[\sa-z{re.escape(temp)}-]+$")
     # ---------------------

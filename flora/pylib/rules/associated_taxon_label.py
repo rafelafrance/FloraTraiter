@@ -18,7 +18,7 @@ class AssociatedTaxonLabel(Base):
         Path(__file__).parent / "terms" / "associated_taxon_terms.csv"
     )
     primary_ranks: ClassVar[set[str]] = set(
-        "species subspecies variety subvariety form subform".split()
+        "species subspecies variety subvariety form subform".split(),
     )
     # ---------------------
 

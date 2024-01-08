@@ -1,8 +1,6 @@
-from collections import defaultdict
-from collections import namedtuple
+from collections import defaultdict, namedtuple
 
-from .. import pipeline
-from .. import sentence_pipeline
+from flora.pylib import pipeline, sentence_pipeline
 
 TraitsInText = namedtuple("TraitsInText", "text traits")
 TraitsByTaxon = namedtuple("TraitsByTaxon", "taxon traits")
