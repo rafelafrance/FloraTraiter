@@ -75,7 +75,7 @@ class TestAdminUnit(unittest.TestCase):
                     trait="admin_unit",
                     start=0,
                     end=15,
-                )
+                ),
             ],
         )
 
@@ -116,7 +116,7 @@ class TestAdminUnit(unittest.TestCase):
                 PLANTS OF NORTH CAROLINA
                 STONE MOUNTAIN STATE PARK
                 WILKES COUNTY
-                """
+                """,
             ),
             [
                 AdminUnit(
@@ -226,7 +226,7 @@ class TestAdminUnit(unittest.TestCase):
                 Herbarium of the University of North Carolina
                 SOUTH CAROLINA
                 Dillon County
-                """
+                """,
             ),
             [
                 AdminUnit(
@@ -235,7 +235,7 @@ class TestAdminUnit(unittest.TestCase):
                     trait="admin_unit",
                     start=46,
                     end=74,
-                )
+                ),
             ],
         )
 
@@ -249,7 +249,7 @@ class TestAdminUnit(unittest.TestCase):
                     trait="admin_unit",
                     start=0,
                     end=19,
-                )
+                ),
             ],
         )
 
@@ -263,6 +263,6 @@ class TestAdminUnit(unittest.TestCase):
                     trait="admin_unit",
                     start=0,
                     end=20,
-                )
+                ),
             ],
         )

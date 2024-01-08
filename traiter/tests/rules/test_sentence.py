@@ -36,7 +36,7 @@ class TestSentence(unittest.TestCase):
             """
             Plants perennial (rhizomatous), usually glabrous, sometimes sparsely hairy.
             Stems [10–]30–70[–100] cm. Leaves: stipules lanceolate to oblong.
-            """
+            """,
         )
         doc = PIPELINE(text)
         sents = list(doc.sents)
@@ -47,7 +47,7 @@ class TestSentence(unittest.TestCase):
             """
             Capsules 8–15 × 6–12 mm, larger wings deltate-rounded, 10–17 mm wide,
             smaller 3.5–5 mm wide. 2n = 34, 56 (South America).
-            """
+            """,
         )
         doc = PIPELINE(text)
         sents = list(doc.sents)

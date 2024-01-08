@@ -10,12 +10,11 @@ from dateutil.relativedelta import relativedelta
 from spacy.language import Language
 from spacy.util import registry
 
+from traiter.pylib.darwin_core import DarwinCore
 from traiter.traiter.pylib import term_util
 from traiter.traiter.pylib.pattern_compiler import Compiler
-from traiter.traiter.pylib.pipes import add
-from traiter.traiter.pylib.pipes import reject_match
+from traiter.traiter.pylib.pipes import add, reject_match
 
-from ..darwin_core import DarwinCore
 from .base import Base
 
 
@@ -115,7 +114,8 @@ class Date(Base):
             # Get a month name
             elif token._.term in ("month", "roman"):
                 month = cls.replace.get(
-                    token.text, cls.replace.get(token.lower_, token.lower_)
+                    token.text,
+                    cls.replace.get(token.lower_, token.lower_),
                 )
                 frags.append(month)
 
@@ -137,7 +137,10 @@ class Date(Base):
         date_ = date_.isoformat()[:10]
 
         return super().from_ent(
-            ent, date=date_, century_adjust=century_adjust, missing_day=None
+            ent,
+            date=date_,
+            century_adjust=century_adjust,
+            missing_day=None,
         )
 
     @classmethod

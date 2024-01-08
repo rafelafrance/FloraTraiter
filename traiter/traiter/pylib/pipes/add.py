@@ -1,27 +1,27 @@
 from collections import defaultdict
 from collections.abc import Iterable
 from pathlib import Path
-from typing import Union
 
 from spacy.language import Language
 
 from traiter.traiter.pylib import term_util
-from traiter.traiter.pylib.pattern_compiler import ACCUMULATOR
-from traiter.traiter.pylib.pattern_compiler import Compiler
-from traiter.traiter.pylib.pipes import cleanup
-from traiter.traiter.pylib.pipes import debug
-from traiter.traiter.pylib.pipes import link
-from traiter.traiter.pylib.pipes import merge_selected
-from traiter.traiter.pylib.pipes import phrase
-from traiter.traiter.pylib.pipes import trait
+from traiter.traiter.pylib.pattern_compiler import ACCUMULATOR, Compiler
+from traiter.traiter.pylib.pipes import (
+    cleanup,
+    debug,
+    link,
+    merge_selected,
+    phrase,
+    trait,
+)
 
 
 def term_pipe(
     nlp,
     *,
     name: str,
-    path: Union[Path, list[Path]],
-    default_labels: Union[dict[str, str], None] = None,
+    path: Path | list[Path],
+    default_labels: dict[str, str] | None = None,
 ):
     default_labels = default_labels if default_labels else {}
     paths = path if isinstance(path, Iterable) else [path]
@@ -56,10 +56,10 @@ def trait_pipe(
     nlp,
     *,
     name: str,
-    compiler: Union[list[Compiler], Compiler],
-    keep: Union[list[str], None] = None,
-    overwrite: Union[list[str], None] = None,
-    merge: Union[list[str], None] = None,
+    compiler: list[Compiler] | Compiler,
+    keep: list[str] | None = None,
+    overwrite: list[str] | None = None,
+    merge: list[str] | None = None,
 ):
     keep = keep if keep is not None else ACCUMULATOR.keep
     compilers = compiler if isinstance(compiler, Iterable) else [compiler]
@@ -103,7 +103,10 @@ def cleanup_pipe(nlp: Language, *, name: str, delete=None):
 
 
 def custom_pipe(
-    nlp: Language, registered: str, name: str = "", config: Union[dict, None] = None
+    nlp: Language,
+    registered: str,
+    name: str = "",
+    config: dict | None = None,
 ):
     config = config if config else {}
     name = name if name else registered
@@ -134,7 +137,7 @@ def link_pipe(
     compiler.compile()
     for pattern in compiler.patterns:
         patterns.append(
-            {"label": compiler.label, "pattern": pattern, "id": compiler.id}
+            {"label": compiler.label, "pattern": pattern, "id": compiler.id},
         )
     config = {
         "patterns": patterns,

@@ -6,9 +6,7 @@ from typing import ClassVar
 from spacy.language import Language
 from spacy.util import registry
 
-from traiter.traiter.pylib import const
-from traiter.traiter.pylib import term_util
-from traiter.traiter.pylib import util
+from traiter.traiter.pylib import const, term_util, util
 from traiter.traiter.pylib.darwin_core import DarwinCore
 from traiter.traiter.pylib.pattern_compiler import Compiler
 from traiter.traiter.pylib.pipes import add
@@ -31,7 +29,9 @@ class Elevation(Base):
 
     replace: ClassVar[dict[str, str]] = term_util.term_data(all_csvs, "replace")
     factors_cm: ClassVar[dict[str, float]] = term_util.term_data(
-        (unit_csv, tic_csv), "factor_cm", float
+        (unit_csv, tic_csv),
+        "factor_cm",
+        float,
     )
     factors_m: ClassVar[dict[str, float]] = {
         k: v / 100.0 for k, v in factors_cm.items()
@@ -60,7 +60,9 @@ class Elevation(Base):
     def pipe(cls, nlp: Language):
         add.term_pipe(nlp, name="elevation_terms", path=cls.all_csvs)
         add.trait_pipe(
-            nlp, name="elevation_patterns", compiler=cls.elevation_compilers()
+            nlp,
+            name="elevation_patterns",
+            compiler=cls.elevation_compilers(),
         )
         add.cleanup_pipe(nlp, name="elevation_cleanup")
 
@@ -130,7 +132,11 @@ class Elevation(Base):
             hi = round(values[1] * factor, 3)
 
         return super().from_ent(
-            ent, elevation=elevation, elevation_high=hi, units=units_, about=about
+            ent,
+            elevation=elevation,
+            elevation_high=hi,
+            units=units_,
+            about=about,
         )
 
 

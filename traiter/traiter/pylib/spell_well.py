@@ -1,4 +1,5 @@
-"""Utilities for working with vocabularies.
+"""
+Utilities for working with vocabularies.
 
 Based off of symmetric deletes method from SeekStorm. MIT license.
 https://seekstorm.com/blog/1000x-spelling-correction/
@@ -88,7 +89,8 @@ class SpellWell:
         return {r[0] for r in self.cxn.execute("select word from vocab") if r[0]}
 
     def hits(self, text: str) -> int:
-        """Count the number of words in the text that are in our corpus.
+        """
+        Count the number of words in the text that are in our corpus.
 
         A hit is:
         - A direct match in the vocabularies

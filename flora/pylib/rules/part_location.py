@@ -2,8 +2,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import ClassVar
 
-from spacy import Language
-from spacy import registry
+from spacy import Language, registry
 
 from traiter.traiter.pylib import const as t_const
 from traiter.traiter.pylib import term_util as tu
@@ -25,9 +24,12 @@ class PartLocation(Linkable):
     all_csvs: ClassVar[list[Path]] = [location_csv, units_csv]
 
     replace: ClassVar[dict[str, str]] = tu.term_data(location_csv, "replace")
-    overwrite: ClassVar[list[str]] = (
-        ["part", "subpart"] + tu.get_labels(location_csv) + tu.get_labels(units_csv)
-    )
+    overwrite: ClassVar[list[str]] = [
+        "part",
+        "subpart",
+        *tu.get_labels(location_csv),
+        *tu.get_labels(units_csv),
+    ]
     # ---------------------
 
     part_location: str = None
@@ -55,7 +57,7 @@ class PartLocation(Linkable):
     def location_patterns(cls):
         decoder = {
             "9.9": {"TEXT": {"REGEX": t_const.FLOAT_TOKEN_RE}},
-            "-/to": {"LOWER": {"IN": t_const.DASH + ["to", "_"]}},
+            "-/to": {"LOWER": {"IN": [*t_const.DASH, "to", "_"]}},
             "adj": {"POS": "ADJ"},
             "cm": {"ENT_TYPE": {"IN": ["metric_length", "imperial_length"]}},
             "joined": {"ENT_TYPE": "joined"},

@@ -17,6 +17,6 @@ class TestOtherJob(unittest.TestCase):
                     start=0,
                     end=25,
                     has_label=True,
-                )
+                ),
             ],
         )

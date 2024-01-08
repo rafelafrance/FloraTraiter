@@ -7,8 +7,7 @@ from flora.pylib.rules.part import Part
 from flora.pylib.rules.part_location import PartLocation
 from flora.pylib.rules.sex import Sex
 from flora.pylib.rules.shape import Shape
-from flora.pylib.rules.size import Dimension
-from flora.pylib.rules.size import Size
+from flora.pylib.rules.size import Dimension, Size
 from flora.pylib.rules.subpart import Subpart
 from tests.setup import parse
 from traiter.traiter.pylib.rules.elevation import Elevation
@@ -458,7 +457,7 @@ class TestSize(unittest.TestCase):
             parse(
                 """
                 Inflorescences formed season before flowering and exposed
-                during winter; staminate catkins 3--8.5 cm,"""
+                during winter; staminate catkins 3--8.5 cm,""",
             ),
             [
                 Part(
@@ -616,7 +615,7 @@ class TestSize(unittest.TestCase):
     def test_size_28(self):
         self.assertEqual(
             parse(
-                "Petals pale violet, with darker keel; standard elliptic, 6-7 × 3-4;"
+                "Petals pale violet, with darker keel; standard elliptic, 6-7 × 3-4;",
             ),
             [
                 Part(part="petal", trait="part", type="flower_part", start=0, end=6),
@@ -862,7 +861,7 @@ class TestSize(unittest.TestCase):
         self.assertEqual(
             parse(
                 """setae to 2-6 mm and to 0.4-0.7 mm diam. at base, these mixed with
-                non-secretory setulae"""
+                non-secretory setulae""",
             ),
             [
                 Part(part="setae", trait="part", type="plant_part", start=0, end=5),
@@ -941,7 +940,11 @@ class TestSize(unittest.TestCase):
             [
                 Part(part="tree", trait="part", type="plant_part", start=0, end=4),
                 Elevation(
-                    trait="elevation", elevation=650.0, units="m", start=5, end=14
+                    trait="elevation",
+                    elevation=650.0,
+                    units="m",
+                    start=5,
+                    end=14,
                 ),
             ],
         )
@@ -952,7 +955,7 @@ class TestSize(unittest.TestCase):
                 """
                 flowers: 7
                 ft tall;
-                """
+                """,
             ),
             [
                 Part(type="flower_part", trait="part", part="flower", start=0, end=7),

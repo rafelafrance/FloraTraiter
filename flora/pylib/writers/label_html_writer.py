@@ -3,10 +3,8 @@ from dataclasses import dataclass
 from tqdm import tqdm
 
 from flora.pylib import const
-from flora.pylib.writers.base_html_writer import BaseHtmlWriter
-from flora.pylib.writers.base_html_writer import BaseHtmlWriterRow
-
-from ..labels import Labels
+from flora.pylib.labels import Labels
+from flora.pylib.writers.base_html_writer import BaseHtmlWriter, BaseHtmlWriterRow
 
 
 @dataclass(kw_only=True)
@@ -48,7 +46,7 @@ class HtmlWriter(BaseHtmlWriter):
                     word_count=lb.word_count,
                     valid_words=lb.valid_words,
                     score=lb.score,
-                )
+                ),
             )
 
         total = len(labels.labels)

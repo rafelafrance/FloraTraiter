@@ -40,7 +40,7 @@ class TestCollector(unittest.TestCase):
                 """
                 Det, Edwin B. Smith
                 Coll. Marie P. Locke No. 5595
-                """
+                """,
             ),
             [
                 Job(
@@ -215,7 +215,7 @@ class TestCollector(unittest.TestCase):
                     start=0,
                     end=27,
                     has_label=True,
-                )
+                ),
             ],
         )
 
@@ -266,7 +266,7 @@ class TestCollector(unittest.TestCase):
                     trait="elevation",
                     start=9,
                     end=21,
-                )
+                ),
             ],
         )
 
@@ -283,7 +283,7 @@ class TestCollector(unittest.TestCase):
                 """
                 Distribuido List: CRUZ, EBC, MINE
                 Collector(s): Timothy J. S. Whitfield
-                Collector Number: 1388 Date: 11 Aug 2016"""
+                Collector Number: 1388 Date: 11 Aug 2016""",
             ),
             [
                 Job(
@@ -312,7 +312,7 @@ class TestCollector(unittest.TestCase):
                 """
                 With: Dawn Goldman, Army Prince, Steven Emrick, Janet Smith,
                 Diane Hicks, Beechnut
-                """
+                """,
             ),
             [
                 Job(
@@ -360,7 +360,7 @@ class TestCollector(unittest.TestCase):
             parse(
                 """
                 With: Dixie Damrel, Sarah Hunkins, Steven and Johan LaMoure
-                """
+                """,
             ),
             [
                 Job(
@@ -448,7 +448,11 @@ class TestCollector(unittest.TestCase):
             parse("""Wendy McClure 2018-2"""),
             [
                 Job(
-                    trait="job", start=0, end=13, job="collector", name="Wendy McClure"
+                    trait="job",
+                    start=0,
+                    end=13,
+                    job="collector",
+                    name="Wendy McClure",
                 ),
                 IdNumber(
                     trait="id_number",
@@ -510,7 +514,7 @@ class TestCollector(unittest.TestCase):
         """It handles a person after a taxon."""
         self.assertEqual(
             parse(
-                """Associated Species: Cephalanthus occidentalis Cass Blodgett 829"""
+                """Associated Species: Cephalanthus occidentalis Cass Blodgett 829""",
             ),
             [
                 AssociatedTaxonLabel(
@@ -528,7 +532,11 @@ class TestCollector(unittest.TestCase):
                     associated=True,
                 ),
                 Job(
-                    trait="job", start=46, end=59, job="collector", name="Cass Blodgett"
+                    trait="job",
+                    start=46,
+                    end=59,
+                    job="collector",
+                    name="Cass Blodgett",
                 ),
                 IdNumber(
                     trait="id_number",
@@ -551,7 +559,7 @@ class TestCollector(unittest.TestCase):
             parse(
                 """NCI Code 0GDK0132-Z
                 Collected by W. Hess, K. Allen, K. Weise, S. Peterson
-                """
+                """,
             ),
             [
                 Job(
@@ -561,7 +569,7 @@ class TestCollector(unittest.TestCase):
                     has_label=True,
                     start=20,
                     end=73,
-                )
+                ),
             ],
         )
 
@@ -570,14 +578,22 @@ class TestCollector(unittest.TestCase):
         self.assertEqual(
             parse(
                 """Little Belt Mountains J.B. Scammons Elevation: 5800 ft.
-                No, 105 July 6, 1956"""
+                No, 105 July 6, 1956""",
             ),
             [
                 Job(
-                    trait="job", start=22, end=35, job="collector", name="J.B. Scammons"
+                    trait="job",
+                    start=22,
+                    end=35,
+                    job="collector",
+                    name="J.B. Scammons",
                 ),
                 Elevation(
-                    trait="elevation", start=36, end=54, elevation=1767.84, units="m"
+                    trait="elevation",
+                    start=36,
+                    end=54,
+                    elevation=1767.84,
+                    units="m",
                 ),
                 IdNumber(
                     trait="id_number",
@@ -714,7 +730,7 @@ class TestCollector(unittest.TestCase):
             parse(
                 """Voucher Project Cactaceae Carnegiea gigantea
                 accession number 0075
-                """
+                """,
             ),
             [
                 IdNumber(
@@ -724,7 +740,7 @@ class TestCollector(unittest.TestCase):
                     number="0075",
                     type="accession_number",
                     has_label=True,
-                )
+                ),
             ],
         )
 
@@ -754,7 +770,7 @@ class TestCollector(unittest.TestCase):
         self.assertEqual(
             parse(
                 """
-                with Juan Kaplan, Helena Walker Herbarium of a Botanical Garden"""
+                with Juan Kaplan, Helena Walker Herbarium of a Botanical Garden""",
             ),
             [
                 Job(
@@ -764,7 +780,7 @@ class TestCollector(unittest.TestCase):
                     has_label=True,
                     start=0,
                     end=31,
-                )
+                ),
             ],
         )
 
@@ -789,7 +805,7 @@ class TestCollector(unittest.TestCase):
                 """
                 HR1998-01
                 H. Richey
-                """
+                """,
             ),
             [
                 IdNumber(
@@ -824,7 +840,7 @@ class TestCollector(unittest.TestCase):
                 """
                 Roadside
                 COLLECTOR Lytle McGill, Roy Brown ELEV
-                """
+                """,
             ),
             [
                 Job(
@@ -844,7 +860,7 @@ class TestCollector(unittest.TestCase):
                 """
                 With: Marcelline VandeWater, Steven Williams, Janet
                 Rosenthal
-                """
+                """,
             ),
             [
                 Job(
@@ -858,7 +874,7 @@ class TestCollector(unittest.TestCase):
                     has_label=True,
                     start=0,
                     end=51,
-                )
+                ),
             ],
         )
 
@@ -873,6 +889,6 @@ class TestCollector(unittest.TestCase):
                     has_label=True,
                     start=0,
                     end=28,
-                )
+                ),
             ],
         )

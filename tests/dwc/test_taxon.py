@@ -38,7 +38,9 @@ class TestTaxon(unittest.TestCase):
         self.assertEqual(
             to_dwc(LABEL, "Acacia pachyphloia (L.) Moench. ssp. brevipinnula"),
             {
-                "dwc:scientificName": "Acacia pachyphloia (L.) Moench. ssp. brevipinnula",
+                "dwc:scientificName": (
+                    "Acacia pachyphloia (L.) Moench. ssp. brevipinnula",
+                ),
                 "dwc:taxonRank": "subspecies",
                 "dwc:scientificNameAuthorship": "Linnaeus, Moench",
             },

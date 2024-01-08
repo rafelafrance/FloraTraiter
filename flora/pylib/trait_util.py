@@ -1,9 +1,6 @@
 def clean_trait(ent, replace):
     """Clean up simple traits."""
-    frags = []
-    for token in ent:
-        if token.text not in "[]()":
-            frags.append(replace.get(token.lower_, token.lower_))
+    frags = [replace.get(t.lower_, t.lower_) for t in ent if t.text not in "[]()"]
     return " ".join(frags)
 
 

@@ -13,7 +13,7 @@ class TestAssociatedTaxon(unittest.TestCase):
                 """
                 Cephalanthus occidentalis L. Rubiaceas
                 Associated species: Cornus obliqua
-                """
+                """,
             ),
             [
                 Taxon(
@@ -71,7 +71,7 @@ class TestAssociatedTaxon(unittest.TestCase):
                 Fabaceae
                 Cephalanthus occidentalis L. Rubiaceas
                 Associated species: Cornus obliqua
-                """
+                """,
             ),
             [
                 Taxon(

@@ -20,7 +20,7 @@ class TestLocality(unittest.TestCase):
                     trait="locality",
                     start=0,
                     end=35,
-                )
+                ),
             ],
         )
 
@@ -31,7 +31,7 @@ class TestLocality(unittest.TestCase):
                 Tunkhannock Twp. Pocono Pines Quadrangle. Mud Run, Stonecrest Park,.16
                 miles SSW of Long Pond, PA. Headwaters wetland of Indiana Mountains
                 Lake.
-                """
+                """,
             ),
             [
                 Locality(
@@ -77,7 +77,7 @@ class TestLocality(unittest.TestCase):
                     trait="locality",
                     start=0,
                     end=19,
-                )
+                ),
             ],
         )
 
@@ -87,7 +87,7 @@ class TestLocality(unittest.TestCase):
             parse(
                 """
                 Wallowa-Whitman National Forest, Forest Service Road 7312.
-                """
+                """,
             ),
             [
                 Locality(
@@ -131,7 +131,7 @@ class TestLocality(unittest.TestCase):
                 """
                 Arizona Uppland Sonoran Desert desert scrub, flats.
                 Sandy soil Local erecta annual,
-                """
+                """,
             ),
             [
                 Habitat(
@@ -178,7 +178,7 @@ class TestLocality(unittest.TestCase):
                 """
                 LOCATION Along Rte. 39, 9.1 mi SEof Santiago Papasquiaro.
                 HABITAT Pine-juniper-oak-acacia zone.
-                """
+                """,
             ),
             [
                 Locality(
@@ -203,7 +203,7 @@ class TestLocality(unittest.TestCase):
                 """
                 Fruit is a
                 grape and is dark purple in color.
-                """
+                """,
             ),
             [
                 Part(part="fruit", trait="part", type="fruit_part", start=0, end=5),
@@ -274,7 +274,7 @@ class TestLocality(unittest.TestCase):
                     end=44,
                     locality="Emory and Henry Campus Ebor Data ?",
                     labeled=True,
-                )
+                ),
             ],
         )
 

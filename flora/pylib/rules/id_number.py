@@ -6,11 +6,9 @@ from spacy.language import Language
 from spacy.util import registry
 
 from traiter.traiter.pylib import term_util as tu
-from traiter.traiter.pylib.darwin_core import DWC
-from traiter.traiter.pylib.darwin_core import DarwinCore
+from traiter.traiter.pylib.darwin_core import DWC, DarwinCore
 from traiter.traiter.pylib.pattern_compiler import Compiler
-from traiter.traiter.pylib.pipes import add
-from traiter.traiter.pylib.pipes import reject_match
+from traiter.traiter.pylib.pipes import add, reject_match
 from traiter.traiter.pylib.rules.base import Base
 
 
@@ -48,7 +46,9 @@ class IdNumber(Base):
         # add.debug_tokens(nlp)  # ################################################
 
         add.trait_pipe(
-            nlp, name="not_id_num_patterns", compiler=cls.not_id_num_patterns()
+            nlp,
+            name="not_id_num_patterns",
+            compiler=cls.not_id_num_patterns(),
         )
 
         add.trait_pipe(

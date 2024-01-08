@@ -1,8 +1,6 @@
 import spacy
 
-from flora.pylib.rules import delete_missing
-from flora.pylib.rules import job_id
-from flora.pylib.rules import post_process
+from flora.pylib.rules import delete_missing, job_id, post_process
 from flora.pylib.rules.admin_unit import AdminUnit
 from flora.pylib.rules.associated_taxon_label import AssociatedTaxonLabel
 from flora.pylib.rules.color import Color
@@ -39,9 +37,7 @@ from flora.pylib.rules.taxon_like import TaxonLike
 from flora.pylib.rules.taxon_like_linker import TaxonLikeLinker
 from flora.pylib.rules.venation import Venation
 from flora.pylib.rules.woodiness import Woodiness
-from traiter.traiter.pylib.pipes import extensions
-from traiter.traiter.pylib.pipes import sentence
-from traiter.traiter.pylib.pipes import tokenizer
+from traiter.traiter.pylib.pipes import extensions, sentence, tokenizer
 from traiter.traiter.pylib.rules.date_ import Date
 from traiter.traiter.pylib.rules.elevation import Elevation
 from traiter.traiter.pylib.rules.habitat import Habitat

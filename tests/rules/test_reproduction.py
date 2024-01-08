@@ -13,7 +13,7 @@ class TestReproduction(unittest.TestCase):
             parse(
                 """
                 bisexual (unisexual and plants sometimes gynodioecious,
-                or plants dioecious"""
+                or plants dioecious""",
             ),
             [
                 Sex(sex="bisexual", trait="sex", start=0, end=8),

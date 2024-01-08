@@ -75,7 +75,7 @@ def update_families():
     families = []
 
     for path in FAMILY_DIR.glob(pattern):
-        with open(path) as in_file:
+        with path.open() as in_file:
             page = in_file.read()
 
         soup = BeautifulSoup(page, features="lxml")
@@ -104,7 +104,7 @@ def download_families(flora_id):
     path = FAMILY_DIR / f"flora_id={flora_id}_page=1.html"
     urllib.request.urlretrieve(base_url, path)
 
-    with open(path) as in_file:
+    with path.open() as in_file:
         page = in_file.read()
     soup = BeautifulSoup(page, features="lxml")
     link_re = regex.compile(rf"browse.aspx\?flora_id={flora_id}&page=\d+")
@@ -129,7 +129,7 @@ def download_floras():
     path = FAMILY_DIR / "home_page.html"
     urllib.request.urlretrieve(url, path)
 
-    with open(path) as in_file:
+    with path.open() as in_file:
         page = in_file.read()
 
     floras = {}
@@ -150,7 +150,7 @@ def download(family_name, flora_id, taxon_id):
 
     tree_dir_ = reader.tree_dir(flora_id, family_name)
     for path in tree_dir_.glob("*.html"):
-        with open(path) as in_file:
+        with path.open() as in_file:
             page = html.fromstring(in_file.read())
         get_treatments(flora_id, family_name, page)
 
@@ -230,7 +230,7 @@ def tree_page(family_name, flora_id, taxon_id, parents, page_no=1):
 
     download_page(url, path)
 
-    with open(path) as in_file:
+    with path.open() as in_file:
         page = html.fromstring(in_file.read())
 
     for link in page.xpath("//a"):

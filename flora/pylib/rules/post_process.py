@@ -1,4 +1,5 @@
-"""Clean up some odd things that rule parsers do in isolation.
+"""
+Clean up some odd things that rule parsers do in isolation.
 
 - Take the last record number entity in a label. The record number tends to be at the
   end of a label.
@@ -8,9 +9,8 @@
 from spacy.language import Language
 from spacy.tokens import Doc
 
+from flora.pylib import trait_util as tu
 from traiter.traiter.pylib.pipes import add
-
-from .. import trait_util as tu
 
 
 def pipe(nlp: Language):

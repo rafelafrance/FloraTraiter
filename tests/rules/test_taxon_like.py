@@ -17,7 +17,7 @@ class TestTaxonLike(unittest.TestCase):
                     start=30,
                     end=52,
                     relation="sympatric",
-                )
+                ),
             ],
         )
 
@@ -31,7 +31,7 @@ class TestTaxonLike(unittest.TestCase):
                     start=6,
                     end=29,
                     relation="similar",
-                )
+                ),
             ],
         )
 
@@ -45,7 +45,7 @@ class TestTaxonLike(unittest.TestCase):
                     start=3,
                     end=25,
                     relation="resembles",
-                )
+                ),
             ],
         )
 
@@ -59,7 +59,7 @@ class TestTaxonLike(unittest.TestCase):
                     start=0,
                     end=47,
                     relation="sympatric",
-                )
+                ),
             ],
         )
 
@@ -73,7 +73,7 @@ class TestTaxonLike(unittest.TestCase):
                     start=0,
                     end=38,
                     relation="vicinis",
-                )
+                ),
             ],
         )
 
@@ -87,7 +87,7 @@ class TestTaxonLike(unittest.TestCase):
                     end=35,
                     taxon_like="pachyphloia",
                     relation="distinguished",
-                )
+                ),
             ],
         )
 

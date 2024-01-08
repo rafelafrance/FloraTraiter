@@ -3,8 +3,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import ClassVar
 
-from spacy import Language
-from spacy import registry
+from spacy import Language, registry
 
 from traiter.traiter.pylib import const as t_const
 from traiter.traiter.pylib import term_util
@@ -52,7 +51,7 @@ class Shape(Linkable):
                 keep="shape",
                 decoder={
                     "-": {"TEXT": {"IN": t_const.DASH}},
-                    "-/to": {"LOWER": {"IN": t_const.DASH + ["to", "_"]}},
+                    "-/to": {"LOWER": {"IN": [*t_const.DASH, "to", "_"]}},
                     "9": {"IS_DIGIT": True},
                     "angular": {"LOWER": {"IN": ["angular", "angulate"]}},
                     "shape": {"ENT_TYPE": "shape_term"},

@@ -3,8 +3,7 @@ import unittest
 from flora.pylib.rules.part import Part
 from flora.pylib.rules.part_location import PartLocation
 from flora.pylib.rules.shape import Shape
-from flora.pylib.rules.size import Dimension
-from flora.pylib.rules.size import Size
+from flora.pylib.rules.size import Dimension, Size
 from flora.pylib.rules.surface import Surface
 from tests.setup import parse
 
@@ -120,7 +119,7 @@ class TestPartLocation(unittest.TestCase):
         self.assertEqual(
             parse(
                 "the short terminal pseudoraceme of ovoid-ellipsoid or globose "
-                "capitula immersed in foliage."
+                "capitula immersed in foliage.",
             ),
             [
                 PartLocation(

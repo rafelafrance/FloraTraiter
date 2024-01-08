@@ -1,19 +1,15 @@
 import re
-from dataclasses import asdict
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import ClassVar
 
 from spacy.language import Language
 from spacy.util import registry
 
-from traiter.traiter.pylib import const
-from traiter.traiter.pylib import term_util
-from traiter.traiter.pylib import util
+from traiter.traiter.pylib import const, term_util, util
 from traiter.traiter.pylib.darwin_core import DarwinCore
 from traiter.traiter.pylib.pattern_compiler import Compiler
-from traiter.traiter.pylib.pipes import add
-from traiter.traiter.pylib.pipes import reject_match
+from traiter.traiter.pylib.pipes import add, reject_match
 
 from .base import Base
 
@@ -35,7 +31,9 @@ class LatLong(Base):
     all_csvs: ClassVar[list[Path]] = [lat_long_csv, unit_csv, datum_csv]
     replace: ClassVar[dict[str, str]] = term_util.term_data(all_csvs, "replace")
     factors_cm: ClassVar[dict[str, float]] = term_util.term_data(
-        unit_csv, "factor_cm", float
+        unit_csv,
+        "factor_cm",
+        float,
     )
     factors_m: ClassVar[dict[str, float]] = {
         k: v / 100.0 for k, v in factors_cm.items()

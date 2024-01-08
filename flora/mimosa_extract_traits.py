@@ -15,10 +15,7 @@ def main():
     args = parse_args()
     log.started()
 
-    if args.reader == "proximity":
-        reader = ProximityReader(args)
-    else:
-        reader = MarkedReader(args)
+    reader = ProximityReader(args) if args.reader == "proximity" else MarkedReader(args)
     traits_in_text, traits_by_taxon = reader.read()
 
     if args.csv_file:

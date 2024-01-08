@@ -1,23 +1,29 @@
-import collections
 import html
 import itertools
-from dataclasses import dataclass
-from dataclasses import field
+from dataclasses import dataclass, field
 from datetime import datetime
+from typing import Any, NamedTuple
 
 import jinja2
 
-from traiter.traiter.pylib.darwin_core import DYN
-from traiter.traiter.pylib.darwin_core import DarwinCore
-
-from ..label import Label
-from ..labels import Labels
+from flora.pylib.label import Label
+from flora.pylib.labels import Labels
+from traiter.traiter.pylib.darwin_core import DYN, DarwinCore
 
 COLOR_COUNT = 14
 BACKGROUNDS = itertools.cycle([f"cc{i}" for i in range(COLOR_COUNT)])
 
-TraitRow = collections.namedtuple("TraitRow", "label data")
-Sortable = collections.namedtuple("Sortable", "key start dwc title")
+
+class TraitRow(NamedTuple):
+    label: str
+    data: Any
+
+
+class Sortable(NamedTuple):
+    key: str
+    start: int
+    dwc: str
+    title: str
 
 
 @dataclass(kw_only=True)
@@ -97,7 +103,7 @@ class BaseHtmlWriter:
                     trait.start,
                     trait.to_dwc(dwc),
                     row.text[trait.start : trait.end],
-                )
+                ),
             )
 
         sortable = sorted(sortable)
@@ -110,10 +116,7 @@ class BaseHtmlWriter:
                 fields = {}
                 dwc_dict = trait.dwc.to_dict()
                 for k, v in dwc_dict.items():
-                    if k == DYN:
-                        fields = v
-                    else:
-                        fields = dwc_dict
+                    fields = v if k == DYN else dwc_dict
                 fields = ", ".join(
                     f'<span title="{trait.title}">{k}:&nbsp;{v}</span>'
                     for k, v in fields.items()
@@ -123,7 +126,7 @@ class BaseHtmlWriter:
 
             if trait_list:
                 traits.append(
-                    TraitRow(label, '<br/><hr class="sep"/>'.join(trait_list))
+                    TraitRow(label, '<br/><hr class="sep"/>'.join(trait_list)),
                 )
 
         return traits
@@ -143,5 +146,5 @@ class BaseHtmlWriter:
             summary=summary,
         )
 
-        with open(self.html_file, "w") as html_file:
+        with self.html_file.open("w") as html_file:
             html_file.write(template)

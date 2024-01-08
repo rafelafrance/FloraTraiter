@@ -2,7 +2,7 @@ from dataclasses import asdict, dataclass
 
 from spacy.language import Language
 
-from ..darwin_core import DarwinCore
+from traiter.pylib.darwin_core import DarwinCore
 
 
 @dataclass(eq=False)
@@ -34,7 +34,7 @@ class Base:
         raise NotImplementedError
 
     @staticmethod
-    def key_builder(*args, prepend: str = None) -> str:
+    def key_builder(*args, prepend: str | None = None) -> str:
         key = [prepend] if prepend else []
         key += list(args)
         key = " ".join(key).replace("-", " ").split()

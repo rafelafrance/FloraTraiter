@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from pathlib import Path
 from typing import ClassVar
-from typing import Optional
 
 from spacy.language import Language
 from spacy.util import registry
@@ -11,8 +10,7 @@ from traiter.traiter.pylib import const as t_const
 from traiter.traiter.pylib import term_util
 from traiter.traiter.pylib.darwin_core import DarwinCore
 from traiter.traiter.pylib.pattern_compiler import Compiler
-from traiter.traiter.pylib.pipes import add
-from traiter.traiter.pylib.pipes import reject_match
+from traiter.traiter.pylib.pipes import add, reject_match
 from traiter.traiter.pylib.rules import terms as t_terms
 from traiter.traiter.pylib.rules.base import Base
 
@@ -56,7 +54,7 @@ class AdminUnit(Base):
         return t_dwc.DarwinCore.ns("administrativeUnit")
 
     @classmethod
-    def pipe(cls, nlp: Language, overwrite: Optional[list[str]] = None):
+    def pipe(cls, nlp: Language, overwrite: list[str] | None = None):
         add.term_pipe(nlp, name="admin_unit_terms", path=cls.all_csvs)
         add.trait_pipe(nlp, name="not_admin_unit", compiler=cls.not_admin_unit())
 

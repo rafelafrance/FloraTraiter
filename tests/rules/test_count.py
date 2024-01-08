@@ -4,8 +4,7 @@ from flora.pylib.rules.count import Count
 from flora.pylib.rules.part import Part
 from flora.pylib.rules.part_location import PartLocation
 from flora.pylib.rules.sex import Sex
-from flora.pylib.rules.size import Dimension
-from flora.pylib.rules.size import Size
+from flora.pylib.rules.size import Dimension, Size
 from flora.pylib.rules.subpart import Subpart
 from flora.pylib.rules.taxon import Taxon
 from tests.setup import parse
@@ -206,7 +205,7 @@ class TestCount(unittest.TestCase):
                     type="female_flower_part",
                     start=0,
                     end=6,
-                )
+                ),
             ],
         )
 
@@ -559,7 +558,7 @@ class TestCount(unittest.TestCase):
                     start=0,
                     end=6,
                     associated=True,
-                )
+                ),
             ],
         )
 
@@ -576,7 +575,10 @@ class TestCount(unittest.TestCase):
                     associated=True,
                 ),
                 LatLong(
-                    trait="lat_long", start=12, end=25, lat_long="13° 40 -14° 10'S"
+                    trait="lat_long",
+                    start=12,
+                    end=25,
+                    lat_long="13° 40 -14° 10'S",
                 ),
             ],
         )
@@ -592,7 +594,7 @@ class TestCount(unittest.TestCase):
                     start=0,
                     end=6,
                     associated=True,
-                )
+                ),
             ],
         )
 
@@ -623,7 +625,7 @@ class TestCount(unittest.TestCase):
                     part="corolla",
                     start=27,
                     end=34,
-                )
+                ),
             ],
         )
 
@@ -637,7 +639,7 @@ class TestCount(unittest.TestCase):
                     type="flower_part",
                     start=45,
                     end=52,
-                )
+                ),
             ],
         )
 
@@ -646,7 +648,7 @@ class TestCount(unittest.TestCase):
             parse(
                 """
                 Pistillate flowers: hyaline bristle at apex of hypanthial
-                aculei 0.5–1 times as long as opaque base."""
+                aculei 0.5–1 times as long as opaque base.""",
             ),
             [
                 Sex(
@@ -783,7 +785,7 @@ class TestCount(unittest.TestCase):
                 """
                 staminate catkins in 1 or more clusters of 3--6;
                 pistillate catkins in 1 or more clusters of 2--7
-                """
+                """,
             ),
             [
                 Sex(sex="staminate", trait="sex", start=0, end=9),

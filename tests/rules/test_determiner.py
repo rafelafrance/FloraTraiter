@@ -41,7 +41,7 @@ class TestDeterminer(unittest.TestCase):
                     start=0,
                     end=34,
                     has_label=True,
-                )
+                ),
             ],
         )
 
@@ -57,7 +57,7 @@ class TestDeterminer(unittest.TestCase):
                     start=0,
                     end=36,
                     has_label=True,
-                )
+                ),
             ],
         )
 
@@ -67,7 +67,7 @@ class TestDeterminer(unittest.TestCase):
                 """
                 Reveal
                 det. James L. Reveal 1971 =
-                """
+                """,
             ),
             [
                 Job(
@@ -77,6 +77,6 @@ class TestDeterminer(unittest.TestCase):
                     job="determiner",
                     name="James L. Reveal",
                     has_label=True,
-                )
+                ),
             ],
         )

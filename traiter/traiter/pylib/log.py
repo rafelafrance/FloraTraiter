@@ -1,8 +1,7 @@
 """Common logging functions."""
 import logging
 import sys
-from os.path import basename
-from os.path import splitext
+from os.path import basename, splitext
 
 
 def setup_logger(level=logging.INFO):

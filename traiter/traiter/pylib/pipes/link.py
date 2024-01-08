@@ -51,7 +51,8 @@ class LinkMatch:
         return start, end
 
     def weighted_distance(self):
-        """Calculate the weighted distance between the parent and child.
+        """
+        Calculate the weighted distance between the parent and child.
 
         Weights may differ if the parent or child comes first in the doc.
         If the parent comes before the child it's forwards.
@@ -96,7 +97,7 @@ class LinkCount:
         values = []
         for d in self.differ:
             v = getattr(ent._.trait, d, None)
-            values.append(v if isinstance(v, (list, tuple)) else [v])
+            values.append(v if isinstance(v, list | tuple) else [v])
 
         prods = product(*values)
         return prods
@@ -121,10 +122,10 @@ class LinkTraits:
         patterns: list[dict],
         parents: list[str],
         children: list[str],
-        weights: dict[str, int] = None,  # Token weights for scoring distances
-        reverse_weights: dict[str, int] = None,  # Weights for scoring backwards
+        weights: dict[str, int] | None = None,  # Token weights for scoring distances
+        reverse_weights: dict[str, int] | None = None,  # Weights for scoring backwards
         max_links: int = NO_LIMIT,  # Max times to link to a parent trait
-        differ: list[str] = None,
+        differ: list[str] | None = None,
     ):
         self.nlp = nlp
         self.name = name
@@ -156,7 +157,11 @@ class LinkTraits:
         link_matches = {}
         for match in matches:
             link_match = LinkMatch(
-                match, self.weights, doc, self.parents, self.reverse_weights
+                match,
+                self.weights,
+                doc,
+                self.parents,
+                self.reverse_weights,
             )
             # Matches work by tokens, but I want to match entities, so I only keep
             # matches by entity and filter excess token matches.

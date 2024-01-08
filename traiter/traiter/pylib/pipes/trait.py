@@ -1,5 +1,4 @@
 from typing import Any
-from typing import Optional
 
 from spacy import util
 from spacy.language import Language
@@ -18,10 +17,10 @@ class AddTraits:
         nlp: Language,
         name: str,
         patterns: dict[str, list[list[dict[str, Any]]]],
-        dispatch: Optional[dict[str, str]] = None,
-        keep: Optional[list[str]] = None,  # Don't overwrite these entities
-        overwrite: Optional[list[str]] = None,  # Only overwrite these entities
-        relabel: Optional[dict[str, str]] = None,
+        dispatch: dict[str, str] | None = None,
+        keep: list[str] | None = None,  # Don't overwrite these entities
+        overwrite: list[str] | None = None,  # Only overwrite these entities
+        relabel: dict[str, str] | None = None,
     ):
         self.nlp = nlp
         self.name = name

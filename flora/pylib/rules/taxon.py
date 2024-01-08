@@ -1,26 +1,20 @@
 import os
 import re
-from dataclasses import asdict
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import ClassVar
 
-from spacy import Language
-from spacy import registry
+from spacy import Language, registry
 
 import traiter.traiter.pylib.darwin_core as t_dwc
+from flora.pylib import const
 from traiter.traiter.pylib import const as t_const
-from traiter.traiter.pylib import taxon_util
-from traiter.traiter.pylib import term_util
+from traiter.traiter.pylib import taxon_util, term_util
 from traiter.traiter.pylib.darwin_core import DarwinCore
-from traiter.traiter.pylib.pattern_compiler import ACCUMULATOR
-from traiter.traiter.pylib.pattern_compiler import Compiler
-from traiter.traiter.pylib.pipes import add
-from traiter.traiter.pylib.pipes import reject_match
+from traiter.traiter.pylib.pattern_compiler import ACCUMULATOR, Compiler
+from traiter.traiter.pylib.pipes import add, reject_match
 from traiter.traiter.pylib.rules import terms as t_terms
 from traiter.traiter.pylib.rules.base import Base
-
-from .. import const
 
 
 def get_csvs() -> dict[str, Path]:
@@ -66,27 +60,31 @@ class Taxon(Base):
         s for s in t_const.NAME_AND_UPPER if len(s) > 2 and s[-1] != "."
     ]
     binomial_abbrev: ClassVar[dict[str, str]] = taxon_util.abbrev_binomial_term(
-        all_csvs["binomial_terms"]
+        all_csvs["binomial_terms"],
     )
     ambiguous: ClassVar[list[str]] = ["us_county", "color"]
     higher_rank: ClassVar[list[str]] = sorted(
-        {r["label"] for r in rank_terms if r["level"] == "higher"}
+        {r["label"] for r in rank_terms if r["level"] == "higher"},
     )
     level: ClassVar[dict[str, str]] = term_util.term_data(
-        all_csvs["rank_terms"], "level"
+        all_csvs["rank_terms"],
+        "level",
     )
     linnaeus: ClassVar[list[str]] = "l l. lin lin. linn linn. linnaeus".split()
     lower_rank: ClassVar[list[str]] = sorted(
-        {r["label"] for r in rank_terms if r["level"] == "lower"}
+        {r["label"] for r in rank_terms if r["level"] == "lower"},
     )
     monomial_ranks: ClassVar[dict[str, str]] = term_util.term_data(
-        all_csvs["monomial_terms"], "ranks"
+        all_csvs["monomial_terms"],
+        "ranks",
     )
     rank_abbrev: ClassVar[dict[str, str]] = term_util.term_data(
-        all_csvs["rank_terms"], "abbrev"
+        all_csvs["rank_terms"],
+        "abbrev",
     )
     rank_replace: ClassVar[dict[str, str]] = term_util.term_data(
-        all_csvs["rank_terms"], "replace"
+        all_csvs["rank_terms"],
+        "replace",
     )
     # ---------------------
 
@@ -112,7 +110,7 @@ class Taxon(Base):
                 self.key: self._text,
                 "taxonRank": self.rank,
                 "scientificNameAuthorship": auth,
-            }
+            },
         )
 
     @property
@@ -121,7 +119,7 @@ class Taxon(Base):
             return t_dwc.DarwinCore.ns(self.rank)
 
         return t_dwc.DarwinCore.ns(
-            "associatedTaxa" if self.associated else "scientificName"
+            "associatedTaxa" if self.associated else "scientificName",
         )
 
     @classmethod
@@ -129,7 +127,7 @@ class Taxon(Base):
         cls,
         nlp: Language,
         extend=1,
-        overwrite: list[str] = None,
+        overwrite: list[str] | None = None,
     ):
         overwrite = overwrite if overwrite else []
 
@@ -164,7 +162,7 @@ class Taxon(Base):
         )
 
         # add.debug_tokens(nlp)  # ################################################
-        auth_keep = ACCUMULATOR.keep + ["single", "not_name"]
+        auth_keep = [*ACCUMULATOR.keep, "single", "not_name"]
         add.trait_pipe(
             nlp,
             name="taxon_auth_patterns",
@@ -550,7 +548,7 @@ class Taxon(Base):
                     "single": {"ENT_TYPE": "single"},
                     "sp": {"IS_SPACE": True},
                     "taxon": {
-                        "ENT_TYPE": {"IN": ["taxon", "linnaeus", "not_linnaeus"]}
+                        "ENT_TYPE": {"IN": ["taxon", "linnaeus", "not_linnaeus"]},
                     },
                     "l_rank": {"ENT_TYPE": {"IN": cls.lower_rank}},
                 },
@@ -711,7 +709,8 @@ class Taxon(Base):
                 auth.append("and")
 
             elif token.shape_ in t_const.NAME_SHAPES or re.match(
-                cls.abbrev_re, token.text
+                cls.abbrev_re,
+                token.text,
             ):
                 if len(token) == 1:
                     auth.append(token.text + ".")
@@ -745,7 +744,7 @@ class Taxon(Base):
                 else:
                     auth.append(token.text)
 
-        data["authority"] = ", ".join(["Linnaeus"] + auth)
+        data["authority"] = ", ".join(["Linnaeus", *auth])
         trait = cls.from_ent(ent, **data)
 
         ent[0]._.trait = trait

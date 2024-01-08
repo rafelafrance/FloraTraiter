@@ -4,8 +4,7 @@ from flora.pylib.rules.count import Count
 from flora.pylib.rules.duration import Duration
 from flora.pylib.rules.part import Part
 from flora.pylib.rules.shape import Shape
-from flora.pylib.rules.size import Dimension
-from flora.pylib.rules.size import Size
+from flora.pylib.rules.size import Dimension, Size
 from flora.pylib.rules.subpart import Subpart
 from flora.pylib.rules.taxon import Taxon
 from tests.setup import parse
@@ -32,7 +31,7 @@ class TestPartLinker(unittest.TestCase):
         self.assertEqual(
             parse(
                 """trees closely resembling another thing in habit,
-                attaining 2-4 m in height with trunk"""
+                attaining 2-4 m in height with trunk""",
             ),
             [
                 Part(part="tree", trait="part", type="plant_part", start=0, end=5),
@@ -54,7 +53,7 @@ class TestPartLinker(unittest.TestCase):
             parse(
                 """Pods here are some words, and more words, we keep writing things
                  until the desired part is far away from its size 25-35 X 12-18 mm,
-                 the replum 1.5-2 mm wide,"""
+                 the replum 1.5-2 mm wide,""",
             ),
             [
                 Part(part="pod", trait="part", type="fruit_part", start=0, end=4),
@@ -91,7 +90,7 @@ class TestPartLinker(unittest.TestCase):
         self.assertEqual(
             parse(
                 """Lvs (except of A. pachyphloia) bipinnate, the primary and secondary
-                axes normally pulvinate (the primary pulvinus rarely suppressed)"""
+                axes normally pulvinate (the primary pulvinus rarely suppressed)""",
             ),
             [
                 Part(part="leaf", trait="part", type="leaf_part", start=0, end=3),
@@ -152,7 +151,7 @@ class TestPartLinker(unittest.TestCase):
     def test_part_linker_06(self):
         self.assertEqual(
             parse(
-                """Most species have stipular spines, bipinnately compound leaves."""
+                """Most species have stipular spines, bipinnately compound leaves.""",
             ),
             [
                 Part(

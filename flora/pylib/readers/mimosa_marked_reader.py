@@ -1,10 +1,10 @@
-"""The algorithms for linking traits to the taxon they describe can get involved. This
+"""
+The algorithms for linking traits to the taxon they describe can get involved. This
 reader looks for treatment header for the taxon. A header a given regular expression
 pattern. The very next taxon is grabbed as the one to associate with the traits.
 """
 import sys
-from enum import Enum
-from enum import auto
+from enum import Enum, auto
 
 import rich
 
@@ -63,18 +63,22 @@ class MarkedReader(BaseReader):
                         maybe = trait["taxon"]
 
                         if isinstance(maybe, list):
-                            raise ValueError(f"Taxon is a list '{maybe}' at {i}")
+                            msg = f"Taxon is a list '{maybe}' at {i}"
+                            raise ValueError(msg)
 
                         words = maybe.split()
 
                         if len(words) < 2 or words[0][-1] == ".":
-                            raise ValueError(f"Taxon has a bad form '{maybe}' at {i}")
+                            msg = f"Taxon has a bad form '{maybe}' at {i}"
+                            raise ValueError(msg)
 
                         if any(w.istitle() for w in words[1:]):
-                            raise ValueError(f"Taxon is malformed '{maybe}' at {i}")
+                            msg = f"Taxon is malformed '{maybe}' at {i}"
+                            raise ValueError(msg)
 
                         if maybe in seen:
-                            raise ValueError(f"Taxon already seen '{maybe}' at {i}")
+                            msg = f"Taxon already seen '{maybe}' at {i}"
+                            raise ValueError(msg)
 
                         taxon = maybe
                         state = State.FOUND

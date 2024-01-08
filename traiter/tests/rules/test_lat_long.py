@@ -72,7 +72,7 @@ class TestLatLong(unittest.TestCase):
                     start=24,
                     end=56,
                     units="m",
-                )
+                ),
             ],
         )
 
@@ -87,7 +87,7 @@ class TestLatLong(unittest.TestCase):
                     start=0,
                     end=47,
                     units="m",
-                )
+                ),
             ],
         )
 
@@ -100,7 +100,7 @@ class TestLatLong(unittest.TestCase):
                     trait="lat_long",
                     start=0,
                     end=35,
-                )
+                ),
             ],
         )
 
@@ -114,7 +114,7 @@ class TestLatLong(unittest.TestCase):
                     trait="lat_long",
                     start=0,
                     end=28,
-                )
+                ),
             ],
         )
 
@@ -127,7 +127,7 @@ class TestLatLong(unittest.TestCase):
                     trait="lat_long",
                     start=0,
                     end=34,
-                )
+                ),
             ],
         )
 
@@ -141,7 +141,7 @@ class TestLatLong(unittest.TestCase):
                     trait="lat_long",
                     start=0,
                     end=39,
-                )
+                ),
             ],
         )
 
@@ -154,7 +154,7 @@ class TestLatLong(unittest.TestCase):
                     trait="lat_long",
                     start=0,
                     end=33,
-                )
+                ),
             ],
         )
 
@@ -169,7 +169,7 @@ class TestLatLong(unittest.TestCase):
                     start=0,
                     end=33,
                     units="m",
-                )
+                ),
             ],
         )
 
@@ -183,7 +183,7 @@ class TestLatLong(unittest.TestCase):
                     trait="lat_long",
                     start=0,
                     end=43,
-                )
+                ),
             ],
         )
 
@@ -199,7 +199,7 @@ class TestLatLong(unittest.TestCase):
                     start=0,
                     end=59,
                     units="m",
-                )
+                ),
             ],
         )
 
@@ -212,7 +212,7 @@ class TestLatLong(unittest.TestCase):
                     trait="lat_long",
                     start=0,
                     end=26,
-                )
+                ),
             ],
         )
 
@@ -225,7 +225,7 @@ class TestLatLong(unittest.TestCase):
                     trait="lat_long",
                     start=0,
                     end=23,
-                )
+                ),
             ],
         )
 
@@ -240,7 +240,7 @@ class TestLatLong(unittest.TestCase):
                     start=4,
                     end=35,
                     units="m",
-                )
+                ),
             ],
         )
 
@@ -254,7 +254,7 @@ class TestLatLong(unittest.TestCase):
                     datum="WGS84",
                     start=0,
                     end=49,
-                )
+                ),
             ],
         )
 
@@ -269,7 +269,7 @@ class TestLatLong(unittest.TestCase):
                     end=44,
                     units="m",
                     uncertainty=50.0,
-                )
+                ),
             ],
         )
 
@@ -277,7 +277,7 @@ class TestLatLong(unittest.TestCase):
         self.assertEqual(
             parse(
                 """40.104905N,
-                79.324561W NAD83."""
+                79.324561W NAD83.""",
             ),
             [
                 LatLong(
@@ -286,7 +286,7 @@ class TestLatLong(unittest.TestCase):
                     trait="lat_long",
                     start=0,
                     end=28,
-                )
+                ),
             ],
         )
 
@@ -301,7 +301,7 @@ class TestLatLong(unittest.TestCase):
                     trait="lat_long",
                     start=0,
                     end=31,
-                )
+                ),
             ],
         )
 
@@ -316,6 +316,6 @@ class TestLatLong(unittest.TestCase):
                     trait="lat_long",
                     start=0,
                     end=30,
-                )
+                ),
             ],
         )

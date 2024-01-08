@@ -1,10 +1,8 @@
-from dataclasses import asdict
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import ClassVar
 
-from spacy import Language
-from spacy import registry
+from spacy import Language, registry
 
 from traiter.traiter.pylib import term_util
 from traiter.traiter.pylib.darwin_core import DarwinCore

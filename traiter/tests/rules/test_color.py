@@ -10,7 +10,7 @@ class TestColor(unittest.TestCase):
             parse(
                 """hypanthium green or greenish yellow,
                 usually not purple-spotted, rarely purple-spotted distally.
-                """
+                """,
             ),
             [
                 Color(
@@ -132,7 +132,7 @@ class TestColor(unittest.TestCase):
                 petals distinct, white to cream, greenish yellow,
                 maturing yellowish or pale brown, commonly mottled or with
                 light green or white longitudinal stripes.
-                """
+                """,
             ),
             [
                 Color(
@@ -187,7 +187,7 @@ class TestColor(unittest.TestCase):
                 Petals distinct, white to cream, greenish white,
                 or yellowish green, or yellowish, usually green-throated
                 and faintly green-lined.
-                """
+                """,
             ),
             [
                 Color(
@@ -400,7 +400,7 @@ class TestColor(unittest.TestCase):
         self.assertEqual(
             parse(
                 """stipules, the young stems and lf-axes hispid with stout, partly
-                confluent or branched, yellowish setae"""
+                confluent or branched, yellowish setae""",
             ),
             [
                 Color(
