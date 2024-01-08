@@ -133,12 +133,11 @@ def link_pipe(
     max_links=None,
     differ=None,
 ):
-    patterns = []
     compiler.compile()
-    for pattern in compiler.patterns:
-        patterns.append(
-            {"label": compiler.label, "pattern": pattern, "id": compiler.id},
-        )
+    patterns = [
+        {"label": compiler.label, "pattern": p, "id": compiler.id}
+        for p in compiler.patterns
+    ]
     config = {
         "patterns": patterns,
         "parents": parents,

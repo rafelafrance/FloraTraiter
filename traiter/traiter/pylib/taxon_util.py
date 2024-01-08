@@ -10,7 +10,7 @@ from pathlib import Path
 from traiter.traiter.pylib import term_util
 
 
-def abbreviate_binomials(binomials: list[dict], single_expanded_name=True):
+def abbreviate_binomials(binomials: list[dict], *, single_expanded_name=True):
     """
     Create a mapping from binomial terms to abbreviated binomials.
 
@@ -41,5 +41,4 @@ def abbrev_binomial_term(csv_path: Path | Iterable[Path]):
 def abbreviate(pattern):
     genus, *parts = pattern.split()
     abbrev = genus[0].upper() + "."
-    abbrev = " ".join([abbrev, *parts])
-    return abbrev
+    return " ".join([abbrev, *parts])

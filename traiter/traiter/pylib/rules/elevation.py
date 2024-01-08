@@ -128,7 +128,7 @@ class Elevation(Base):
         units_ = "m"
 
         # Handle an elevation range
-        if expected_len == 2:
+        if expected_len > 1:
             hi = round(values[1] * factor, 3)
 
         return super().from_ent(

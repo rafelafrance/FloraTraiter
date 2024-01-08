@@ -9,9 +9,10 @@ from pathlib import Path
 
 import pandas as pd
 import regex as re
+from tqdm import tqdm
+
 from pylib import log, spell_well
 from pylib.rules import terms
-from tqdm import tqdm
 
 CHUNK = 1_000_000
 
@@ -187,14 +188,14 @@ def explore(idigbio_zip):
 
         with zippy.open("occurrence.csv") as in_file:
             headers = in_file.readline()
-        headers = [h.decode().strip() for h in sorted(headers.split(b","))]
+        headers = (h.decode().strip() for h in sorted(headers.split(b",")))
         print("=" * 80)
         for header in headers:
             print(header)
 
         with zippy.open("occurrence_raw.csv") as in_file:
             headers = in_file.readline()
-        headers = [h.decode().strip() for h in sorted(headers.split(b","))]
+        headers = (h.decode().strip() for h in sorted(headers.split(b",")))
         print("=" * 80)
         for header in headers:
             print(header)

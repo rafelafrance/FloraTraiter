@@ -6,10 +6,10 @@ from typing import ClassVar
 from spacy.language import Language
 from spacy.util import registry
 
+from traiter.pylib import const, term_util
 from traiter.pylib.darwin_core import DarwinCore
-from traiter.traiter.pylib import const, term_util
-from traiter.traiter.pylib.pattern_compiler import Compiler
-from traiter.traiter.pylib.pipes import add
+from traiter.pylib.pattern_compiler import Compiler
+from traiter.pylib.pipes import add
 
 from .base import Base
 
@@ -80,8 +80,7 @@ class UTM(Base):
         coords = re.sub(r"\s(:)", r"\1", coords)
         coords = re.sub(r"(?<=\d)([NESWnesw])", r" \1", coords)
         coords = re.sub(r"-\s(?=\d)", r"-", coords)
-        coords = " ".join(coords.split())
-        return coords
+        return " ".join(coords.split())
 
     @classmethod
     def from_ent(cls, ent, **kwargs):

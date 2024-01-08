@@ -74,7 +74,7 @@ class Compiler:
                 if token is not None:
                     pattern_seq.append(token)
                 else:
-                    warn(f'No token pattern for "{key}" in "{string}"')
+                    warn(f'No token pattern for "{key}" in "{string}"', stacklevel=2)
 
             self.patterns.append(pattern_seq)
 

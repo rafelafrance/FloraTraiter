@@ -5,11 +5,11 @@ from typing import ClassVar
 from spacy.language import Language
 from spacy.util import registry
 
+from traiter.pylib import term_util
 from traiter.pylib.darwin_core import DarwinCore
-from traiter.traiter.pylib import term_util
-from traiter.traiter.pylib.pattern_compiler import Compiler
-from traiter.traiter.pylib.pipes import add
-from traiter.traiter.pylib.pipes.reject_match import REJECT_MATCH
+from traiter.pylib.pattern_compiler import Compiler
+from traiter.pylib.pipes import add
+from traiter.pylib.pipes.reject_match import REJECT_MATCH
 
 from .base import Base
 
@@ -87,11 +87,9 @@ class Habitat(Base):
 
     @classmethod
     def habitat_match(cls, ent):
-        frags = []
-
-        for token in ent:
-            if token.text not in cls.sep:
-                frags.append(cls.replace.get(token.lower_, token.lower_))
+        frags = [
+            cls.replace.get(t.lower_, t.lower_) for t in ent if t.text not in cls.sep
+        ]
 
         habitat = " ".join(frags)
 
@@ -100,7 +98,7 @@ class Habitat(Base):
     @classmethod
     def labeled_match(cls, ent):
         i = 0
-        for i, token in enumerate(ent):
+        for i, token in enumerate(ent):  # noqa: B007 unused-loop-control-variable
             if token._.term != "habitat_label":
                 break
         habitat = " ".join(ent[i:].text.split())

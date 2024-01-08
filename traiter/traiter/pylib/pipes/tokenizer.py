@@ -110,10 +110,10 @@ def remove_special_case(nlp: Language, remove: list[str]):
 
 
 def get_states():
-    with open(Path(terms.__file__).parent / "us_location_terms.csv") as in_file:
+    path = Path(terms.__file__).parent / "us_location_terms.csv"
+    with path.open() as in_file:
         reader = csv.DictReader(in_file)
-        states = {t["pattern"] for t in reader if t["label"] == "us_state"}
-    return states
+        return {t["pattern"] for t in reader if t["label"] == "us_state"}
 
 
 def setup_tokenizer(nlp):

@@ -1,11 +1,9 @@
-"""Common logging functions."""
 import logging
 import sys
-from os.path import basename, splitext
+from pathlib import Path
 
 
 def setup_logger(level=logging.INFO):
-    """Setup the logger."""
     logging.basicConfig(
         level=level,
         format="%(asctime)s %(levelname)s: %(message)s",
@@ -14,17 +12,14 @@ def setup_logger(level=logging.INFO):
 
 
 def module_name() -> str:
-    """Get the current module name."""
-    return splitext(basename(sys.argv[0]))[0]
+    return Path(sys.argv[0]).name
 
 
 def started() -> None:
-    """Log the program start time."""
     setup_logger()
     logging.info("=" * 80)
     logging.info("%s started", module_name())
 
 
 def finished() -> None:
-    """Log the program end time."""
     logging.info("%s finished", module_name())

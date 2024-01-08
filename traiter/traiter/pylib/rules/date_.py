@@ -10,10 +10,10 @@ from dateutil.relativedelta import relativedelta
 from spacy.language import Language
 from spacy.util import registry
 
+from traiter.pylib import term_util
 from traiter.pylib.darwin_core import DarwinCore
-from traiter.traiter.pylib import term_util
-from traiter.traiter.pylib.pattern_compiler import Compiler
-from traiter.traiter.pylib.pipes import add, reject_match
+from traiter.pylib.pattern_compiler import Compiler
+from traiter.pylib.pipes import add, reject_match
 
 from .base import Base
 
@@ -124,7 +124,7 @@ class Date(Base):
         try:
             date_ = parser.parse(text).date()
         except (parser.ParserError, IllegalMonthError):
-            raise reject_match.RejectMatch
+            raise reject_match.RejectMatch from None
 
         # Handle missing centuries like: May 22, 08
         if date_ > dt.today():

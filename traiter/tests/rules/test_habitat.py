@@ -1,7 +1,7 @@
 import unittest
 
 from tests.setup import parse
-from traiter.traiter.pylib.rules.habitat import Habitat
+from traiter.pylib.rules.habitat import Habitat
 
 
 class TestHabitat(unittest.TestCase):

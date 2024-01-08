@@ -11,6 +11,7 @@ class CleanupTraits:
         nlp: Language,
         name: str,
         keep: list[str] | None = None,  # List of trait labels to keep
+        *,
         clear: bool = True,
     ):
         super().__init__()

@@ -6,10 +6,10 @@ from typing import ClassVar
 from spacy.language import Language
 from spacy.util import registry
 
+from traiter.pylib import const, term_util
 from traiter.pylib.darwin_core import DarwinCore
-from traiter.traiter.pylib import const, term_util
-from traiter.traiter.pylib.pattern_compiler import Compiler
-from traiter.traiter.pylib.pipes import add, reject_match
+from traiter.pylib.pattern_compiler import Compiler
+from traiter.pylib.pipes import add, reject_match
 
 from .base import Base
 
@@ -20,6 +20,7 @@ class TRS(Base):
     trs_csv: ClassVar[Path] = Path(__file__).parent / "terms" / "trs_terms.csv"
     replace: ClassVar[dict[str, str]] = term_util.term_data([trs_csv], "replace")
     dir_: ClassVar[str] = """((north|east|south|west)(ing)?|[nesw])"""
+    min_len: ClassVar[int] = 2
     # ---------------------
 
     trs: str = None
@@ -109,7 +110,7 @@ class TRS(Base):
     @classmethod
     def trs_part_match(cls, ent):
         # Enforce a minimum length
-        if len(ent.text) < 3:
+        if len(ent.text) <= cls.min_len:
             raise reject_match.RejectMatch
 
         trait = super().from_ent(ent, _trs_part=ent.text)
@@ -142,7 +143,7 @@ class TRS(Base):
         trs = " ".join(frags)
         trs = re.sub(r"\s([.,:])", r"\1", trs)
         trs = re.sub(r",$", "", trs)
-        if len(trs.split()) < 2:
+        if len(trs.split()) < cls.min_len:
             raise reject_match.RejectMatch
 
         return super().from_ent(ent, trs="present")

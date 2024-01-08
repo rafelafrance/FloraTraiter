@@ -99,8 +99,7 @@ class LinkCount:
             v = getattr(ent._.trait, d, None)
             values.append(v if isinstance(v, list | tuple) else [v])
 
-        prods = product(*values)
-        return prods
+        return product(*values)
 
     def seen_too_much(self, ent):
         """Check if we've seen this link type (parent to trait) too many times."""

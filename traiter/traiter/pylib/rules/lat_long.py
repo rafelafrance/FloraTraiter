@@ -178,9 +178,12 @@ class LatLong(Base):
                 keep=["lat_long"],
                 decoder=decoder,
                 patterns=[
-                    "lat_long+                              datum_label+ ,* (? datum+ )?",
-                    "lat_long+ ,? uncert? ,?     +99.0 m ,* datum_label* ,* (? datum* )?",
-                    "lat_long+ ,? uncert? ,? [+]* 99.0 m ,* datum_label* ,* (? datum* )?",
+                    "lat_long+                            datum_label+ ,* (? datum+ )?",
+                    "lat_long+ ,? uncert? ,?   +99.0 m ,* datum_label* ,* (? datum* )?",
+                    (
+                        "lat_long+ ,? uncert? ,? [+]* 99.0 m ,* "
+                        "datum_label* ,* (? datum* )?"
+                    ),
                     (
                         "lat_long+ ,? uncert? ,? [+]* 99.0 - 99.0 m ,* "
                         "datum_label* ,* (? datum* )?"
@@ -196,8 +199,7 @@ class LatLong(Base):
         coords = re.sub(r"\s(:)", r"\1", coords)
         coords = re.sub(r"(?<=\d)([NESWnesw])", r" \1", coords)
         coords = re.sub(r"-\s(?=\d)", r"-", coords)
-        coords = " ".join(coords.split())
-        return coords
+        return " ".join(coords.split())
 
     @classmethod
     def lat_long_match(cls, ent):

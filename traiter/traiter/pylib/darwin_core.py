@@ -118,5 +118,4 @@ class DarwinCore:
         key = " ".join(key).replace("-", " ").split()
         key = [k.title() for k in key]
         key[0] = key[0].lower()
-        key = "".join(key)
-        return key
+        return "".join(key)

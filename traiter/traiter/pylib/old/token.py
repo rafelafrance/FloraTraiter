@@ -1,14 +1,8 @@
 """A class to hold an individual token."""
-from typing import List
-from typing import Optional
-from typing import Tuple
 
-from .rule import Action
-from .rule import Groups
-from .rule import Rule
-from .rule import SIZE
+from .rule import SIZE, Action, Groups, Rule
 
-Tokens = List["Token"]
+Tokens = list["Token"]
 
 
 class Token:
@@ -19,7 +13,7 @@ class Token:
         rule: Rule = None,
         match=None,  # A regex match (not re)
         group: Groups = None,
-        span: Tuple[int, int] = None,
+        span: tuple[int, int] | None = None,
     ) -> None:
         """Create a token."""
         self.rule = rule
@@ -60,7 +54,7 @@ class Token:
         return self.span[1]
 
     @property
-    def action(self) -> Optional[Action]:
+    def action(self) -> Action | None:
         """Return the rule name."""
         return self.rule.action if self.rule else None
 
