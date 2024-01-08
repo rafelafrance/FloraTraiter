@@ -31,7 +31,6 @@ optional-dependencies.dev = [
 py-modules = []
 
 [tool.ruff]
-
 target-version = "py311"
 
 show-fixes = true
@@ -105,7 +104,9 @@ ignore = [
     "PLW2901",
     "PLW0603",
     "PT009",
+    "RET504",
     "RUF001",
+    "SIM114",
     "SIM117",
     "SLF001",
     "T201",
