@@ -2,9 +2,9 @@
 
 from spacy.language import Language
 from spacy.tokens import Doc
+from traiter.pylib.pipes import add
 
 from flora.pylib import trait_util as tu
-from traiter.traiter.pylib.pipes import add
 
 
 def pipe(nlp: Language):

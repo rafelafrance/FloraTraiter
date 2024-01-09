@@ -1,5 +1,8 @@
 import unittest
 
+from traiter.pylib.rules.habitat import Habitat
+from traiter.pylib.rules.lat_long import LatLong
+
 from flora.pylib.rules.count import Count
 from flora.pylib.rules.part import Part
 from flora.pylib.rules.part_location import PartLocation
@@ -8,8 +11,6 @@ from flora.pylib.rules.size import Dimension, Size
 from flora.pylib.rules.subpart import Subpart
 from flora.pylib.rules.taxon import Taxon
 from tests.setup import parse
-from traiter.traiter.pylib.rules.habitat import Habitat
-from traiter.traiter.pylib.rules.lat_long import LatLong
 
 
 class TestCount(unittest.TestCase):

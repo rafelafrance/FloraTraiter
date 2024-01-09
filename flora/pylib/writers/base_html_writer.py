@@ -5,10 +5,10 @@ from datetime import datetime
 from typing import Any, NamedTuple
 
 import jinja2
+from traiter.pylib.darwin_core import DYN, DarwinCore
 
 from flora.pylib.label import Label
 from flora.pylib.labels import Labels
-from traiter.traiter.pylib.darwin_core import DYN, DarwinCore
 
 COLOR_COUNT = 14
 BACKGROUNDS = itertools.cycle([f"cc{i}" for i in range(COLOR_COUNT)])

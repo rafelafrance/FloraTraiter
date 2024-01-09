@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-import traiter.traiter.pylib.darwin_core as t_dwc
+import traiter.pylib.darwin_core as t_dwc
 
 ASSOC = "dwc:associatedTaxa"
 SEP = t_dwc.SEP

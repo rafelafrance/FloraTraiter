@@ -1,9 +1,8 @@
 from dataclasses import dataclass
 
 from spacy import registry
-
-from traiter.traiter.pylib.darwin_core import DarwinCore
-from traiter.traiter.pylib.rules import color as t_color
+from traiter.pylib.darwin_core import DarwinCore
+from traiter.pylib.rules import color as t_color
 
 from .linkable import Linkable
 

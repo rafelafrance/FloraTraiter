@@ -1,4 +1,11 @@
 import spacy
+from traiter.pylib.pipes import extensions, sentence, tokenizer
+from traiter.pylib.rules.date_ import Date
+from traiter.pylib.rules.elevation import Elevation
+from traiter.pylib.rules.habitat import Habitat
+from traiter.pylib.rules.lat_long import LatLong
+from traiter.pylib.rules.trs import TRS
+from traiter.pylib.rules.utm import UTM
 
 from flora.pylib.rules import delete_missing, job_id, post_process
 from flora.pylib.rules.admin_unit import AdminUnit
@@ -37,15 +44,8 @@ from flora.pylib.rules.taxon_like import TaxonLike
 from flora.pylib.rules.taxon_like_linker import TaxonLikeLinker
 from flora.pylib.rules.venation import Venation
 from flora.pylib.rules.woodiness import Woodiness
-from traiter.traiter.pylib.pipes import extensions, sentence, tokenizer
-from traiter.traiter.pylib.rules.date_ import Date
-from traiter.traiter.pylib.rules.elevation import Elevation
-from traiter.traiter.pylib.rules.habitat import Habitat
-from traiter.traiter.pylib.rules.lat_long import LatLong
-from traiter.traiter.pylib.rules.trs import TRS
-from traiter.traiter.pylib.rules.utm import UTM
 
-# from traiter.traiter.pylib.pipes import debug
+# from traiter.pylib.pipes import debug
 
 
 def build():

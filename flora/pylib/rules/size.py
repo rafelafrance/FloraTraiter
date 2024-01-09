@@ -4,13 +4,12 @@ from typing import ClassVar
 
 from spacy import registry
 from spacy.language import Language
-
-from traiter.traiter.pylib import const as t_const
-from traiter.traiter.pylib import term_util
-from traiter.traiter.pylib.darwin_core import DarwinCore
-from traiter.traiter.pylib.pattern_compiler import Compiler
-from traiter.traiter.pylib.pipes import add, reject_match
-from traiter.traiter.pylib.rules import terms as t_terms
+from traiter.pylib import const as t_const
+from traiter.pylib import term_util
+from traiter.pylib.darwin_core import DarwinCore
+from traiter.pylib.pattern_compiler import Compiler
+from traiter.pylib.pipes import add, reject_match
+from traiter.pylib.rules import terms as t_terms
 
 from .linkable import Linkable
 
