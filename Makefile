@@ -1,4 +1,4 @@
-.PHONY: test install dev venv clean pull push
+.PHONY: test install dev venv clean setup_subtrees fetch_subtrees
 .ONESHELL:
 
 VENV=.venv
@@ -27,5 +27,19 @@ venv:
 	test -d $(VENV) || $(PY_VER) -m venv $(VENV)
 
 clean:
-	rm -r $(VENV)
+	rm -r $(VENV)qq
 	find -iname "*.pyc" -delete
+
+setup_subtrees:
+	git remote add -f traiter https://github.com/rafelafrance/traiter.git
+	git checkout -b upstream/traiter traiter/master
+	git subtree split -q --squash --prefix=traiter --annotate='[traiter] ' --rejoin -b merging/traiter
+	git checkout main
+	git subtree add -q --squash --prefix=traiter merging/traiter
+
+fetch_subtrees:
+	git checkout upstream/traiter
+	git pull traiter/master
+	git subtree split -q --squash --prefix=traiter --annotate='[traiter] ' --rejoin -b merging/traiter
+	git checkout main
+	git subtree merge -q --squash --prefix=traiter merging/traiter
