@@ -1,0 +1,13 @@
+label,pattern,replace,factor_cm
+imperial_mass,ounce,oz,28.34952
+imperial_mass,ounces,oz,28.34952
+imperial_mass,oz,oz,28.34952
+imperial_mass,ozs,oz,28.34952
+imperial_mass,pound,lbs,453.5924
+imperial_mass,pounds,lbs,453.5924
+metric_mass,g,g,1
+metric_mass,gm,g,1
+metric_mass,gms,g,1
+metric_mass,grams,g,1
+metric_mass,kg,kg,1000
+metric_mass,kilograms,kg,1000
