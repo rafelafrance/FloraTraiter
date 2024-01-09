@@ -1,0 +1,2 @@
+include traiter/vocabulary/*.csv
+include traiter/vocabulary/*.sqlite
