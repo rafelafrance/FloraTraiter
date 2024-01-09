@@ -1,0 +1,11 @@
+label,pattern,replace
+lat_long_key,lat,
+lat_long_key,lng,
+lat_long_key,lon,
+lat_long_key,long,
+lat_long_label,gps,
+lat_long_label,gps:,
+uncertain_label,uncert,
+uncertain_label,uncert.,
+uncertain_label,uncertain,
+uncertain_label,uncertainty,

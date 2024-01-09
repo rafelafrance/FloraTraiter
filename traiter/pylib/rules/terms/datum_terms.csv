@@ -1,0 +1,35 @@
+label,pattern,replace
+datum,ed 50,ED50
+datum,ed-50,ED50
+datum,ed50,ED50
+datum,etrs 89,ETRS89
+datum,etrs-89,ETRS89
+datum,etrs89,ETRS89
+datum,gda 94,GDA94
+datum,gda-94,GDA94
+datum,gda94,GDA94
+datum,nad 27,NAD27
+datum,nad 83,NAD83
+datum,nad-27,NAD27
+datum,nad-83,NAD83
+datum,nad27,NAD27
+datum,nad83,NAD83
+datum,osgb 36,OSGB36
+datum,osgb-36,OSGB36
+datum,osgb36,OSGB36
+datum,sad 69,SAD69
+datum,sad-69,SAD69
+datum,sad69,SAD69
+datum,wgs 60,WGS60
+datum,wgs 66,WGS66
+datum,wgs 72,WGS72
+datum,wgs 84,WGS84
+datum,wgs-60,WGS60
+datum,wgs-66,WGS66
+datum,wgs-84,WGS84
+datum,wgs60,WGS60
+datum,wgs66,WGS66
+datum,wgs72,WGS72
+datum,wgs84,WGS84
+datum_label,datum,
+datum_label,datum:,
