@@ -21,14 +21,9 @@ dependencies = [
     "spacy",
 ]
 optional-dependencies.dev = [
-    "bandit",
-    "black",
-    "isort",
     "neovim",
     "pre-commit",
     "pre-commit-hooks",
-    "pydocstyle",
-    "pylint",
     "python-lsp-server[all]",
     "ruff",
 ]
