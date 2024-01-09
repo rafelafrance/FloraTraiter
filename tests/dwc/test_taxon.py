@@ -39,7 +39,7 @@ class TestTaxon(unittest.TestCase):
             to_dwc(LABEL, "Acacia pachyphloia (L.) Moench. ssp. brevipinnula"),
             {
                 "dwc:scientificName": (
-                    "Acacia pachyphloia (L.) Moench. ssp. brevipinnula",
+                    "Acacia pachyphloia (L.) Moench. ssp. brevipinnula"
                 ),
                 "dwc:taxonRank": "subspecies",
                 "dwc:scientificNameAuthorship": "Linnaeus, Moench",

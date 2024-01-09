@@ -29,9 +29,3 @@ venv:
 clean:
 	rm -r $(VENV)
 	find -iname "*.pyc" -delete
-
-pull:
-	git subtree pull --prefix traiter https://github.com/rafelafrance/traiter.git master --squash
-
-push:
-	git subtree push --prefix traiter https://github.com/rafelafrance/traiter.git master
