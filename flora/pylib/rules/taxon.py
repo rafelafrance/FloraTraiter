@@ -4,17 +4,17 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import ClassVar
 
+import traiter.pylib.darwin_core as t_dwc
 from spacy import Language, registry
+from traiter.pylib import const as t_const
+from traiter.pylib import taxon_util, term_util
+from traiter.pylib.darwin_core import DarwinCore
+from traiter.pylib.pattern_compiler import ACCUMULATOR, Compiler
+from traiter.pylib.pipes import add, reject_match
+from traiter.pylib.rules import terms as t_terms
+from traiter.pylib.rules.base import Base
 
-import traiter.traiter.pylib.darwin_core as t_dwc
 from flora.pylib import const
-from traiter.traiter.pylib import const as t_const
-from traiter.traiter.pylib import taxon_util, term_util
-from traiter.traiter.pylib.darwin_core import DarwinCore
-from traiter.traiter.pylib.pattern_compiler import ACCUMULATOR, Compiler
-from traiter.traiter.pylib.pipes import add, reject_match
-from traiter.traiter.pylib.rules import terms as t_terms
-from traiter.traiter.pylib.rules.base import Base
 
 
 def get_csvs() -> dict[str, Path]:

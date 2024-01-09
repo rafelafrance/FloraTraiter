@@ -1,9 +1,8 @@
 from dataclasses import dataclass
 
 from spacy.language import Language
-
-from traiter.traiter.pylib.darwin_core import DarwinCore
-from traiter.traiter.pylib.rules import base as t_base
+from traiter.pylib.darwin_core import DarwinCore
+from traiter.pylib.rules import base as t_base
 
 
 @dataclass(eq=False)

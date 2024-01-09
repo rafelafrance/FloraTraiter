@@ -6,9 +6,8 @@ from pathlib import Path
 
 import regex as re
 from PIL import Image, UnidentifiedImageError
-
-from traiter.traiter.pylib import util as t_util
-from traiter.traiter.pylib.rules.base import Base
+from traiter.pylib import util as t_util
+from traiter.pylib.rules.base import Base
 
 from .rules.linkable import Linkable
 

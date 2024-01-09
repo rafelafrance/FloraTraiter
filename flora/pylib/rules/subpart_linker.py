@@ -3,20 +3,17 @@ from dataclasses import dataclass
 from typing import ClassVar
 
 from spacy.language import Language
-
-from traiter.traiter.pylib import const as t_const
-from traiter.traiter.pylib.pattern_compiler import Compiler
-from traiter.traiter.pylib.pipes import add
-from traiter.traiter.pylib.rules.linker import Linker
+from traiter.pylib import const as t_const
+from traiter.pylib.pattern_compiler import Compiler
+from traiter.pylib.pipes import add
+from traiter.pylib.rules.linker import Linker
 
 
 @dataclass(eq=False)
 class SubpartLinker(Linker):
     # Class vars ----------
     parents: ClassVar[list[str]] = ["subpart"]
-    children: ClassVar[
-        list[str]
-    ] = """
+    children: ClassVar[list[str]] = """
         color duration duration margin shape surface venation woodiness
         """.split()
     child_once: ClassVar[list[str]] = ["size", "count"]

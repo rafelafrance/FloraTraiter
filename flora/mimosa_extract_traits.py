@@ -7,8 +7,7 @@ from pylib.readers.mimosa_marked_reader import MarkedReader
 from pylib.readers.mimosa_proximity_reader import ProximityReader
 from pylib.writers.mimosa_csv_writer import CsvWriter
 from pylib.writers.mimosa_html_writer import HtmlWriter
-
-from traiter.traiter.pylib import log
+from traiter.pylib import log
 
 
 def main():

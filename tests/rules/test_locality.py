@@ -1,13 +1,14 @@
 import unittest
 
+from traiter.pylib.rules.elevation import Elevation
+from traiter.pylib.rules.habitat import Habitat
+
 from flora.pylib.rules.color import Color
 from flora.pylib.rules.locality import Locality
 from flora.pylib.rules.part import Part
 from flora.pylib.rules.plant_duration import PlantDuration
 from flora.pylib.rules.subpart import Subpart
 from tests.setup import parse
-from traiter.traiter.pylib.rules.elevation import Elevation
-from traiter.traiter.pylib.rules.habitat import Habitat
 
 
 class TestLocality(unittest.TestCase):

@@ -3,12 +3,11 @@ from pathlib import Path
 from typing import ClassVar
 
 from spacy import Language, registry
-
-from traiter.traiter.pylib import term_util
-from traiter.traiter.pylib.darwin_core import DarwinCore
-from traiter.traiter.pylib.pattern_compiler import Compiler
-from traiter.traiter.pylib.pipes import add
-from traiter.traiter.pylib.rules.base import Base
+from traiter.pylib import term_util
+from traiter.pylib.darwin_core import DarwinCore
+from traiter.pylib.pattern_compiler import Compiler
+from traiter.pylib.pipes import add
+from traiter.pylib.rules.base import Base
 
 
 @dataclass(eq=False)
