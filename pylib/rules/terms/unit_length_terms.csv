@@ -1,0 +1,38 @@
+label,pattern,replace,factor_cm
+imperial_length,feet,ft,30.48
+imperial_length,foot,ft,30.48
+imperial_length,ft,ft,30.48
+imperial_length,ft.,ft,30.48
+imperial_length,in,in,2.54
+imperial_length,in .,in,2.54
+imperial_length,in.,in,2.54
+imperial_length,inch,in,2.54
+imperial_length,inches,in,2.54
+imperial_length,yard,yd,91.44
+imperial_length,yards,yd,91.44
+imperial_length,yd,yd,91.44
+imperial_length,yd.,yd,91.44
+imperial_length,yd .,yd,91.44
+imperial_length,yds,yd,91.44
+imperial_length,yds.,yd,91.44
+imperial_length,yds .,yd,91.44
+metric_length,centimeters,cm,1
+metric_length,cm,cm,1
+metric_length,cm .,cm,1
+metric_length,cm.,cm,1
+metric_length,decimeters,dm,10
+metric_length,dm,dm,10
+metric_length,dm .,dm,10
+metric_length,dm.,dm,10
+metric_length,m,m,100
+metric_length,m .,m,100
+metric_length,m.,m,100
+metric_length,meter,m,100
+metric_length,meters,m,100
+metric_length,metre,m,100
+metric_length,metres,m,100
+metric_length,millimeters,mm,0.1
+metric_length,mm,mm,0.1
+metric_length,mm .,mm,0.1
+metric_length,mm.,mm,0.1
+metric_length,µm,µm,0.0001

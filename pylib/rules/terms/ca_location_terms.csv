@@ -1,0 +1,65 @@
+label,pattern,attr,replace
+country,canada,lower,Canada
+country,CA,text,Canada
+ca_province,alberta,lower,Alberta
+ca_province,AB,text,Alberta
+ca_province,alta.,lower,Alberta
+ca_province,alb.,lower,Alberta
+ca_province,british columbia,lower,British Columbia
+ca_province,BC,text,British Columbia
+ca_province,b.c.,lower,British Columbia
+ca_province,c.b.,lower,British Columbia
+ca_province,c.-b.,lower,British Columbia
+ca_province,c-b,lower,British Columbia
+ca_province,manitoba,lower,Manitoba
+ca_province,MB,text,Manitoba
+ca_province,man.,lower,Manitoba
+ca_province,new brunswick,lower,New Brunswick
+ca_province,NB,text,New Brunswick
+ca_province,n.b.,lower,New Brunswick
+ca_province,n.-b.,lower,New Brunswick
+ca_province,n-b,lower,New Brunswick
+ca_province,newfoundland and labrador,lower,Newfoundland and Labrador
+ca_province,NL,text,Newfoundland and Labrador
+ca_province,nfld.,lower,Newfoundland
+ca_province,lab.,lower,Labrador
+ca_province,n.l.,lower,Newfoundland and Labrador
+ca_province,t.-n.-l,lower,Newfoundland and Labrador
+ca_province,t-n-l,lower,Newfoundland and Labrador
+ca_province,NF,text,Newfoundland
+ca_province,LB,text,Labrador
+ca_province,northwest territories,lower,Northwest Territories
+ca_province,NT,text,Northwest Territories
+ca_province,n.w.t.,lower,Northwest Territories
+ca_province,t.n.-o.,lower,Northwest Territories
+ca_province,t.n-o,lower,Northwest Territories
+ca_province,nova scotia,lower,Nova Scotia
+ca_province,NS,text,Nova Scotia
+ca_province,n.s.,lower,Nova Scotia
+ca_province,n.-e.,lower,Nova Scotia
+ca_province,n-e,lower,Nova Scotia
+ca_province,nunavut,lower,Nunavut
+ca_province,NU,text,Nunavut
+ca_province,nvt.,lower,Nunavut
+ca_province,nt.,lower,Nunavut
+ca_province,ontario,lower,Ontario
+ca_province,ON,text,Ontario
+ca_province,ont.,lower,Ontario
+ca_province,prince edward island,lower,Prince Edward Island
+ca_province,PE,text,Prince Edward Island
+ca_province,p.e.i.,lower,Prince Edward Island
+ca_province,i.-p.-e.,lower,Prince Edward Island
+ca_province,i-p-e.,lower,Prince Edward Island
+ca_province,quebec,lower,Quebec
+ca_province,QC,text,Quebec
+ca_province,PQ,text,Quebec
+ca_province,que.,lower,Quebec
+ca_province,p.q.,lower,Quebec
+ca_province,saskatchewan,lower,Saskatchewan
+ca_province,SK,text,Saskatchewan
+ca_province,Sask.,lower,Saskatchewan
+ca_province,yukon,lower,Yukon
+ca_province,YT,text,Yukon
+ca_province,YK,text,Yukon
+ca_province,yuk.,lower,Yukon
+ca_province,yn.,lower,Yukon

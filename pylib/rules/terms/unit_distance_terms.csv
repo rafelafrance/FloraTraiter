@@ -1,0 +1,12 @@
+label,pattern,replace,factor_cm
+imperial_dist,mi,mi,160934.4
+imperial_dist,mi .,mi,160934.4
+imperial_dist,mi.,mi,160934.4
+imperial_dist,mile,mi,160934.4
+imperial_dist,miles,mi,160934.4
+metric_dist,kilometer,km,100000
+metric_dist,kilometers,km,100000
+metric_dist,km,km,100000
+metric_dist,km .,km,100000
+metric_dist,km.,km,100000
+metric_dist,kms,km,100000
