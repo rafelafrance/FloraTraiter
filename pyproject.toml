@@ -27,7 +27,8 @@ dependencies = [
     "scipy",
     "spacy",
     "tomlkit",
-    "tqdm",]
+    "tqdm",
+]
 optional-dependencies.dev = [
     "neovim",
     "pre-commit",
@@ -110,6 +111,7 @@ select = [
 ]
 
 ignore = [
+    "COM812",
     "D100",
     "D101",
     "D102",
@@ -119,6 +121,7 @@ ignore = [
     "D107",
     "D203",
     "D212",
+    "ISC001",
     "N818",
     "PD901",
     "PLR0913",
