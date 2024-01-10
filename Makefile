@@ -51,19 +51,19 @@ setup_subtrees:
 
 fetch_subtrees:
 	git checkout upstream/util
-	git pull common_utils/main
+	git pull common_utils
 	git subtree split -q --squash --prefix=util --annotate='[util] ' --rejoin -b merging/util
 	git checkout main
 	git subtree merge -q --squash --prefix=util merging/util
 
 	git checkout upstream/traiter
-	git pull traiter/master
+	git pull traiter
 	git subtree split -q --squash --prefix=traiter --annotate='[traiter] ' --rejoin -b merging/traiter
 	git checkout main
 	git subtree merge -q --squash --prefix=traiter merging/traiter
 
 	git checkout upstream/parse
-	git pull pdf_parsers/main
+	git pull pdf_parsers
 	git subtree split -q --squash --prefix=parse --annotate='[parse] ' --rejoin -b merging/parse
 	git checkout main
 	git subtree merge -q --squash --prefix=parse merging/parse
