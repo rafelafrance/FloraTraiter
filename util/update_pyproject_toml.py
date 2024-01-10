@@ -28,13 +28,28 @@ def main():
     get_deps(subtrees)
     deps = merge_deps(doc, subtrees)
 
+    update_dependencies(doc, deps)
+    update_ruff(doc)
+
+    with PYPROJECT_TOML.open("w") as f:
+        tomlkit.dump(doc, f)
+
+
+def update_ruff(doc):
+    url = (
+        "https://raw.githubusercontent.com/rafelafrance/common_utils/main/"
+        "pyproject.toml"
+    )
+    settings = urlopen(url).read().decode("utf-8")  # noqa: S310
+    project = tomlkit.loads(settings)
+    doc["tool"]["ruff"] = project["tool"]["ruff"]
+
+
+def update_dependencies(doc, deps):
     doc["project"]["dependencies"] = tomlkit.array()
     for dep in sorted(deps):
         doc["project"]["dependencies"].add_line(dep)
     doc["project"]["dependencies"].add_line(indent="")
-
-    with PYPROJECT_TOML.open("w") as f:
-        tomlkit.dump(doc, f)
 
 
 def merge_deps(doc, subtrees: list[Subtree]) -> list[str]:
