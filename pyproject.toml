@@ -37,6 +37,17 @@ optional-dependencies.dev = [
     "ruff",
 ]
 
+[tool.common_utils]
+base-dependencies = [
+    "Jinja2",
+    "beautifulsoup4",
+    "numpy",
+    "pandas",
+    "regex",
+    "spacy",
+    "tqdm",
+]
+
 [tool.setuptools]
 py-modules = []
 
