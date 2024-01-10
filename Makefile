@@ -31,6 +31,12 @@ clean:
 	find -iname "*.pyc" -delete
 
 setup_subtrees:
+	git remote add -f common_utils https://github.com/rafelafrance/common_utils.git
+	git checkout -b upstream/util common_utils/main
+	git subtree split -q --squash --prefix=util --annotate='[util] ' --rejoin -b merging/util
+	git checkout master
+	git subtree add -q --squash --prefix=util merging/util
+
 	git remote add -f traiter https://github.com/rafelafrance/traiter.git
 	git checkout -b upstream/traiter traiter/master
 	git subtree split -q --squash --prefix=traiter --annotate='[traiter] ' --rejoin -b merging/traiter
@@ -44,6 +50,12 @@ setup_subtrees:
 	git subtree add -q --squash --prefix=parse merging/parse
 
 fetch_subtrees:
+	git checkout upstream/util
+	git pull common_utils/main
+	git subtree split -q --squash --prefix=util --annotate='[util] ' --rejoin -b merging/util
+	git checkout master
+	git subtree merge -q --squash --prefix=util merging/util
+
 	git checkout upstream/traiter
 	git pull traiter/master
 	git subtree split -q --squash --prefix=traiter --annotate='[traiter] ' --rejoin -b merging/traiter

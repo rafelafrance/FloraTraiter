@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "FloraTraiter"
-version = "1.2.2"
+version = "1.3.0"
 readme = "README.md"
 description = ""
 license = {file = "LICENSE"}
@@ -38,6 +38,18 @@ optional-dependencies.dev = [
 
 [tool.setuptools]
 py-modules = []
+
+[tool.common_utils]
+base-dependencies = [
+    "numpy",
+    "pandas",
+    "python-dateutil",
+    "regex",
+    "scikit-image",
+    "scipy",
+    "spacy",
+    "tqdm",
+]
 
 [tool.ruff]
 target-version = "py311"
