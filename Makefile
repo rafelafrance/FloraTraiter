@@ -27,7 +27,7 @@ venv:
 	test -d $(VENV) || $(PY_VER) -m venv $(VENV)
 
 clean:
-	rm -r $(VENV)qq
+	rm -r $(VENV)
 	find -iname "*.pyc" -delete
 
 setup_subtrees:
