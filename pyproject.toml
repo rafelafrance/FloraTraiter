@@ -13,13 +13,21 @@ requires-python = ">=3.11"
 dependencies = [
     "Jinja2",
     "beautifulsoup4",
+    "customtkinter",
     "ftfy",
     "lxml",
     "numpy",
     "pandas",
+    "pillow",
+    "pytesseract",
+    "python-dateutil",
     "regex",
+    "rich",
+    "scikit-image",
+    "scipy",
     "spacy",
-]
+    "tomlkit",
+    "tqdm",]
 optional-dependencies.dev = [
     "neovim",
     "pre-commit",

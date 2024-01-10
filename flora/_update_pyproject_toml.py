@@ -44,6 +44,7 @@ def merge_deps(subtrees: list[Subtree]) -> list[str]:
 
 def get_deps(subtrees: list[Subtree]) -> None:
     for tree in subtrees:
+        print(tree.url)
         settings = urlopen(tree.url).read().decode("utf-8")  # noqa: S310
         project = tomlkit.loads(settings)
         tree.deps = set(project["project"]["dependencies"])
@@ -65,6 +66,8 @@ def get_subtrees() -> list[Subtree]:
             elif ln.find("git checkout -b") > -1:
                 prefix = ln.split()[branch]
                 prefix = prefix.removeprefix("upstream/")
+                if ln.strip().endswith("master"):
+                    url = url.replace("/main/", "/master/")
 
                 subtrees.append(Subtree(prefix=prefix, url=url, repo=repo))
 
