@@ -13,55 +13,27 @@ requires-python = ">=3.11"
 dependencies = [
     "Jinja2",
     "beautifulsoup4",
-    "customtkinter",
-    "ftfy",
-    "lxml",
     "numpy",
     "pandas",
-    "pillow",
-    "pytesseract",
-    "python-dateutil",
     "regex",
-    "rich",
-    "scikit-image",
-    "scipy",
     "spacy",
-    "tomlkit",
     "tqdm",
 ]
 optional-dependencies.dev = [
-    "neovim",
+    "build",
     "pre-commit",
     "pre-commit-hooks",
     "python-lsp-server[all]",
     "ruff",
 ]
 
-[tool.common_utils]
-base-dependencies = [
-    "Jinja2",
-    "beautifulsoup4",
-    "numpy",
-    "pandas",
-    "regex",
-    "spacy",
-    "tqdm",
-]
+[project.scripts]
+parse-labels = "flora.parse_labels:main"
+parse-treatments = "flora.parse_treatments:main"
+util-add-taxon-terms = "flora.util_add_taxon_terms:main"
 
 [tool.setuptools]
 py-modules = []
-
-[tool.common_utils]
-base-dependencies = [
-    "numpy",
-    "pandas",
-    "python-dateutil",
-    "regex",
-    "scikit-image",
-    "scipy",
-    "spacy",
-    "tqdm",
-]
 
 [tool.ruff]
 target-version = "py311"
@@ -81,7 +53,7 @@ select = [
     "BLE",
     "FBT",
     "B",
-#    "A",
+#    "A",  # flake8-builtins
     "COM",
     "C4",
     "T10",
@@ -105,7 +77,7 @@ select = [
     "TID",
     "TCH",
     "INT",
-#    "ARG",
+#    "ARG",  # flake8-unused-arguments
     "PTH",
     "TD",
     "FIX",
@@ -116,33 +88,33 @@ select = [
     "FLY",
     "NPY",
     "PERF",
-#    "FURB",
-#    "LOG",
+#    "FURB",  # refurb
+#    "LOG",  # flake8-logging
     "RUF",
 ]
 
 ignore = [
-    "COM812",
-    "D100",
-    "D101",
-    "D102",
-    "D103",
-    "D104",
-    "D105",
-    "D107",
-    "D203",
-    "D212",
-    "ISC001",
-    "N818",
-    "PD901",
-    "PLR0913",
-    "PLW2901",
-    "PLW0603",
-    "PT009",
-    "RET504",
-    "RUF001",
-    "SIM114",
-    "SIM117",
-    "SLF001",
-    "T201",
+#    "COM812",
+    "D100",  # Missing docstring in public module
+    "D101",  # Missing docstring in public class
+    "D102",  # Missing docstring in public method
+    "D103",  # Missing docstring in public function
+    "D104",  # Missing docstring in public package
+    "D105",  # Missing docstring in public method
+    "D107",  # Missing docstring in public __init__
+    "D203",  # 1 blank line required before class docstring
+    "D212",  # Multi-line docstring summary should start at the first line
+#    "ISC001",  # Implicitly concatenated string literals on one line
+    "N818",  # Exception name {name} should be named with an Error suffix
+    "PD901",  # Avoid using the generic variable name df for DataFrames
+    "PLR0913",  # Too many arguments in function definition ({c_args} > {max_args})
+    "PLW2901",  # Outer {outer_kind} variable {name} overwritten by inner {inner_kind} target
+    "PLW0603",  # Using the global statement to update {name} is discouraged
+    "PT009",  # Use a regular assert instead of unittest-style {assertion}
+    "RET504",  # Unnecessary assignment to {name} before return statement
+    "RUF001",  # String contains ambiguous {}. Did you mean {}?
+    "SIM114",  # Combine if branches using logical or operator
+    "SIM117",  # Use a single with statement with multiple contexts instead of nested with statements
+    "SLF001",  # Private member accessed: {access}
+    "T201",  # print found
 ]
