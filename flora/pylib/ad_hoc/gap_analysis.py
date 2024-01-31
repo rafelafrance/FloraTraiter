@@ -16,7 +16,7 @@ def gap_analysis(args):
       GROUP BY taxon, level, trait;
     """
     df = pd.read_sql(sql, sqlite3.connect(str(args.sqlite3)))
-    df = df.pivot(index=["taxon", "level"], columns="trait", values="n")
+    df = df.pivot_table(index=["taxon", "level"], columns="trait", values="n")
     df = df.fillna("")
     df = df.rename(columns={np.nan: "num_traits"})
     df.to_csv(args.csv_file)

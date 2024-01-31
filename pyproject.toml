@@ -15,6 +15,7 @@ dependencies = [
     "beautifulsoup4",
     "numpy",
     "pandas",
+    "pillow",
     "regex",
     "spacy",
     "tqdm",
@@ -94,7 +95,7 @@ select = [
 ]
 
 ignore = [
-#    "COM812",
+    "COM812",  # Trailing comma missing
     "D100",  # Missing docstring in public module
     "D101",  # Missing docstring in public class
     "D102",  # Missing docstring in public method

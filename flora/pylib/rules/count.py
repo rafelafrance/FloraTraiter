@@ -176,7 +176,7 @@ class Count(Linkable):
         ]
 
     @classmethod
-    def count_match(cls, ent):
+    def count_match(cls, ent):  # noqa: C901 PLR0912
         per_part = []
         suffix = []
         kwargs = {}

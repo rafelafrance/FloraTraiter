@@ -16,6 +16,8 @@ from traiter.pylib.rules.base import Base
 
 from flora.pylib import const
 
+NAME_LEN: int = 2
+
 
 def get_csvs() -> dict[str, Path]:
     here = Path(__file__).parent / "terms"
@@ -54,10 +56,10 @@ class Taxon(Base):
     and_: ClassVar[list[str]] = ["&", "and", "et", "ex"]
     any_rank: ClassVar[list[str]] = sorted({r["label"] for r in rank_terms})
     auth3: ClassVar[list[str]] = [
-        s for s in t_const.NAME_SHAPES if len(s) > 2 and s[-1] != "."
+        s for s in t_const.NAME_SHAPES if len(s) > NAME_LEN and s[-1] != "."
     ]
     auth3_upper: ClassVar[list[str]] = [
-        s for s in t_const.NAME_AND_UPPER if len(s) > 2 and s[-1] != "."
+        s for s in t_const.NAME_AND_UPPER if len(s) > NAME_LEN and s[-1] != "."
     ]
     binomial_abbrev: ClassVar[dict[str, str]] = taxon_util.abbrev_binomial_term(
         all_csvs["binomial_terms"],
@@ -563,7 +565,7 @@ class Taxon(Base):
                     "taxon sp? l_rank+ single by? A.* auth+ _? and A.* auth3 _? ",
                     "taxon sp? l_rank+ single ( auth+  _? ) A.+  auth3 _?",
                     "taxon sp? l_rank+ single ( auth+  _? )      auth3 _?",
-                    "taxon sp? l_rank+ single ( auth+  _? ) auth3 _? and auth* auth3 _? ",
+                    "taxon sp? l_rank+ single ( auth+ _? ) auth3 _? and auth* auth3 _?",
                     "taxon sp? l_rank+ single ( ambig+ _? ) auth3 _?",
                     "taxon sp? l_rank+ single ( auth+ _? and  auth+ _? ) auth auth3 _?",
                     "taxon sp? l_rank+ single ( auth+ _? and  auth+ _? ) A.+  auth3 _?",
@@ -605,10 +607,10 @@ class Taxon(Base):
             elif token._.term == "binomial" and i > 0:
                 taxon.append(token.lower_)
 
-            elif token._.term == "monomial" and i != 2:
+            elif token._.term == "monomial" and i != NAME_LEN:
                 taxon.append(token.lower_)
 
-            elif token._.term == "monomial" and i == 2:
+            elif token._.term == "monomial" and i == NAME_LEN:
                 if not rank_seen:
                     taxon.append(cls.rank_abbrev["subspecies"])
                 taxon.append(token.lower_)

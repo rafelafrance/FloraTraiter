@@ -13,6 +13,7 @@ from traiter.pylib.pipes import add, reject_match
 from traiter.pylib.rules.base import Base
 
 USE_MOCK_DATA = 0
+TOO_LONG = 2
 
 
 @dataclass(eq=False)
@@ -210,7 +211,7 @@ class Locality(Base):
     @classmethod
     def labeled_locality_match(cls, ent):
         i = 0
-        for i, token in enumerate(ent):
+        for i, token in enumerate(ent):  # noqa: B007
             if token._.term != "loc_label":
                 break
         return cls.from_ent(ent, locality=ent[i:].text, labeled=True)
@@ -227,7 +228,7 @@ def labeled_locality_match(ent):
 
 
 @Language.component("prune_localities")
-def prune_localities(doc):
+def prune_localities(doc):  # noqa: C901
     if USE_MOCK_DATA:  # Don't prune localities when testing
         return doc
 
@@ -264,7 +265,11 @@ def prune_localities(doc):
                 continue
 
             # Skip a name
-            elif len(ent) <= 2 and len(ent[0]) <= 2 and ent[0].text[-1] == ".":
+            elif (
+                len(ent) <= TOO_LONG
+                and len(ent[0]) <= TOO_LONG
+                and ent[0].text[-1] == "."
+            ):
                 continue
 
         ents.append(ent)

@@ -133,7 +133,7 @@ class IdNumber(Base):
             if token.ent_type_ == "not_id_num":
                 raise reject_match.RejectMatch
 
-            elif token.ent_type_ in cls.labels:
+            if token.ent_type_ in cls.labels:
                 type_ = token.ent_type_
                 has_label = True
 

@@ -1,10 +1,9 @@
-import os
 from pathlib import Path
 
 # ---------------------
 # Useful locations
 
-CURR_DIR = Path(os.getcwd())
+CURR_DIR = Path.cwd()
 IS_SUBDIR = CURR_DIR.name in ("notebooks", "experiments")
 ROOT_DIR = Path("../.." if IS_SUBDIR else ".")
 

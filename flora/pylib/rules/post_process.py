@@ -34,8 +34,7 @@ class PostProcess:
                 if rec_num_found:
                     tu.clear_tokens(ent)
                     continue
-                else:
-                    rec_num_found = True
+                rec_num_found = True
 
             entities.append(ent)
 

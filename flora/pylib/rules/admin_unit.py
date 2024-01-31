@@ -13,6 +13,8 @@ from traiter.pylib.pipes import add, reject_match
 from traiter.pylib.rules import terms as t_terms
 from traiter.pylib.rules.base import Base
 
+TOO_LONG = 2
+
 
 @dataclass(eq=False)
 class AdminUnit(Base):
@@ -194,11 +196,7 @@ class AdminUnit(Base):
 
     @classmethod
     def province_match(cls, ent):
-        prov = []
-        for token in ent:
-            if token.ent_type_ != "province_label":
-                prov.append(token.lower_)
-
+        prov = [t.lower_ for t in ent if t.ent_type_ != "province_label"]
         return cls.from_ent(ent, province=" ".join(prov))
 
     @classmethod
@@ -212,7 +210,7 @@ class AdminUnit(Base):
 
     @classmethod
     def county_state_match(cls, ent):
-        if len(ent.ents) < 2:
+        if len(ent.ents) < TOO_LONG:
             raise reject_match.RejectMatch
 
         return cls.from_ent(
@@ -227,7 +225,7 @@ class AdminUnit(Base):
             e for e in ent.ents if e.label_ in [*cls.admin_ents, "county_label_iffy"]
         ]
 
-        if len(sub_ents) < 2:
+        if len(sub_ents) < TOO_LONG:
             raise reject_match.RejectMatch
 
         county_ent = sub_ents[0]
@@ -236,15 +234,14 @@ class AdminUnit(Base):
         if cls.is_county_not_colorado(state_ent, county_ent):
             return cls.from_ent(ent, us_county=cls.format_county(ent, ent_index=0))
 
-        elif not cls.county_in_state(state_ent, county_ent):
+        if not cls.county_in_state(state_ent, county_ent):
             raise reject_match.RejectMatch
 
-        else:
-            return cls.from_ent(
-                ent,
-                us_state=cls.format_state(ent, ent_index=1),
-                us_county=cls.format_county(ent, ent_index=0),
-            )
+        return cls.from_ent(
+            ent,
+            us_state=cls.format_state(ent, ent_index=1),
+            us_county=cls.format_county(ent, ent_index=0),
+        )
 
     @classmethod
     def county_only_match(cls, ent):
@@ -277,7 +274,7 @@ class AdminUnit(Base):
 
     @staticmethod
     def get_state_key(state):
-        return state.upper() if len(state) <= 2 else state.lower()
+        return state.upper() if len(state) <= TOO_LONG else state.lower()
 
     @classmethod
     def county_in_state(cls, state_ent, county_ent):

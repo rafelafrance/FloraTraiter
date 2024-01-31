@@ -14,6 +14,8 @@ from traiter.pylib.pipes import add, reject_match
 from traiter.pylib.rules import terms as t_terms
 from traiter.pylib.rules.base import Base
 
+TOO_LONG = 4
+
 
 @dataclass(eq=False)
 class Job(Base):
@@ -36,10 +38,10 @@ class Job(Base):
     conj: ClassVar[list[str]] = ["CCONJ", "ADP"]
 
     name4: ClassVar[list[str]] = [
-        s for s in t_const.NAME_SHAPES if len(s) >= 4 and s[-1].isalpha()
+        s for s in t_const.NAME_SHAPES if len(s) >= TOO_LONG and s[-1].isalpha()
     ]
     upper4: ClassVar[list[str]] = [
-        s for s in t_const.UPPER_SHAPES if len(s) >= 4 and s[-1].isalpha()
+        s for s in t_const.UPPER_SHAPES if len(s) >= TOO_LONG and s[-1].isalpha()
     ]
 
     temp: ClassVar[str] = "".join(
@@ -235,7 +237,7 @@ class Job(Base):
             if token._.flag == "skip" or token.ent_type_ == "num_label":
                 continue
 
-            elif token.ent_type_ == "job_label":
+            if token.ent_type_ == "job_label":
                 has_label = True
                 job.append(token.lower_)
 

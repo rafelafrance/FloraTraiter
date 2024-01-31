@@ -13,6 +13,9 @@ from traiter.pylib.rules import terms as t_terms
 
 from .linkable import Linkable
 
+TOO_BIG = 100.0
+TOO_SMALL = 0.0
+
 ALL_CSVS = [
     Path(__file__).parent / "terms" / "numeric_terms.csv",
     Path(__file__).parent / "terms" / "sex_terms.csv",
@@ -162,7 +165,7 @@ class Size(Linkable):
         ]
 
     @classmethod
-    def scan_tokens(cls, ent):
+    def scan_tokens(cls, ent):  # noqa: C901 PLR0912
         dims = [Dimension()]
 
         for token in ent:
@@ -233,9 +236,9 @@ class Size(Linkable):
                 if value is None:
                     continue
                 value = float(value)
-                if dim.units == "m" and value > 100.0:
+                if dim.units == "m" and value > TOO_BIG:
                     raise reject_match.RejectMatch
-                if value <= 0.0:
+                if value <= TOO_SMALL:
                     raise reject_match.RejectMatch
                 factor = cls.factors_cm[dim.units]
                 value = round(value * factor, 3)
@@ -274,10 +277,7 @@ class Size(Linkable):
 
         trait = cls.fill_trait_data(dims, ent)
 
-        reals = []
-        for token in ent:
-            if token._.term == "dim":
-                reals.append(cls.replace.get(token.lower_, token.lower_))
+        reals = [cls.replace.get(t.lower_, t.lower_) for t in ent if t._.term == "dim"]
 
         for real, dim in zip(reals, dims, strict=False):
             dim.dim = real
