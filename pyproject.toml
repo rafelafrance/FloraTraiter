@@ -12,8 +12,6 @@ authors = [{name="Raphael LaFrance", email="raphael.lafrance@gmail.com"}]
 requires-python = ">=3.11"
 dependencies = [
     "Jinja2",
-    "beautifulsoup4",
-    "numpy",
     "pandas",
     "pillow",
     "regex",
@@ -54,7 +52,7 @@ select = [
     "BLE",
     "FBT",
     "B",
-#    "A",  # flake8-builtins
+    "A",
     "COM",
     "C4",
     "T10",
@@ -78,7 +76,7 @@ select = [
     "TID",
     "TCH",
     "INT",
-#    "ARG",  # flake8-unused-arguments
+    "ARG",
     "PTH",
     "TD",
     "FIX",
@@ -95,6 +93,7 @@ select = [
 ]
 
 ignore = [
+    "A003",  # Class attribute is shadowing a Python builtin
     "COM812",  # Trailing comma missing
     "D100",  # Missing docstring in public module
     "D101",  # Missing docstring in public class

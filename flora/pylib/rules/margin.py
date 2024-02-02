@@ -63,7 +63,7 @@ class Margin(Linkable):
     def margin_match(cls, ent):
         margin = {}  # Dicts preserve order sets do not
         for token in ent:
-            if token._.term in ["margin_term", "shape"] and token.text != "-":
+            if token._.term in {"margin_term", "shape"} and token.text != "-":
                 word = cls.replace.get(token.lower_, token.lower_)
                 margin[word] = 1
         margin = "-".join(margin.keys())

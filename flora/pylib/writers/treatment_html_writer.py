@@ -3,16 +3,13 @@ from dataclasses import dataclass
 from tqdm import tqdm
 
 from flora.pylib import const
+from flora.pylib.treatments import Treatments
 from flora.pylib.writers.base_html_writer import BaseHtmlWriter, BaseHtmlWriterRow
-from old.treatments import Treatments
 
 
 @dataclass(kw_only=True)
 class HtmlWriterRow(BaseHtmlWriterRow):
     treatment_id: str = ""
-    word_count: int = 0
-    valid_words: int = 0
-    score: float = 0.0
 
 
 class HtmlWriter(BaseHtmlWriter):
@@ -31,9 +28,6 @@ class HtmlWriter(BaseHtmlWriter):
                     treatment_id=treat.path.stem,
                     formatted_text=self.format_text(treat, exclude=["trs"]),
                     formatted_traits=self.format_traits(treat),
-                    word_count=treat.word_count,
-                    valid_words=treat.valid_words,
-                    score=treat.score,
                 ),
             )
 

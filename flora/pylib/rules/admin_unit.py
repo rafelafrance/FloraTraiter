@@ -222,7 +222,7 @@ class AdminUnit(Base):
     @classmethod
     def county_state_iffy_match(cls, ent):
         sub_ents = [
-            e for e in ent.ents if e.label_ in [*cls.admin_ents, "county_label_iffy"]
+            e for e in ent.ents if e.label_ in {*cls.admin_ents, "county_label_iffy"}
         ]
 
         if len(sub_ents) < TOO_LONG:

@@ -175,8 +175,8 @@ class Size(Linkable):
                 dims[-1].high = token._.trait.high
                 dims[-1].max = token._.trait.max
 
-            elif token._.term in ("metric_length", "imperial_length"):
-                if dims[-1].units and token.lower_ in ("in",):
+            elif token._.term in {"metric_length", "imperial_length"}:
+                if dims[-1].units and token.lower_ == "in":
                     continue
                 if word := cls.replace.get(token.lower_):
                     if dims[-1].units is None:
@@ -185,14 +185,14 @@ class Size(Linkable):
                         dims[-1].units += word
 
             elif token._.term == "dim":
-                if token.lower_ not in ("in",):
+                if token.lower_ != "in":
                     if dims[-1].dim is None:
                         dims[-1].dim = token.lower_
                     else:
                         dims[-1].dim += token.lower_
                     dims[-1].dim = cls.replace.get(dims[-1].dim, dims[-1].dim)
 
-            elif token._.term in ("about_term", "quest"):
+            elif token._.term in {"about_term", "quest"}:
                 dims[-1].uncertain = True
 
             elif token._.term == "sex":

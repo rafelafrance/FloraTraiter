@@ -29,7 +29,7 @@ class Linkable(t_base.Base):
                 elif isinstance(field, list):
                     key += self.trait.split()
         key += list(args)
-        dupe = {k: 1 for k in key}
+        dupe = dict.fromkeys(key, 1)
         key = " ".join(dupe.keys()).replace("-", " ").split()
         key = [k.title() for k in key]
         key[0] = key[0].lower()

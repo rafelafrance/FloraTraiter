@@ -615,7 +615,7 @@ class Taxon(Base):
                     taxon.append(cls.rank_abbrev["subspecies"])
                 taxon.append(token.lower_)
 
-            elif token.pos_ in ["PROPN", "NOUN"]:
+            elif token.pos_ in {"PROPN", "NOUN"}:
                 taxon.append(token.text)
 
             else:
@@ -657,16 +657,16 @@ class Taxon(Base):
                     if level == "higher" and token.shape_ in t_const.NAME_AND_UPPER:
                         rank = rank_
                     elif (
-                        level in ("lower", "species")
+                        level in {"lower", "species"}
                         and token.shape_ not in t_const.TITLE_SHAPES
                     ):
                         rank = rank_
 
             # A given rank overrides the one in the DB
-            elif cls.level.get(token.lower_) in ("higher", "lower"):
+            elif cls.level.get(token.lower_) in {"higher", "lower"}:
                 rank = cls.rank_replace.get(token.lower_, token.lower_)
 
-            elif token.pos_ in ("PROPN", "NOUN"):
+            elif token.pos_ in {"PROPN", "NOUN"}:
                 taxon = token.lower_
 
         if not rank:

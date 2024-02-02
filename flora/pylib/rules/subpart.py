@@ -79,7 +79,7 @@ class Subpart(Linkable):
         missing = None
 
         for token in ent:
-            if token._.term in ("subpart_term", "part", "part_term"):
+            if token._.term in {"subpart_term", "part", "part_term"}:
                 frag = cls.replace.get(token.lower_, token.lower_)
                 frags[frag] = 1
 

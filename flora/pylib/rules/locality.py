@@ -244,15 +244,15 @@ def prune_localities(doc):  # noqa: C901
         trait = ent._.trait.trait
 
         # Localities come after taxa
-        if trait in ("taxon",):  # "admin_unit"):
+        if trait == "taxon":  # "admin_unit"):
             add_locality = True
 
         # Start localities when there is no taxon
-        elif trait in ("associated_taxon",) and not has_taxon:
+        elif trait == "associated_taxon" and not has_taxon:
             add_locality = True
 
         # Localities are before collector etc.
-        elif trait in ("collector", "date", "determiner") and i > len(doc.ents) // 2:
+        elif trait in {"collector", "date", "determiner"} and i > len(doc.ents) // 2:
             add_locality = False
 
         elif trait == "locality":

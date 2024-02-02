@@ -79,9 +79,13 @@ class BaseHtmlWriter:
 
             title = ", ".join(f"{k}:&nbsp;{v}" for k, v in dwc.items())
 
-            frags.append(f'<span class="{cls}" title="{title}">')
-            frags.append(html.escape(row.text[start:end]))
-            frags.append("</span>")
+            frags.extend(
+                (
+                    f'<span class="{cls}" title="{title}">',
+                    html.escape(row.text[start:end]),
+                    "</span>",
+                )
+            )
             prev = end
 
         if len(row.text) > prev:

@@ -194,7 +194,7 @@ class Count(Linkable):
                 value = cls.replace.get(token.lower_, token.lower_)
                 kwargs["low"] = t_util.to_positive_int(value)
 
-            elif token.ent_type_ in ("count_suffix", "subpart"):
+            elif token.ent_type_ in {"count_suffix", "subpart"}:
                 suffix.append(token.lower_)
 
             elif token._.trait and token._.flag == "part":
