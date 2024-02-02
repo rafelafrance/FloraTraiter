@@ -31,5 +31,4 @@ setup(
     license=license_(),
     url="https://github.com/rafelafrance/FloraTraiter",
     python_requires=">=3.11",
-    scripts=[],
 )

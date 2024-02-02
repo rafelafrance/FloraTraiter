@@ -3,8 +3,8 @@ from dataclasses import dataclass
 from tqdm import tqdm
 
 from flora.pylib import const
-from flora.pylib.treatments import Treatments
 from flora.pylib.writers.base_html_writer import BaseHtmlWriter, BaseHtmlWriterRow
+from old.treatments import Treatments
 
 
 @dataclass(kw_only=True)

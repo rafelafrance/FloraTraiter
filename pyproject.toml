@@ -105,7 +105,7 @@ ignore = [
     "D107",  # Missing docstring in public __init__
     "D203",  # 1 blank line required before class docstring
     "D212",  # Multi-line docstring summary should start at the first line
-#    "ISC001",  # Implicitly concatenated string literals on one line
+    "ISC001",  # Implicitly concatenated string literals on one line
     "N818",  # Exception name {name} should be named with an Error suffix
     "PD901",  # Avoid using the generic variable name df for DataFrames
     "PLR0913",  # Too many arguments in function definition ({c_args} > {max_args})
