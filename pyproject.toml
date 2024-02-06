@@ -22,8 +22,8 @@ optional-dependencies.dev = [
     "build",
     "pre-commit",
     "pre-commit-hooks",
-    "python-lsp-server[all]",
     "ruff",
+    "ruff-lsp",
 ]
 
 [project.scripts]
@@ -117,4 +117,5 @@ ignore = [
     "SIM117",  # Use a single with statement with multiple contexts instead of nested with statements
     "SLF001",  # Private member accessed: {access}
     "T201",  # print found
+    "TID252",  # Prefer absolute imports over relative imports from parent modules
 ]
