@@ -34,7 +34,7 @@ namespaces = false
 [project.scripts]
 parse-labels = "flora.parse_labels:main"
 parse-treatments = "flora.parse_treatments:main"
-util-add-taxon-terms = "flora.util_add_taxon_terms:main"
+add-taxa = "flora.util_add_taxon_terms:main"
 
 [tool.setuptools]
 py-modules = []
