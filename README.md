@@ -18,7 +18,7 @@ More merging for other Traiter repositories for plant traits may occur.
 
 I should be able to extract: (Colors correspond to the text above.)
 
-![Treatment](assets/traits.png)
+![Traits](assets/traits.png)
 
 ## Terms
 Essentially, we are finding relevant terms in the text (NER) and then linking them (Entity Linking). There are several types of terms:
@@ -55,12 +55,7 @@ You can install the requirements into your python environment like so:
 ```bash
 git clone https://github.com/rafelafrance/FloraTraiter.git
 cd FloraTraiter
-python3.11 -m venv .venv
-source .venv/bin/activate
-python -m pip install -U pip setuptools wheel
-python -m pip install .
-python -m pip install git+https://github.com/rafelafrance/traiter.git@master#egg=traiter
-python -m spacy download en_core_web_md
+make install
 ```
 
 ### Taxon database

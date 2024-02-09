@@ -44,7 +44,7 @@ target-version = "py311"
 
 show-fixes = true
 
-select = [
+lint.select = [
     "F",
     "E",
     "W",
@@ -97,7 +97,7 @@ select = [
     "RUF",
 ]
 
-ignore = [
+lint.ignore = [
     "A003",  # Class attribute is shadowing a Python builtin
     "COM812",  # Trailing comma missing
     "D100",  # Missing docstring in public module
