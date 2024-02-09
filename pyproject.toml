@@ -26,6 +26,11 @@ optional-dependencies.dev = [
     "ruff-lsp",
 ]
 
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["flora"]
+namespaces = false
+
 [project.scripts]
 parse-labels = "flora.parse_labels:main"
 parse-treatments = "flora.parse_treatments:main"

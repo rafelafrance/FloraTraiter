@@ -4,10 +4,11 @@ import json
 import textwrap
 from pathlib import Path
 
-from pylib.labels import Labels
-from pylib.writers.label_html_writer import HtmlWriter
 from traiter.pylib.darwin_core import DarwinCore
 from util.pylib import log
+
+from flora.pylib.labels import Labels
+from flora.pylib.writers.label_html_writer import HtmlWriter
 
 
 def main():

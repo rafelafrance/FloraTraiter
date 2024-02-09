@@ -20,12 +20,13 @@ from pathlib import Path
 from zipfile import ZIP_DEFLATED, ZipFile
 
 import regex
-from pylib import const
-from pylib.rules import terms
 from tqdm import tqdm
 from traiter.pylib import log
 from traiter.pylib import term_util as tu
 from traiter.pylib.rules import terms as t_terms
+
+from flora.pylib import const
+from flora.pylib.rules import terms
 
 ITIS_SPECIES_ID = 220
 

@@ -4,10 +4,11 @@ import json
 import textwrap
 from pathlib import Path
 
-from pylib.treatments import Treatments
-from pylib.writers.treatment_html_writer import HtmlWriter
 from traiter.pylib.darwin_core import DarwinCore
 from util.pylib import log
+
+from flora.pylib.treatments import Treatments
+from flora.pylib.writers.treatment_html_writer import HtmlWriter
 
 
 def main():
