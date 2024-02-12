@@ -39,14 +39,9 @@ data/
 # Temp files
 temp/
 junk*
-runs/
 
 # Experiments
 pilot/
 scratch/
 old/
 experiments/
-
-# Notes
-papers/
-docs/

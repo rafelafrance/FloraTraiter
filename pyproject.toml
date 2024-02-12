@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "FloraTraiter"
-version = "1.3.0"
+version = "1.4.0"
 readme = "README.md"
 description = ""
 license = {file = "LICENSE"}
@@ -32,7 +32,6 @@ include = ["flora"]
 namespaces = false
 
 [project.scripts]
-parse-labels = "flora.parse_labels:main"
 parse-treatments = "flora.parse_treatments:main"
 add-taxa = "flora.util_add_taxon_terms:main"
 
@@ -122,5 +121,4 @@ lint.ignore = [
     "SIM117",  # Use a single with statement with multiple contexts instead of nested with statements
     "SLF001",  # Private member accessed: {access}
     "T201",  # print found
-    "TID252",  # Prefer absolute imports over relative imports from parent modules
 ]
