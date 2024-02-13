@@ -558,7 +558,6 @@ class TestCount(unittest.TestCase):
                     trait="taxon",
                     start=0,
                     end=6,
-                    associated=True,
                 ),
             ],
         )
@@ -573,7 +572,6 @@ class TestCount(unittest.TestCase):
                     trait="taxon",
                     start=0,
                     end=6,
-                    associated=True,
                 ),
                 LatLong(
                     trait="lat_long",
@@ -594,7 +592,6 @@ class TestCount(unittest.TestCase):
                     trait="taxon",
                     start=0,
                     end=6,
-                    associated=True,
                 ),
             ],
         )

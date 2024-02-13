@@ -102,7 +102,6 @@ class TestTaxonLike(unittest.TestCase):
                     start=4,
                     end=18,
                     taxon_like="nuttallii",
-                    associated=True,
                 ),
                 TaxonLike(
                     trait="taxon_like",

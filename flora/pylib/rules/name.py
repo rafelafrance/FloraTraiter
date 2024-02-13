@@ -6,6 +6,7 @@ import regex as re
 from spacy.language import Language
 from spacy.util import registry
 from traiter.pylib import const as t_const
+from traiter.pylib import term_util
 from traiter.pylib.darwin_core import DarwinCore
 from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add, reject_match
@@ -18,9 +19,9 @@ TOO_LONG = 4
 @dataclass(eq=False)
 class Name(Base):
     # Class vars ----------
+    us_csv: ClassVar[Path] = Path(t_terms.__file__).parent / "us_location_terms.csv"
     all_csvs: ClassVar[list[Path]] = [
-        Path(__file__).parent / "terms" / "id_num_terms.csv",
-        Path(__file__).parent / "terms" / "job_terms.csv",
+        us_csv,
         Path(t_terms.__file__).parent / "name_terms.csv",
     ]
 
@@ -38,6 +39,7 @@ class Name(Base):
 
     temp = "".join(t_const.OPEN + t_const.CLOSE + t_const.QUOTE + list(".,'&"))
     name_re: ClassVar[re] = re.compile(rf"^[\sa-z{re.escape(temp)}-]+$")
+    us_loc: ClassVar[list[str]] = term_util.get_labels(us_csv)
     # ---------------------
 
     name: str | list[str] = None
@@ -79,12 +81,12 @@ class Name(Base):
     @classmethod
     def not_name_patterns(cls):
         decoder = {
-            "job_label": {"ENT_TYPE": "job_label"},
             "no_space": {"SPACY": False},
             "bad_name": {"ENT_TYPE": "not_name"},
             "bad_prefix": {"ENT_TYPE": "not_name_prefix"},
             "bad_suffix": {"ENT_TYPE": "not_name_suffix"},
             "shape": {"SHAPE": {"IN": t_const.NAME_AND_UPPER}},
+            "us_loc": {"ENT_TYPE": {"IN": cls.us_loc}},
         }
         return [
             Compiler(
@@ -98,7 +100,7 @@ class Name(Base):
                     " bad_suffix+ ",
                     " shape+ bad_suffix+ ",
                     " bad_prefix+ shape+ ",
-                    " job_label+ ",
+                    " us_loc ",
                 ],
             ),
         ]

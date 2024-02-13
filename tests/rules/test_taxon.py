@@ -1,8 +1,5 @@
 import unittest
 
-from flora.pylib.rules.associated_taxon_label import AssociatedTaxonLabel
-from flora.pylib.rules.id_number import IdNumber
-from flora.pylib.rules.job import Job
 from flora.pylib.rules.part import Part
 from flora.pylib.rules.taxon import Taxon
 from tests.setup import parse
@@ -105,7 +102,6 @@ class TestTaxon(unittest.TestCase):
                     trait="taxon",
                     start=0,
                     end=13,
-                    associated=True,
                 ),
             ],
         )
@@ -139,7 +135,6 @@ class TestTaxon(unittest.TestCase):
                     trait="taxon",
                     start=30,
                     end=38,
-                    associated=True,
                 ),
             ],
         )
@@ -181,7 +176,6 @@ class TestTaxon(unittest.TestCase):
                     trait="taxon",
                     start=30,
                     end=69,
-                    associated=True,
                 ),
             ],
         )
@@ -209,7 +203,6 @@ class TestTaxon(unittest.TestCase):
                     trait="taxon",
                     start=12,
                     end=51,
-                    associated=True,
                 ),
             ],
         )
@@ -244,7 +237,6 @@ class TestTaxon(unittest.TestCase):
                     trait="taxon",
                     start=0,
                     end=9,
-                    associated=True,
                 ),
                 Taxon(
                     authority="Raf",
@@ -274,7 +266,6 @@ class TestTaxon(unittest.TestCase):
                     trait="taxon",
                     start=16,
                     end=24,
-                    associated=True,
                 ),
                 Taxon(
                     taxon="Vicia villosa subsp. varia",
@@ -348,7 +339,6 @@ class TestTaxon(unittest.TestCase):
                     trait="taxon",
                     start=23,
                     end=33,
-                    associated=True,
                 ),
             ],
         )
@@ -385,19 +375,12 @@ class TestTaxon(unittest.TestCase):
                     start=0,
                     end=38,
                 ),
-                AssociatedTaxonLabel(
-                    trait="assoc_taxon_label",
-                    label="associated species",
-                    start=39,
-                    end=57,
-                ),
                 Taxon(
                     taxon="Cornus obliqua",
                     rank="species",
                     trait="taxon",
                     start=59,
                     end=73,
-                    associated=True,
                 ),
             ],
         )
@@ -453,13 +436,6 @@ class TestTaxon(unittest.TestCase):
         self.assertEqual(
             parse("""Associated species: Neptunia gracilis G. Rink 7075"""),
             [
-                AssociatedTaxonLabel(
-                    trait="assoc_taxon_label",
-                    start=0,
-                    end=18,
-                    _text="Associated species",
-                    label="associated species",
-                ),
                 Taxon(
                     trait="taxon",
                     start=20,
@@ -467,28 +443,12 @@ class TestTaxon(unittest.TestCase):
                     _text="Neptunia gracilis",
                     taxon="Neptunia gracilis",
                     rank="species",
-                    associated=True,
-                ),
-                Job(
-                    trait="job",
-                    start=38,
-                    end=45,
-                    _text="G. Rink",
-                    job="collector",
-                    name="G. Rink",
-                ),
-                IdNumber(
-                    trait="id_number",
-                    start=46,
-                    end=50,
-                    _text="7075",
-                    number="7075",
-                    type="record_number",
                 ),
             ],
         )
 
     def test_taxon_27(self):
+        self.maxDiff = None
         self.assertEqual(
             parse(""" Name Neptunia gracilis Geyser Locality Vernal, """),
             [
@@ -557,7 +517,6 @@ class TestTaxon(unittest.TestCase):
                     trait="taxon",
                     start=0,
                     end=7,
-                    associated=True,
                 ),
                 Taxon(
                     taxon="Cytisus",
@@ -565,7 +524,6 @@ class TestTaxon(unittest.TestCase):
                     trait="taxon",
                     start=8,
                     end=15,
-                    associated=True,
                 ),
                 Taxon(
                     taxon="Agrostis",
@@ -573,7 +531,6 @@ class TestTaxon(unittest.TestCase):
                     trait="taxon",
                     start=16,
                     end=24,
-                    associated=True,
                 ),
             ],
         )

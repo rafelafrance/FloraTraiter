@@ -7,16 +7,13 @@ from traiter.pylib.rules.lat_long import LatLong
 from traiter.pylib.rules.trs import TRS
 from traiter.pylib.rules.utm import UTM
 
-from flora.pylib.rules import delete_missing, job_id, post_process
-from flora.pylib.rules.associated_taxon_label import AssociatedTaxonLabel
+from flora.pylib.rules import delete_missing, post_process
 from flora.pylib.rules.color import Color
 from flora.pylib.rules.count import Count
 from flora.pylib.rules.duration import Duration
 from flora.pylib.rules.flower_location import FlowerLocation
 from flora.pylib.rules.flower_morphology import FlowerMorphology
 from flora.pylib.rules.habit import Habit
-from flora.pylib.rules.id_number import IdNumber
-from flora.pylib.rules.job import Job
 from flora.pylib.rules.leaf_duration import LeafDuration
 from flora.pylib.rules.leaf_folding import LeafFolding
 from flora.pylib.rules.margin import Margin
@@ -82,10 +79,7 @@ def build():
     Venation.pipe(nlp)
     Woodiness.pipe(nlp)
 
-    IdNumber.pipe(nlp)
     Name.pipe(nlp, overwrite=["subpart", "color", "admin_unit"])
-    Job.pipe(nlp)
-    job_id.pipe(nlp)
 
     Range.pipe(nlp)
     Size.pipe(nlp)
@@ -108,8 +102,6 @@ def build():
     TaxonLikeLinker.pipe(nlp)
 
     delete_missing.pipe(nlp)
-
-    AssociatedTaxonLabel.pipe(nlp)
 
     post_process.pipe(nlp)
 

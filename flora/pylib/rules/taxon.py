@@ -119,7 +119,6 @@ class Taxon(Base):
     def key(self) -> str:
         if self.level.get(self.rank) == "higher":
             return t_dwc.DarwinCore.ns(self.rank)
-
         return t_dwc.DarwinCore.ns(
             "associatedTaxa" if self.associated else "scientificName",
         )
@@ -171,7 +170,7 @@ class Taxon(Base):
             compiler=cls.taxon_auth_patterns(),
             merge=["taxon"],
             keep=auth_keep,
-            overwrite=["taxon", *overwrite],
+            overwrite=["taxon", "name", *overwrite],
         )
         # add.debug_tokens(nlp)  # ################################################
 
@@ -446,6 +445,7 @@ class Taxon(Base):
             "ambig": {"ENT_TYPE": {"IN": cls.ambiguous}},
             "by": {"LOWER": {"IN": ["by"]}},
             "linnaeus": {"ENT_TYPE": "linnaeus"},
+            "name": {"ENT_TYPE": "name"},
             "taxon": {"ENT_TYPE": "taxon"},
             "_": {"TEXT": {"IN": list(":._;,")}},
             "id_num": {"LOWER": {"REGEX": r"^(\w*\d+\w*|[A-Za-z])$"}},
@@ -461,21 +461,35 @@ class Taxon(Base):
                 patterns=[
                     "taxon ( ambig+ _? )",
                     "taxon ( A.* auth+ _? )",
+                    "taxon ( name+ _? )",
                     "taxon ( A.* auth+ _? and  A.* auth+ _? )",
+                    "taxon ( name+     _? and  name+ _? )",
                     "taxon ( auth+  _? ) A.* auth* auth3 _?",
+                    "taxon ( name+  _? ) name+ _?",
                     "taxon ( auth+  _? ) A.* auth* auth3 _? and A.* auth* auth3",
+                    "taxon ( name+  _? ) name+ _?           and name+",
                     "taxon ( auth+ _? and  auth+ _?  ) A.* auth* auth3 _?",
+                    "taxon ( name+ _? and  name+ _?  ) name+ _?",
                     "taxon by? A.* auth3 _?",
+                    "taxon by? name+     _?",
                     "taxon by? A.* auth  _?         auth3 _?",
+                    "taxon by? name+     _?         name+ _?",
                     "taxon by? A.* auth+ _? and A.* auth3 _?",
+                    "taxon by? name+     _? and     name+ _?",
                     "taxon ( A.* auth+   _? and A.* auth+ _? and A.* auth+ _? )",
+                    "taxon ( name+       _? and name+     _? and name+ _? )",
                     (
                         "taxon ( A.* auth+  _? and A.* auth+ _? and A.* auth+ _? ) "
                         "A.* auth* auth3 _?"
                     ),
+                    "taxon ( name+  _? and name+ _? and name+ _? ) name+ _?",
                     (
                         "taxon ( A.* auth+  _? and A.* auth+ _? and A.* auth+ _? ) "
                         "A.* auth* auth3 _? and A.* auth* auth3 _?"
+                    ),
+                    (
+                        "taxon ( name+  _? and name+ _? and name+ _? ) "
+                        "name+ _? and name+ _?"
                     ),
                 ],
             ),
@@ -485,8 +499,7 @@ class Taxon(Base):
                 on_match=reject_match.REJECT_MATCH,
                 decoder=decoder,
                 patterns=[
-                    "taxon auth      id_num",
-                    "taxon auth auth id_num",
+                    "taxon name+ id_num",
                 ],
             ),
         ]
