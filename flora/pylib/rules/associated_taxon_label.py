@@ -80,7 +80,7 @@ class AssociatedTaxonLabel(Base):
 
 
 @registry.misc("assoc_taxon_label_match")
-def locality_match(ent):
+def assoc_taxon_label_match(ent):
     return AssociatedTaxonLabel.assoc_taxon_label_match(ent)
 
 

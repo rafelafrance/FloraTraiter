@@ -42,7 +42,6 @@ from flora.pylib.rules.taxon_like import TaxonLike
 from flora.pylib.rules.taxon_like_linker import TaxonLikeLinker
 from flora.pylib.rules.venation import Venation
 from flora.pylib.rules.woodiness import Woodiness
-from old.rules.locality import Locality
 
 # from traiter.pylib.pipes import debug
 
@@ -111,8 +110,6 @@ def build():
     delete_missing.pipe(nlp)
 
     AssociatedTaxonLabel.pipe(nlp)
-
-    Locality.pipe(nlp)
 
     post_process.pipe(nlp)
 
