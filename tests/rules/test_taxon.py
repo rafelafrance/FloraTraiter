@@ -1,6 +1,5 @@
 import unittest
 
-from flora.pylib.rules.admin_unit import AdminUnit
 from flora.pylib.rules.associated_taxon_label import AssociatedTaxonLabel
 from flora.pylib.rules.id_number import IdNumber
 from flora.pylib.rules.job import Job
@@ -343,7 +342,6 @@ class TestTaxon(unittest.TestCase):
         self.assertEqual(
             parse("""PLANTS OF PENNSYLVANIA ASTERACEAE"""),
             [
-                AdminUnit(trait="admin_unit", start=0, end=22, us_state="Pennsylvania"),
                 Taxon(
                     taxon="Asteraceae",
                     rank="family",
