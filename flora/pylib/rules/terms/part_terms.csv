@@ -18,6 +18,9 @@ part_term,anther,anther,male_flower_part
 part_term,anthers,anther,male_flower_part
 part_term,apetalous,apetalous,flower_part
 part_term,apocarpus,apocarpus,female_flower_part
+part_term,aril,aril,fruit_part
+part_term,banner,banner,flower_part
+part_term,banners,banner,flower_part
 part_term,bark,bark,plant_part
 part_term,bathyphyll,bathyphyll,leaf_part
 part_term,beak,beak,fruit_part
@@ -118,8 +121,14 @@ part_term,fl-buds,flower-buds,flower_part
 part_term,fl-spikes,flower-spikes,inflorescence
 part_term,fld,flowered,flower_part
 part_term,floral axis,floral axis,flower_part
+part_term,floral axes,floral axis,flower_part
+part_term,floral bract,bract,flower_part
 part_term,floral bracts,bract,flower_part
 part_term,floral envelope,floral envelope,flower_part
+part_term,floral envelopes,floral envelope,flower_part
+part_term,floral guide,floral guide,flower_part
+part_term,floral guides,floral guide,flower_part
+part_term,floral leaf,leaf,flower_part
 part_term,floral leaves,leaf,flower_part
 part_term,floret,floret,flower_part
 part_term,florets,floret,flower_part
@@ -145,6 +154,8 @@ part_term,gynandrium,gynandrium,male_flower_part
 part_term,gynoecia,carpel,female_flower_part
 part_term,gynoecium,carpel,female_flower_part
 part_term,gynostegium,gynostegium,male_flower_part
+part_term,gynophore,gynophore,fruit_part
+part_term,gynophores,gynophore,fruit_part
 part_term,head,head,inflorescence
 part_term,heads,head,inflorescence
 part_term,heterothetic,heterothetic,inflorescence
@@ -208,6 +219,8 @@ part_term,lfts,leaflet,leaf_part
 part_term,ligule,ligule,leaf_part
 part_term,locule,locule,female_flower_part
 part_term,loculus,loculus,female_flower_part
+part_term,loment,loment,fruit_part
+part_term,loments,loment,fruit_part
 part_term,lvd,leaved,leaf_part
 part_term,lvs,leaf,leaf_part
 part_term,mesocarp,mesocarp,fruit_part
@@ -217,6 +230,9 @@ part_term,monochasium,monochasium,inflorescence
 part_term,monodelphous,monodelphous,male_flower_part
 part_term,multicarpellate,multicarpellate,female_flower_part
 part_term,nectar disk,nectar disk,flower_part
+part_term,nectar disks,nectar disk,flower_part
+part_term,nectar guide,nectar guide,flower_part
+part_term,nectar guides,nectar guide,flower_part
 part_term,nectaries,nectary,flower_part
 part_term,nectary,nectary,flower_part
 part_term,non-flowering branch,branch,plant_part
@@ -380,6 +396,8 @@ part_term,utricle ,utricle,fruit_part
 part_term,versatile,versatile,male_flower_part
 part_term,verticil,verticil,inflorescence
 part_term,verticillaster,verticillaster,inflorescence
+part_term,wing,wing,flower_part
+part_term,wings,wing,flower_part
 part_and,&,,
 part_and,and,,
 part_and,et,,

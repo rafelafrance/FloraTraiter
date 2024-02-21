@@ -1,8 +1,5 @@
 import unittest
 
-from traiter.pylib.rules.habitat import Habitat
-from traiter.pylib.rules.lat_long import LatLong
-
 from flora.pylib.rules.count import Count
 from flora.pylib.rules.part import Part
 from flora.pylib.rules.part_location import PartLocation
@@ -544,7 +541,6 @@ class TestCount(unittest.TestCase):
             parse("lf-stk; Chihuahuan Desert 59."),
             [
                 Part(part="leaf-stalk", trait="part", type="leaf_part", start=0, end=6),
-                Habitat(trait="habitat", start=8, end=25, habitat="chihuahuan desert"),
             ],
         )
 
@@ -572,12 +568,6 @@ class TestCount(unittest.TestCase):
                     trait="taxon",
                     start=0,
                     end=6,
-                ),
-                LatLong(
-                    trait="lat_long",
-                    start=12,
-                    end=25,
-                    lat_long="13° 40 -14° 10'S",
                 ),
             ],
         )
@@ -913,5 +903,13 @@ class TestCount(unittest.TestCase):
                     start=16,
                     end=31,
                 ),
+            ],
+        )
+
+    def test_count_54(self):
+        self.assertEqual(
+            parse("Seeds many words before the next trait [1–]3–12[–30]."),
+            [
+                Part(trait="part", part="seed", type="fruit_part", start=0, end=5),
             ],
         )

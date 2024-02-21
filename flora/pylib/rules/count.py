@@ -40,8 +40,9 @@ class Count(Linkable):
     not_count_symbol: ClassVar[list[str]] = t_const.CROSS + t_const.SLASH
     replace: ClassVar[dict[str, str]] = term_util.term_data(all_csvs, "replace")
     suffix_term: ClassVar[dict[str, str]] = term_util.term_data(all_csvs, "suffix_term")
-    not_numeric: ClassVar[list[str]] = """
-        not_numeric metric_mass imperial_mass metric_dist imperial_dist
+    not_count: ClassVar[list[str]] = """
+        not_numeric metric_mass imperial_mass metric_dist imperial_dist imperial_length
+        metric_length
         """.split()
     # ---------------------
 
@@ -115,7 +116,7 @@ class Count(Linkable):
             "is_alpha": {"IS_ALPHA": True},
             "missing": {"ENT_TYPE": "missing"},
             "not_count_symbol": {"LOWER": {"IN": cls.not_count_symbol}},
-            "not_numeric": {"ENT_TYPE": {"IN": cls.not_numeric}},
+            "not_count": {"ENT_TYPE": {"IN": cls.not_count}},
             "or": {"POS": {"IN": ["CONJ"]}},
             "part": {"ENT_TYPE": {"IN": ["part", "subpart"]}},
             "per_count": {"ENT_TYPE": "per_count"},
@@ -159,7 +160,7 @@ class Count(Linkable):
                 on_match=reject_match.REJECT_MATCH,
                 decoder=decoder,
                 patterns=[
-                    "not_numeric [.,]? 99-99+",
+                    "not_count [.,]? 99-99+",
                     "9 / 9",
                     "X =? 99-99+",
                     "99-99+ ; 99-99+",
@@ -169,7 +170,8 @@ class Count(Linkable):
                     "99-99+ °",
                     "! -? 9",
                     "is_alpha - 9",
-                    "9 not_numeric",
+                    "9      not_count",
+                    "99-99+ not_count",
                     "habitat+ 99-99+",
                 ],
             ),

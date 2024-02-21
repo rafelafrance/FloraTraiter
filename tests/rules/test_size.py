@@ -1,8 +1,5 @@
 import unittest
 
-from traiter.pylib.rules.elevation import Elevation
-from traiter.pylib.rules.habitat import Habitat
-
 from flora.pylib.rules.color import Color
 from flora.pylib.rules.count import Count
 from flora.pylib.rules.margin import Margin
@@ -838,7 +835,7 @@ class TestSize(unittest.TestCase):
     def test_size_38(self):
         self.assertEqual(
             parse("coastal plain to 1500 m,"),
-            [Habitat(trait="habitat", start=8, end=13, habitat="plain")],
+            [],
         )
 
     def test_size_39(self):
@@ -940,13 +937,6 @@ class TestSize(unittest.TestCase):
             parse("""Tree Cc. 650 m;"""),
             [
                 Part(part="tree", trait="part", type="plant_part", start=0, end=4),
-                Elevation(
-                    trait="elevation",
-                    elevation=650.0,
-                    units="m",
-                    start=5,
-                    end=14,
-                ),
             ],
         )
 

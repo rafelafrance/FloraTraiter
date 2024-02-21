@@ -1,13 +1,7 @@
 import spacy
 from traiter.pylib.pipes import extensions, sentence, tokenizer
-from traiter.pylib.rules.date_ import Date
-from traiter.pylib.rules.elevation import Elevation
-from traiter.pylib.rules.habitat import Habitat
-from traiter.pylib.rules.lat_long import LatLong
-from traiter.pylib.rules.trs import TRS
-from traiter.pylib.rules.utm import UTM
 
-from flora.pylib.rules import delete_missing, post_process
+from flora.pylib.rules import delete_missing, delete_too_far, post_process
 from flora.pylib.rules.color import Color
 from flora.pylib.rules.count import Count
 from flora.pylib.rules.duration import Duration
@@ -53,18 +47,10 @@ def build():
     config = {"base_model": "en_core_web_md"}
     nlp.add_pipe(sentence.SENTENCES, config=config, before="parser")
 
-    Date.pipe(nlp)
-
     Part.pipe(nlp)
     Subpart.pipe(nlp)
 
-    Elevation.pipe(nlp)
-    LatLong.pipe(nlp)
-    TRS.pipe(nlp)
-    UTM.pipe(nlp)
-
     Color.pipe(nlp)
-    Habitat.pipe(nlp)
 
     Duration.pipe(nlp)
     FlowerLocation.pipe(nlp)
@@ -102,6 +88,7 @@ def build():
     TaxonLikeLinker.pipe(nlp)
 
     delete_missing.pipe(nlp)
+    delete_too_far.pipe(nlp)
 
     post_process.pipe(nlp)
 
