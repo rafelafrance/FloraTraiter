@@ -8,7 +8,7 @@ This repository merges three older repositories:
 - `traiter_efloras`
 - `traiter_mimosa`
 
-And I split some functionality was also split out to enable me to use it in other projects.
+And I also split some functionality out to enable me to use it in other projects.
 - `pdf_parsers`: Scripts for parsing PDFs to prepare them for information extraction.
   - https://github.com/rafelafrance/pdf_parsers
 - `LabelTraiter`: Parsing treatments (this repo) and herbarium labels are now separate repositories.
