@@ -15,26 +15,26 @@ def main():
     log.started()
     args = parse_args()
 
-    treatments: Treatments = Treatments(args)
+    treatments: Treatments = Treatments(args.treatment_dir, args.limit, args.offset)
     treatments.parse()
 
     if args.html_file:
         writer = HtmlWriter(args.html_file, args.spotlight)
         writer.write(treatments, args)
 
-    if args.traiter_dir:
-        args.traiter_dir.mkdir(parents=True, exist_ok=True)
-        write_json(treatments, args.traiter_dir)
+    if args.json_dir:
+        args.json_dir.mkdir(parents=True, exist_ok=True)
+        write_json(treatments, args.json_dir)
 
     log.finished()
 
 
-def write_json(treatments, traiter_dir):
+def write_json(treatments, json_dir):
     for treat in treatments.treatments:
         dwc = DarwinCore()
         _ = [t.to_dwc(dwc) for t in treat.traits]
 
-        path = traiter_dir / f"{treat.path.stem}.json"
+        path = json_dir / f"{treat.path.stem}.json"
         with path.open("w") as f:
             output = dwc.to_dict()
             output["text"] = treat.text
@@ -54,15 +54,15 @@ def parse_args() -> argparse.Namespace:
     )
 
     arg_parser.add_argument(
-        "--text-dir",
+        "--treatment-dir",
         metavar="PATH",
         type=Path,
         required=True,
-        help="""Directory containing the input text files.""",
+        help="""Directory containing the input treatment text files.""",
     )
 
     arg_parser.add_argument(
-        "--traiter-dir",
+        "--json-dir",
         metavar="PATH",
         type=Path,
         help="""Output JSON files holding traits, one for each input text file, in this

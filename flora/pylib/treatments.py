@@ -6,16 +6,18 @@ from . import pipeline
 
 
 class Treatments:
-    def __init__(self, args):
-        self.treatments: list[Treatment] = self.get_treatments(args)
+    def __init__(self, treatment_dir, limit, offset):
+        self.treatments: list[Treatment] = self.get_treatments(
+            treatment_dir, limit, offset
+        )
         self.nlp = pipeline.build()
 
     @staticmethod
-    def get_treatments(args):
-        labels = [Treatment(p) for p in sorted(args.text_dir.glob("*"))]
+    def get_treatments(treatment_dir, limit, offset):
+        labels = [Treatment(p) for p in sorted(treatment_dir.glob("*"))]
 
-        if args.limit:
-            labels = labels[args.offset : args.limit + args.offset]
+        if limit:
+            labels = labels[offset : limit + offset]
 
         return labels
 

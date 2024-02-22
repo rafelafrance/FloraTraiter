@@ -7,9 +7,12 @@ This repository merges three older repositories:
 - `traiter_plants`
 - `traiter_efloras`
 - `traiter_mimosa`
-- Parts of `digi_leap`
 
-More merging for other Traiter repositories for plant traits may occur.
+And I split some functionality was also split out to enable me to use it in other projects.
+- `pdf_parsers`: Scripts for parsing PDFs to prepare them for information extraction.
+  - https://github.com/rafelafrance/pdf_parsers
+- `LabelTraiter`: Parsing treatments (this repo) and herbarium labels are now separate repositories.
+  - https://github.com/rafelafrance/LabelTraiter
 
 ## All right, what's this all about then?
 **Challenge**: Extract trait information from plant treatments. That is, if I'm given treatment text like: (Reformatted to emphasize targeted traits.)
@@ -27,9 +30,6 @@ Essentially, we are finding relevant terms in the text (NER) and then linking th
 3. Plant subparts: Things like hairs, pores, margins, veins, etc. Leaves can have hairs and so can seeds. They also have traits and will be linked to them, but they must also be linked to a part to have any meaning.
 4. Sex: Plants exhibit sexual dimorphism, so we to note which part/subpart/trait notation is associated with which sex.
 5. Other text: Things like conjunctions, punctuation, etc. Although they are not recorded, they are often important for parsing and linking of terms.
-
-## Multiple methods for parsing
-1. Rule based parsing. Most machine learning models require a substantial training dataset. I use this method to bootstrap the training data. If machine learning methods fail, I can fall back to this.
 
 ## Rule-based parsing strategy
 1. I label terms using Spacy's phrase and rule-based matchers.
@@ -58,6 +58,38 @@ cd FloraTraiter
 make install
 ```
 
+### Extract traits
+
+You'll need some treatment text files. One treatment per file.
+
+Example:
+
+```bash
+parse-treatments --treatment-dir /path/to/treatments --json-dir /path/to/output/traits --html-file /path/to/traits.html
+```
+
+The output formats --json-dir & --html-file are optional. An example of the HTML output was shown above. An example of JSON output.
+
+```json
+{
+    "dwc:scientificName": "Astragalus cobrensis A. Gray var. maguirei Kearney, | var. maguirei",
+    "dwc:taxonRank": "variety",
+    "dwc:scientificNameAuthorship": "A. Gray | Kearney",
+    "dwc:dynamicProperties": {
+        "leafletHairSurface": "pilosulous",
+        "leafletHair": "hair",
+        "leafletHairShape": "incurved-ascending",
+        "leafletHairSize": "lengthLowInCentimeters: 0.06 ~ lengthHighInCentimeters: 0.08",
+        "leafPart": "leaflet | leaf",
+        "partLocation": "adaxial",
+        "fruitPart": "legume",
+        "legumeColor": "white",
+        "legumeSurface": "villosulous"
+    },
+    "text": "..."
+}
+```
+
 ### Taxon database
 
 A taxon database is included with the source code, but it may be out of date. I build a taxon database from 4 sources. The 3 primary sources each have various issues, but they complement each other well.
@@ -68,8 +100,6 @@ A taxon database is included with the source code, but it may be out of date. I 
 4. [Some miscellaneous taxa not found in the other sources.](flora/pylib/rules/terms/other_taxa.csv)
 
 Download the first 3 sources and then use the `util_add_taxa.py` script to extract the taxa and put them into a form the parsers can use.
-
-## Repository details
 
 ## Tests
 There are tests which you can run like so:
