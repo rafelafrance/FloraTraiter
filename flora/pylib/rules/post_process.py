@@ -4,11 +4,11 @@ from traiter.pylib.pipes import add
 
 
 def pipe(nlp: Language):
-    add.custom_pipe(nlp, "post_process")
+    add.custom_pipe(nlp, "flora_post_process")
 
 
-@Language.factory("post_process")
-class PostProcess:
+@Language.factory("flora_post_process")
+class FloraPostProcess:
     def __init__(self, nlp: Language, name: str):
         super().__init__()
         self.nlp = nlp

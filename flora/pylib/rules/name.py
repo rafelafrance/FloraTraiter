@@ -85,7 +85,9 @@ class Name(Base):
             "bad_suffix": {"ENT_TYPE": "not_name_suffix"},
             "job": {"ENT_TYPE": "job_label"},
             "shape": {"SHAPE": {"IN": t_const.NAME_AND_UPPER}},
-            "us_loc": {"ENT_TYPE": {"IN": ["us_state", "us_state-us_county"]}},
+            "us_loc": {
+                "ENT_TYPE": {"IN": ["us_state", "us_state-us_county", "county_label"]}
+            },
         }
         return [
             Compiler(
@@ -137,14 +139,19 @@ class Name(Base):
                 patterns=[
                     "       mix  -?   mix? -?  pre? pre?   mix4",
                     "       mix  -?   mix? -?  pre? pre?   mix4   _? jr+",
+                    "       mix  -?   mix? -?  pre? pre?   mix4 - mix4",
+                    "       mix  -?   mix? -?  pre? pre?   mix4 - mix4   _? jr+",
                     "       mix  -?   mix? -?  ambig",
                     "       mix  -?   mix? -?  ambig   _? jr+",
                     "       mix  -? mix? -?  pre? pre?  ambig ",
                     "       mix  -? mix? -?  pre? pre?  ambig   _? jr+",
                     "       A A? A?            pre? pre? mix4",
+                    "       A A? A?            pre? pre? mix4 - mix4",
                     "       A A? A?            pre? pre? mix4   _? jr+",
                     "       mix A A? A?        pre? pre? mix4",
+                    "       mix A A? A?        pre? pre? mix4 - mix4",
                     "       mix A A? A?        pre? pre? mix4   _? jr+",
+                    "       A A? A?  ..        mix4",
                     "       mix ..             mix4",
                     "       mix ..             mix4   _? jr+",
                     "       mix ( mix )        mix4",
