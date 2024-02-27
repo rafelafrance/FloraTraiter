@@ -36,6 +36,10 @@ class Name(Base):
         s for s in t_const.UPPER_SHAPES if len(s) >= TOO_LONG and s[-1].isalpha()
     ]
 
+    not_name_term: ClassVar[list[str]] = """
+        not_name not_name_prefix not_name_suffix
+        """.split()
+
     temp = "".join(t_const.OPEN + t_const.CLOSE + t_const.QUOTE + list(".,'&"))
     name_re: ClassVar[re] = re.compile(rf"^[\sa-z{re.escape(temp)}-]+$")
     # ---------------------
@@ -223,6 +227,9 @@ class Name(Base):
         name = re.sub(r"\.\.|_", "", name)
 
         if not cls.name_re.match(name.lower()):
+            raise reject_match.RejectMatch
+
+        if any(t._.term in cls.not_name_term for t in ent):
             raise reject_match.RejectMatch
 
         for token in ent:
