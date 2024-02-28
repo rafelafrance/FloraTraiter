@@ -73,18 +73,18 @@ The output formats --json-dir & --html-file are optional. An example of the HTML
 ```json
 {
     "dwc:scientificName": "Astragalus cobrensis A. Gray var. maguirei Kearney, | var. maguirei",
-    "dwc:taxonRank": "variety",
     "dwc:scientificNameAuthorship": "A. Gray | Kearney",
+    "dwc:taxonRank": "variety",
     "dwc:dynamicProperties": {
-        "leafletHairSurface": "pilosulous",
+        "fruitPart": "legume",
+        "leafPart": "leaflet | leaf",
         "leafletHair": "hair",
         "leafletHairShape": "incurved-ascending",
         "leafletHairSize": "lengthLowInCentimeters: 0.06 ~ lengthHighInCentimeters: 0.08",
-        "leafPart": "leaflet | leaf",
-        "partLocation": "adaxial",
-        "fruitPart": "legume",
+        "leafletHairSurface": "pilosulous",
         "legumeColor": "white",
-        "legumeSurface": "villosulous"
+        "legumeSurface": "villosulous",
+        "partLocation": "adaxial"
     },
     "text": "..."
 }

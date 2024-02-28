@@ -78,13 +78,14 @@ class Count(Linkable):
 
     @classmethod
     def pipe(cls, nlp: Language):
-        add.term_pipe(nlp, name="count_terms", path=cls.all_csvs)
+        add.term_pipe(nlp, name="count_terms", path=cls.all_csvs, delete_patterns="in")
         add.trait_pipe(
             nlp,
             name="count_match",
             compiler=cls.count_patterns(),
             overwrite=["range", "part", "subpart", "per_count", "habitat"],
         )
+        # add.debug_tokens(nlp)  # ######################################
         add.cleanup_pipe(
             nlp,
             name="count_cleanup",

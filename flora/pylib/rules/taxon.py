@@ -15,12 +15,13 @@ from traiter.pylib.rules import terms as t_terms
 from traiter.pylib.rules.base import Base
 
 from flora.pylib import const
+from flora.pylib.rules import terms as f_terms
 
 NAME_LEN: int = 2
 
 
 def get_csvs() -> dict[str, Path]:
-    here = Path(__file__).parent / "terms"
+    here = Path(f_terms.__file__).parent
     csvs = {
         "name_terms": Path(t_terms.__file__).parent / "name_terms.csv",
         "taxon_terms": here / "taxon_terms.csv",
