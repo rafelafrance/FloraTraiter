@@ -20,7 +20,7 @@ class FlowerMorphology(Linkable):
     flower_morphology_csv: ClassVar[Path] = (
         Path(__file__).parent / "terms" / "flower_morphology_terms.csv"
     )
-    replace: ClassVar[dict[str, str]] = term_util.term_data(
+    replace: ClassVar[dict[str, str]] = term_util.look_up_table(
         flower_morphology_csv,
         "replace",
     )

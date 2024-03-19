@@ -20,7 +20,9 @@ class LeafFolding(Linkable):
     leaf_folding_csv: ClassVar[Path] = (
         Path(__file__).parent / "terms" / "leaf_folding_terms.csv"
     )
-    replace: ClassVar[dict[str, str]] = term_util.term_data(leaf_folding_csv, "replace")
+    replace: ClassVar[dict[str, str]] = term_util.look_up_table(
+        leaf_folding_csv, "replace"
+    )
     # ---------------------
 
     leaf_folding: str = None

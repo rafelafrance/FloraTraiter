@@ -69,7 +69,7 @@ class Taxon(Base):
     higher_rank: ClassVar[list[str]] = sorted(
         {r["label"] for r in rank_terms if r["level"] == "higher"},
     )
-    level: ClassVar[dict[str, str]] = term_util.term_data(
+    level: ClassVar[dict[str, str]] = term_util.look_up_table(
         all_csvs["rank_terms"],
         "level",
     )
@@ -77,15 +77,15 @@ class Taxon(Base):
     lower_rank: ClassVar[list[str]] = sorted(
         {r["label"] for r in rank_terms if r["level"] == "lower"},
     )
-    monomial_ranks: ClassVar[dict[str, str]] = term_util.term_data(
+    monomial_ranks: ClassVar[dict[str, str]] = term_util.look_up_table(
         all_csvs["monomial_terms"],
         "ranks",
     )
-    rank_abbrev: ClassVar[dict[str, str]] = term_util.term_data(
+    rank_abbrev: ClassVar[dict[str, str]] = term_util.look_up_table(
         all_csvs["rank_terms"],
         "abbrev",
     )
-    rank_replace: ClassVar[dict[str, str]] = term_util.term_data(
+    rank_replace: ClassVar[dict[str, str]] = term_util.look_up_table(
         all_csvs["rank_terms"],
         "replace",
     )

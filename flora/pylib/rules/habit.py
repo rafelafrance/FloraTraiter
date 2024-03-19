@@ -18,7 +18,7 @@ class Habit(Base):
         Path(__file__).parent / "terms" / "habit_terms.csv",
         Path(__file__).parent / "terms" / "shape_terms.csv",
     ]
-    replace: ClassVar[dict[str, str]] = term_util.term_data(all_csvs, "replace")
+    replace: ClassVar[dict[str, str]] = term_util.look_up_table(all_csvs, "replace")
     # ---------------------
 
     habit: str = None

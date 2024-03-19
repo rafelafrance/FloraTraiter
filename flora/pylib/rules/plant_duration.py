@@ -19,7 +19,7 @@ class PlantDuration(Base):
     plant_duration_csv: ClassVar[Path] = (
         Path(__file__).parent / "terms" / "plant_duration_terms.csv"
     )
-    replace: ClassVar[dict[str, str]] = term_util.term_data(
+    replace: ClassVar[dict[str, str]] = term_util.look_up_table(
         plant_duration_csv,
         "replace",
     )

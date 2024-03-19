@@ -15,7 +15,7 @@ from .linkable import Linkable
 class Surface(Linkable):
     # Class vars ----------
     surface_csv = Path(__file__).parent / "terms" / "surface_terms.csv"
-    replace = term_util.term_data(surface_csv, "replace")
+    replace = term_util.look_up_table(surface_csv, "replace")
     # ---------------------
 
     surface: str = None

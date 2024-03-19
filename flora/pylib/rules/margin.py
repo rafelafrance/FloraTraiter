@@ -16,7 +16,7 @@ from .linkable import Linkable
 class Margin(Linkable):
     # Class vars ----------
     margin_csv: ClassVar[Path] = Path(__file__).parent / "terms" / "margin_terms.csv"
-    replace: ClassVar[dict[str, str]] = term_util.term_data(margin_csv, "replace")
+    replace: ClassVar[dict[str, str]] = term_util.look_up_table(margin_csv, "replace")
     # ---------------------
 
     margin: str = None

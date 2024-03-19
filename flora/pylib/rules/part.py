@@ -23,8 +23,8 @@ class Part(Linkable):
         Path(t_terms.__file__).parent / "missing_terms.csv",
     ]
 
-    replace: ClassVar[dict[str, str]] = term_util.term_data(all_csvs, "replace")
-    type_: ClassVar[dict[str, str]] = term_util.term_data(part_csv, "type")
+    replace: ClassVar[dict[str, str]] = term_util.look_up_table(all_csvs, "replace")
+    type_: ClassVar[dict[str, str]] = term_util.look_up_table(part_csv, "type")
     # ---------------------
 
     # part in base class

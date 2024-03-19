@@ -16,7 +16,9 @@ class TaxonLike(Base):
     taxon_like_csv: ClassVar[Path] = (
         Path(__file__).parent / "terms" / "taxon_like_terms.csv"
     )
-    replace: ClassVar[dict[str, str]] = term_util.term_data(taxon_like_csv, "replace")
+    replace: ClassVar[dict[str, str]] = term_util.look_up_table(
+        taxon_like_csv, "replace"
+    )
 
     taxon_labels: ClassVar[list[str]] = ["taxon", "multi_taxon"]
     # ---------------------

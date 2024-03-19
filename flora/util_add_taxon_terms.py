@@ -45,7 +45,7 @@ class Ranks:
             reader = csv.DictReader(term_file)
             self.ranks = list(reader)
         self.id2rank = {int(r["rank_id"]): r["replace"] for r in self.ranks}
-        self.rank_names = tu.term_data(rank_csv, "replace")
+        self.rank_names = tu.look_up_table(rank_csv, "replace")
         self.lower = {r for i, r in self.id2rank.items() if i > ITIS_SPECIES_ID}
         self.higher = {r for i, r in self.id2rank.items() if i < ITIS_SPECIES_ID}
 

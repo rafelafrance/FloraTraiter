@@ -20,7 +20,7 @@ class LeafDuration(Linkable):
     leaf_duration_csv: ClassVar[Path] = (
         Path(__file__).parent / "terms" / "leaf_duration_terms.csv"
     )
-    replace: ClassVar[dict[str, str]] = term_util.term_data(
+    replace: ClassVar[dict[str, str]] = term_util.look_up_table(
         leaf_duration_csv,
         "replace",
     )

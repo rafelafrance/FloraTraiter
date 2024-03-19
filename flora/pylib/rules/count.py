@@ -38,8 +38,10 @@ class Count(Linkable):
         list[str]
     ] = """ chapter figure fig nos no # sec sec. """.split()
     not_count_symbol: ClassVar[list[str]] = t_const.CROSS + t_const.SLASH
-    replace: ClassVar[dict[str, str]] = term_util.term_data(all_csvs, "replace")
-    suffix_term: ClassVar[dict[str, str]] = term_util.term_data(all_csvs, "suffix_term")
+    replace: ClassVar[dict[str, str]] = term_util.look_up_table(all_csvs, "replace")
+    suffix_term: ClassVar[dict[str, str]] = term_util.look_up_table(
+        all_csvs, "suffix_term"
+    )
     not_count: ClassVar[list[str]] = """
         not_numeric metric_mass imperial_mass metric_dist imperial_dist imperial_length
         metric_length

@@ -18,7 +18,7 @@ from .linkable import Linkable
 class Odor(Linkable):
     # Class vars ----------
     odor_csv: ClassVar[Path] = Path(__file__).parent / "terms" / "odor_terms.csv"
-    replace: ClassVar[dict[str, str]] = term_util.term_data(odor_csv, "replace")
+    replace: ClassVar[dict[str, str]] = term_util.look_up_table(odor_csv, "replace")
     # ---------------------
 
     odor: str = None

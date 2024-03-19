@@ -18,7 +18,7 @@ from flora.pylib.trait_util import clean_trait
 class Sex(Base):
     # Class vars ----------
     sex_csv: ClassVar[Path] = Path(__file__).parent / "terms" / "sex_terms.csv"
-    replace: ClassVar[dict[str, str]] = term_util.term_data(sex_csv, "replace")
+    replace: ClassVar[dict[str, str]] = term_util.look_up_table(sex_csv, "replace")
     # ---------------------
 
     sex: str = None

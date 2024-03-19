@@ -20,7 +20,7 @@ class Duration(Linkable):
     duration_csv: ClassVar[Path] = (
         Path(__file__).parent / "terms" / "duration_terms.csv"
     )
-    replace: ClassVar[dict[str, str]] = term_util.term_data(duration_csv, "replace")
+    replace: ClassVar[dict[str, str]] = term_util.look_up_table(duration_csv, "replace")
     # ---------------------
 
     duration: str = None

@@ -19,7 +19,9 @@ class Reproduction(Base):
     reproduction_csv: ClassVar[Path] = (
         Path(__file__).parent / "terms" / "reproduction_terms.csv"
     )
-    replace: ClassVar[dict[str, str]] = term_util.term_data(reproduction_csv, "replace")
+    replace: ClassVar[dict[str, str]] = term_util.look_up_table(
+        reproduction_csv, "replace"
+    )
     # ---------------------
 
     reproduction: str = None

@@ -22,7 +22,7 @@ class Subpart(Linkable):
         Path(t_terms.__file__).parent / "missing_terms.csv",
     ]
 
-    replace = term_util.term_data(all_csvs, "replace")
+    replace = term_util.look_up_table(all_csvs, "replace")
     # ---------------------
 
     # subpart in base class

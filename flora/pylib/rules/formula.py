@@ -17,7 +17,7 @@ from flora.pylib.trait_util import clean_trait
 class Formula(Base):
     # Class vars ----------
     formula_csv: ClassVar[Path] = Path(__file__).parent / "terms" / "formula_terms.csv"
-    replace: ClassVar[dict[str, str]] = term_util.term_data(formula_csv, "replace")
+    replace: ClassVar[dict[str, str]] = term_util.look_up_table(formula_csv, "replace")
     # ---------------------
 
     formula: str = None

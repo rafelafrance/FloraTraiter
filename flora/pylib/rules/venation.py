@@ -20,7 +20,7 @@ class Venation(Linkable):
     venation_csv: ClassVar[Path] = (
         Path(__file__).parent / "terms" / "venation_terms.csv"
     )
-    replace: ClassVar[dict[str, str]] = term_util.term_data(venation_csv, "replace")
+    replace: ClassVar[dict[str, str]] = term_util.look_up_table(venation_csv, "replace")
     # ---------------------
 
     venation: str = None

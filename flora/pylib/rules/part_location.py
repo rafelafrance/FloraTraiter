@@ -22,7 +22,7 @@ class PartLocation(Linkable):
     units_csv: ClassVar[Path] = Path(t_terms.__file__).parent / "unit_length_terms.csv"
     all_csvs: ClassVar[list[Path]] = [location_csv, units_csv]
 
-    replace: ClassVar[dict[str, str]] = tu.term_data(location_csv, "replace")
+    replace: ClassVar[dict[str, str]] = tu.look_up_table(location_csv, "replace")
     overwrite: ClassVar[list[str]] = [
         "part",
         "subpart",
