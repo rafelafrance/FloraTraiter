@@ -80,7 +80,7 @@ class Count(Linkable):
 
     @classmethod
     def pipe(cls, nlp: Language):
-        add.term_pipe(nlp, name="count_terms", path=cls.all_csvs, delete_patterns="in")
+        add.term_pipe(nlp, name="count_terms", path=cls.all_csvs)
         add.trait_pipe(
             nlp,
             name="count_match",
@@ -115,7 +115,7 @@ class Count(Linkable):
             "count_word": {"ENT_TYPE": {"IN": ["count_word", "number_word"]}},
             "dim": {"ENT_TYPE": "dim"},
             "every": {"LOWER": {"IN": cls.every}},
-            "habitat": {"ENT_TYPE": "habitat"},
+            "habitat": {"ENT_TYPE": {"IN": ["habitat", "habitat_term"]}},
             "is_alpha": {"IS_ALPHA": True},
             "missing": {"ENT_TYPE": "missing"},
             "not_count_symbol": {"LOWER": {"IN": cls.not_count_symbol}},
