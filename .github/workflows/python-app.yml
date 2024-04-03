@@ -22,6 +22,7 @@ jobs:
         python -m pip install --upgrade pip setuptools wheel
         python -m pip install .
         pip install git+https://github.com/rafelafrance/common_utils.git@main#egg=common_utils
+        pip install git+https://github.com/rafelafrance/spell-well.git@main#egg=spell-well
         pip install git+https://github.com/rafelafrance/traiter.git@master#egg=traiter
         python -m spacy download en_core_web_md
     - name: Test with unittest
