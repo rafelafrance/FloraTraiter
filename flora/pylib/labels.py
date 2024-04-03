@@ -1,8 +1,8 @@
 from pathlib import Path
 
+from spell_well.pylib.spell_well import SpellWell
 from tqdm import tqdm
 from traiter.pylib import term_util
-from traiter.pylib.spell_well import SpellWell
 
 from flora.pylib.label import Label
 from flora.pylib.rules import terms as p_terms
