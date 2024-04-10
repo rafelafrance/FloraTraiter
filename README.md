@@ -14,6 +14,14 @@ And I also split some functionality out to enable me to use it in other projects
 - `LabelTraiter`: Parsing treatments (this repo) and herbarium labels are now separate repositories.
   - https://github.com/rafelafrance/LabelTraiter
 
+I should also mention that this repository builds upon other repositories:
+- `common_utils`: This is just a grab bag of simple utilities I used in several other project. I got tired of having to change every repository that used them each time there was an edit, so I just put them here.
+  - `https://github.com/rafelafrance/common_utils`
+- `spell-well`: Is a super simple "delete-only" spell checker I wrote. There may be better options now, but it survives until I can find one that handles our particular needs.
+  - `https://github.com/rafelafrance/spell-well`
+- `traiter`: This is the base code for all the rule-based parsers (aka traiters) that I write. The details change but the underlying process is the same for all.
+  - `https://github.com/rafelafrance/traiter`
+
 ## All right, what's this all about then?
 **Challenge**: Extract trait information from plant treatments. That is, if I'm given treatment text like: (Reformatted to emphasize targeted traits.)
 
