@@ -58,12 +58,20 @@ For example, given the text: `Petiole 1-2 cm.`:
 There are, of course, complications and subtleties not outlined above, but you should get the gist of what is going on here.
 
 ## Install
+
 You will need to have Python3.11+ installed, as well as pip, a package manager for Python.
 You can install the requirements into your python environment like so:
 ```bash
 git clone https://github.com/rafelafrance/FloraTraiter.git
 cd FloraTraiter
 make install
+```
+
+Every time you run any script in this repository, you'll have to activate the virtual environment once at the start of your session.
+
+```bash
+cd FloraTraiter
+source .venv/bin/activate
 ```
 
 ### Extract traits
@@ -110,6 +118,7 @@ A taxon database is included with the source code, but it may be out of date. I 
 Download the first 3 sources and then use the `util_add_taxa.py` script to extract the taxa and put them into a form the parsers can use.
 
 ## Tests
+
 There are tests which you can run like so:
 ```bash
 make test

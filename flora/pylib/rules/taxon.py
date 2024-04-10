@@ -31,14 +31,14 @@ def get_csvs() -> dict[str, Path]:
     }
 
     try:
-        use_mock_data = int(os.getenv("MOCK_DATA"))
+        use_mock_traiter = int(os.getenv("MOCK_TRAITER"))
     except (TypeError, ValueError):
-        use_mock_data = 0
+        use_mock_traiter = 0
 
     if (
         not csvs["binomial_terms"].exists()
         or not csvs["monomial_terms"].exists()
-        or use_mock_data
+        or use_mock_traiter
     ):
         csvs["binomial_terms"] = here / "mock_binomial_terms.csv"
         csvs["monomial_terms"] = here / "mock_monomial_terms.csv"
