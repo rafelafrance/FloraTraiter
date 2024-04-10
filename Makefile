@@ -8,7 +8,9 @@ PIP_INSTALL=$(PYTHON) -m pip install
 SPACY_MODEL=$(PYTHON) -m spacy download en_core_web_md
 
 test:
-	export MOCK_DATA=1; $(PYTHON) -m unittest discover
+	export MOCK_DATA=1
+	$(PYTHON) -m unittest discover
+	export MOCK_DATA=0
 
 install: venv
 	source $(VENV)/bin/activate
