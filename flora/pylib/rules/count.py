@@ -203,7 +203,7 @@ class Count(Linkable):
                 suffix.append(token.lower_)
 
             elif token._.trait and token._.flag == "part":
-                part_trait = token._.trait.trait
+                part_trait = token._.trait._trait
                 kwargs["per_part"] = getattr(token._.trait, part_trait)
 
             elif token._.term == "per_count":
