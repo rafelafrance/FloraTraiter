@@ -63,7 +63,7 @@ class BaseHtmlWriter:
         prev = 0
 
         for trait in row.traits:
-            if trait.trait in exclude:
+            if trait._trait in exclude:
                 continue
 
             start = trait.start
