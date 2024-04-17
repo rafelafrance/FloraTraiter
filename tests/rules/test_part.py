@@ -17,14 +17,12 @@ class TestPart(unittest.TestCase):
             [
                 Woodiness(
                     woodiness="woody",
-                    trait="woodiness",
                     part="rootstock",
                     start=12,
                     end=17,
                 ),
                 Part(
                     part="rootstock",
-                    trait="part",
                     type="plant_part",
                     start=18,
                     end=27,
@@ -36,11 +34,10 @@ class TestPart(unittest.TestCase):
         self.assertEqual(
             parse("leaflets mostly 1 or 3"),
             [
-                Part(part="leaflet", trait="part", type="leaf_part", start=0, end=8),
+                Part(part="leaflet", type="leaf_part", start=0, end=8),
                 Count(
                     low=1,
                     high=3,
-                    trait="count",
                     part="leaflet",
                     start=16,
                     end=22,
@@ -54,14 +51,12 @@ class TestPart(unittest.TestCase):
             [
                 Part(
                     part="receptacle",
-                    trait="part",
                     type="flower_part",
                     start=0,
                     end=10,
                 ),
                 Shape(
                     shape="disk",
-                    trait="shape",
                     start=11,
                     end=18,
                     part="receptacle",
@@ -73,16 +68,15 @@ class TestPart(unittest.TestCase):
         self.assertEqual(
             parse("Flowers: sepals (pistillate)"),
             [
-                Part(part="flower", trait="part", type="flower_part", start=0, end=7),
+                Part(part="flower", type="flower_part", start=0, end=7),
                 Part(
                     part="sepal",
-                    trait="part",
                     type="flower_part",
                     start=9,
                     end=15,
                     sex="pistillate",
                 ),
-                Sex(sex="pistillate", trait="sex", start=16, end=28),
+                Sex(sex="pistillate", start=16, end=28),
             ],
         )
 
@@ -92,14 +86,12 @@ class TestPart(unittest.TestCase):
             [
                 Part(
                     part="flower",
-                    trait="part",
                     type="flower_part",
                     start=0,
                     end=7,
                 ),
                 Sex(
                     sex="staminate",
-                    trait="sex",
                     start=9,
                     end=18,
                 ),
@@ -112,7 +104,6 @@ class TestPart(unittest.TestCase):
             [
                 Part(
                     part="head",
-                    trait="part",
                     type="inflorescence",
                     start=0,
                     end=5,
@@ -121,7 +112,6 @@ class TestPart(unittest.TestCase):
                     low=2,
                     subpart="flower",
                     part="head",
-                    trait="count",
                     start=16,
                     end=26,
                 ),
@@ -133,7 +123,6 @@ class TestPart(unittest.TestCase):
             parse("Phyllodes glaucous"),
             [
                 Part(
-                    trait="part",
                     type="leaf_part",
                     start=0,
                     end=9,
@@ -141,7 +130,6 @@ class TestPart(unittest.TestCase):
                 ),
                 Color(
                     color="blue",
-                    trait="color",
                     start=10,
                     end=18,
                     part="phyllode",
@@ -154,7 +142,6 @@ class TestPart(unittest.TestCase):
             parse("""stems and lf-axes hispid"""),
             [
                 Part(
-                    trait="part",
                     type="plant_part",
                     start=0,
                     end=17,
@@ -162,7 +149,6 @@ class TestPart(unittest.TestCase):
                 ),
                 Surface(
                     surface="hispid",
-                    trait="surface",
                     start=18,
                     end=24,
                     part=["stem", "leaf-axis"],
@@ -179,7 +165,6 @@ class TestPart(unittest.TestCase):
                     part="no paraphyllidia",
                     type="plant_part",
                     start=0,
-                    trait="part",
                     missing=True,
                 ),
             ],

@@ -13,7 +13,6 @@ class TestTaxon(unittest.TestCase):
                 Taxon(
                     rank="species",
                     taxon="Mimosa sensitiva",
-                    trait="taxon",
                     start=0,
                     end=12,
                 ),
@@ -27,7 +26,6 @@ class TestTaxon(unittest.TestCase):
                 Taxon(
                     rank="species",
                     taxon="Mimosa sensitiva",
-                    trait="taxon",
                     start=0,
                     end=16,
                 ),
@@ -41,7 +39,6 @@ class TestTaxon(unittest.TestCase):
                 Taxon(
                     rank="variety",
                     taxon="M. polycarpa var. spegazzinii",
-                    trait="taxon",
                     start=0,
                     end=29,
                 ),
@@ -55,7 +52,6 @@ class TestTaxon(unittest.TestCase):
                 Taxon(
                     rank="subspecies",
                     taxon="Acacia pachyphloia subsp. brevipinnula",
-                    trait="taxon",
                     start=0,
                     end=34,
                 ),
@@ -69,7 +65,6 @@ class TestTaxon(unittest.TestCase):
                 Taxon(
                     rank="species",
                     taxon="Acacia pachyphloia",
-                    trait="taxon",
                     authority="Bamehy",
                     start=0,
                     end=21,
@@ -85,7 +80,6 @@ class TestTaxon(unittest.TestCase):
                     authority="Britton and Rose",
                     rank="species",
                     taxon="Acacia pachyphloia",
-                    trait="taxon",
                     start=0,
                     end=29,
                 ),
@@ -99,7 +93,6 @@ class TestTaxon(unittest.TestCase):
                 Taxon(
                     rank="series",
                     taxon="Vulpinae",
-                    trait="taxon",
                     start=0,
                     end=13,
                 ),
@@ -109,7 +102,7 @@ class TestTaxon(unittest.TestCase):
     def test_taxon_08(self):
         self.assertEqual(
             parse("""All species are trees"""),
-            [Part(end=21, part="tree", start=16, trait="part", type="plant_part")],
+            [Part(end=21, part="tree", start=16, type="plant_part")],
         )
 
     def test_taxon_09(self):
@@ -125,14 +118,12 @@ class TestTaxon(unittest.TestCase):
                 Taxon(
                     taxon="Acacia pachyphloia",
                     rank="species",
-                    trait="taxon",
                     start=14,
                     end=28,
                 ),
                 Taxon(
                     taxon="Vulpinae",
                     rank="section",
-                    trait="taxon",
                     start=30,
                     end=38,
                 ),
@@ -147,7 +138,6 @@ class TestTaxon(unittest.TestCase):
                     authority="Bentham Fox",
                     rank="species",
                     taxon="Mimosa sensitiva",
-                    trait="taxon",
                     start=0,
                     end=31,
                 ),
@@ -165,7 +155,6 @@ class TestTaxon(unittest.TestCase):
                 Taxon(
                     taxon="Neptunia gracilis f. gracilis",
                     rank="form",
-                    trait="taxon",
                     start=0,
                     end=29,
                 ),
@@ -173,7 +162,6 @@ class TestTaxon(unittest.TestCase):
                     taxon="Neptunia gracilis var. villosula",
                     rank="variety",
                     authority="Benth",
-                    trait="taxon",
                     start=30,
                     end=69,
                 ),
@@ -192,7 +180,6 @@ class TestTaxon(unittest.TestCase):
                 Taxon(
                     taxon="F. gracilis",
                     rank="species",
-                    trait="taxon",
                     start=0,
                     end=11,
                 ),
@@ -200,7 +187,6 @@ class TestTaxon(unittest.TestCase):
                     taxon="Neptunia gracilis var. villosula",
                     rank="variety",
                     authority="Benth",
-                    trait="taxon",
                     start=12,
                     end=51,
                 ),
@@ -214,7 +200,6 @@ class TestTaxon(unittest.TestCase):
                 Taxon(
                     taxon="Ticanto rhombifolia",
                     rank="species",
-                    trait="taxon",
                     start=0,
                     end=19,
                 ),
@@ -234,7 +219,6 @@ class TestTaxon(unittest.TestCase):
                 Taxon(
                     rank="family",
                     taxon="Cornaceae",
-                    trait="taxon",
                     start=0,
                     end=9,
                 ),
@@ -242,7 +226,6 @@ class TestTaxon(unittest.TestCase):
                     authority="Raf",
                     rank="species",
                     taxon="Cornus obliqua",
-                    trait="taxon",
                     start=10,
                     end=29,
                 ),
@@ -263,7 +246,6 @@ class TestTaxon(unittest.TestCase):
                 Taxon(
                     taxon="Fabaceae",
                     rank="family",
-                    trait="taxon",
                     start=16,
                     end=24,
                 ),
@@ -271,7 +253,6 @@ class TestTaxon(unittest.TestCase):
                     taxon="Vicia villosa subsp. varia",
                     rank="subspecies",
                     authority=["Roth", "Khan"],
-                    trait="taxon",
                     start=25,
                     end=61,
                 ),
@@ -287,7 +268,6 @@ class TestTaxon(unittest.TestCase):
                     taxon="Cephalanthus occidentalis",
                     rank="species",
                     authority="L. Rubiaceas",
-                    trait="taxon",
                     start=0,
                     end=38,
                 ),
@@ -302,7 +282,6 @@ class TestTaxon(unittest.TestCase):
                 Taxon(
                     rank="form",
                     taxon="Acacia pachyphloia f. brevipinnula",
-                    trait="taxon",
                     start=0,
                     end=30,
                 ),
@@ -321,7 +300,6 @@ class TestTaxon(unittest.TestCase):
                     taxon="Cornus obliqua",
                     rank="species",
                     authority="Willd",
-                    trait="taxon",
                     start=0,
                     end=21,
                 ),
@@ -336,7 +314,6 @@ class TestTaxon(unittest.TestCase):
                 Taxon(
                     taxon="Asteraceae",
                     rank="family",
-                    trait="taxon",
                     start=23,
                     end=33,
                 ),
@@ -351,7 +328,6 @@ class TestTaxon(unittest.TestCase):
                     authority="Linnaeus, Fox",
                     rank="species",
                     taxon="Mimosa sensitiva",
-                    trait="taxon",
                     start=0,
                     end=26,
                 ),
@@ -371,14 +347,12 @@ class TestTaxon(unittest.TestCase):
                     taxon="Cephalanthus occidentalis",
                     rank="species",
                     authority="L. Rubiaceas",
-                    trait="taxon",
                     start=0,
                     end=38,
                 ),
                 Taxon(
                     taxon="Cornus obliqua",
                     rank="species",
-                    trait="taxon",
                     start=59,
                     end=73,
                 ),
@@ -393,7 +367,6 @@ class TestTaxon(unittest.TestCase):
                     authority=["Linnaeus", "Fox"],
                     rank="subspecies",
                     taxon="Mimosa sensitiva subsp. varia",
-                    trait="taxon",
                     start=0,
                     end=39,
                 ),
@@ -408,7 +381,6 @@ class TestTaxon(unittest.TestCase):
                     authority=["R. Person", "Fox"],
                     rank="subspecies",
                     taxon="Mimosa sensitiva subsp. varia",
-                    trait="taxon",
                     start=0,
                     end=46,
                 ),
@@ -423,7 +395,6 @@ class TestTaxon(unittest.TestCase):
                     authority=["L. Person", "Fox"],
                     rank="subspecies",
                     taxon="Mimosa sensitiva subsp. varia",
-                    trait="taxon",
                     start=0,
                     end=46,
                 ),
@@ -437,7 +408,6 @@ class TestTaxon(unittest.TestCase):
             parse("""Associated species: Neptunia gracilis G. Rink 7075"""),
             [
                 Taxon(
-                    trait="taxon",
                     start=20,
                     end=37,
                     _text="Neptunia gracilis",
@@ -454,7 +424,6 @@ class TestTaxon(unittest.TestCase):
             [
                 Taxon(
                     authority="Geyser",
-                    trait="taxon",
                     taxon="Neptunia gracilis",
                     rank="species",
                     start=5,
@@ -469,7 +438,6 @@ class TestTaxon(unittest.TestCase):
             [
                 Taxon(
                     authority="Gray",
-                    trait="taxon",
                     taxon="Neptunia gracilis",
                     rank="species",
                     start=0,
@@ -485,7 +453,6 @@ class TestTaxon(unittest.TestCase):
                 Taxon(
                     rank="species",
                     taxon=["Neptunia gracilis", "Mimosa sensitiva"],
-                    trait="multi_taxon",
                     start=0,
                     end=36,
                 ),
@@ -500,7 +467,6 @@ class TestTaxon(unittest.TestCase):
                     authority="Roxb T. Anderson",
                     rank="species",
                     taxon="Neptunia gracilis",
-                    trait="taxon",
                     start=0,
                     end=37,
                 ),
@@ -514,21 +480,18 @@ class TestTaxon(unittest.TestCase):
                 Taxon(
                     taxon="Quercus",
                     rank="genus",
-                    trait="taxon",
                     start=0,
                     end=7,
                 ),
                 Taxon(
                     taxon="Cytisus",
                     rank="genus",
-                    trait="taxon",
                     start=8,
                     end=15,
                 ),
                 Taxon(
                     taxon="Agrostis",
                     rank="genus",
-                    trait="taxon",
                     start=16,
                     end=24,
                 ),
@@ -542,7 +505,6 @@ class TestTaxon(unittest.TestCase):
                 Taxon(
                     taxon="Neptunia gracilis var. varia",
                     rank="variety",
-                    trait="taxon",
                     start=0,
                     end=59,
                     authority=["Muhl and Willd", "Nutt", "Brewer"],
@@ -557,7 +519,6 @@ class TestTaxon(unittest.TestCase):
                 Taxon(
                     taxon="Neptunia gracilis",
                     rank="species",
-                    trait="taxon",
                     start=0,
                     end=28,
                     authority="Linnaeus, Pers",
@@ -572,7 +533,6 @@ class TestTaxon(unittest.TestCase):
                 Taxon(
                     taxon="Neptunia gracilis var. varia",
                     rank="variety",
-                    trait="taxon",
                     start=0,
                     end=42,
                     authority="G. McPherson",
@@ -590,7 +550,6 @@ class TestTaxon(unittest.TestCase):
                 Taxon(
                     taxon="Neptunia gracilis",
                     rank="species",
-                    trait="taxon",
                     start=0,
                     end=67,
                     authority="Torr and A. Gray and A. Gray W. A. Weber and A. Love",
@@ -610,7 +569,6 @@ class TestTaxon(unittest.TestCase):
                 Taxon(
                     taxon="Neptunia gracilis subsp. varia",
                     rank="subspecies",
-                    trait="taxon",
                     start=0,
                     end=80,
                     authority=[
@@ -630,7 +588,6 @@ class TestTaxon(unittest.TestCase):
                 Taxon(
                     taxon="Neptunia gracilis var. varia",
                     rank="variety",
-                    trait="taxon",
                     start=0,
                     end=53,
                     authority="A. Gray N.H. Holmgren",

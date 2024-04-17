@@ -16,10 +16,9 @@ class TestReproduction(unittest.TestCase):
                 or plants dioecious""",
             ),
             [
-                Sex(sex="bisexual", trait="sex", start=0, end=8),
-                Sex(sex="unisexual", trait="sex", start=10, end=19),
+                Sex(sex="bisexual", start=0, end=8),
+                Sex(sex="unisexual", start=10, end=19),
                 Part(
-                    trait="part",
                     part="plant",
                     type="plant_part",
                     sex="unisexual",
@@ -28,13 +27,11 @@ class TestReproduction(unittest.TestCase):
                 ),
                 Reproduction(
                     reproduction="gynodioecious",
-                    trait="reproduction",
                     start=41,
                     end=54,
                 ),
                 Part(
                     type="plant_part",
-                    trait="part",
                     part="plant",
                     sex="unisexual",
                     start=59,
@@ -42,7 +39,6 @@ class TestReproduction(unittest.TestCase):
                 ),
                 Reproduction(
                     reproduction="dioecious",
-                    trait="reproduction",
                     start=66,
                     end=75,
                 ),

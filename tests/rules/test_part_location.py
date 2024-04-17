@@ -13,10 +13,9 @@ class TestPartLocation(unittest.TestCase):
         self.assertEqual(
             parse("stipules 3-8 mm, semiamplexicaul, adnate to petiole for 1-2 mm"),
             [
-                Part(part="stipule", trait="part", type="leaf_part", start=0, end=8),
+                Part(part="stipule", type="leaf_part", start=0, end=8),
                 Size(
                     dims=[Dimension("length", low=0.3, high=0.8)],
-                    trait="size",
                     start=9,
                     end=15,
                     units="cm",
@@ -24,14 +23,12 @@ class TestPartLocation(unittest.TestCase):
                 ),
                 Shape(
                     shape="semiamplexicaul",
-                    trait="shape",
                     start=17,
                     end=32,
                     part="stipule",
                 ),
                 PartLocation(
                     part_location="adnate to petiole for 1 - 2 mm",
-                    trait="part_location",
                     type="part_as_distance",
                     start=34,
                     end=62,
@@ -45,7 +42,6 @@ class TestPartLocation(unittest.TestCase):
             [
                 Part(
                     part="leaf",
-                    trait="part",
                     type="leaf_part",
                     start=0,
                     end=6,
@@ -53,7 +49,6 @@ class TestPartLocation(unittest.TestCase):
                 ),
                 PartLocation(
                     part_location="embracing stem",
-                    trait="part_location",
                     type="part_as_location",
                     start=18,
                     end=32,
@@ -68,7 +63,6 @@ class TestPartLocation(unittest.TestCase):
             [
                 Part(
                     part="stipule",
-                    trait="part",
                     type="leaf_part",
                     part_location="at margin",
                     start=0,
@@ -76,7 +70,6 @@ class TestPartLocation(unittest.TestCase):
                 ),
                 Surface(
                     surface="ciliate",
-                    trait="surface",
                     part_location="at margin",
                     start=9,
                     end=24,
@@ -84,7 +77,6 @@ class TestPartLocation(unittest.TestCase):
                 ),
                 PartLocation(
                     part_location="at margin",
-                    trait="part_location",
                     type="subpart_as_location",
                     start=25,
                     end=34,
@@ -98,7 +90,6 @@ class TestPartLocation(unittest.TestCase):
             [
                 Part(
                     part="capitulum",
-                    trait="part",
                     type="inflorescence",
                     part_location="immersed in foliage",
                     start=0,
@@ -106,7 +97,6 @@ class TestPartLocation(unittest.TestCase):
                 ),
                 PartLocation(
                     part_location="immersed in foliage",
-                    trait="part_location",
                     type="part_as_location",
                     start=9,
                     end=28,
@@ -123,7 +113,6 @@ class TestPartLocation(unittest.TestCase):
             ),
             [
                 PartLocation(
-                    trait="part_location",
                     start=10,
                     end=18,
                     part_location="terminal",
@@ -131,7 +120,6 @@ class TestPartLocation(unittest.TestCase):
                 ),
                 Part(
                     part="pseudoraceme",
-                    trait="part",
                     type="inflorescence",
                     start=19,
                     end=31,
@@ -139,7 +127,6 @@ class TestPartLocation(unittest.TestCase):
                 ),
                 Shape(
                     shape="ovoid-ellipsoid",
-                    trait="shape",
                     start=35,
                     end=50,
                     part="capitulum",
@@ -147,7 +134,6 @@ class TestPartLocation(unittest.TestCase):
                 ),
                 Shape(
                     shape="spheric",
-                    trait="shape",
                     start=54,
                     end=61,
                     part="capitulum",
@@ -155,7 +141,6 @@ class TestPartLocation(unittest.TestCase):
                 ),
                 Part(
                     part="capitulum",
-                    trait="part",
                     type="inflorescence",
                     start=62,
                     end=70,
@@ -163,7 +148,6 @@ class TestPartLocation(unittest.TestCase):
                 ),
                 PartLocation(
                     part_location="immersed in foliage",
-                    trait="part_location",
                     type="part_as_location",
                     start=71,
                     end=90,
@@ -177,14 +161,12 @@ class TestPartLocation(unittest.TestCase):
             [
                 Surface(
                     surface="setose",
-                    trait="surface",
                     start=0,
                     end=6,
                     part="flower",
                     part_location="dorsal",
                 ),
                 PartLocation(
-                    trait="part_location",
                     type="part_location",
                     part_location="dorsal",
                     start=26,
@@ -192,7 +174,6 @@ class TestPartLocation(unittest.TestCase):
                 ),
                 Part(
                     part="flower",
-                    trait="part",
                     start=43,
                     end=50,
                     part_location="dorsal",

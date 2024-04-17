@@ -10,10 +10,9 @@ class TestMargin(unittest.TestCase):
         self.assertEqual(
             parse("margin shallowly undulate-crenate"),
             [
-                Subpart(subpart="margin", trait="subpart", start=0, end=6),
+                Subpart(subpart="margin", start=0, end=6),
                 Margin(
                     margin="undulate-crenate",
-                    trait="margin",
                     subpart="margin",
                     start=7,
                     end=33,
@@ -32,10 +31,9 @@ class TestMargin(unittest.TestCase):
         self.assertEqual(
             parse("margins thickened-corrugated"),
             [
-                Subpart(subpart="margin", trait="subpart", start=0, end=7),
+                Subpart(subpart="margin", start=0, end=7),
                 Margin(
                     margin="corrugated",
-                    trait="margin",
                     subpart="margin",
                     start=8,
                     end=28,
@@ -47,24 +45,21 @@ class TestMargin(unittest.TestCase):
         self.assertEqual(
             parse("margins coarsely toothed or remotely sinuate-dentate to serrate,"),
             [
-                Subpart(subpart="margin", trait="subpart", start=0, end=7),
+                Subpart(subpart="margin", start=0, end=7),
                 Margin(
                     margin="toothed",
-                    trait="margin",
                     subpart="margin",
                     start=8,
                     end=24,
                 ),
                 Margin(
                     margin="sinuate-dentate",
-                    trait="margin",
                     subpart="margin",
                     start=28,
                     end=52,
                 ),
                 Margin(
                     margin="serrate",
-                    trait="margin",
                     subpart="margin",
                     start=56,
                     end=63,

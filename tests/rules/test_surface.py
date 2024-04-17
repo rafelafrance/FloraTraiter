@@ -12,7 +12,6 @@ class TestSurface(unittest.TestCase):
             [
                 Surface(
                     surface="glabrous",
-                    trait="surface",
                     start=0,
                     end=8,
                     part="flower",
@@ -20,7 +19,6 @@ class TestSurface(unittest.TestCase):
                 Part(
                     part="flower",
                     type="flower_part",
-                    trait="part",
                     start=9,
                     end=16,
                 ),

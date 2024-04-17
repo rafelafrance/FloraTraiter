@@ -8,6 +8,7 @@ Build taxon terms from downloaded data.
 4. [Some miscellaneous taxa not found in the other sources.]
    (./flora/pylib/traits/terms/other_taxa.csv)
 """
+
 import argparse
 import csv
 import logging

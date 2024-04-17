@@ -13,7 +13,6 @@ class TestTaxonLike(unittest.TestCase):
             [
                 TaxonLike(
                     taxon_like="Mimosa sensitiva",
-                    trait="taxon_like",
                     start=30,
                     end=52,
                     relation="sympatric",
@@ -27,7 +26,6 @@ class TestTaxonLike(unittest.TestCase):
             [
                 TaxonLike(
                     taxon_like="Mimosa sensitiva",
-                    trait="taxon_like",
                     start=6,
                     end=29,
                     relation="similar",
@@ -41,7 +39,6 @@ class TestTaxonLike(unittest.TestCase):
             [
                 TaxonLike(
                     taxon_like="Mimosa sensitiva",
-                    trait="taxon_like",
                     start=3,
                     end=25,
                     relation="resembles",
@@ -55,7 +52,6 @@ class TestTaxonLike(unittest.TestCase):
             [
                 TaxonLike(
                     taxon_like="Mimosa sensitiva",
-                    trait="taxon_like",
                     start=0,
                     end=47,
                     relation="sympatric",
@@ -69,7 +65,6 @@ class TestTaxonLike(unittest.TestCase):
             [
                 TaxonLike(
                     taxon_like=["Mimosa sensitiva", "Acacia pachyphloia"],
-                    trait="taxon_like",
                     start=0,
                     end=38,
                     relation="vicinis",
@@ -82,7 +77,6 @@ class TestTaxonLike(unittest.TestCase):
             parse("""distinguished from var. pachyphloia"""),
             [
                 TaxonLike(
-                    trait="taxon_like",
                     start=0,
                     end=35,
                     taxon_like="pachyphloia",
@@ -98,18 +92,16 @@ class TestTaxonLike(unittest.TestCase):
                 Taxon(
                     rank="variety",
                     taxon="floridana",
-                    trait="taxon",
                     start=4,
                     end=18,
                     taxon_like="nuttallii",
                 ),
                 TaxonLike(
-                    trait="taxon_like",
                     start=19,
                     end=43,
                     taxon_like="nuttallii",
                     relation="resembles",
                 ),
-                Venation(venation="vein", trait="venation", start=47, end=55),
+                Venation(venation="vein", start=47, end=55),
             ],
         )

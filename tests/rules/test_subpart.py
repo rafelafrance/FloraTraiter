@@ -12,14 +12,12 @@ class TestSubpart(unittest.TestCase):
             parse("terminal lobe ovate-trullate,"),
             [
                 PartLocation(
-                    trait="part_location",
                     start=0,
                     end=8,
                     part_location="terminal",
                     type="part_location",
                 ),
                 Subpart(
-                    trait="subpart",
                     subpart="lobe",
                     start=9,
                     end=13,
@@ -27,7 +25,6 @@ class TestSubpart(unittest.TestCase):
                 ),
                 Shape(
                     shape="ovate-trullate",
-                    trait="shape",
                     start=14,
                     end=28,
                     subpart="lobe",

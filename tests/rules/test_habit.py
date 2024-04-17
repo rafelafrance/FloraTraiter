@@ -12,10 +12,9 @@ class TestHabit(unittest.TestCase):
         self.assertEqual(
             parse("Stems often caespitose"),
             [
-                Part(part="stem", trait="part", start=0, end=5, type="plant_part"),
+                Part(part="stem", start=0, end=5, type="plant_part"),
                 Habit(
                     habit="cespitose",
-                    trait="habit",
                     start=12,
                     end=22,
                 ),
@@ -29,25 +28,22 @@ class TestHabit(unittest.TestCase):
             [
                 Woodiness(
                     woodiness="herb",
-                    trait="woodiness",
                     start=0,
                     end=5,
                     part="shrub",
                 ),
                 PlantDuration(
                     plant_duration="perennial",
-                    trait="plant_duration",
                     start=6,
                     end=15,
                 ),
                 Part(
                     part="shrub",
-                    trait="part",
                     start=19,
                     end=28,
                     type="plant_part",
                 ),
-                Habit(habit="epiphytic", trait="habit", start=30, end=39),
-                Habit(habit="epilithic", trait="habit", start=43, end=52),
+                Habit(habit="epiphytic", start=30, end=39),
+                Habit(habit="epilithic", start=43, end=52),
             ],
         )

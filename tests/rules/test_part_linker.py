@@ -15,10 +15,9 @@ class TestPartLinker(unittest.TestCase):
         self.assertEqual(
             parse("""pinnules up to 31 pairs,"""),
             [
-                Part(part="pinnule", trait="part", type="leaf_part", start=0, end=8),
+                Part(part="pinnule", type="leaf_part", start=0, end=8),
                 Count(
                     low=31,
-                    trait="count",
                     start=15,
                     end=23,
                     count_group="pairs",
@@ -34,16 +33,15 @@ class TestPartLinker(unittest.TestCase):
                 attaining 2-4 m in height with trunk""",
             ),
             [
-                Part(part="tree", trait="part", type="plant_part", start=0, end=5),
+                Part(part="tree", type="plant_part", start=0, end=5),
                 Size(
                     dims=[Dimension(dim="height", low=200.0, high=400.0)],
-                    trait="size",
                     start=59,
                     end=74,
                     units="cm",
                     part="tree",
                 ),
-                Part(part="trunk", trait="part", type="plant_part", start=80, end=85),
+                Part(part="trunk", type="plant_part", start=80, end=85),
             ],
         )
 
@@ -56,13 +54,12 @@ class TestPartLinker(unittest.TestCase):
                  the replum 1.5-2 mm wide,""",
             ),
             [
-                Part(part="pod", trait="part", type="fruit_part", start=0, end=4),
+                Part(part="pod", type="fruit_part", start=0, end=4),
                 Size(
                     dims=[
                         Dimension("length", low=2.5, high=3.5),
                         Dimension("width", low=1.2, high=1.8),
                     ],
-                    trait="size",
                     start=114,
                     end=130,
                     units="cm",
@@ -70,14 +67,12 @@ class TestPartLinker(unittest.TestCase):
                 ),
                 Part(
                     part="replum",
-                    trait="part",
                     type="fruit_part",
                     start=136,
                     end=142,
                 ),
                 Size(
                     dims=[Dimension("width", low=0.15, high=0.2)],
-                    trait="size",
                     start=143,
                     end=156,
                     units="cm",
@@ -93,38 +88,33 @@ class TestPartLinker(unittest.TestCase):
                 axes normally pulvinate (the primary pulvinus rarely suppressed)""",
             ),
             [
-                Part(part="leaf", trait="part", type="leaf_part", start=0, end=3),
+                Part(part="leaf", type="leaf_part", start=0, end=3),
                 Taxon(
                     rank="species",
                     taxon="Acacia pachyphloia",
-                    trait="taxon",
                     start=15,
                     end=29,
                 ),
                 Shape(
                     shape="bipinnate",
-                    trait="shape",
                     start=31,
                     end=40,
                     part="leaf",
                 ),
                 Subpart(
                     subpart="axis",
-                    trait="subpart",
                     start=68,
                     end=72,
                     part="pulvinus",
                 ),
                 Shape(
                     shape="pulvinate",
-                    trait="shape",
                     start=82,
                     end=91,
                     part="pulvinus",
                     subpart="axis",
                 ),
                 Part(
-                    trait="part",
                     type="leaf_part",
                     start=97,
                     end=113,
@@ -137,13 +127,12 @@ class TestPartLinker(unittest.TestCase):
         self.assertEqual(
             parse("""juvenile leaves persistent for a long period."""),
             [
-                Part(end=15, part="leaf", start=9, trait="part", type="leaf_part"),
+                Part(end=15, part="leaf", start=9, type="leaf_part"),
                 Duration(
                     duration="persistent",
                     part="leaf",
                     end=26,
                     start=16,
-                    trait="duration",
                 ),
             ],
         )
@@ -156,11 +145,10 @@ class TestPartLinker(unittest.TestCase):
             [
                 Part(
                     part="stipular spines",
-                    trait="part",
                     type="leaf_part",
                     start=18,
                     end=33,
                 ),
-                Part(part="leaf", trait="part", type="leaf_part", start=56, end=62),
+                Part(part="leaf", type="leaf_part", start=56, end=62),
             ],
         )

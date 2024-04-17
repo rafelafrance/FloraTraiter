@@ -1,4 +1,5 @@
 """Link traits to plant subparts."""
+
 from dataclasses import dataclass
 from typing import ClassVar
 

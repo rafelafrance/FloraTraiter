@@ -15,13 +15,11 @@ class TestTaxonLikeLinker(unittest.TestCase):
                     rank="species",
                     authority="Bameby",
                     taxon="Mimosa sensitiva",
-                    trait="taxon",
                     start=0,
                     end=24,
                     taxon_like="Acacia pachyphloia",
                 ),
                 TaxonLike(
-                    trait="taxon_like",
                     start=25,
                     end=47,
                     taxon_like="Acacia pachyphloia",

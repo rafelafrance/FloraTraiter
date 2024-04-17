@@ -6,6 +6,7 @@ For example: "petals (1-)3-10(-12) mm (pistillate) or 5-8(-10) mm (staminate):
 Should note that pistillate petals are 3-10 mm and staminate petals are 5-8 mm.
 Named entity recognition (NER) must be run first.
 """
+
 from dataclasses import dataclass
 from typing import ClassVar
 

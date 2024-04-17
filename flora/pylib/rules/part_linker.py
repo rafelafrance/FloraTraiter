@@ -5,6 +5,7 @@ We are linking parts like "petal" or "leaf" to traits like color or size.
 For example: "with thick, woody rootstock" should link the "rootstock" part with
 the "woody" trait.
 """
+
 from dataclasses import dataclass
 from typing import ClassVar
 

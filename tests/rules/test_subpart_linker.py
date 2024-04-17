@@ -13,13 +13,12 @@ class TestSubpartLinker(unittest.TestCase):
         self.assertEqual(
             parse("""limbs (1-) 2-4 (-5) pairs;"""),
             [
-                Subpart(subpart="limb", trait="subpart", start=0, end=5),
+                Subpart(subpart="limb", start=0, end=5),
                 Count(
                     min=1,
                     low=2,
                     high=4,
                     max=5,
-                    trait="count",
                     start=6,
                     end=25,
                     count_group="pairs",
@@ -32,10 +31,9 @@ class TestSubpartLinker(unittest.TestCase):
         self.assertEqual(
             parse("""blades oblong setose-ciliolate"""),
             [
-                Part(part="leaf", trait="part", type="leaf_part", start=0, end=6),
+                Part(part="leaf", type="leaf_part", start=0, end=6),
                 Shape(
                     shape="oblong",
-                    trait="shape",
                     subpart="ciliolate",
                     start=7,
                     end=13,
@@ -44,7 +42,6 @@ class TestSubpartLinker(unittest.TestCase):
                 Surface(
                     surface="setose",
                     subpart="ciliolate",
-                    trait="surface",
                     start=14,
                     end=20,
                     part="leaf",
@@ -52,7 +49,6 @@ class TestSubpartLinker(unittest.TestCase):
                 Subpart(
                     subpart="ciliolate",
                     part="leaf",
-                    trait="subpart",
                     start=20,
                     end=30,
                 ),
