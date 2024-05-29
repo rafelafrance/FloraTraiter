@@ -3,11 +3,11 @@ from typing import ClassVar
 
 import pandas as pd
 
-from flora.pylib.rules.part import PART_LABELS
+from flora.pylib.rules.part import Part
 
 from . import writer_utils as w_utils
 
-PARTS_SET = {*PART_LABELS, "multiple_parts"}
+PARTS_SET = {*Part.labels, "multiple_parts"}
 
 
 class BaseCsvWriter:

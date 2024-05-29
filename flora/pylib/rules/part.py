@@ -25,6 +25,7 @@ class Part(Linkable):
 
     replace: ClassVar[dict[str, str]] = term_util.look_up_table(all_csvs, "replace")
     type_: ClassVar[dict[str, str]] = term_util.look_up_table(part_csv, "type")
+    labels: ClassVar[list[str]] = term_util.get_labels(part_csv)
     # ---------------------
 
     # part in base class
