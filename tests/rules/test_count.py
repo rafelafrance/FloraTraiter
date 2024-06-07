@@ -807,12 +807,6 @@ class TestCount(unittest.TestCase):
             [Part(end=5, part="plant", start=0, type="plant_part")],
         )
 
-    def test_count_52(self):
-        self.assertEqual(
-            parse("""7.5’ shrubs."""),
-            [Part(end=11, part="shrub", start=5, type="plant_part")],
-        )
-
     def test_count_53(self):
         self.assertEqual(
             parse("""24 heads on 3-4 flowering stems;"""),

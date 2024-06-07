@@ -31,7 +31,7 @@ class Linkable(t_base.Base):
                 if isinstance(field, str):
                     key += field.split()
                 elif isinstance(field, list):
-                    key += self.trait.split()
+                    key += self._trait.split()
         key += list(args)
         dupe = dict.fromkeys(key, 1)
         key = " ".join(dupe.keys()).replace("-", " ").split()

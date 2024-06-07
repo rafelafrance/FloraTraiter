@@ -892,3 +892,33 @@ class TestSize(unittest.TestCase):
                 ),
             ],
         )
+
+    def test_size_45(self):
+        self.assertEqual(
+            parse("""7.5’ shrubs."""),
+            [
+                # Size(
+                #     dims=[Dimension(dim="length", low=228.6)],
+                #     start=0,
+                #     end=4,
+                #     part="shrub",
+                #     units="cm",
+                # ),
+                Part(end=11, part="shrub", start=5, type="plant_part")
+            ],
+        )
+
+    def test_size_46(self):
+        self.assertEqual(
+            parse("""shrub is 18 inches tall"""),
+            [
+                Part(start=0, end=5, part="shrub", type="plant_part"),
+                Size(
+                    start=9,
+                    end=23,
+                    part="shrub",
+                    dims=[Dimension(dim="height", low=45.72)],
+                    units="cm",
+                ),
+            ],
+        )

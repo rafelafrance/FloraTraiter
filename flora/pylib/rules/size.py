@@ -46,10 +46,9 @@ class Size(Linkable):
     # Class vars ----------
     cross: ClassVar[list[str]] = t_const.CROSS + t_const.COMMA
     factors_cm: ClassVar[dict[str, float]] = term_util.look_up_table(
-        ALL_CSVS,
-        "factor_cm",
-        float,
+        ALL_CSVS, "factor_cm", float
     )
+    factors_cm["in"] = 2.54
     not_numeric: ClassVar[list[str]] = """
         not_numeric metric_mass imperial_mass metric_dist imperial_dist
         """.split()
