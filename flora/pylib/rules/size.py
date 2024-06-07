@@ -209,7 +209,7 @@ class Size(Linkable):
 
     @staticmethod
     def fill_units(dims):
-        default_units = next(d.units for d in dims if d.units)
+        default_units = next((d.units for d in dims if d.units), "cm")
 
         for dim in dims:
             dim.units = dim.units if dim.units else default_units
