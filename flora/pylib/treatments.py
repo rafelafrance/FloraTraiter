@@ -2,7 +2,7 @@ from tqdm import tqdm
 
 from flora.pylib.treatment import Treatment
 
-from . import pipeline
+from .pipelines import flora_pipeline
 
 
 class Treatments:
@@ -10,7 +10,7 @@ class Treatments:
         self.treatments: list[Treatment] = self.get_treatments(
             treatment_dir, limit, offset
         )
-        self.nlp = pipeline.build()
+        self.nlp = flora_pipeline.build()
 
     @staticmethod
     def get_treatments(treatment_dir, limit, offset):

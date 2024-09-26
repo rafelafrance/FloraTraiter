@@ -43,7 +43,6 @@ def write_json(treatments, json_dir):
 
 def parse_args() -> argparse.Namespace:
     arg_parser = argparse.ArgumentParser(
-        fromfile_prefix_chars="@",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description=textwrap.dedent(
             """

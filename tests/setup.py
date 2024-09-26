@@ -1,9 +1,9 @@
 import traiter.pylib.darwin_core as t_dwc
 from traiter.pylib.util import compress
 
-from flora.pylib import pipeline
+from flora.pylib.pipelines import flora_pipeline
 
-PIPELINE = pipeline.build()
+PIPELINE = flora_pipeline.build()
 
 
 def parse(text: str) -> list:

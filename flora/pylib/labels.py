@@ -7,13 +7,13 @@ from traiter.pylib import term_util
 from flora.pylib.label import Label
 from flora.pylib.rules import terms as p_terms
 
-from . import pipeline
+from .pipelines import flora_pipeline
 
 
 class Labels:
     def __init__(self, args):
         self.labels: list[Label] = self.get_labels(args)
-        self.nlp = pipeline.build()
+        self.nlp = flora_pipeline.build()
         self.image_paths = self.get_image_paths(args)
         self.vocabulary: set = self.get_vocabulary()
 

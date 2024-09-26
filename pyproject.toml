@@ -9,7 +9,7 @@ readme = "README.md"
 description = ""
 license = {file = "LICENSE"}
 authors = [{name="Raphael LaFrance", email="raphael.lafrance@gmail.com"}]
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 dependencies = [
     "Jinja2",
     "pandas",
@@ -39,7 +39,7 @@ add-taxa = "flora.util_add_taxon_terms:main"
 py-modules = []
 
 [tool.ruff]
-target-version = "py311"
+target-version = "py312"
 
 show-fixes = true
 
