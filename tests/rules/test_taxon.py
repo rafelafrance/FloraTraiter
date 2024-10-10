@@ -594,3 +594,20 @@ class TestTaxon(unittest.TestCase):
                 ),
             ],
         )
+
+    # def test_taxon_38(self):
+    #     self.assertEqual(
+    #         parse("""
+    #             Lupinus arizonicus Douglas ex Hooker
+    #             ssp. gracilis (C. P. Smith) Conrad
+    #             var. varia (S. Watson) Conrad"""),
+    #         [
+    #             Taxon(
+    #                 taxon="Neptunia gracilis",
+    #                 rank="variety",
+    #                 start=0,
+    #                 end=35,
+    #                 authority="Douglas and Hooker",
+    #             ),
+    #         ],
+    #     )

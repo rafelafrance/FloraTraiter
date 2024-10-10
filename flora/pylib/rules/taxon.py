@@ -803,7 +803,9 @@ class Taxon(Base):
             if token._.flag == "taxon_data":
                 taxon.append(token._.trait.taxon)
                 if token._.trait.authority:
-                    auth.append(token._.trait.authority)
+                    temp = token._.trait.authority
+                    temp = " ".join(temp) if isinstance(temp, list) else temp
+                    auth.append(temp)
 
             elif token._.flag == "taxon" or token.text in "().":
                 pass
