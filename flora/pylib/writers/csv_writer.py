@@ -1,5 +1,4 @@
 from collections import defaultdict
-from typing import ClassVar
 
 import pandas as pd
 
@@ -10,33 +9,33 @@ from . import writer_utils as w_utils
 PARTS_SET = {*Part.labels, "multiple_parts"}
 
 
-class BaseCsvWriter:
-    first: ClassVar[list] = []
-
-    def __init__(self, csv_file, csv_min=0):
+class CsvWriter:
+    def __init__(self, csv_file, csv_min=0, first=None):
         self.csv_file = csv_file
         self.csv_min = csv_min
         self.csv_rows = []
+        self.first = first if first else ["taxon"]
 
-    def write(self, rows):
-        csv_rows = self.format_all_rows(rows)
+    def write(self, treatments, size_units="centimeters"):
+        csv_rows = self.format_all_rows(treatments)
         df = pd.DataFrame(csv_rows)
         df = self.sort_df(df)
 
         with self.csv_file.open("w") as out_file:
-            out_file.write("** All sizes are given in centimeters. **\n")
+            out_file.write(f"** All sizes are given in {size_units}. **\n")
             df.to_csv(out_file, index=False)
 
-    def format_all_rows(self, rows):
-        csv_rows = [self.format_row(r) for r in rows]
+    def format_all_rows(self, treatments):
+        csv_rows = [self.format_row(r) for r in treatments]
         return csv_rows
 
-    def format_row(self, row):
-        raise NotImplementedError
+    def format_row(self, treatment):
+        csv_row = {"taxon": treatment.taxon}
+        return self.row_builder(treatment, csv_row)
 
-    def row_builder(self, row, csv_row):
+    def row_builder(self, treatment, csv_row):
         by_header = defaultdict(list)
-        for trait in row.traits:
+        for trait in treatment.traits:
             if trait["trait"] in PARTS_SET:
                 continue
 

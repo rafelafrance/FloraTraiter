@@ -8,6 +8,7 @@ from traiter.pylib.darwin_core import DarwinCore
 from util.pylib import log
 
 from flora.pylib.treatments import Treatments
+from flora.pylib.writers.csv_writer import CsvWriter
 from flora.pylib.writers.treatment_html_writer import HtmlWriter
 
 
@@ -20,6 +21,10 @@ def main():
 
     if args.html_file:
         writer = HtmlWriter(args.html_file, args.spotlight)
+        writer.write(treatments, args)
+
+    if args.csv_file:
+        writer = CsvWriter(args.csv_file)
         writer.write(treatments, args)
 
     if args.json_dir:
@@ -73,6 +78,13 @@ def parse_args() -> argparse.Namespace:
         type=Path,
         metavar="PATH",
         help="""Output HTML formatted results to this file.""",
+    )
+
+    arg_parser.add_argument(
+        "--csv-file",
+        type=Path,
+        metavar="PATH",
+        help="""Output results to this CSV file.""",
     )
 
     arg_parser.add_argument(
