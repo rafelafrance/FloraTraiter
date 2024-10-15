@@ -12,6 +12,9 @@ class Treatments:
         )
         self.nlp = flora_pipeline.build()
 
+    def __iter__(self):
+        yield from self.treatments
+
     @staticmethod
     def get_treatments(treatment_dir, limit, offset):
         labels = [Treatment(p) for p in sorted(treatment_dir.glob("*"))]

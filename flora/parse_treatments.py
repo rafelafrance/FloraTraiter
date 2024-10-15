@@ -7,9 +7,10 @@ from pathlib import Path
 from traiter.pylib.darwin_core import DarwinCore
 from util.pylib import log
 
+from flora.pylib import const
 from flora.pylib.treatments import Treatments
-from flora.pylib.writers.csv_writer import CsvWriter
-from flora.pylib.writers.treatment_html_writer import HtmlWriter
+from flora.pylib.writers.csv_writer import write_csv
+from flora.pylib.writers.html_writer import HtmlWriter
 
 
 def main():
@@ -20,12 +21,16 @@ def main():
     treatments.parse()
 
     if args.html_file:
-        writer = HtmlWriter(args.html_file, args.spotlight)
+        writer = HtmlWriter(
+            template_dir=f"{const.ROOT_DIR}/flora/pylib/writers/templates",
+            template="treatment_html_writer.html",
+            html_file=args.html_file,
+            spotlight=args.spotlight,
+        )
         writer.write(treatments, args)
 
     if args.csv_file:
-        writer = CsvWriter(args.csv_file)
-        writer.write(treatments, args)
+        write_csv(treatments)
 
     if args.json_dir:
         args.json_dir.mkdir(parents=True, exist_ok=True)

@@ -6,7 +6,7 @@ from traiter.pylib import const as t_const
 from traiter.pylib import util as t_util
 from traiter.pylib.rules.base import Base
 
-from .rules.linkable import Linkable
+from flora.pylib.rules.linkable import Linkable
 
 
 @dataclass

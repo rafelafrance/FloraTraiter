@@ -5,10 +5,11 @@ from datetime import datetime
 from typing import Any, NamedTuple
 
 import jinja2
+from tqdm import tqdm
 from traiter.pylib.darwin_core import DYN, DarwinCore
 
 from flora.pylib.label import Label
-from flora.pylib.labels import Labels
+from flora.pylib.treatments import Treatments
 
 COLOR_COUNT = 14
 BACKGROUNDS = itertools.cycle([f"cc{i}" for i in range(COLOR_COUNT)])
@@ -27,9 +28,10 @@ class Sortable(NamedTuple):
 
 
 @dataclass(kw_only=True)
-class BaseHtmlWriterRow:
+class HtmlWriterRow:
     formatted_text: str
     formatted_traits: list[TraitRow] = field(default_factory=list)
+    treatment_id: str = ""
 
 
 class CssClasses:
@@ -45,7 +47,7 @@ class CssClasses:
         return self.classes[key]
 
 
-class BaseHtmlWriter:
+class HtmlWriter:
     def __init__(self, template_dir, template, html_file, spotlight=""):
         self.template_dir = template_dir
         self.template = template
@@ -53,8 +55,21 @@ class BaseHtmlWriter:
         self.css_classes = CssClasses(spotlight)
         self.formatted = []
 
-    def write(self, rows: Labels, args=None):
-        raise NotImplementedError
+    def write(self, treatments: Treatments, args=None):
+        for treat in tqdm(treatments.treatments, desc="write"):
+            self.formatted.append(
+                HtmlWriterRow(
+                    treatment_id=treat.path.stem,
+                    formatted_text=self.format_text(treat, exclude=["trs"]),
+                    formatted_traits=self.format_traits(treat),
+                ),
+            )
+
+        summary = {
+            "Total treatments:": len(treatments.treatments),
+        }
+
+        self.write_template(args.html_file, summary=summary)
 
     def format_text(self, row: Label, exclude=None):
         """Wrap traits in the text with <spans> that can be formatted with CSS."""
