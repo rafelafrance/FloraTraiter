@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
 import argparse
-import json
 import textwrap
 from pathlib import Path
 
-from traiter.pylib.darwin_core import DarwinCore
 from util.pylib import log
 
 from flora.pylib import const
 from flora.pylib.treatments import Treatments
 from flora.pylib.writers.csv_writer import write_csv
 from flora.pylib.writers.html_writer import HtmlWriter
+from flora.pylib.writers.json_writer import write_json
 
 
 def main():
@@ -30,25 +29,12 @@ def main():
         writer.write(treatments, args)
 
     if args.csv_file:
-        write_csv(treatments)
+        write_csv(treatments, args.csv_file)
 
     if args.json_dir:
-        args.json_dir.mkdir(parents=True, exist_ok=True)
         write_json(treatments, args.json_dir)
 
     log.finished()
-
-
-def write_json(treatments, json_dir):
-    for treat in treatments.treatments:
-        dwc = DarwinCore()
-        _ = [t.to_dwc(dwc) for t in treat.traits]
-
-        path = json_dir / f"{treat.path.stem}.json"
-        with path.open("w") as f:
-            output = dwc.to_dict()
-            output["text"] = treat.text
-            json.dump(output, f, indent=4)
 
 
 def parse_args() -> argparse.Namespace:
@@ -71,14 +57,6 @@ def parse_args() -> argparse.Namespace:
     )
 
     arg_parser.add_argument(
-        "--json-dir",
-        metavar="PATH",
-        type=Path,
-        help="""Output JSON files holding traits, one for each input text file, in this
-            directory.""",
-    )
-
-    arg_parser.add_argument(
         "--html-file",
         type=Path,
         metavar="PATH",
@@ -90,6 +68,14 @@ def parse_args() -> argparse.Namespace:
         type=Path,
         metavar="PATH",
         help="""Output results to this CSV file.""",
+    )
+
+    arg_parser.add_argument(
+        "--json-dir",
+        metavar="PATH",
+        type=Path,
+        help="""Output JSON files holding traits, one for each input text file, in this
+            directory.""",
     )
 
     arg_parser.add_argument(
