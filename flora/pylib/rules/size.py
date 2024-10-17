@@ -239,13 +239,15 @@ class Size(Linkable):
                     raise reject_match.RejectMatch
                 if value <= TOO_SMALL:
                     raise reject_match.RejectMatch
-                factor = cls.factors_cm.get(dim.units, 0.1)  # default to mm
+                factor = cls.factors_cm.get(dim.units)
+                if factor is None:
+                    raise reject_match.RejectMatch
                 value = round(value * factor, 3)
                 setattr(dim, key, value)
 
             # Clear temp data
             dim.uncertain = None
-            dim.units = ""
+            dim.units = None
             dim.sex = None
 
         trait = cls.from_ent(ent, dims=dims, sex=sex, uncertain=uncertain)
