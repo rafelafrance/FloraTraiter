@@ -1,6 +1,5 @@
 import sys
 from collections import defaultdict
-from collections.abc import Iterable
 from pathlib import Path
 
 import pandas as pd
@@ -75,6 +74,20 @@ def remove_duplicates(flattened):
     return cleaned
 
 
+def to_hashable(val):
+    if isinstance(val, str | int | float):
+        return val
+    if isinstance(val, dict):
+        return tuple((k, to_hashable(v)) for k, v in val.items())
+    if isinstance(val, list):
+        return tuple(to_hashable(v) for v in val)
+    try:
+        hash(val)
+    except TypeError:
+        sys.exit(f"Could not hash '{val}'")
+    return val
+
+
 def add_row_fields(treatment, formatted: dict[tuple, dict]) -> None:
     taxon = formatted.get((TAXON, 1))
     taxon = taxon[TAXON] if taxon else "unknown"
@@ -105,15 +118,3 @@ def flatten_traits(grouped) -> dict[str, list]:
                     new[key] = value
             flattened[name].append(new)
     return flattened
-
-
-def to_hashable(val):
-    if isinstance(val, dict):
-        return tuple(val.items())
-    if isinstance(val, Iterable):
-        return tuple(val)
-    try:
-        hash(val)
-    except TypeError:
-        sys.exit(f"Could not hash '{val}'")
-    return val
