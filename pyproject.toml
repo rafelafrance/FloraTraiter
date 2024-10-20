@@ -12,6 +12,8 @@ authors = [{name="Raphael LaFrance", email="raphael.lafrance@gmail.com"}]
 requires-python = ">=3.11"
 dependencies = [
     "Jinja2",
+    "beautifulsoup4",
+    "lxml",
     "pandas",
     "pillow",
     "regex",
