@@ -17,8 +17,8 @@ class Treatment:
     formatted_text: str = ""
     formatted_traits: list[str] = field(default_factory=list)
 
-    def parse(self, nlp):
-        with self.path.open() as f:
+    def parse(self, nlp, encoding="utf8"):
+        with self.path.open(encoding=encoding) as f:
             self.text = f.read()
             self.text = self.clean()
             self.text = t_util.compress(self.text)

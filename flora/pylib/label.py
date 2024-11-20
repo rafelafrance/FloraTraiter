@@ -28,7 +28,7 @@ class Label:
     formatted_traits: list[str] = field(default_factory=list)
 
     def parse(self, nlp, image_paths, vocabulary):
-        with self.path.open() as f:
+        with self.path.open(encoding="utf8") as f:
             self.text = f.read()
             self.text = t_util.compress(self.text)
 
@@ -44,8 +44,8 @@ class Label:
         """
         Score the label content.
 
-        score = number of words in the label (words = all chars are letters)
-                divided by the number of those words in the vocabulary
+        score = number of words in the vocabulary (words = all chars are letters)
+                divided by the number of those words on the label.
         """
         all_words = [t for t in re.split(r"[^\p{L}]+", self.text.lower()) if t]
         self.word_count = len(all_words)

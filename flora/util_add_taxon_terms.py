@@ -42,7 +42,7 @@ class Record:
 class Ranks:
     def __init__(self):
         rank_csv = Path(terms.__file__).parent / "rank_terms.csv"
-        with rank_csv.open() as term_file:
+        with rank_csv.open(encoding="utf8") as term_file:
             reader = csv.DictReader(term_file)
             self.ranks = list(reader)
         self.id2rank = {int(r["rank_id"]): r["replace"] for r in self.ranks}
@@ -251,25 +251,25 @@ def read_taxa(args, taxa):
         read_itis_taxa(args.itis_db, taxa)
 
     if args.wcvp_file:
-        read_wcvp_taxa(args.wcvp_file, taxa)
+        read_wcvp_taxa(args.wcvp_file, taxa, encoding=args.encoding)
 
     if args.wfot_tsv:
-        read_wfot_taxa(args.wfot_tsv, taxa)
+        read_wfot_taxa(args.wfot_tsv, taxa, encoding=args.encoding)
 
     if args.other_taxa_csv:
-        read_other_taxa(args.other_taxa_csv, taxa)
+        read_other_taxa(args.other_taxa_csv, taxa, encoding=args.encoding)
 
 
-def read_other_taxa(other_taxa_csv, taxa):
-    with other_taxa_csv.open() as in_file:
+def read_other_taxa(other_taxa_csv, taxa, encoding="utf8"):
+    with other_taxa_csv.open(encoding=encoding) as in_file:
         reader = csv.DictReader(in_file)
         for row in reader:
             for rank in set(row["ranks"].split()):
                 taxa.add_taxon_and_rank(row["pattern"], rank)
 
 
-def read_wfot_taxa(wfot_tsv, taxa):
-    with wfot_tsv.open() as in_file:
+def read_wfot_taxa(wfot_tsv, taxa, encoding="utf8"):
+    with wfot_tsv.open(encoding=encoding) as in_file:
         reader = csv.DictReader(in_file, delimiter="\t")
         for row in tqdm(reader, desc="wfot"):
             rank = taxa.ranks.normalize_rank(row["taxonRank"])
@@ -277,8 +277,8 @@ def read_wfot_taxa(wfot_tsv, taxa):
             taxa.add_taxon_and_rank(pattern, rank)
 
 
-def read_wcvp_taxa(wcvp_file, taxa):
-    with wcvp_file.open() as in_file:
+def read_wcvp_taxa(wcvp_file, taxa, encoding="utf8"):
+    with wcvp_file.open(encoding=encoding) as in_file:
         reader = csv.DictReader(in_file, delimiter="|")
         for row in tqdm(reader, desc="wcvp"):
             rank = taxa.ranks.normalize_rank(row["taxonrank"])
@@ -338,6 +338,15 @@ def parse_args():
         "--show-rejected",
         action="store_true",
         help="""Print everything that is rejected from the CSV.""",
+    )
+
+    arg_parser.add_argument(
+        "--encoding",
+        metavar="ENCODING",
+        default="utf8",
+        help="""What encoding is used for the input file. These should be Western
+        European encodings; that's what the parsers are designed for.
+        (default: %(default)s)""",
     )
 
     args = arg_parser.parse_args()

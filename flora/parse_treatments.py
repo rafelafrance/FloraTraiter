@@ -17,7 +17,7 @@ def main():
     args = parse_args()
 
     treatments: Treatments = Treatments(args.treatment_dir, args.limit, args.offset)
-    treatments.parse()
+    treatments.parse(encoding=args.encoding)
 
     if args.html_file:
         writer = HtmlWriter(
@@ -95,6 +95,15 @@ def parse_args() -> argparse.Namespace:
         "--spotlight",
         metavar="TRAIT",
         help="""This trait will get its own color for HTML output.""",
+    )
+
+    arg_parser.add_argument(
+        "--encoding",
+        metavar="ENCODING",
+        default="utf8",
+        help="""What encoding is used for the input file. These should be Western
+        European encodings; that's what the parsers are designed for.
+        (default: %(default)s)""",
     )
 
     args = arg_parser.parse_args()

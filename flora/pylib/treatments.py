@@ -24,6 +24,6 @@ class Treatments:
 
         return labels
 
-    def parse(self):
+    def parse(self, encoding="utf8"):
         for lb in tqdm(self.treatments, desc="parse"):
-            lb.parse(self.nlp)
+            lb.parse(self.nlp, encoding=encoding)
