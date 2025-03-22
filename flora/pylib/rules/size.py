@@ -65,10 +65,10 @@ class Size(Linkable):
         value = {"uncertain": self.uncertain}
         for dim in self.dims:
             value |= {
-                dim.dim + "MinimumInCentimeters": dim.min,
-                dim.dim + "LowInCentimeters": dim.low,
-                dim.dim + "HighInCentimeters": dim.high,
-                dim.dim + "MaximumInCentimeters": dim.max,
+                f"{dim.dim}MinimumInCentimeters": dim.min,
+                f"{dim.dim}LowInCentimeters": dim.low,
+                f"{dim.dim}HighInCentimeters": dim.high,
+                f"{dim.dim}MaximumInCentimeters": dim.max,
             }
         return dwc.add_dyn(**{self.key: DarwinCore.format_dict(value)})
 

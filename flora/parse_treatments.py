@@ -3,9 +3,7 @@ import argparse
 import textwrap
 from pathlib import Path
 
-from util.pylib import log
-
-from flora.pylib import const
+from flora.pylib import const, log
 from flora.pylib.treatments import Treatments
 from flora.pylib.writers.csv_writer import write_csv
 from flora.pylib.writers.html_writer import HtmlWriter

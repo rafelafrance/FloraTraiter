@@ -24,9 +24,8 @@ import regex
 from tqdm import tqdm
 from traiter.pylib import term_util as tu
 from traiter.pylib.rules import terms as t_terms
-from util.pylib import log
 
-from flora.pylib import const
+from flora.pylib import const, log
 from flora.pylib.rules import terms
 
 ITIS_SPECIES_ID = 220
