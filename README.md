@@ -1,5 +1,16 @@
 # FloraTraiter ![Python application](https://github.com/rafelafrance/FloraTraiter/workflows/CI/badge.svg)[![DOI](https://zenodo.org/badge/649758239.svg)](https://zenodo.org/badge/latestdoi/649758239)
 
+## Note to people wanting to use these scripts.
+
+These modules were written before the Large Language Model (LLM) revolution occurred. The most recent LLMs, even the smaller ones like Gemma3 etc., get you about (guessing) 90% of the way to what this set of scripts does, they often do it better, and they most definitely do it much with less work. LLMs are great at pattern recognition and that's all that these modules do. So, if you want to start a trait/information extraction project of your own I'd recommend that you consider a LLM-based approach first.
+
+Rule-based parsing still has its uses for the next couple of years, albeit in a limited fashion, and with a lot less code than what I've generated here. I still use rules for:
+
+1. Generating some test data. The code in this repository is way overkill for that.
+2. Pre-processing text to get it into a format that gives LLMs an easier time of processing text. I do this less and less with each generation of LLMs.
+3. Post-processing LLM results. Sometimes a LLM will give you results that are correct but not quite in a useful format. I'll sometimes use rule-based parsers to tweak LLM output. Nothing in this repository does this.
+
+## Back to the regularly scheduled repository
 
 Extract traits about plants from authoritative literature.
 

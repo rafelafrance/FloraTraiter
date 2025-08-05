@@ -8,7 +8,7 @@ test: activate
 
 install: venv activate base
 	./.venv/bin/python -m pip install git+https://github.com/rafelafrance/spell-well.git@main#egg=spell-well
-	./.venv/bin/python -m pip install git+https://github.com/rafelafrance/traiter.git@v2.2.3#egg=traiter
+	./.venv/bin/python -m pip install git+https://github.com/rafelafrance/traiter.git@master#egg=traiter
 	./.venv/bin/python -m pip install .
 	./.venv/bin/python -m spacy download en_core_web_md
 
