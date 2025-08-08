@@ -1,7 +1,8 @@
 .PHONY: test install dev clean
 .ONESHELL:
 
-test: activate
+test:
+	. .venv/bin/activate
 	export MOCK_TRAITER=1
 	./.venv/bin/python -m unittest discover
 	export MOCK_TRAITER=0
